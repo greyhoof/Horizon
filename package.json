@@ -1,7 +1,7 @@
 {
   "name": "f-list-rising",
   "version": "1.27.3",
-  "author": "The F-List Team and and Mister Stallion (Esq.)",
+  "author": "The F-List Team and F-Chat Horizon Cobtributors",
   "description": "A heavily modded F-Chat 3.0 client for F-List",
   "license": "MIT",
   "main": "main.js",
