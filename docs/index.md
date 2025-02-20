@@ -5,12 +5,12 @@ layout: rising
 <h2 class="slogan-header">Modded for Your Pleasure</h2>
 <img src="./assets/images/slogan.png" id="slogan" />
 
-**F-Chat Rising** is an extended version of the [original F-Chat 3.0 client](https://wiki.f-list.net/F-Chat_3.0) with new features, bug fixes, and usability improvements.
+**F-Chat Horizon** is an extended version of the [original F-Chat 3.0 client](https://wiki.f-list.net/F-Chat_3.0) with new features, bug fixes, and usability improvements.
 
 You'll connect with the same F-List, same players, and same channels you're already used to.
 You'll just do it with style!
 
-Scroll down to see a [feature summary](#link-previews), or take a look at a more [detailed list of features](https://github.com/hearmeneigh/fchat-rising/blob/master/README.md#key-differences).
+Scroll down to see a [feature summary](#link-previews), or take a look at a more [detailed list of features](https://github.com/CodingWithAnxiety/F-chat-Horizon/blob/main/README.md#key-differences).
 
 To install, download the application from the links above and then refer to the [original installation instructions](https://wiki.f-list.net/F-Chat_3.0/Installation).
  

@@ -13,7 +13,7 @@
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-title: F-Chat Rising
+title: F-Chat Horizon
 email: nope@nope.com
 description: >- # this means to ignore newlines until "baseurl:"
   A heavily customized F-Chat 3.0 client
@@ -47,13 +47,13 @@ exclude:
 
 theme: jekyll-theme-slate
 
-changelog: https://github.com/hearmeneigh/fchat-rising/blob/master/CHANGELOG.md
-installurl: https://github.com/hearmeneigh/fchat-rising/wiki
+changelog: https://github.com/CodingWithAnxiety/F-chat-Horizon/blob/main/CHANGELOG.md
+installurl: https://github.com/CodingWithAnxiety/F-chat-Horizon/wiki
 
 download:
   version: 1.27.3
 
-  url: https://github.com/hearmeneigh/fchat-rising/releases/latest/download/F-Chat-Rising-%PLATFORM_TAIL%
+  url: https://github.com/CodingWithAnxiety/F-chat-Horizon/releases/latest/download/F-Chat-Rising-%PLATFORM_TAIL%
 
   downloads:
     - type: win
