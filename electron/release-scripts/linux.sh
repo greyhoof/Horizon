@@ -11,7 +11,7 @@ RELEASE_PATH="${HOME}/fchat-rising-dist/${RELEASE_VERSION}"
 DIST_PATH="${HOME}/fchat-rising/electron/dist/downloaded"
 
 cd "${HOME}/fchat-rising"
-git checkout master
+git checkout main
 git pull
 yarn
 

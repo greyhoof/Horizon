@@ -96,7 +96,7 @@ require('electron-packager')({
                     setupIcon: icon,
                     noMsi: true,
                     exe: 'F-Chat.exe',
-                    title: 'F-Chat Rising',
+                    title: 'F-Chat Horizon',
                     setupExe: setupName,
                     name: 'fchat'
                     // remoteReleases: 'https://client.f-list.net/win32/' + (isBeta ? '?channel=beta' : ''),
@@ -113,7 +113,7 @@ require('electron-packager')({
         _.each([{ name: 'Intel', path: appPaths[0] }, { name: 'M1', path: appPaths[1] }], (arch) => {
             console.log(arch.name, arch.path);
 
-            const target = path.join(distDir, `F-Chat Rising ${arch.name}.dmg`);
+            const target = path.join(distDir, `F-Chat Horizon ${arch.name}.dmg`);
             if(fs.existsSync(target)) fs.unlinkSync(target);
             const appPath = path.join(arch.path, 'F-Chat.app');
             if(process.argv.length <= 2) console.warn('Warning: Creating unsigned DMG');
@@ -121,7 +121,7 @@ require('electron-packager')({
                 basepath: arch.path,
                 target,
                 specification: {
-                    title: 'F-Chat Rising',
+                    title: 'F-Chat Horizon',
                     icon: path.join(__dirname, 'build', 'icon.png'),
                     background: path.join(__dirname, 'build', 'dmg.png'),
                     contents: [{x: 555, y: 345, type: 'link', path: '/Applications'}, {x: 555, y: 105, type: 'file', path: appPath}],

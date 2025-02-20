@@ -338,7 +338,7 @@ function createWindow(): electron.BrowserWindow | undefined {
 
 function showPatchNotes(): void {
     //tslint:disable-next-line: no-floating-promises
-    openURLExternally('https://github.com/hearmeneigh/fchat-rising/blob/master/CHANGELOG.md');
+    openURLExternally('https://github.com/CodingWithAnxiety/F-chat-Horizon/blob/main/CHANGELOG.md');
 }
 
 function openBrowserSettings(): electron.BrowserWindow | undefined {
@@ -405,7 +405,7 @@ function onReady(): void {
 
     // require('update-electron-app')(
     //   {
-    //     repo: 'https://github.com/hearmeneigh/fchat-rising.git',
+    //     repo: 'https://github.com/CodingWithAnxiety/F-chat-Horizon.git',
     //     updateInterval: '3 hours',
     //     logger: require('electron-log')
     //   }
@@ -676,7 +676,7 @@ function onReady(): void {
             submenu: [
                 {
                     label: l('help.fchat'),
-                    click: () => openURLExternally('https://github.com/hearmeneigh/fchat-rising/blob/master/README.md')
+                    click: () => openURLExternally('https://github.com/CodingWithAnxiety/F-chat-Horizon/blob/main/README.md')
                 },
                 // {
                 //     label: l('help.feedback'),
