@@ -7,6 +7,11 @@
 * Notify when bookmark/friend says something on a channel?
 * Clicking a log entry opens the conversation at that point
 
+## 1.28.0
+* Horizion release
+* Updated build scripts
+* Updated icon
+
 ## 1.27.1 & 1.27.2 & 1.27.3
 * Build fixes
 
