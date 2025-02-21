@@ -1,9 +1,10 @@
 # Contributors
 
-> Want to contribute? Please [continue here](https://github.com/CodingWithAnxiety/F-chat-Horizon/wiki/Contributions).
+> Want to contribute? Please [continue here](https://github.com/Fchat-Horizon/Horizon/wiki/Contributions).
 
 This project contains contributions from:
 
+* Rose
 * [Mr Stallion, esq.](https://github.com/hearmeneigh)
 * [twilight-sparkle-irl](https://github.com/twilight-sparkle-irl)
 * [ButterCheezii](https://github.com/ButterCheezii)

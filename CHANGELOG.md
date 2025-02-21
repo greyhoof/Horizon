@@ -27,7 +27,7 @@
 * Fixed a few cases where high-quality portraits were not displayed
 
 ## 1.26.1
-* Added [high-quality portrait guide](https://github.com/CodingWithAnxiety/F-chat-Horizon/wiki/High%E2%80%90Quality-Portraits)
+* Added [high-quality portrait guide](https://github.com/Fchat-Horizon/Horizon/wiki/High%E2%80%90Quality-Portraits)
 * Added high-quality portrait check to Profile Helper
 * Added option for disabling high-quality portraits
 * Added cleaner `[quote][/quote]` style for profiles

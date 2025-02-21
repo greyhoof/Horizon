@@ -13,7 +13,7 @@ layout: rising
 > 
 > Consider these alternatives to increase your safety:
 > 
-> 1) Compile F-Chat Horizon yourself from the [source](https://github.com/CodingWithAnxiety/F-chat-Horizon); or
+> 1) Compile F-Chat Horizon yourself from the [source](https://github.com/Fchat-Horizon/Horizon); or
 >
 > 2) Run F-Chat Horizon in a [virtual machine](https://www.parallels.com/); or
 > 

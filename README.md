@@ -1,10 +1,10 @@
 # Download
-[Windows x64](https://github.com/CodingWithAnxiety/F-chat-Horizon/releases/latest/download/F-Chat-Rising-win-x64.exe) |
-[Windows arm64](https://github.com/CodingWithAnxiety/F-chat-Horizon/releases/latest/download/F-Chat-Rising-win-arm64.exe) |
-[MacOS M1](https://github.com/CodingWithAnxiety/F-chat-Horizon/releases/latest/download/F-Chat-Rising-macos-m1.dmg) |
-[MacOS Intel](https://github.com/CodingWithAnxiety/F-chat-Horizon/releases/latest/download/F-Chat-Rising-macos-intel.dmg) |
-[Linux x64](https://github.com/CodingWithAnxiety/F-chat-Horizon/releases/latest/download/F-Chat-Rising-linux-x64.AppImage) |
-[Linux arm64](https://github.com/CodingWithAnxiety/F-chat-Horizon/releases/latest/download/F-Chat-Rising-linux-arm64.AppImage) 
+[Windows x64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat-Rising-win-x64.exe) |
+[Windows arm64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat-Rising-win-arm64.exe) |
+[MacOS M1](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat-Rising-macos-m1.dmg) |
+[MacOS Intel](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat-Rising-macos-intel.dmg) |
+[Linux x64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat-Rising-linux-x64.AppImage) |
+[Linux arm64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat-Rising-linux-arm64.AppImage) 
 
 # F-Chat Horizon
 This repository contains a heavily customized version of the mainline F-Chat 3.0 client.
@@ -25,7 +25,7 @@ sudo apt install libsecret-1-dev
 brew install python-setuptools
 
 # All operating systems:
-git clone https://github.com/CodingWithAnxiety/F-chat-Horizon.git
+git clone https://github.com/Fchat-Horizon/Horizon.git
 cd fchat-rising
 yarn
 
