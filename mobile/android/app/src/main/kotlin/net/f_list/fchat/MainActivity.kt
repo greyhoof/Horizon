@@ -160,7 +160,7 @@ class MainActivity : Activity() {
 	override fun onNewIntent(intent: Intent) {
 		super.onNewIntent(intent)
 		if(intent.action == "notification") {
-			val data = intent.extras.getString("data")
+			val data = intent.extras?.getString("data")
 			webView.evaluateJavascript("document.dispatchEvent(new CustomEvent('notification-clicked',{detail:{data:'$data'}}))", null)
 		}
 	}
