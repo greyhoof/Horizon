@@ -241,10 +241,10 @@ function setUpWebContents(webContents: electron.WebContents): void {
     webContents.setVisualZoomLevelLimits(1, 5);
 
 
-    webContents.on('will-navigate', openLinkExternally);
+    (webContents as any).on('will-navigate', openLinkExternally);
 
     // webContents.setWindowOpenHandler(openLinkExternally);
-    webContents.on('new-window', openLinkExternally);
+    (webContents as any).on('new-window', openLinkExternally);
 }
 
 function createWindow(): electron.BrowserWindow | undefined {
@@ -299,7 +299,7 @@ function createWindow(): electron.BrowserWindow | undefined {
     // stopping conversation logs from being downloaded
     electron.session.defaultSession.on(
         'will-download',
-        (e: Event, item: DownloadItem) => {
+        (e: { preventDefault: () => void; readonly defaultPrevented: boolean }, item: DownloadItem) => {
             if (!item.getURL().match(/^blob:file:/)) {
                 log.info('download.prevent', { item, event: e });
                 e.preventDefault();
@@ -699,39 +699,44 @@ function onReady(): void {
         }
     ]));
 
-    electron.ipcMain.on('tab-added', (_event: Event, id: number) => {
+    electron.ipcMain.on('tab-added', (_event: IpcMainEvent, id: number) => {
         const webContents = electron.webContents.fromId(id);
-
-        setUpWebContents(webContents);
-        ++tabCount;
-        if(tabCount === 3)
-            for(const w of windows) w.webContents.send('allow-new-tabs', false);
+    
+        if (webContents) {
+            setUpWebContents(webContents);
+            ++tabCount;
+            if (tabCount === 5) {
+                for (const w of windows) {
+                    w.webContents.send('allow-new-tabs', false);
+                }
+            }
+        }
     });
     electron.ipcMain.on('tab-closed', () => {
         --tabCount;
         for(const w of windows) w.webContents.send('allow-new-tabs', true);
     });
-    electron.ipcMain.on('save-login', (_event: Event, account: string, host: string) => {
+    electron.ipcMain.on('save-login', (_event: IpcMainEvent, account: string, host: string) => {
         settings.account = account;
         settings.host = host;
         setGeneralSettings(settings);
     });
-    electron.ipcMain.on('connect', (e: Event & {sender: electron.WebContents}, character: string) => {
+    electron.ipcMain.on('connect', (e: IpcMainEvent & {sender: electron.WebContents}, character: string) => {
         if(characters.indexOf(character) !== -1) return e.returnValue = false;
         characters.push(character);
         e.returnValue = true;
     });
-    electron.ipcMain.on('dictionary-add', (_event: Event, word: string) => {
+    electron.ipcMain.on('dictionary-add', (_event: IpcMainEvent, word: string) => {
         // if(settings.customDictionary.indexOf(word) !== -1) return;
         // settings.customDictionary.push(word);
         // setGeneralSettings(settings);
         for(const w of windows) w.webContents.session.addWordToSpellCheckerDictionary(word);
     });
-    electron.ipcMain.on('dictionary-remove', (_event: Event /*, word: string*/) => {
+    electron.ipcMain.on('dictionary-remove', (_event: IpcMainEvent /*, word: string*/) => {
         // settings.customDictionary.splice(settings.customDictionary.indexOf(word), 1);
         // setGeneralSettings(settings);
     });
-    electron.ipcMain.on('disconnect', (_event: Event, character: string) => {
+    electron.ipcMain.on('disconnect', (_event: IpcMainEvent, character: string) => {
         const index = characters.indexOf(character);
         if(index !== -1) characters.splice(index, 1);
     });
@@ -748,7 +753,7 @@ function onReady(): void {
         path.join(__dirname, <string>require('./build/badge.png').default)
     );
 
-    electron.ipcMain.on('has-new', (e: Event & {sender: electron.WebContents}, hasNew: boolean) => {
+    electron.ipcMain.on('has-new', (e: IpcMainEvent, hasNew: boolean) => {
         if(process.platform === 'darwin') app.dock.setBadge(hasNew ? '!' : '');
         const window = electron.BrowserWindow.fromWebContents(e.sender) as electron.BrowserWindow | undefined;
         if(window !== undefined) window.setOverlayIcon(hasNew ? badge : emptyBadge, hasNew ? 'New messages' : '');
