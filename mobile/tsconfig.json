@@ -10,7 +10,9 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+    "esModuleInterop": true
+
   },
   "include": ["chat.ts", "../**/*.d.ts"]
 }
