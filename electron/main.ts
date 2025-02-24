@@ -601,7 +601,7 @@ function onReady(): void {
 
                 {type: 'separator'},
                 {
-                    label: 'Rising',
+                    label: 'Horizion',
                     submenu: [
                         {
                             label: 'System log level',
