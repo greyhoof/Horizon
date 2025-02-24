@@ -7,6 +7,15 @@
 * Notify when bookmark/friend says something on a channel?
 * Clicking a log entry opens the conversation at that point
 
+## 1.28.2
+* Updated electon from 17 => 26
+  * (I want  to get to the latest electronn, but 28 breaks it. Any help would be appreciated.)
+  * This should also fix password saving on KDE Plasma (Particularly, on the steamdeck, _wink wink_)
+* "Fixed" the android build (App itself still doesn't work tho, sorrryyyyy. ):)
+* Mild "readme" updates (Didn't finish it tho, lol. kms.)
+* Updated Rising reference foudn in the application menu
+* Some other odd bugs were... 'fixed.' (pls test and let me know if stuff breaks lol.)
+
 ## 1.28.0
 * Horizion release
 * Updated build scripts
