@@ -412,7 +412,7 @@ function onReady(): void {
     // );
 
     //tslint:disable-next-line: no-unsafe-any
-    const updaterUrl = `https://update.electronjs.org/hearmeneigh/fchat-rising/${process.platform}-${process.arch}/${pck.version}`;
+    const updaterUrl = `https://update.electronjs.org/Fchat-Horizon/Horizon/${process.platform}-${process.arch}/${pck.version}`;
     if((process.env.NODE_ENV === 'production') && (process.platform !== 'darwin')) {
         electron.autoUpdater.setFeedURL({url: updaterUrl + (settings.beta ? '?channel=beta' : ''), serverType: 'json'});
         setTimeout(() => electron.autoUpdater.checkForUpdates(), 10000);
@@ -601,7 +601,7 @@ function onReady(): void {
 
                 {type: 'separator'},
                 {
-                    label: 'Horizion',
+                    label: 'Horizon',
                     submenu: [
                         {
                             label: 'System log level',
