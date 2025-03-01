@@ -237,8 +237,10 @@ function setUpWebContents(webContents: electron.WebContents): void {
 
   (webContents as any).on('will-navigate', openLinkExternally);
 
-  // webContents.setWindowOpenHandler(openLinkExternally);
-  (webContents as any).on('new-window', openLinkExternally);
+  webContents.setWindowOpenHandler(({ url }) => {
+    openLinkExternally(new Event('link'), url);
+    return { action: 'deny' };
+  });
 }
 
 function createWindow(): electron.BrowserWindow | undefined {
