@@ -21,12 +21,13 @@ DIST_PATH="$REPO_ROOT/electron/dist"
 # & Ensure we're at the root of the repo
 cd "$REPO_ROOT"
 
-# & Ensure we're on the 'main' branch and up-to-date
-git checkout main
-git pull
+# This is handled by our CI.
+# // # & Ensure we're on the 'main' branch and up-to-date
+# // git checkout main
+# // git pull
 
 # & Install dependencies
-yarn install
+pnpm install
 
 # & Clean previous builds
 rm -rf "$DIST_PATH"
@@ -34,16 +35,16 @@ rm -rf "$DIST_PATH"
 # & Build the project
 cd electron
 rm -rf app dist
-yarn build:dist
+pnpm build:dist
 node pack.js
 
 # & Prepare release directory
 mkdir -p "$RELEASE_PATH"
 
 # & Copy artifacts
-cp "$DIST_PATH/F-Chat Horizon Intel.dmg" "$RELEASE_PATH/F-Chat-Rising-macos-intel.dmg"
-cp "$DIST_PATH/F-Chat Horizon M1.dmg" "$RELEASE_PATH/F-Chat-Rising-macos-m1.dmg"
+cp "$DIST_PATH/F-Chat Horizon Intel.dmg" "$RELEASE_PATH/F-Chat-Horizon-macos-intel.dmg"
+cp "$DIST_PATH/F-Chat Horizon M1.dmg" "$RELEASE_PATH/F-Chat-Horizon-macos-m1.dmg"
 
 # & Zip for release
-zip -j "$RELEASE_PATH/F-Chat-Rising-macos-intel.zip" "$RELEASE_PATH/F-Chat-Rising-macos-intel.dmg"
-zip -j "$RELEASE_PATH/F-Chat-Rising-macos-m1.zip" "$RELEASE_PATH/F-Chat-Rising-macos-m1.dmg"
+zip -j "$RELEASE_PATH/F-Chat-Horizon-macos-intel.zip" "$RELEASE_PATH/F-Chat-Horizon-macos-intel.dmg"
+zip -j "$RELEASE_PATH/F-Chat-Horizon-macos-m1.zip" "$RELEASE_PATH/F-Chat-Horizon-macos-m1.dmg"
