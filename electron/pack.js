@@ -65,7 +65,7 @@ require('electron-packager')({
         console.log('WinAppPath', appPath);
         const appArch = appPath.match(/F-Chat-win32-([a-zA-Z0-9]+)$/)[1];
         const appArchLong = appArch === 'x64' ? 'x86_64' : 'aarch64';
-        const setupName = `F-Chat-Rising-Setup-win-${appArch}.exe`;
+        const setupName = `F-Chat-Horizon-Setup-win-${appArch}.exe`;
         const distFinal = path.join(distDir, appArch);
 
         console.log('DistFinal', distFinal);
@@ -137,7 +137,7 @@ require('electron-packager')({
                   : undefined
             }
           }).on('error', console.error);
-          const zipName = `F-Chat_Rising_${arch.name}_${pkg.version}.zip`;
+          const zipName = `F-Chat_Horizon_${arch.name}_${pkg.version}.zip`;
           const zipPath = path.join(distDir, zipName);
           if (fs.existsSync(zipPath)) fs.unlinkSync(zipPath);
           const child = child_process.spawn('zip', ['-r', '-y', '-9', zipPath, 'F-Chat.app'], { cwd: arch.path });
@@ -215,7 +215,7 @@ require('electron-packager')({
           appPath,
           `fchat.${appArch}.AppImage`,
           '-u',
-          `gh-releases-zsync|hearmeneigh|fchat-rising|latest|F-Chat-Rising-linux-${appArch}.AppImage.zsync`
+          `gh-releases-zsync|Fchat-Horizon|Horizon|latest|F-Chat-Horizon-linux-${appArch}.AppImage.zsync`
         ];
 
         if (process.argv.length > 2) {
