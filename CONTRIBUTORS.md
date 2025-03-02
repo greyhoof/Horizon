@@ -1,10 +1,9 @@
 # Contributors
 
-> Want to contribute? Please [continue here](https://github.com/Fchat-Horizon/Horizon/wiki/Contributions).
+**Horizon** received contributions from these people:
+- **CodingWithAnxiety**, As the project maintainer
 
-This project contains contributions from:
-
-- Rose
+As well, **Rising** received contributions from the following:
 - [Mr Stallion, esq.](https://github.com/hearmeneigh)
 - [twilight-sparkle-irl](https://github.com/twilight-sparkle-irl)
 - [ButterCheezii](https://github.com/ButterCheezii)
@@ -17,4 +16,5 @@ This project contains contributions from:
 
 ## Acknowledgements
 
-Some emojis designed by [OpenMoji](https://openmoji.org/) – the open-source emoji and icon project. License: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/#)
+- Some emojis designed by [OpenMoji](https://openmoji.org/) – the open-source emoji and icon project. License: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/#)
+- *You!* Ya' cutie patootie you. ♥
