@@ -6,8 +6,8 @@
       :tabs="[
         l('settings.tabs.general'),
         l('settings.tabs.notifications'),
-        'F-Chat Horizon 🦄',
-        'Smart Filters 🦄',
+        'Horizon ✨',
+        'Smart Filters ✨',
         l('settings.tabs.hideAds'),
         l('settings.tabs.import')
       ]"
