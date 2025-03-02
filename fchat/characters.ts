@@ -20,6 +20,7 @@ class Character implements Interfaces.Character {
 
 export interface CharacterOverrides {
   avatarUrl?: string;
+  characterColor?: string;
   gender?: Interfaces.Gender;
   status?: Interfaces.Status;
 }

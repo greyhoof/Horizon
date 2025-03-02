@@ -229,6 +229,13 @@
       </div>
 
       <div class="form-group">
+        <label class="control-label" for="horizonShowCustomCharacterColors">
+          <input type="checkbox" id="horizonShowCustomCharacterColors" v-model="horizonShowCustomCharacterColors" />
+          Show custom character name colors
+        </label>
+      </div>
+
+      <div class="form-group">
         <label class="control-label" for="risingCharacterTheme">
           Override UI theme (for this character only)
           <select id="risingCharacterTheme" class="form-control" v-model="risingCharacterTheme" style="flex: 1; margin-right: 10px">
@@ -421,6 +428,7 @@
     risingShowPortraitNearInput!: boolean;
     risingShowPortraitInMessage!: boolean;
     risingShowHighQualityPortraits!: boolean;
+    horizonShowCustomCharacterColors !: boolean;
 
     risingFilter!: SmartFilterSettings = {} as any;
 
@@ -469,6 +477,7 @@
       this.risingShowPortraitNearInput = settings.risingShowPortraitNearInput;
       this.risingShowPortraitInMessage = settings.risingShowPortraitInMessage;
       this.risingShowHighQualityPortraits = settings.risingShowHighQualityPortraits;
+      this.horizonShowCustomCharacterColors = settings.horizonShowCustomCharacterColors
 
       this.risingFilter = settings.risingFilter;
 
@@ -545,6 +554,7 @@
         risingShowPortraitNearInput: this.risingShowPortraitNearInput,
         risingShowPortraitInMessage: this.risingShowPortraitInMessage,
         risingShowHighQualityPortraits: this.risingShowHighQualityPortraits,
+        horizonShowCustomCharacterColors: this.horizonShowCustomCharacterColors,
 
         risingColorblindMode: this.risingColorblindMode,
         risingFilter: {

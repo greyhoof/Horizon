@@ -65,6 +65,7 @@ export class Settings implements ISettings {
   risingShowPortraitNearInput = true;
   risingShowPortraitInMessage = true;
   risingShowHighQualityPortraits = true;
+  horizonShowCustomCharacterColors = true;
 
   risingFilter = {
     hideAds: false,

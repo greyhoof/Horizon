@@ -277,6 +277,25 @@ $genders: (
   }
 }
 
+@each $colorName, $colorValue in (
+  "red": $red-color,
+  "blue": $blue-color,
+  "green": $green-color,
+  "yellow": $yellow-color,
+  "cyan": $cyan-color,
+  "purple": $purple-color,
+  "brown": $brown-color,
+  "pink": $pink-color,
+  "gray": $gray-color,
+  "orange": $orange-color,
+  "white": $white-color,
+  "black": $black-color
+) {
+  .#{$colorName}NameText {
+    color: $colorValue !important;
+  }
+}
+
 .user-bookmark,
 .message-event .user-bookmark {
   color: #66cc33;

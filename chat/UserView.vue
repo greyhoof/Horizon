@@ -117,7 +117,12 @@
     const isBookmark =
       showBookmark && core.connection.isOpen && core.state.settings.colorBookmarks && (character.isFriend || character.isBookmarked);
 
-    const userClass = `user-view gender-${gender}${isBookmark ? ' user-bookmark' : ''}`;
+    const userClass = 
+        `user-view` +
+        ` gender-${gender}` +
+        (isBookmark ? ' user-bookmark' : '') +
+        (character.overrides.characterColor ? ` ${character.overrides.characterColor}NameText` : '');
+// `user-view gender-${gender}${isBookmark ? ' user-bookmark' : ''}`;
 
     return {
       rankIcon: rankIcon ? `user-rank ${rankIcon}` : null,
@@ -126,7 +131,7 @@
       matchScore,
       userClass,
       smartFilterIcon,
-      isBookmark
+      isBookmark,
     };
   }
 
@@ -163,6 +168,7 @@
     matchClass: string | null = null;
     matchScore: number | string | null = null;
     avatarUrl: string | null = null;
+
 
     // tslint:disable-next-line no-any
     scoreWatcher: ((event: any) => void) | null = null;
@@ -220,6 +226,11 @@
 
     @Watch('character.overrides.avatarUrl')
     onAvatarUrlUpdate(): void {
+      this.update();
+    }
+    
+    @Watch('character.overrides.characterColor')
+    onCharacterColorUpdate(): void {
       this.update();
     }
 

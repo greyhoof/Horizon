@@ -171,6 +171,13 @@ export class ProfileCache extends AsyncCache<CharacterCacheRecord> {
     return false;
   }
 
+  static isValidCharacterNameColor(color: string): boolean {
+    if (color.match(/^(red|blue|white|yellow|pink|gray|green|orange|purple|black|brown|cyan)$/)) {
+      return true;
+    }
+    return false;
+  }
+
   static extractHighQualityPortraitURL(description: string): string | null {
     if (!core.state.settings.risingShowHighQualityPortraits) {
       return null;
@@ -189,8 +196,24 @@ export class ProfileCache extends AsyncCache<CharacterCacheRecord> {
     return null;
   }
 
+  static extractCharacterNameColor(description: string): string | null {
+    if (!core.state.settings.horizonShowCustomCharacterColors) {
+      return null;
+    }
+
+    const match = description.match(/\[color=(.*?)]\s*?Horizon\s*?Color\s*?\[\/color]/i);
+
+    if (match && match[1]) {
+      return match[1].trim().toLowerCase();
+    }
+
+    return null;
+  }
+
   updateOverrides(c: ComplexCharacter): void {
     const avatarUrl = ProfileCache.extractHighQualityPortraitURL(c.character.description);
+
+    const characterColor = ProfileCache.extractCharacterNameColor(c.character.description);
 
     if (avatarUrl) {
       if (!ProfileCache.isSafeRisingPortraitURL(avatarUrl)) {
@@ -206,6 +229,21 @@ export class ProfileCache extends AsyncCache<CharacterCacheRecord> {
 
       log.info('portrait.hq.url', { name: c.character.name, url: avatarUrl });
       core.characters.setOverride(c.character.name, 'avatarUrl', avatarUrl);
+    }
+
+    if (characterColor) {
+      if (!ProfileCache.isValidCharacterNameColor(characterColor)) {
+        log.info('character.custom.color.invalid', { name: c.character.name, color: characterColor });
+        return;
+      }
+
+      if (c.character.name === core.characters.ownCharacter.name) {
+        const parent = remote.getCurrentWindow().webContents;
+        parent.send('update-character-color', c.character.name, characterColor);
+      }
+
+      log.info('character.custom.color.applied', { name: c.character.name, color: characterColor });
+      core.characters.setOverride(c.character.name, 'characterColor', characterColor);
     }
   }
 
