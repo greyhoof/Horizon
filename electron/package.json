@@ -1,6 +1,6 @@
 {
   "name": "horizon-electron",
-  "version": "1.28.3-DEV.1",
+  "version": "1.29.0",
   "author": "The F-List Team and Mister Stallion (Esq.)",
   "description": "F-List.net Chat Client",
   "main": "main.js",
