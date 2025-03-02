@@ -11,6 +11,7 @@
     "@f-list/vue-ts": "^1.0.3",
     "@fortawesome/fontawesome-free": "^5.15.4",
     "@types/bluebird": "3.5.32",
+    "@types/file-loader": "^5.0.4",
     "@types/lodash": "4.14.162",
     "@types/node": "16.18.32",
     "@types/node-fetch": "^2.6.12",
