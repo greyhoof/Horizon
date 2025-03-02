@@ -42,7 +42,7 @@ node pack.js
 mkdir -p "$RELEASE_PATH"
 
 # & Copy artifacts for release
-cp "$DIST_PATH/fchat.arm64.AppImage" "$RELEASE_PATH/F-Chat-Rising-linux-arm64.AppImage"
-cp "$DIST_PATH/fchat.arm64.AppImage.zsync" "$RELEASE_PATH/F-Chat-Rising-linux-arm64.AppImage.zsync"
-cp "$DIST_PATH/fchat.x64.AppImage" "$RELEASE_PATH/F-Chat-Rising-linux-x64.AppImage"
-cp "$DIST_PATH/fchat.x64.AppImage.zsync" "$RELEASE_PATH/F-Chat-Rising-linux-x64.AppImage.zsync"
+cp "$DIST_PATH/fchat.arm64.AppImage" "$RELEASE_PATH/F-Chat-Horizon-linux-arm64.AppImage"
+cp "$DIST_PATH/fchat.arm64.AppImage.zsync" "$RELEASE_PATH/F-Chat-Horizon-linux-arm64.AppImage.zsync"
+cp "$DIST_PATH/fchat.x64.AppImage" "$RELEASE_PATH/F-Chat-Horizon-linux-x64.AppImage"
+cp "$DIST_PATH/fchat.x64.AppImage.zsync" "$RELEASE_PATH/F-Chat-Horizon-linux-x64.AppImage.zsync"

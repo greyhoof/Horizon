@@ -2,7 +2,7 @@
 
 <#
 .SYNOPSIS
-Windows build script for F-Chat Rising.
+Windows build script for F-Chat Horizon.
 
 .PARAMETER ReleaseVersion
 The version string for the release.
@@ -65,7 +65,7 @@ New-Item -ItemType Directory -Path $ReleasePath -Force | Out-Null
 
 # Copy artifacts
 # * Copy built executables to the release directory
-Copy-Item "$DistPath\arm64\F-Chat-Rising-Setup-win-arm64.exe" -Destination "$ReleasePath\F-Chat-Rising-win-arm64.exe"
-Copy-Item "$DistPath\x64\F-Chat-Rising-Setup-win-x64.exe" -Destination "$ReleasePath\F-Chat-Rising-win-x64.exe"
+Copy-Item "$DistPath\arm64\F-Chat-Horizon-Setup-win-arm64.exe" -Destination "$ReleasePath\F-Chat-Horizon-win-arm64.exe"
+Copy-Item "$DistPath\x64\F-Chat-Horizon-Setup-win-x64.exe" -Destination "$ReleasePath\F-Chat-Horizon-win-x64.exe"
 
 # TODO: Allow specifying the branch to build from
