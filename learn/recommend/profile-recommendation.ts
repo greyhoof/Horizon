@@ -82,7 +82,7 @@ export class ProfileRecommendationAnalyzer {
   }
 
   protected async checkHqPortrait(): Promise<void> {
-    const profileUrl = ProfileCache.detectRisingPortraitURL(this.profile.character.description);
+    const profileUrl = ProfileCache.extractHighQualityPortraitURL(this.profile.character.description);
 
     if (!profileUrl) {
       this.add(

@@ -171,12 +171,16 @@ export class ProfileCache extends AsyncCache<CharacterCacheRecord> {
     return false;
   }
 
-  static detectRisingPortraitURL(description: string): string | null {
+  static extractHighQualityPortraitURL(description: string): string | null {
     if (!core.state.settings.risingShowHighQualityPortraits) {
       return null;
     }
 
-    const match = description.match(/\[url=(.*?)]\s*?Rising\s*?Portrait\s*?\[\/url]/i);
+    // * We should check for both:
+    //  [url=https://some.domain.ext/path/to/image.png]Rising Portrait[/url]
+    //  [url=https://some.domain.ext/path/to/image.png]Rising Portrait[/url]
+    // * Despite our name change, we should REMAIN COMPATABLE!
+    const match = description.match(/\[url=(.*?)]\s*?(Rising|Horizon)\s*?Portrait\s*?\[\/url]/i);
 
     if (match && match[1]) {
       return match[1].trim();
@@ -186,7 +190,7 @@ export class ProfileCache extends AsyncCache<CharacterCacheRecord> {
   }
 
   updateOverrides(c: ComplexCharacter): void {
-    const avatarUrl = ProfileCache.detectRisingPortraitURL(c.character.description);
+    const avatarUrl = ProfileCache.extractHighQualityPortraitURL(c.character.description);
 
     if (avatarUrl) {
       if (!ProfileCache.isSafeRisingPortraitURL(avatarUrl)) {
