@@ -57,7 +57,9 @@ class FListImagePreviewDomMutator {
   }
 
   preprocess() {
-    for (const el of document.querySelectorAll('header, .header, nav, .nav, .navbar, .navigation')) {
+    for (const el of document.querySelectorAll(
+      'header, .header, nav, .nav, .navbar, .navigation'
+    )) {
       try {
         el.remove();
       } catch (err) {
@@ -70,7 +72,9 @@ class FListImagePreviewDomMutator {
     let selected = [];
 
     for (const selector of selectors) {
-      const selectedElements = Array.from(document.querySelectorAll(selector)).filter(i => i.width !== 1 && i.height !== 1);
+      const selectedElements = Array.from(
+        document.querySelectorAll(selector)
+      ).filter(i => i.width !== 1 && i.height !== 1);
       selected = selected.concat(selectedElements);
     }
 
@@ -126,7 +130,10 @@ class FListImagePreviewDomMutator {
 
     for (const el of body.childNodes) {
       try {
-        if (safeIds.indexOf(el.id) < 0 && (!el.tagName || safeTags.indexOf(el.tagName.toLowerCase()) < 0)) {
+        if (
+          safeIds.indexOf(el.id) < 0 &&
+          (!el.tagName || safeTags.indexOf(el.tagName.toLowerCase()) < 0)
+        ) {
           removeList.push(el);
         }
       } catch (err) {
@@ -152,20 +159,30 @@ class FListImagePreviewDomMutator {
   }
 
   resolveVideoSrc(img) {
-    if (img.src || !img.tagName || (img.tagName && img.tagName.toUpperCase() !== 'VIDEO')) {
+    if (
+      img.src ||
+      !img.tagName ||
+      (img.tagName && img.tagName.toUpperCase() !== 'VIDEO')
+    ) {
       return;
     }
 
     this.debug('resolveVideoSrc', 'Needs a content URL', img);
 
-    const contentUrls = document.querySelectorAll('meta[itemprop="contentURL"]');
+    const contentUrls = document.querySelectorAll(
+      'meta[itemprop="contentURL"]'
+    );
 
     if (contentUrls && contentUrls.length > 0) {
       this.debug('Found content URLs', contentUrls);
 
       const cu = contentUrls[0];
 
-      if (cu.attributes && cu.attributes.content && cu.attributes.content.value) {
+      if (
+        cu.attributes &&
+        cu.attributes.content &&
+        cu.attributes.content.value
+      ) {
         this.debug('Content URL', cu.attributes.content.value);
 
         img.src = cu.attributes.content.value;
@@ -186,7 +203,10 @@ class FListImagePreviewDomMutator {
     this.debug('attemptPlay', img, lessStrict);
 
     try {
-      if (img.play && (lessStrict || (!lessStrict && !img.ended && !(img.currentTime > 0)))) {
+      if (
+        img.play &&
+        (lessStrict || (!lessStrict && !img.ended && !(img.currentTime > 0)))
+      ) {
         img.onpause = () => {
           img.muted = true;
           img.loop = true;
@@ -324,7 +344,12 @@ class FListImagePreviewDomMutator {
     if (imSize.width && imSize.height) {
       this.debug('IPC webview.img', imSize, stage);
 
-      this.ipcRenderer.sendToHost('webview.img', imSize.width, imSize.height, stage);
+      this.ipcRenderer.sendToHost(
+        'webview.img',
+        imSize.width,
+        imSize.height,
+        stage
+      );
       return true;
     }
 
@@ -359,17 +384,29 @@ class FListImagePreviewDomMutator {
   }
 
   getImageStyleOverrides() {
-    return this.getBasicStyleOverrides() + 'object-position: top left !important;' + 'object-fit: contain !important;';
+    return (
+      this.getBasicStyleOverrides() +
+      'object-position: top left !important;' +
+      'object-fit: contain !important;'
+    );
   }
 
   debug(...args) {
     if (this.settings.debug) {
-      console.log('DOM Mutator:', ...args, `${(Date.now() - this.startTime) / 1000}s`);
+      console.log(
+        'DOM Mutator:',
+        ...args,
+        `${(Date.now() - this.startTime) / 1000}s`
+      );
     }
   }
 
   error(...args) {
-    console.error('DOM Mutator:', ...args, `${(Date.now() - this.startTime) / 1000}s`);
+    console.error(
+      'DOM Mutator:',
+      ...args,
+      `${(Date.now() - this.startTime) / 1000}s`
+    );
   }
 
   finalize(counter) {

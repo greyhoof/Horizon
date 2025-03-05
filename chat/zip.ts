@@ -26,7 +26,18 @@ export default class Zip {
       if (c > 0xd800 && c < 0xd8ff)
         //surrogate pairs
         c = (c - 0xd800) * 0x400 + content.charCodeAt(++i) - 0xdc00 + 0x10000;
-      let l = c < 0x80 ? 1 : c < 0x800 ? 2 : c < 0x10000 ? 3 : c < 0x200000 ? 4 : c < 0x4000000 ? 5 : 6;
+      let l =
+        c < 0x80
+          ? 1
+          : c < 0x800
+            ? 2
+            : c < 0x10000
+              ? 3
+              : c < 0x200000
+                ? 4
+                : c < 0x4000000
+                  ? 5
+                  : 6;
       length += l;
       let byte = l === 1 ? c : (0xff00 >> l) % 256 | (c >>> ((l - 1) * 6));
       --l;
@@ -38,7 +49,11 @@ export default class Zip {
     }
     crc = (crc ^ -1) >>> 0;
     const file = {
-      header: [Uint16Array.of(0, 0, 0, 0, 0), Uint32Array.of(crc, length, length), Uint16Array.of(nameLength, 0)],
+      header: [
+        Uint16Array.of(0, 0, 0, 0, 0),
+        Uint32Array.of(crc, length, length),
+        Uint16Array.of(nameLength, 0)
+      ],
       offset: this.offset,
       name
     };
@@ -54,11 +69,22 @@ export default class Zip {
     for (const file of this.files) {
       this.blob.push(Uint16Array.of(0x4b50, 0x0201, 0));
       this.blob.push(...file.header);
-      this.blob.push(Uint16Array.of(0, 0, 0, 0, 0), Uint32Array.of(file.offset), file.name);
+      this.blob.push(
+        Uint16Array.of(0, 0, 0, 0, 0),
+        Uint32Array.of(file.offset),
+        file.name
+      );
       this.offset += getByteLength(file.name) + 46;
     }
     this.blob.push(
-      Uint16Array.of(0x4b50, 0x0605, 0, 0, this.files.length, this.files.length),
+      Uint16Array.of(
+        0x4b50,
+        0x0605,
+        0,
+        0,
+        this.files.length,
+        this.files.length
+      ),
       Uint32Array.of(this.offset - start, start),
       Uint16Array.of(0)
     );

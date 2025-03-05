@@ -11,41 +11,76 @@
       <img
         :src="characterImage(ownCharacter.name)"
         v-if="showAvatars"
-        style="float: left; margin-right: 5px; margin-top: 5px; width: 70px; height: 70px"
+        style="
+          float: left;
+          margin-right: 5px;
+          margin-top: 5px;
+          width: 70px;
+          height: 70px;
+        "
       />
-      <a target="_blank" :href="ownCharacterLink" class="btn" style="display: block">{{ ownCharacter.name }}</a>
-      <a href="#" @click.prevent="logOut()" class="btn"><i class="fas fa-sign-out-alt"></i>{{ l('chat.logout') }}</a
+      <a
+        target="_blank"
+        :href="ownCharacterLink"
+        class="btn"
+        style="display: block"
+        >{{ ownCharacter.name }}</a
+      >
+      <a href="#" @click.prevent="logOut()" class="btn"
+        ><i class="fas fa-sign-out-alt"></i>{{ l('chat.logout') }}</a
       ><br />
       <div>
         {{ l('chat.status') }}
         <a href="#" @click.prevent="showStatus()" class="btn">
-          <span class="fas fa-fw" :class="getStatusIcon(ownCharacter.status)"></span>{{ l('status.' + ownCharacter.status) }}
+          <span
+            class="fas fa-fw"
+            :class="getStatusIcon(ownCharacter.status)"
+          ></span
+          >{{ l('status.' + ownCharacter.status) }}
         </a>
       </div>
       <div style="clear: both">
-        <a href="#" @click.prevent="showSearch()" class="btn"><span class="fas fa-search"></span> {{ l('characterSearch.open') }}</a>
+        <a href="#" @click.prevent="showSearch()" class="btn"
+          ><span class="fas fa-search"></span>
+          {{ l('characterSearch.open') }}</a
+        >
       </div>
       <div>
-        <a href="#" @click.prevent="showSettings()" class="btn"><span class="fas fa-cog"></span> {{ l('settings.open') }}</a>
+        <a href="#" @click.prevent="showSettings()" class="btn"
+          ><span class="fas fa-cog"></span> {{ l('settings.open') }}</a
+        >
       </div>
       <div>
-        <a href="#" @click.prevent="showRecent()" class="btn"><span class="fas fa-history"></span> {{ l('chat.recentConversations') }}</a>
+        <a href="#" @click.prevent="showRecent()" class="btn"
+          ><span class="fas fa-history"></span>
+          {{ l('chat.recentConversations') }}</a
+        >
       </div>
 
       <div>
-        <a href="#" @click.prevent="showAdCenter()" class="btn"><span class="fas fa-ad"></span> Ad Editor</a>
+        <a href="#" @click.prevent="showAdCenter()" class="btn"
+          ><span class="fas fa-ad"></span> Ad Editor</a
+        >
       </div>
 
       <div>
-        <a href="#" @click.prevent="showAdLauncher()" class="btn"><span class="fas fa-play"></span> Post Ads</a>
+        <a href="#" @click.prevent="showAdLauncher()" class="btn"
+          ><span class="fas fa-play"></span> Post Ads</a
+        >
 
         <span v-show="adsAreRunning()" class="adControls">
-          <span aria-label="Stop All Ads" class="fas fa-stop" @click.prevent="stopAllAds()"></span>
+          <span
+            aria-label="Stop All Ads"
+            class="fas fa-stop"
+            @click.prevent="stopAllAds()"
+          ></span>
         </span>
       </div>
 
       <div>
-        <a href="#" @click.prevent="showProfileAnalyzer()" class="btn"><span class="fas fa-user-md"></span> Profile Helper</a>
+        <a href="#" @click.prevent="showProfileAnalyzer()" class="btn"
+          ><span class="fas fa-user-md"></span> Profile Helper</a
+        >
       </div>
 
       <div class="list-group conversation-nav">
@@ -59,7 +94,9 @@
         </a>
       </div>
 
-      <a href="#" @click.prevent="showAddPmPartner()" class="btn"><span class="fas fa-comment"></span> {{ l('chat.pms') }}</a>
+      <a href="#" @click.prevent="showAddPmPartner()" class="btn"
+        ><span class="fas fa-comment"></span> {{ l('chat.pms') }}</a
+      >
 
       <div class="list-group conversation-nav" ref="privateConversations">
         <a
@@ -73,12 +110,21 @@
           :key="conversation.key"
           @click.middle.prevent.stop="conversation.close()"
         >
-          <img :src="characterImage(conversation.character.name)" v-if="showAvatars" />
+          <img
+            :src="characterImage(conversation.character.name)"
+            v-if="showAvatars"
+          />
           <div class="name">
             <span>{{ conversation.character.name }}</span>
             <div style="line-height: 0; display: flex">
-              <span class="fas fa-reply" v-show="needsReply(conversation)"></span>
-              <span class="online-status" :class="getOnlineStatusIconClasses(conversation)"></span>
+              <span
+                class="fas fa-reply"
+                v-show="needsReply(conversation)"
+              ></span>
+              <span
+                class="online-status"
+                :class="getOnlineStatusIconClasses(conversation)"
+              ></span>
               <span style="flex: 1"></span>
               <span
                 class="pin fas fa-thumbtack"
@@ -86,7 +132,11 @@
                 @click="conversation.isPinned = !conversation.isPinned"
                 :aria-label="l('chat.pinTab')"
               ></span>
-              <span class="fas fa-times leave" @click.stop="conversation.close()" :aria-label="l('chat.closeTab')"></span>
+              <span
+                class="fas fa-times leave"
+                @click.stop="conversation.close()"
+                :aria-label="l('chat.closeTab')"
+              ></span>
             </div>
           </div>
         </a>
@@ -95,12 +145,17 @@
           href="#"
           @click.prevent="showAddPmPartner()"
           class="new-conversation"
-          :class="{ glowing: conversations.privateConversations.length === 0 && privateCanGlow }"
+          :class="{
+            glowing:
+              conversations.privateConversations.length === 0 && privateCanGlow
+          }"
           >Open Conversation</a
         >
       </div>
 
-      <a href="#" @click.prevent="showChannels()" class="btn"><span class="fas fa-list"></span> {{ l('chat.channels') }}</a>
+      <a href="#" @click.prevent="showChannels()" class="btn"
+        ><span class="fas fa-list"></span> {{ l('chat.channels') }}</a
+      >
 
       <div class="list-group conversation-nav" ref="channelConversations">
         <a
@@ -128,7 +183,11 @@
               @click.stop="conversation.isPinned = !conversation.isPinned"
               @mousedown.prevent
             ></span>
-            <span class="fas fa-times leave" @click.stop="conversation.close()" :aria-label="l('chat.closeTab')"></span>
+            <span
+              class="fas fa-times leave"
+              @click.stop="conversation.close()"
+              :aria-label="l('chat.closeTab')"
+            ></span>
           </span>
         </a>
 
@@ -136,7 +195,10 @@
           href="#"
           @click.prevent="showChannels()"
           class="join-channel"
-          :class="{ glowing: conversations.channelConversations.length === 0 && channelCanGlow }"
+          :class="{
+            glowing:
+              conversations.channelConversations.length === 0 && channelCanGlow
+          }"
           >Join Channel</a
         >
       </div>
@@ -160,7 +222,10 @@
           class="list-group-item list-group-item-action"
           :key="conversation.key"
         >
-          <img :src="characterImage(conversation.character.name)" v-if="showAvatars" />
+          <img
+            :src="characterImage(conversation.character.name)"
+            v-if="showAvatars"
+          />
           <span class="far fa-user-circle conversation-icon" v-else></span>
           <div class="name">{{ conversation.character.name }}</div>
         </a>
@@ -190,9 +255,15 @@
     <recent-conversations ref="recentDialog"></recent-conversations>
     <image-preview ref="imagePreview"></image-preview>
     <add-pm-partner ref="addPmPartnerDialog"></add-pm-partner>
-    <note-status v-if="coreState.settings.risingShowUnreadOfflineCount"></note-status>
+    <note-status
+      v-if="coreState.settings.risingShowUnreadOfflineCount"
+    ></note-status>
 
-    <modal :buttons="false" ref="profileAnalysis" dialogClass="profile-analysis">
+    <modal
+      :buttons="false"
+      ref="profileAnalysis"
+      dialogClass="profile-analysis"
+    >
       <profile-analysis></profile-analysis>
       <template slot="title">
         {{ ownCharacter.name }}
@@ -305,7 +376,9 @@
         fallbackTolerance: 5,
         onEnd: async e => {
           if (e.oldIndex === e.newIndex) return;
-          return core.conversations.privateConversations[e.oldIndex!].sort(e.newIndex!);
+          return core.conversations.privateConversations[e.oldIndex!].sort(
+            e.newIndex!
+          );
         }
       });
       Sortable.create(<HTMLElement>this.$refs['channelConversations'], {
@@ -313,7 +386,9 @@
         fallbackTolerance: 5,
         onEnd: async e => {
           if (e.oldIndex === e.newIndex) return;
-          return core.conversations.channelConversations[e.oldIndex!].sort(e.newIndex!);
+          return core.conversations.channelConversations[e.oldIndex!].sort(
+            e.newIndex!
+          );
         }
       });
       const ownCharacter = core.characters.ownCharacter;
@@ -332,7 +407,13 @@
             const status = idleStatus;
             window.setTimeout(
               () => core.connection.send('STA', status),
-              Math.max(lastUpdate + core.connection.vars.sta_flood * 1000 + 1000 - Date.now(), 0)
+              Math.max(
+                lastUpdate +
+                  core.connection.vars.sta_flood * 1000 +
+                  1000 -
+                  Date.now(),
+                0
+              )
             );
             idleStatus = undefined;
           }
@@ -343,11 +424,20 @@
         (this.blurListener = () => {
           core.notifications.isInBackground = true;
           if (idleTimer !== undefined) clearTimeout(idleTimer);
-          if (core.state.settings.idleTimer > 0 && core.characters.ownCharacter.status !== 'dnd')
+          if (
+            core.state.settings.idleTimer > 0 &&
+            core.characters.ownCharacter.status !== 'dnd'
+          )
             idleTimer = window.setTimeout(() => {
               lastUpdate = Date.now();
-              idleStatus = { status: ownCharacter.status, statusmsg: ownCharacter.statusText };
-              core.connection.send('STA', { status: 'idle', statusmsg: ownCharacter.statusText });
+              idleStatus = {
+                status: ownCharacter.status,
+                statusmsg: ownCharacter.statusText
+              };
+              core.connection.send('STA', {
+                status: 'idle',
+                statusmsg: ownCharacter.statusText
+              });
             }, core.state.settings.idleTimer * 60000);
         })
       );
@@ -379,10 +469,13 @@
     needsReply(conversation: Conversation): boolean {
       if (!core.state.settings.showNeedsReply) return false;
       for (let i = conversation.messages.length - 1; i >= 0; --i) {
-        const sender = (<Partial<Conversation.ChatMessage>>conversation.messages[i]).sender;
+        const sender = (<Partial<Conversation.ChatMessage>>(
+          conversation.messages[i]
+        )).sender;
 
         // noinspection TypeScriptValidateTypes
-        if (sender !== undefined) return sender !== core.characters.ownCharacter;
+        if (sender !== undefined)
+          return sender !== core.characters.ownCharacter;
       }
       return false;
     }
@@ -392,7 +485,13 @@
       const pms = this.conversations.privateConversations;
       const channels = this.conversations.channelConversations;
       const console = this.conversations.consoleTab;
-      if (getKey(e) === Keys.ArrowUp && e.altKey && !e.ctrlKey && !e.shiftKey && !e.metaKey)
+      if (
+        getKey(e) === Keys.ArrowUp &&
+        e.altKey &&
+        !e.ctrlKey &&
+        !e.shiftKey &&
+        !e.metaKey
+      )
         if (selected === console) {
           //tslint:disable-line:curly
           if (channels.length > 0) channels[channels.length - 1].show();
@@ -402,13 +501,21 @@
           if (index === 0) console.show();
           else pms[index - 1].show();
         } else {
-          const index = channels.indexOf(<Conversation.ChannelConversation>selected);
+          const index = channels.indexOf(
+            <Conversation.ChannelConversation>selected
+          );
           if (index === 0)
             if (pms.length > 0) pms[pms.length - 1].show();
             else console.show();
           else channels[index - 1].show();
         }
-      else if (getKey(e) === Keys.ArrowDown && e.altKey && !e.ctrlKey && !e.shiftKey && !e.metaKey)
+      else if (
+        getKey(e) === Keys.ArrowDown &&
+        e.altKey &&
+        !e.ctrlKey &&
+        !e.shiftKey &&
+        !e.metaKey
+      )
         if (selected === console) {
           //tslint:disable-line:curly - false positive
           if (pms.length > 0) pms[0].show();
@@ -419,27 +526,42 @@
             if (channels.length > 0) channels[0].show();
           } else pms[index + 1].show();
         } else {
-          const index = channels.indexOf(<Conversation.ChannelConversation>selected);
+          const index = channels.indexOf(
+            <Conversation.ChannelConversation>selected
+          );
           if (index < channels.length - 1) channels[index + 1].show();
           else console.show();
         }
     }
 
     setFontSize(fontSize: number): void {
-      let overrideEl = <HTMLStyleElement | null>document.getElementById('overrideFontSize');
+      let overrideEl = <HTMLStyleElement | null>(
+        document.getElementById('overrideFontSize')
+      );
       if (overrideEl !== null) document.body.removeChild(overrideEl);
       overrideEl = document.createElement('style');
       overrideEl.id = 'overrideFontSize';
       document.body.appendChild(overrideEl);
       const sheet = <CSSStyleSheet>overrideEl.sheet;
-      sheet.insertRule(`#chatView, .btn, .form-control, .custom-select { font-size: ${fontSize}px; }`, sheet.cssRules.length);
-      sheet.insertRule(`.form-control, select.form-control { line-height: 1.428571429 }`, sheet.cssRules.length);
+      sheet.insertRule(
+        `#chatView, .btn, .form-control, .custom-select { font-size: ${fontSize}px; }`,
+        sheet.cssRules.length
+      );
+      sheet.insertRule(
+        `.form-control, select.form-control { line-height: 1.428571429 }`,
+        sheet.cssRules.length
+      );
     }
 
-    getOnlineStatusIconClasses(conversation: PrivateConversation): Record<string, any> {
+    getOnlineStatusIconClasses(
+      conversation: PrivateConversation
+    ): Record<string, any> {
       const status = conversation.character.status;
 
-      if (conversation.typingStatus === 'typing' || conversation.typingStatus === 'paused') {
+      if (
+        conversation.typingStatus === 'typing' ||
+        conversation.typingStatus === 'paused'
+      ) {
         return {
           fas: true,
           'fa-comment-dots': conversation.typingStatus === 'typing',
@@ -523,7 +645,9 @@
     }
 
     getClasses(conversation: Conversation): string {
-      return conversation === core.conversations.selectedConversation ? ' active' : unreadClasses[conversation.unread];
+      return conversation === core.conversations.selectedConversation
+        ? ' active'
+        : unreadClasses[conversation.unread];
     }
 
     isColorblindModeActive(): boolean {

@@ -1,4 +1,8 @@
-import { Character as ComplexCharacter, CharacterGroup, Guestbook } from '../../site/character_page/interfaces';
+import {
+  Character as ComplexCharacter,
+  CharacterGroup,
+  Guestbook
+} from '../../site/character_page/interfaces';
 import { PermanentIndexedStore, ProfileRecord } from './types';
 import { CharacterImage, SimpleCharacter } from '../../interfaces';
 
@@ -15,7 +19,10 @@ export class WorkerStore implements PermanentIndexedStore {
     this.workerClient = new WorkerClient(jsEndpointFile);
   }
 
-  static async open(jsEndpointFile: string, dbName?: string): Promise<WorkerStore> {
+  static async open(
+    jsEndpointFile: string,
+    dbName?: string
+  ): Promise<WorkerStore> {
     const store = new WorkerStore(jsEndpointFile);
 
     await store.workerClient.request('init', { dbName });
@@ -24,7 +31,10 @@ export class WorkerStore implements PermanentIndexedStore {
   }
 
   async getProfile(name: string): Promise<ProfileRecord | undefined> {
-    const record: ProfileRecord | undefined = await this.workerClient.request('get', { name });
+    const record: ProfileRecord | undefined = await this.workerClient.request(
+      'get',
+      { name }
+    );
 
     // fix custom kinks to prevent hangs
 
@@ -36,9 +46,12 @@ export class WorkerStore implements PermanentIndexedStore {
       });
 
       // fix customs because it will crash the client
-      const customsObject: ProfileRecord['profileData']['character']['customs'] = {};
+      const customsObject: ProfileRecord['profileData']['character']['customs'] =
+        {};
 
-      for (const [key, value] of Object.entries(record.profileData.character.customs)) {
+      for (const [key, value] of Object.entries(
+        record.profileData.character.customs
+      )) {
         if (value !== undefined) customsObject[key] = value;
       }
 
@@ -61,7 +74,13 @@ export class WorkerStore implements PermanentIndexedStore {
     friends: SimpleCharacter[] | null,
     groups: CharacterGroup[] | null
   ): Promise<void> {
-    return this.workerClient.request('update-meta', { name, images, guestbook, friends, groups });
+    return this.workerClient.request('update-meta', {
+      name,
+      images,
+      guestbook,
+      friends,
+      groups
+    });
   }
 
   async start(): Promise<void> {

@@ -32,7 +32,12 @@ export class WorkerClient {
     return `wc-${this.idCounter}`;
   }
 
-  private when(id: string, resolve: (result?: any) => void, reject: (reason?: any) => void, request: IndexedRequest): void {
+  private when(
+    id: string,
+    resolve: (result?: any) => void,
+    reject: (reason?: any) => void,
+    request: IndexedRequest
+  ): void {
     this.waiters.push({ id, resolve, reject, request, initiated: Date.now() });
   }
 
@@ -58,12 +63,20 @@ export class WorkerClient {
         const t = Date.now() - waiter.initiated;
 
         if (t > 200) {
-          log.info('store.worker.client.msg.slow', { t: t / 1000, req: waiter.request, res });
+          log.info('store.worker.client.msg.slow', {
+            t: t / 1000,
+            req: waiter.request,
+            res
+          });
         }
 
         waiter.resolve(res.result);
       } else {
-        log.error('store.worker.client.msg.err', { t: (Date.now() - waiter.initiated) / 1000, msg: res.msg, req: waiter.request });
+        log.error('store.worker.client.msg.err', {
+          t: (Date.now() - waiter.initiated) / 1000,
+          msg: res.msg,
+          req: waiter.request
+        });
         waiter.reject(new Error(res.msg));
       }
 
@@ -77,7 +90,10 @@ export class WorkerClient {
     // log.silly('store.worker.waiter.clear', this.waiters.length);
   }
 
-  async request(cmd: ProfileStoreCommand, params: Record<string, any> = {}): Promise<any> {
+  async request(
+    cmd: ProfileStoreCommand,
+    params: Record<string, any> = {}
+  ): Promise<any> {
     const id = this.generateId();
 
     const request: IndexedRequest = {

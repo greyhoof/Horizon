@@ -81,7 +81,9 @@ export class ImageDomMutator {
     return _.find(this.regexMutators, (m: DomMutator) => {
       const match = m.match;
 
-      return match instanceof RegExp ? urlDomain.match(match) !== null : match === urlDomain;
+      return match instanceof RegExp
+        ? urlDomain.match(match) !== null
+        : match === urlDomain;
     });
   }
 
@@ -124,20 +126,62 @@ export class ImageDomMutator {
     await this.loadScripts();
 
     /* tslint:disable max-line-length */
-    this.add('default', this.getBaseJsMutatorScript(['.content video', '.content img', '#video, video', '#image, img']));
+    this.add(
+      'default',
+      this.getBaseJsMutatorScript([
+        '.content video',
+        '.content img',
+        '#video, video',
+        '#image, img'
+      ])
+    );
     this.add('about:blank', '');
     this.add('e621.net', this.getBaseJsMutatorScript(['video', '#image']));
     this.add('e-hentai.org', this.getBaseJsMutatorScript(['video', '#img']));
-    this.add('gelbooru.com', this.getBaseJsMutatorScript(['video.gelcomVPlayer', '.post-view video', '.contain-push video', '#image']));
-    this.add('gyazo.com', this.getBaseJsMutatorScript(['.image-view video', '.image-view img']));
-    this.add('chan.sankakucomplex.com', this.getBaseJsMutatorScript(['video', '#image']));
-    this.add('danbooru.donmai.us', this.getBaseJsMutatorScript(['video', '#image']));
-    this.add('gfycat.com', this.getBaseJsMutatorScript(['video'], true, [], true));
-    this.add('gfycatporn.com', this.getBaseJsMutatorScript(['video'], true, [], true));
-    this.add('instantfap.com', this.getBaseJsMutatorScript(['#post video', '#post img']));
+    this.add(
+      'gelbooru.com',
+      this.getBaseJsMutatorScript([
+        'video.gelcomVPlayer',
+        '.post-view video',
+        '.contain-push video',
+        '#image'
+      ])
+    );
+    this.add(
+      'gyazo.com',
+      this.getBaseJsMutatorScript(['.image-view video', '.image-view img'])
+    );
+    this.add(
+      'chan.sankakucomplex.com',
+      this.getBaseJsMutatorScript(['video', '#image'])
+    );
+    this.add(
+      'danbooru.donmai.us',
+      this.getBaseJsMutatorScript(['video', '#image'])
+    );
+    this.add(
+      'gfycat.com',
+      this.getBaseJsMutatorScript(['video'], true, [], true)
+    );
+    this.add(
+      'gfycatporn.com',
+      this.getBaseJsMutatorScript(['video'], true, [], true)
+    );
+    this.add(
+      'instantfap.com',
+      this.getBaseJsMutatorScript(['#post video', '#post img'])
+    );
     this.add('webmshare.com', this.getBaseJsMutatorScript(['video']));
-    this.add('vimeo.com', this.getBaseJsMutatorScript(['#video, video', '#image, img']));
-    this.add('sex.com', this.getBaseJsMutatorScript(['.image_frame video', '.image_frame img']), undefined, 'dom-ready');
+    this.add(
+      'vimeo.com',
+      this.getBaseJsMutatorScript(['#video, video', '#image, img'])
+    );
+    this.add(
+      'sex.com',
+      this.getBaseJsMutatorScript(['.image_frame video', '.image_frame img']),
+      undefined,
+      'dom-ready'
+    );
     // this.add('redirect.media.tumblr.com', this.getBaseJsMutatorScript(['picture video', 'picture img']));
     this.add(
       /^[a-zA-Z0-9-]+\.media\.tumblr\.com$/,
@@ -170,33 +214,110 @@ export class ImageDomMutator {
       undefined,
       'dom-ready'
     );
-    this.add('postimg.cc', this.getBaseJsMutatorScript(['video', '#main-image']));
+    this.add(
+      'postimg.cc',
+      this.getBaseJsMutatorScript(['video', '#main-image'])
+    );
     this.add('gifsauce.com', this.getBaseJsMutatorScript(['video']));
     // this.add('motherless.com', this.getBaseJsMutatorScript(['.content video', '.content img']));
-    this.add(/^media[0-9]\.giphy\.com$/, this.getBaseJsMutatorScript(['video', 'img[alt]']));
-    this.add('giphy.com', this.getBaseJsMutatorScript(['video', 'a > div > img']));
-    this.add(/^media[0-9]\.tenor\.com$/, this.getBaseJsMutatorScript(['#view .file video', '#view .file img']));
-    this.add('tenor.com', this.getBaseJsMutatorScript(['#view video', '#view img']));
-    this.add('hypnohub.net', this.getBaseJsMutatorScript(['video', '#image', 'img']));
-    this.add('derpibooru.org', this.getBaseJsMutatorScript(['video', '#image-display', 'img']));
-    this.add('sexbot.gallery', this.getBaseJsMutatorScript(['video.hero', 'video']));
-    this.add('imagefap.com', this.getBaseJsMutatorScript(['.image-wrapper img', 'video', 'img']));
-    this.add('myhentaicomics.com', this.getBaseJsMutatorScript(['#entire_image img', 'video', 'img']));
+    this.add(
+      /^media[0-9]\.giphy\.com$/,
+      this.getBaseJsMutatorScript(['video', 'img[alt]'])
+    );
+    this.add(
+      'giphy.com',
+      this.getBaseJsMutatorScript(['video', 'a > div > img'])
+    );
+    this.add(
+      /^media[0-9]\.tenor\.com$/,
+      this.getBaseJsMutatorScript(['#view .file video', '#view .file img'])
+    );
+    this.add(
+      'tenor.com',
+      this.getBaseJsMutatorScript(['#view video', '#view img'])
+    );
+    this.add(
+      'hypnohub.net',
+      this.getBaseJsMutatorScript(['video', '#image', 'img'])
+    );
+    this.add(
+      'derpibooru.org',
+      this.getBaseJsMutatorScript(['video', '#image-display', 'img'])
+    );
+    this.add(
+      'sexbot.gallery',
+      this.getBaseJsMutatorScript(['video.hero', 'video'])
+    );
+    this.add(
+      'imagefap.com',
+      this.getBaseJsMutatorScript(['.image-wrapper img', 'video', 'img'])
+    );
+    this.add(
+      'myhentaicomics.com',
+      this.getBaseJsMutatorScript(['#entire_image img', 'video', 'img'])
+    );
     this.add('redgifs.com', this.getBaseJsMutatorScript(['video'])); // , true, [], false, true));
-    this.add('furaffinity.net', this.getBaseJsMutatorScript(['#submissionImg', 'video', 'img']));
-    this.add('rule34.paheal.net', this.getBaseJsMutatorScript(['#main_image', 'video', 'img']));
-    this.add('xhamster.com', this.getBaseJsMutatorScript(['#photo_slider video', '#photo_slider img', 'video', 'img']));
-    this.add('shadbase.com', this.getBaseJsMutatorScript(['#comic video', '#comic img', 'video', 'img']));
-    this.add('instagram.com', this.getBaseJsMutatorScript(['article video', 'article img', 'video', 'img']));
-    this.add('rule34video.com', this.getBaseJsMutatorScript(['video'], true, [], false, true));
-    this.add('rule34.us', this.getBaseJsMutatorScript(['.content_push video', '.content_push img']));
+    this.add(
+      'furaffinity.net',
+      this.getBaseJsMutatorScript(['#submissionImg', 'video', 'img'])
+    );
+    this.add(
+      'rule34.paheal.net',
+      this.getBaseJsMutatorScript(['#main_image', 'video', 'img'])
+    );
+    this.add(
+      'xhamster.com',
+      this.getBaseJsMutatorScript([
+        '#photo_slider video',
+        '#photo_slider img',
+        'video',
+        'img'
+      ])
+    );
+    this.add(
+      'shadbase.com',
+      this.getBaseJsMutatorScript([
+        '#comic video',
+        '#comic img',
+        'video',
+        'img'
+      ])
+    );
+    this.add(
+      'instagram.com',
+      this.getBaseJsMutatorScript([
+        'article video',
+        'article img',
+        'video',
+        'img'
+      ])
+    );
+    this.add(
+      'rule34video.com',
+      this.getBaseJsMutatorScript(['video'], true, [], false, true)
+    );
+    this.add(
+      'rule34.us',
+      this.getBaseJsMutatorScript(['.content_push video', '.content_push img'])
+    );
 
     this.add(
       'pornhub.com',
-      this.getBaseJsMutatorScript([/*'#__flistCore', '#player', */ '#photoImageSection img', 'video', 'img', '#player'], false)
+      this.getBaseJsMutatorScript(
+        [
+          /*'#__flistCore', '#player', */ '#photoImageSection img',
+          'video',
+          'img',
+          '#player'
+        ],
+        false
+      )
     );
 
-    this.add('tiktokstalk.com', this.getBaseJsMutatorScript(['video'], false, [], true, true));
+    this.add(
+      'tiktokstalk.com',
+      this.getBaseJsMutatorScript(['video'], false, [], true, true)
+    );
 
     this.add(
       'gifmixxx.com',
@@ -253,18 +374,22 @@ export class ImageDomMutator {
       'dom-ready'
     );
 
-    this.add('hentai-foundry.com', this.getBaseJsMutatorScript(['#picBox video', '#picBox img']), (url: string): string => {
-      const u = urlHelper.parse(url, true);
+    this.add(
+      'hentai-foundry.com',
+      this.getBaseJsMutatorScript(['#picBox video', '#picBox img']),
+      (url: string): string => {
+        const u = urlHelper.parse(url, true);
 
-      if (!u) return url;
+        if (!u) return url;
 
-      // tslint:disable-next-line no-any
-      (u.query as any).enterAgree = 1;
+        // tslint:disable-next-line no-any
+        (u.query as any).enterAgree = 1;
 
-      u.search = null;
+        u.search = null;
 
-      return urlHelper.format(u);
-    });
+        return urlHelper.format(u);
+      }
+    );
 
     this.add(
       'twitter.com',
@@ -343,7 +468,10 @@ export class ImageDomMutator {
 
     const settingsJson = JSON.stringify(settings, null, 0);
 
-    return js.replace(/\/\* ## SETTINGS_START[^]*SETTINGS_END ## \*\//m, `this.settings = ${settingsJson};`);
+    return js.replace(
+      /\/\* ## SETTINGS_START[^]*SETTINGS_END ## \*\//m,
+      `this.settings = ${settingsJson};`
+    );
   }
 
   getErrorMutator(code: number, description: string): string {

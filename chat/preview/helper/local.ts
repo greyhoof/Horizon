@@ -36,10 +36,15 @@ export class LocalImagePreviewHelper extends ImagePreviewHelper {
       return false;
     }
 
-    return ImagePreviewHelper.HTTP_TESTER.test(url) && (domainName === 'f-list.net' || domainName === 'static.f-list.net');
+    return (
+      ImagePreviewHelper.HTTP_TESTER.test(url) &&
+      (domainName === 'f-list.net' || domainName === 'static.f-list.net')
+    );
   }
 
   renderStyle(): Record<string, any> {
-    return this.isVisible() ? { backgroundImage: `url(${this.getUrl()})`, display: 'block' } : { display: 'none' };
+    return this.isVisible()
+      ? { backgroundImage: `url(${this.getUrl()})`, display: 'block' }
+      : { display: 'none' };
   }
 }

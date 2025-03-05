@@ -17,12 +17,18 @@ let availableDictionaries: DictionaryIndex | undefined;
 let downloadedDictionaries: { [key: string]: File | undefined } = {};
 const writeFile = promisify(fs.writeFile);
 
-export async function getAvailableDictionaries(): Promise<ReadonlyArray<string>> {
+export async function getAvailableDictionaries(): Promise<
+  ReadonlyArray<string>
+> {
   if (availableDictionaries === undefined)
     try {
-      availableDictionaries = (await Axios.get<DictionaryIndex>(`${downloadUrl}index.json`)).data;
+      availableDictionaries = (
+        await Axios.get<DictionaryIndex>(`${downloadUrl}index.json`)
+      ).data;
       if (fs.existsSync(downloadedPath))
-        downloadedDictionaries = <{ [key: string]: File }>JSON.parse(fs.readFileSync(downloadedPath, 'utf-8'));
+        downloadedDictionaries = <{ [key: string]: File }>(
+          JSON.parse(fs.readFileSync(downloadedPath, 'utf-8'))
+        );
     } catch (e) {
       availableDictionaries = {};
       log.error(`Error loading dictionaries: ${e}`);
@@ -38,8 +44,16 @@ export async function ensureDictionary(lang: string): Promise<void> {
     const file = dict![type];
     const filePath = path.join(dictDir, `${lang}.${type}`);
     const downloaded = downloadedDictionaries[file.name];
-    if (downloaded === undefined || downloaded.hash !== file.hash || !fs.existsSync(filePath)) {
-      const dictionary = (await Axios.get<string>(`${downloadUrl}${file.name}`, { responseType: 'arraybuffer' })).data;
+    if (
+      downloaded === undefined ||
+      downloaded.hash !== file.hash ||
+      !fs.existsSync(filePath)
+    ) {
+      const dictionary = (
+        await Axios.get<string>(`${downloadUrl}${file.name}`, {
+          responseType: 'arraybuffer'
+        })
+      ).data;
       await writeFile(filePath, Buffer.from(dictionary));
       downloadedDictionaries[file.name] = file;
       await writeFile(downloadedPath, JSON.stringify(downloadedDictionaries));

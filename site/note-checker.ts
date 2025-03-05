@@ -13,7 +13,11 @@ export interface NoteCheckerCount {
 export class NoteChecker implements SiteSessionInterface {
   private static readonly CHECK_FREQUENCY = 15 * 60 * 1000;
 
-  private latestCount: NoteCheckerCount = { unreadNotes: 0, unreadMessages: 0, onlineUsers: 0 };
+  private latestCount: NoteCheckerCount = {
+    unreadNotes: 0,
+    unreadMessages: 0,
+    onlineUsers: 0
+  };
   private timer?: any;
 
   constructor(private session: SiteSession) {}
@@ -48,16 +52,23 @@ export class NoteChecker implements SiteSessionInterface {
     log.debug('notechecker.check');
 
     const res = await this.session.get('/', true);
-    const messagesMatch = res.body.match(/NavigationMessages.*?([0-9]+?) Messages/);
+    const messagesMatch = res.body.match(
+      /NavigationMessages.*?([0-9]+?) Messages/
+    );
     const notesMatch = res.body.match(/NavigationNotecount.*?([0-9]+?) Notes/);
     const statsMatch = res.body.match(/Frontpage_Stats.*?([0-9]+?) characters/);
 
     // console.log('MATCH', messagesMatch[1], notesMatch[1], statsMatch[1]);
 
     const summary = {
-      unreadNotes: notesMatch && notesMatch.length > 1 ? parseInt(notesMatch[1], 10) : 0,
-      unreadMessages: messagesMatch && messagesMatch.length > 1 ? parseInt(messagesMatch[1], 10) : 0,
-      onlineUsers: statsMatch && statsMatch.length > 1 ? parseInt(statsMatch[1], 10) : 0
+      unreadNotes:
+        notesMatch && notesMatch.length > 1 ? parseInt(notesMatch[1], 10) : 0,
+      unreadMessages:
+        messagesMatch && messagesMatch.length > 1
+          ? parseInt(messagesMatch[1], 10)
+          : 0,
+      onlineUsers:
+        statsMatch && statsMatch.length > 1 ? parseInt(statsMatch[1], 10) : 0
     };
 
     this.latestCount = summary;

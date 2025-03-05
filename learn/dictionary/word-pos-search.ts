@@ -40,7 +40,10 @@ export class WordPosSearch {
 
         this.lastClicked = _.reduce(
           (e.target as any).childNodes || [],
-          (accum: FoundWord | null, node) => (accum ? accum : this.findClickedWord(node as any, e.clientX, e.clientY)),
+          (accum: FoundWord | null, node) =>
+            accum
+              ? accum
+              : this.findClickedWord(node as any, e.clientX, e.clientY),
           null
         );
       } catch (err) {

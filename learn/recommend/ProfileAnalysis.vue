@@ -2,13 +2,19 @@
   <div class="profile-analysis-wrapper" ref="profileAnalysisWrapper">
     <div v-if="!analyzing && !recommendations.length">
       <h3>Looking good!</h3>
-      <p>The profile analyzer could not find any improvement recommendations for your profile.</p>
+      <p>
+        The profile analyzer could not find any improvement recommendations for
+        your profile.
+      </p>
     </div>
 
     <div v-else-if="analyzing && !recommendations.length">
       <p>Having problems with finding good matches?</p>
       <p>&nbsp;</p>
-      <p>The profile analyzer will identify if your profile could benefit from adjustments.</p>
+      <p>
+        The profile analyzer will identify if your profile could benefit from
+        adjustments.
+      </p>
       <p>&nbsp;</p>
       <h3>Analyzing...</h3>
     </div>
@@ -16,13 +22,22 @@
     <div v-else>
       <p>Having problems with finding good matches?</p>
       <p>&nbsp;</p>
-      <p>The profile analyzer recommends the following adjustments to your profile:</p>
+      <p>
+        The profile analyzer recommends the following adjustments to your
+        profile:
+      </p>
 
       <ul>
-        <li v-for="r in recommendations" class="recommendation" :class="r.level">
+        <li
+          v-for="r in recommendations"
+          class="recommendation"
+          :class="r.level"
+        >
           <h3>{{ r.title }}</h3>
           <p>{{ r.desc }}</p>
-          <p class="more-info" v-if="r.helpUrl"><a :href="r.helpUrl">Here's how</a></p>
+          <p class="more-info" v-if="r.helpUrl">
+            <a :href="r.helpUrl">Here's how</a>
+          </p>
         </li>
       </ul>
     </div>
@@ -32,7 +47,10 @@
   import { Component } from '@f-list/vue-ts';
   import Vue from 'vue';
   import core from '../../chat/core';
-  import { ProfileRecommendation, ProfileRecommendationAnalyzer } from './profile-recommendation';
+  import {
+    ProfileRecommendation,
+    ProfileRecommendationAnalyzer
+  } from './profile-recommendation';
   import { CharacterAnalysis } from '../matcher';
   import { methods } from '../../site/character_page/data_store';
 
@@ -45,7 +63,11 @@
       this.analyzing = true;
       this.recommendations = [];
 
-      const char = await methods.characterData(core.characters.ownProfile.character.name, core.characters.ownProfile.character.id, true);
+      const char = await methods.characterData(
+        core.characters.ownProfile.character.name,
+        core.characters.ownProfile.character.id,
+        true
+      );
       const profile = new CharacterAnalysis(char.character);
       const analyzer = new ProfileRecommendationAnalyzer(profile);
 

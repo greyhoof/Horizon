@@ -10,7 +10,10 @@ export abstract class ImagePreviewHelper {
 
   abstract show(url: string | undefined): void;
   abstract hide(): void;
-  abstract match(domainName: string | undefined, url: string | undefined): boolean;
+  abstract match(
+    domainName: string | undefined,
+    url: string | undefined
+  ): boolean;
   abstract renderStyle(): Record<string, any>;
   abstract getName(): string;
 

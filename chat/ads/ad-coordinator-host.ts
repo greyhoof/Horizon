@@ -12,7 +12,10 @@ export class AdCoordinatorHost {
   async processAdRequest(event: IpcMainEvent, adId: string): Promise<void> {
     await adCoordinatorThroat(async () => {
       const sinceLastPost = Date.now() - this.lastPost;
-      const waitTime = Math.max(0, AdCoordinatorHost.MIN_DISTANCE - sinceLastPost);
+      const waitTime = Math.max(
+        0,
+        AdCoordinatorHost.MIN_DISTANCE - sinceLastPost
+      );
 
       log.debug('adid.request.host', { adId, sinceLastPost, waitTime });
 

@@ -111,8 +111,13 @@ export class Score {
   readonly description: string;
   readonly shortDesc: string;
 
-  constructor(score: Scoring, description: string = '', shortDesc: string = '') {
-    if (score !== Scoring.NEUTRAL && description === '') throw new Error('Description must be provided if score is not neutral');
+  constructor(
+    score: Scoring,
+    description: string = '',
+    shortDesc: string = ''
+  ) {
+    if (score !== Scoring.NEUTRAL && description === '')
+      throw new Error('Description must be provided if score is not neutral');
 
     this.score = score;
     this.description = description;
@@ -192,7 +197,12 @@ export class Matcher {
   readonly yourAnalysis: CharacterAnalysis;
   readonly theirAnalysis: CharacterAnalysis;
 
-  constructor(you: Character, them: Character, yourAnalysis?: CharacterAnalysis, theirAnalysis?: CharacterAnalysis) {
+  constructor(
+    you: Character,
+    them: Character,
+    yourAnalysis?: CharacterAnalysis,
+    theirAnalysis?: CharacterAnalysis
+  ) {
     this.you = you;
     this.them = them;
 
@@ -227,7 +237,8 @@ export class Matcher {
     report.score = Matcher.calculateReportScore(report);
 
     report.details.totalScoreDimensions = Matcher.countScoresTotal(report);
-    report.details.dimensionsAtScoreLevel = Matcher.countScoresAtLevel(report, report.score) || 0;
+    report.details.dimensionsAtScoreLevel =
+      Matcher.countScoresAtLevel(report, report.score) || 0;
 
     // log.debug('report.generate', report);
 
@@ -240,7 +251,10 @@ export class Matcher {
   // affiliated with yiffbot, I'm going to assume that none
   // of this actually has to do with yiffbot. God knows, if
   // I'm wrong, it's whatever at this point.
-  static getYiffBot4000MatchReport(you: Character, them: Character): MatchReport {
+  static getYiffBot4000MatchReport(
+    you: Character,
+    them: Character
+  ): MatchReport {
     const scores: MatchResultScores = {
       [TagId.Orientation]: new Score(Scoring.MATCH, 'Perfect match!'),
       [TagId.Gender]: new Score(Scoring.MATCH, 'Perfect match!'),
@@ -316,8 +330,18 @@ export class Matcher {
 
     for (const yourAnalysis of yourCharacterAnalyses) {
       for (const theirAnalysis of theirCharacterAnalyses) {
-        const youThem = new Matcher(yourAnalysis.character, theirAnalysis.character, yourAnalysis.analysis, theirAnalysis.analysis);
-        const themYou = new Matcher(theirAnalysis.character, yourAnalysis.character, theirAnalysis.analysis, yourAnalysis.analysis);
+        const youThem = new Matcher(
+          yourAnalysis.character,
+          theirAnalysis.character,
+          yourAnalysis.analysis,
+          theirAnalysis.analysis
+        );
+        const themYou = new Matcher(
+          theirAnalysis.character,
+          yourAnalysis.character,
+          theirAnalysis.analysis,
+          yourAnalysis.analysis
+        );
 
         const youThemMatch = youThem.match('their');
         const themYouMatch = themYou.match('your');
@@ -338,7 +362,10 @@ export class Matcher {
 
         report.score = Matcher.calculateReportScore(report);
 
-        const scoreLevelCount = Matcher.countScoresAtLevel(report, report.score);
+        const scoreLevelCount = Matcher.countScoresAtLevel(
+          report,
+          report.score
+        );
 
         report.details.totalScoreDimensions = Matcher.countScoresTotal(report);
         report.details.dimensionsAtScoreLevel = scoreLevelCount || 0;
@@ -351,7 +378,10 @@ export class Matcher {
             report.score * scoreLevelCount > bestScoreLevelCount)
         ) {
           bestScore = report.score;
-          bestScoreLevelCount = scoreLevelCount !== null && report.score !== null ? report.score * scoreLevelCount : -1000;
+          bestScoreLevelCount =
+            scoreLevelCount !== null && report.score !== null
+              ? report.score * scoreLevelCount
+              : -1000;
           bestReport = report;
         }
       }
@@ -367,7 +397,10 @@ export class Matcher {
   }
 
   // tslint:disable-next-line
-  private static mergeResultScores(scores: MatchResultScores, results: MatchResultScores): void {
+  private static mergeResultScores(
+    scores: MatchResultScores,
+    results: MatchResultScores
+  ): void {
     _.each(scores, (v: Score, k: any) => {
       if (
         // tslint:disable-next-line no-unsafe-any
@@ -388,7 +421,9 @@ export class Matcher {
     return results;
   }
 
-  static generateAnalysisVariations(c: Character): CharacterAnalysisVariation[] {
+  static generateAnalysisVariations(
+    c: Character
+  ): CharacterAnalysisVariation[] {
     const speciesOptions = Matcher.getAllSpeciesAsStr(c);
 
     if (speciesOptions.length === 0) {
@@ -398,7 +433,10 @@ export class Matcher {
     return _.map(speciesOptions, species => {
       // Avoid _.cloneDeep because it chokes on array-like objects with very large keys
       // _.cloneDeep will happily make arrays with 41 million elements
-      const nc = { ...c, infotags: { ...c.infotags, [TagId.Species]: { string: species } } };
+      const nc = {
+        ...c,
+        infotags: { ...c.infotags, [TagId.Species]: { string: species } }
+      };
 
       return { character: nc, analysis: new CharacterAnalysis(nc) };
     });
@@ -415,7 +453,9 @@ export class Matcher {
           return score.score !== Scoring.NEUTRAL ? score.score : null;
         }
 
-        return score.score === Scoring.NEUTRAL ? accum : Math.min(accum, score.score);
+        return score.score === Scoring.NEUTRAL
+          ? accum
+          : Math.min(accum, score.score);
       },
       null
     );
@@ -430,7 +470,10 @@ export class Matcher {
       }
 
       // Only neutral scores given
-      if (_.every(yourScores, (n: Scoring) => n === Scoring.NEUTRAL) || _.every(theirScores, (n: Scoring) => n === Scoring.NEUTRAL)) {
+      if (
+        _.every(yourScores, (n: Scoring) => n === Scoring.NEUTRAL) ||
+        _.every(theirScores, (n: Scoring) => n === Scoring.NEUTRAL)
+      ) {
         return Scoring.NEUTRAL;
       }
     }
@@ -471,7 +514,11 @@ export class Matcher {
       }
     };
 
-    data.total = _.reduce(data.scores, (accum: number, s: Score) => accum + s.score, 0);
+    data.total = _.reduce(
+      data.scores,
+      (accum: number, s: Score) => accum + s.score,
+      0
+    );
 
     return data;
   }
@@ -479,10 +526,18 @@ export class Matcher {
   private resolveOrientationScore(): Score {
     // Question: If someone identifies themselves as 'straight cuntboy', how should they be matched? like a straight female?
 
-    return Matcher.scoreOrientationByGender(this.yourAnalysis.gender, this.yourAnalysis.orientation, this.theirAnalysis.gender);
+    return Matcher.scoreOrientationByGender(
+      this.yourAnalysis.gender,
+      this.yourAnalysis.orientation,
+      this.theirAnalysis.gender
+    );
   }
 
-  static scoreOrientationByGender(yourGender: Gender | null, yourOrientation: Orientation | null, theirGender: Gender | null): Score {
+  static scoreOrientationByGender(
+    yourGender: Gender | null,
+    yourOrientation: Orientation | null,
+    theirGender: Gender | null
+  ): Score {
     if (
       yourGender === null ||
       theirGender === null ||
@@ -497,42 +552,55 @@ export class Matcher {
     if (Matcher.isCisGender(yourGender)) {
       if (yourGender === theirGender) {
         // same sex CIS
-        if (yourOrientation === Orientation.Straight) return new Score(Scoring.MISMATCH, 'No <span>same sex</span>');
+        if (yourOrientation === Orientation.Straight)
+          return new Score(Scoring.MISMATCH, 'No <span>same sex</span>');
 
         if (
           yourOrientation === Orientation.Gay ||
           yourOrientation === Orientation.Bisexual ||
           yourOrientation === Orientation.Pansexual ||
-          (yourOrientation === Orientation.BiFemalePreference && theirGender === Gender.Female) ||
-          (yourOrientation === Orientation.BiMalePreference && theirGender === Gender.Male)
+          (yourOrientation === Orientation.BiFemalePreference &&
+            theirGender === Gender.Female) ||
+          (yourOrientation === Orientation.BiMalePreference &&
+            theirGender === Gender.Male)
         )
           return new Score(Scoring.MATCH, 'Loves <span>same sex</span>');
 
         if (
           yourOrientation === Orientation.BiCurious ||
-          (yourOrientation === Orientation.BiFemalePreference && theirGender === Gender.Male) ||
-          (yourOrientation === Orientation.BiMalePreference && theirGender === Gender.Female)
+          (yourOrientation === Orientation.BiFemalePreference &&
+            theirGender === Gender.Male) ||
+          (yourOrientation === Orientation.BiMalePreference &&
+            theirGender === Gender.Female)
         )
           return new Score(Scoring.WEAK_MATCH, 'Likes <span>same sex</span>');
       } else if (Matcher.isCisGender(theirGender)) {
         // straight CIS
-        if (yourOrientation === Orientation.Gay) return new Score(Scoring.MISMATCH, 'No <span>opposite sex</span>');
+        if (yourOrientation === Orientation.Gay)
+          return new Score(Scoring.MISMATCH, 'No <span>opposite sex</span>');
 
         if (
           yourOrientation === Orientation.Straight ||
           yourOrientation === Orientation.Bisexual ||
           yourOrientation === Orientation.BiCurious ||
           yourOrientation === Orientation.Pansexual ||
-          (yourOrientation === Orientation.BiFemalePreference && theirGender === Gender.Female) ||
-          (yourOrientation === Orientation.BiMalePreference && theirGender === Gender.Male)
+          (yourOrientation === Orientation.BiFemalePreference &&
+            theirGender === Gender.Female) ||
+          (yourOrientation === Orientation.BiMalePreference &&
+            theirGender === Gender.Male)
         )
           return new Score(Scoring.MATCH, 'Loves <span>opposite sex</span>');
 
         if (
-          (yourOrientation === Orientation.BiFemalePreference && theirGender === Gender.Male) ||
-          (yourOrientation === Orientation.BiMalePreference && theirGender === Gender.Female)
+          (yourOrientation === Orientation.BiFemalePreference &&
+            theirGender === Gender.Male) ||
+          (yourOrientation === Orientation.BiMalePreference &&
+            theirGender === Gender.Female)
         )
-          return new Score(Scoring.WEAK_MATCH, 'Likes <span>opposite sex</span>');
+          return new Score(
+            Scoring.WEAK_MATCH,
+            'Likes <span>opposite sex</span>'
+          );
       }
     }
 
@@ -540,13 +608,20 @@ export class Matcher {
   }
 
   static formatKinkScore(score: KinkPreference, description: string): Score {
-    if (score === KinkPreference.No) return new Score(Scoring.MISMATCH, `No <span>${description}</span>`);
+    if (score === KinkPreference.No)
+      return new Score(Scoring.MISMATCH, `No <span>${description}</span>`);
 
-    if (score === KinkPreference.Maybe) return new Score(Scoring.WEAK_MISMATCH, `Hesitant about <span>${description}</span>`);
+    if (score === KinkPreference.Maybe)
+      return new Score(
+        Scoring.WEAK_MISMATCH,
+        `Hesitant about <span>${description}</span>`
+      );
 
-    if (score === KinkPreference.Yes) return new Score(Scoring.WEAK_MATCH, `Likes <span>${description}</span>`);
+    if (score === KinkPreference.Yes)
+      return new Score(Scoring.WEAK_MATCH, `Likes <span>${description}</span>`);
 
-    if (score === KinkPreference.Favorite) return new Score(Scoring.MATCH, `Loves <span>${description}</span>`);
+    if (score === KinkPreference.Favorite)
+      return new Score(Scoring.MATCH, `Loves <span>${description}</span>`);
 
     return new Score(Scoring.NEUTRAL);
   }
@@ -584,7 +659,8 @@ export class Matcher {
 
     if (speciesScore !== null) {
       // console.log(this.them.name, speciesScore, theirSpecies);
-      const speciesName = speciesNames[theirSpecies] || `${Species[theirSpecies].toLowerCase()}s`;
+      const speciesName =
+        speciesNames[theirSpecies] || `${Species[theirSpecies].toLowerCase()}s`;
 
       return Matcher.formatKinkScore(speciesScore, speciesName);
     }
@@ -592,13 +668,15 @@ export class Matcher {
     if (theirAnalysis.isAnthro) {
       const anthroScore = Matcher.getKinkPreference(you, Kink.AnthroCharacters);
 
-      if (anthroScore !== null) return Matcher.formatKinkScore(anthroScore, 'anthros');
+      if (anthroScore !== null)
+        return Matcher.formatKinkScore(anthroScore, 'anthros');
     }
 
     if (theirAnalysis.isMammal) {
       const mammalScore = Matcher.getKinkPreference(you, Kink.Mammals);
 
-      if (mammalScore !== null) return Matcher.formatKinkScore(mammalScore, 'mammals');
+      if (mammalScore !== null)
+        return Matcher.formatKinkScore(mammalScore, 'mammals');
     }
 
     return new Score(Scoring.NEUTRAL);
@@ -633,15 +711,24 @@ export class Matcher {
     const theyAreAnthro = this.theirAnalysis.isAnthro;
     const theyAreHuman = this.theirAnalysis.isHuman;
 
-    const score = theyAreAnthro ? Matcher.furryLikeabilityScore(you) : theyAreHuman ? Matcher.humanLikeabilityScore(you) : Scoring.NEUTRAL;
+    const score = theyAreAnthro
+      ? Matcher.furryLikeabilityScore(you)
+      : theyAreHuman
+        ? Matcher.humanLikeabilityScore(you)
+        : Scoring.NEUTRAL;
 
     if (score === Scoring.WEAK_MATCH)
       return new Score(
         score,
-        theyAreAnthro ? 'Prefers <span>humans</span>, ok with anthros' : 'Prefers <span>anthros</span>, ok with humans'
+        theyAreAnthro
+          ? 'Prefers <span>humans</span>, ok with anthros'
+          : 'Prefers <span>anthros</span>, ok with humans'
       );
 
-    return this.formatScoring(score, theyAreAnthro ? 'furry pairings' : theyAreHuman ? 'human pairings' : '');
+    return this.formatScoring(
+      score,
+      theyAreAnthro ? 'furry pairings' : theyAreHuman ? 'human pairings' : ''
+    );
   }
 
   private resolveKinkScore(pronoun: string): Score {
@@ -654,11 +741,27 @@ export class Matcher {
       no: this.resolveKinkBucketScore('no')
     };
 
-    const weighted = scores.favorite.weighted + scores.yes.weighted + scores.maybe.weighted + scores.no.weighted;
+    const weighted =
+      scores.favorite.weighted +
+      scores.yes.weighted +
+      scores.maybe.weighted +
+      scores.no.weighted;
 
-    log.debug('report.score.kink', this.them.name, this.you.name, scores, weighted);
+    log.debug(
+      'report.score.kink',
+      this.them.name,
+      this.you.name,
+      scores,
+      weighted
+    );
 
-    if (scores.favorite.count + scores.yes.count + scores.maybe.count + scores.no.count < 10) {
+    if (
+      scores.favorite.count +
+        scores.yes.count +
+        scores.maybe.count +
+        scores.no.count <
+      10
+    ) {
       return new Score(Scoring.NEUTRAL);
     }
 
@@ -668,14 +771,23 @@ export class Matcher {
 
     if (weighted < 0) {
       if (Math.abs(weighted) < kinkMatchWeights.weakMismatchThreshold) {
-        return new Score(Scoring.WEAK_MISMATCH, `Hesitant about ${pronoun} <span>kinks</span>`);
+        return new Score(
+          Scoring.WEAK_MISMATCH,
+          `Hesitant about ${pronoun} <span>kinks</span>`
+        );
       }
 
-      return new Score(Scoring.MISMATCH, `Dislikes ${pronoun} <span>kinks</span>`);
+      return new Score(
+        Scoring.MISMATCH,
+        `Dislikes ${pronoun} <span>kinks</span>`
+      );
     }
 
     if (Math.abs(weighted) < kinkMatchWeights.weakMatchThreshold) {
-      return new Score(Scoring.WEAK_MATCH, `Likes ${pronoun} <span>kinks</span>`);
+      return new Score(
+        Scoring.WEAK_MATCH,
+        `Likes ${pronoun} <span>kinks</span>`
+      );
     }
 
     return new Score(Scoring.MATCH, `Loves ${pronoun} <span>kinks</span>`);
@@ -691,7 +803,8 @@ export class Matcher {
     )
       return Scoring.MATCH;
 
-    if (furryPreference === FurryPreference.HumansPreferredFurriesOk) return Scoring.WEAK_MATCH;
+    if (furryPreference === FurryPreference.HumansPreferredFurriesOk)
+      return Scoring.WEAK_MATCH;
 
     if (furryPreference === FurryPreference.HumansOnly) return Scoring.MISMATCH;
 
@@ -708,9 +821,11 @@ export class Matcher {
     )
       return Scoring.MATCH;
 
-    if (humanPreference === FurryPreference.FurriesPreferredHumansOk) return Scoring.WEAK_MATCH;
+    if (humanPreference === FurryPreference.FurriesPreferredHumansOk)
+      return Scoring.WEAK_MATCH;
 
-    if (humanPreference === FurryPreference.FurriesOnly) return Scoring.MISMATCH;
+    if (humanPreference === FurryPreference.FurriesOnly)
+      return Scoring.MISMATCH;
 
     return Scoring.NEUTRAL;
   }
@@ -722,26 +837,58 @@ export class Matcher {
     if (theirAge === null) return new Score(Scoring.NEUTRAL);
 
     const ageplayScore = Matcher.getKinkPreference(you, Kink.Ageplay);
-    const underageScore = Matcher.getKinkPreference(you, Kink.UnderageCharacters);
+    const underageScore = Matcher.getKinkPreference(
+      you,
+      Kink.UnderageCharacters
+    );
 
-    if (theirAge < 16 && ageplayScore !== null) return Matcher.formatKinkScore(ageplayScore, `ages of ${theirAge}`);
+    if (theirAge < 16 && ageplayScore !== null)
+      return Matcher.formatKinkScore(ageplayScore, `ages of ${theirAge}`);
 
-    if (theirAge < 16 && ageplayScore === null) return Matcher.formatKinkScore(KinkPreference.No, `ages of ${theirAge}`);
+    if (theirAge < 16 && ageplayScore === null)
+      return Matcher.formatKinkScore(KinkPreference.No, `ages of ${theirAge}`);
 
-    if (theirAge < 18 && theirAge >= 16 && underageScore !== null) return Matcher.formatKinkScore(underageScore, `ages of ${theirAge}`);
+    if (theirAge < 18 && theirAge >= 16 && underageScore !== null)
+      return Matcher.formatKinkScore(underageScore, `ages of ${theirAge}`);
 
     const yourAge = this.yourAnalysis.age;
 
-    if (yourAge !== null && yourAge > 0 && theirAge > 0 && yourAge <= 80 && theirAge <= 80) {
-      const olderCharactersScore = Matcher.getKinkPreference(you, Kink.OlderCharacters);
-      const youngerCharactersScore = Matcher.getKinkPreference(you, Kink.YoungerCharacters);
+    if (
+      yourAge !== null &&
+      yourAge > 0 &&
+      theirAge > 0 &&
+      yourAge <= 80 &&
+      theirAge <= 80
+    ) {
+      const olderCharactersScore = Matcher.getKinkPreference(
+        you,
+        Kink.OlderCharacters
+      );
+      const youngerCharactersScore = Matcher.getKinkPreference(
+        you,
+        Kink.YoungerCharacters
+      );
       const ageDifference = Math.abs(yourAge - theirAge);
 
-      if (yourAge < theirAge && olderCharactersScore !== null && ageDifference >= 8)
-        return Matcher.formatKinkScore(olderCharactersScore, 'older characters');
+      if (
+        yourAge < theirAge &&
+        olderCharactersScore !== null &&
+        ageDifference >= 8
+      )
+        return Matcher.formatKinkScore(
+          olderCharactersScore,
+          'older characters'
+        );
 
-      if (yourAge > theirAge && youngerCharactersScore !== null && ageDifference >= 8)
-        return Matcher.formatKinkScore(youngerCharactersScore, 'younger characters');
+      if (
+        yourAge > theirAge &&
+        youngerCharactersScore !== null &&
+        ageDifference >= 8
+      )
+        return Matcher.formatKinkScore(
+          youngerCharactersScore,
+          'younger characters'
+        );
     }
 
     return new Score(Scoring.NEUTRAL);
@@ -761,10 +908,14 @@ export class Matcher {
     const genderName = `${Gender[theirGender].toLowerCase()}s`;
     const genderKinkScore = Matcher.getKinkGenderPreference(you, theirGender);
 
-    if (genderKinkScore !== null) return Matcher.formatKinkScore(genderKinkScore, genderName);
+    if (genderKinkScore !== null)
+      return Matcher.formatKinkScore(genderKinkScore, genderName);
 
     if (yourGender && yourOrientation) {
-      if (Matcher.isCisGender(yourGender) && !Matcher.isCisGender(theirGender)) {
+      if (
+        Matcher.isCisGender(yourGender) &&
+        !Matcher.isCisGender(theirGender)
+      ) {
         if (
           [
             Orientation.Straight,
@@ -781,7 +932,10 @@ export class Matcher {
             return Matcher.formatKinkScore(nonBinaryPref, 'non-binary genders');
           }
 
-          return new Score(Scoring.MISMATCH, 'No <span>non-binary</span> genders');
+          return new Score(
+            Scoring.MISMATCH,
+            'No <span>non-binary</span> genders'
+          );
         }
       }
     }
@@ -793,10 +947,16 @@ export class Matcher {
     const theirBodyType = Matcher.getTagValueList(TagId.BodyType, this.them);
 
     if (theirBodyType && theirBodyType in bodyTypeKinkMapping) {
-      const bodyTypePreference = Matcher.getKinkPreference(this.you, bodyTypeKinkMapping[theirBodyType]);
+      const bodyTypePreference = Matcher.getKinkPreference(
+        this.you,
+        bodyTypeKinkMapping[theirBodyType]
+      );
 
       if (bodyTypePreference !== null) {
-        return Matcher.formatKinkScore(bodyTypePreference, `${BodyType[theirBodyType].toLowerCase()}s`);
+        return Matcher.formatKinkScore(
+          bodyTypePreference,
+          `${BodyType[theirBodyType].toLowerCase()}s`
+        );
       }
     }
 
@@ -807,70 +967,122 @@ export class Matcher {
     const you = this.you;
     const yourSubDomRole = this.yourAnalysis.subDomRole;
     const theirSubDomRole = this.theirAnalysis.subDomRole;
-    const yourRoleReversalPreference = Matcher.getKinkPreference(you, Kink.RoleReversal);
+    const yourRoleReversalPreference = Matcher.getKinkPreference(
+      you,
+      Kink.RoleReversal
+    );
 
     if (!yourSubDomRole || !theirSubDomRole) return new Score(Scoring.NEUTRAL);
 
     if (yourSubDomRole === SubDomRole.UsuallyDominant) {
-      if (theirSubDomRole === SubDomRole.Switch) return new Score(Scoring.MATCH, `Loves <span>switches</span> (role)`);
+      if (theirSubDomRole === SubDomRole.Switch)
+        return new Score(Scoring.MATCH, `Loves <span>switches</span> (role)`);
 
-      if (theirSubDomRole === SubDomRole.AlwaysSubmissive || theirSubDomRole === SubDomRole.UsuallySubmissive)
+      if (
+        theirSubDomRole === SubDomRole.AlwaysSubmissive ||
+        theirSubDomRole === SubDomRole.UsuallySubmissive
+      )
         return new Score(Scoring.MATCH, `Loves <span>submissives</span>`);
 
-      if (yourRoleReversalPreference === KinkPreference.Favorite) return new Score(Scoring.MATCH, `Loves <span>role reversal</span>`);
+      if (yourRoleReversalPreference === KinkPreference.Favorite)
+        return new Score(Scoring.MATCH, `Loves <span>role reversal</span>`);
 
-      if (yourRoleReversalPreference === KinkPreference.Yes) return new Score(Scoring.MATCH, `Likes <span>role reversal</span>`);
+      if (yourRoleReversalPreference === KinkPreference.Yes)
+        return new Score(Scoring.MATCH, `Likes <span>role reversal</span>`);
 
-      return new Score(Scoring.WEAK_MISMATCH, 'Hesitant about <span>dominants</span>');
+      return new Score(
+        Scoring.WEAK_MISMATCH,
+        'Hesitant about <span>dominants</span>'
+      );
     }
 
     if (yourSubDomRole === SubDomRole.AlwaysDominant) {
-      if (theirSubDomRole === SubDomRole.Switch) return new Score(Scoring.WEAK_MATCH, `Likes <span>switches</span> (role)`);
+      if (theirSubDomRole === SubDomRole.Switch)
+        return new Score(
+          Scoring.WEAK_MATCH,
+          `Likes <span>switches</span> (role)`
+        );
 
-      if (theirSubDomRole === SubDomRole.AlwaysSubmissive || theirSubDomRole === SubDomRole.UsuallySubmissive)
+      if (
+        theirSubDomRole === SubDomRole.AlwaysSubmissive ||
+        theirSubDomRole === SubDomRole.UsuallySubmissive
+      )
         return new Score(Scoring.MATCH, `Loves <span>submissives</span>`);
 
-      if (yourRoleReversalPreference === KinkPreference.Favorite) return new Score(Scoring.MATCH, `Loves <span>role reversal</span>`);
+      if (yourRoleReversalPreference === KinkPreference.Favorite)
+        return new Score(Scoring.MATCH, `Loves <span>role reversal</span>`);
 
-      if (yourRoleReversalPreference === KinkPreference.Yes) return new Score(Scoring.MATCH, `Likes <span>role reversal</span>`);
+      if (yourRoleReversalPreference === KinkPreference.Yes)
+        return new Score(Scoring.MATCH, `Likes <span>role reversal</span>`);
 
-      if (yourSubDomRole === SubDomRole.AlwaysDominant && theirSubDomRole === SubDomRole.AlwaysDominant)
+      if (
+        yourSubDomRole === SubDomRole.AlwaysDominant &&
+        theirSubDomRole === SubDomRole.AlwaysDominant
+      )
         return new Score(Scoring.MISMATCH, 'No <span>dominants</span>');
 
-      return new Score(Scoring.WEAK_MISMATCH, 'Hesitant about <span>dominants</span>');
+      return new Score(
+        Scoring.WEAK_MISMATCH,
+        'Hesitant about <span>dominants</span>'
+      );
     }
 
     if (yourSubDomRole === SubDomRole.UsuallySubmissive) {
-      if (theirSubDomRole === SubDomRole.Switch) return new Score(Scoring.MATCH, `Loves <span>switches</span> (role)`);
+      if (theirSubDomRole === SubDomRole.Switch)
+        return new Score(Scoring.MATCH, `Loves <span>switches</span> (role)`);
 
-      if (theirSubDomRole === SubDomRole.AlwaysDominant || theirSubDomRole === SubDomRole.UsuallyDominant)
+      if (
+        theirSubDomRole === SubDomRole.AlwaysDominant ||
+        theirSubDomRole === SubDomRole.UsuallyDominant
+      )
         return new Score(Scoring.MATCH, `Loves <span>dominants</span>`);
 
-      if (yourRoleReversalPreference === KinkPreference.Favorite) return new Score(Scoring.MATCH, `Loves <span>role reversal</span>`);
+      if (yourRoleReversalPreference === KinkPreference.Favorite)
+        return new Score(Scoring.MATCH, `Loves <span>role reversal</span>`);
 
-      if (yourRoleReversalPreference === KinkPreference.Yes) return new Score(Scoring.MATCH, `Likes <span>role reversal</span>`);
+      if (yourRoleReversalPreference === KinkPreference.Yes)
+        return new Score(Scoring.MATCH, `Likes <span>role reversal</span>`);
 
-      return new Score(Scoring.WEAK_MISMATCH, 'Hesitant about <span>submissives</span>');
+      return new Score(
+        Scoring.WEAK_MISMATCH,
+        'Hesitant about <span>submissives</span>'
+      );
     }
 
     if (yourSubDomRole === SubDomRole.AlwaysSubmissive) {
-      if (theirSubDomRole === SubDomRole.Switch) return new Score(Scoring.WEAK_MATCH, `Likes <span>switches</span> (role)`);
+      if (theirSubDomRole === SubDomRole.Switch)
+        return new Score(
+          Scoring.WEAK_MATCH,
+          `Likes <span>switches</span> (role)`
+        );
 
-      if (theirSubDomRole === SubDomRole.AlwaysDominant || theirSubDomRole === SubDomRole.UsuallyDominant)
+      if (
+        theirSubDomRole === SubDomRole.AlwaysDominant ||
+        theirSubDomRole === SubDomRole.UsuallyDominant
+      )
         return new Score(Scoring.MATCH, `Loves <span>dominants</span>`);
 
-      if (yourRoleReversalPreference === KinkPreference.Favorite) return new Score(Scoring.MATCH, `Loves <span>role reversal</span>`);
+      if (yourRoleReversalPreference === KinkPreference.Favorite)
+        return new Score(Scoring.MATCH, `Loves <span>role reversal</span>`);
 
-      if (yourRoleReversalPreference === KinkPreference.Yes) return new Score(Scoring.MATCH, `Likes <span>role reversal</span>`);
+      if (yourRoleReversalPreference === KinkPreference.Yes)
+        return new Score(Scoring.MATCH, `Likes <span>role reversal</span>`);
 
-      if (yourSubDomRole === SubDomRole.AlwaysSubmissive && theirSubDomRole === SubDomRole.AlwaysSubmissive)
+      if (
+        yourSubDomRole === SubDomRole.AlwaysSubmissive &&
+        theirSubDomRole === SubDomRole.AlwaysSubmissive
+      )
         return new Score(Scoring.MISMATCH, 'No <span>submissives</span>');
 
-      return new Score(Scoring.WEAK_MISMATCH, 'Hesitant about <span>submissives</span>');
+      return new Score(
+        Scoring.WEAK_MISMATCH,
+        'Hesitant about <span>submissives</span>'
+      );
     }
 
     // You must be a switch
-    if (theirSubDomRole === SubDomRole.Switch) return new Score(Scoring.MATCH, `Loves <span>switches</span> (role)`);
+    if (theirSubDomRole === SubDomRole.Switch)
+      return new Score(Scoring.MATCH, `Loves <span>switches</span> (role)`);
 
     // if (yourRoleReversalPreference === KinkPreference.Favorite)
     //     return new Score(Scoring.MATCH, `Loves <span>role reversal</span>`);
@@ -878,10 +1090,16 @@ export class Matcher {
     // if (yourRoleReversalPreference === KinkPreference.Yes)
     //     return new Score(Scoring.MATCH, `Likes <span>role reversal</span>`);
 
-    if (theirSubDomRole === SubDomRole.AlwaysDominant || theirSubDomRole === SubDomRole.UsuallyDominant)
+    if (
+      theirSubDomRole === SubDomRole.AlwaysDominant ||
+      theirSubDomRole === SubDomRole.UsuallyDominant
+    )
       return new Score(Scoring.MATCH, `Loves <span>dominants</span>`);
 
-    if (theirSubDomRole === SubDomRole.AlwaysSubmissive || theirSubDomRole === SubDomRole.UsuallySubmissive)
+    if (
+      theirSubDomRole === SubDomRole.AlwaysSubmissive ||
+      theirSubDomRole === SubDomRole.UsuallySubmissive
+    )
       return new Score(Scoring.MATCH, `Loves <span>submissives</span>`);
 
     return new Score(Scoring.NEUTRAL);
@@ -894,49 +1112,96 @@ export class Matcher {
     if (!yourPosition || !theirPosition) return new Score(Scoring.NEUTRAL);
 
     if (yourPosition === Position.UsuallyTop) {
-      if (theirPosition === Position.Switch) return new Score(Scoring.MATCH, `Loves <span>switches</span> (position)`);
+      if (theirPosition === Position.Switch)
+        return new Score(
+          Scoring.MATCH,
+          `Loves <span>switches</span> (position)`
+        );
 
-      if (theirPosition === Position.AlwaysBottom || theirPosition === Position.UsuallyBottom)
+      if (
+        theirPosition === Position.AlwaysBottom ||
+        theirPosition === Position.UsuallyBottom
+      )
         return new Score(Scoring.MATCH, `Loves <span>bottoms</span>`);
 
-      return new Score(Scoring.WEAK_MISMATCH, 'Hesitant about <span>tops</span>');
+      return new Score(
+        Scoring.WEAK_MISMATCH,
+        'Hesitant about <span>tops</span>'
+      );
     }
 
     if (yourPosition === Position.AlwaysTop) {
-      if (theirPosition === Position.Switch) return new Score(Scoring.WEAK_MATCH, `Likes <span>switches</span> (position)`);
+      if (theirPosition === Position.Switch)
+        return new Score(
+          Scoring.WEAK_MATCH,
+          `Likes <span>switches</span> (position)`
+        );
 
-      if (theirPosition === Position.AlwaysBottom || theirPosition === Position.UsuallyBottom)
+      if (
+        theirPosition === Position.AlwaysBottom ||
+        theirPosition === Position.UsuallyBottom
+      )
         return new Score(Scoring.MATCH, `Loves <span>bottoms</span>`);
 
-      if (yourPosition === Position.AlwaysTop && theirPosition === Position.AlwaysTop)
+      if (
+        yourPosition === Position.AlwaysTop &&
+        theirPosition === Position.AlwaysTop
+      )
         return new Score(Scoring.MISMATCH, 'No <span>tops</span>');
 
-      return new Score(Scoring.WEAK_MISMATCH, 'Hesitant about <span>tops</span>');
+      return new Score(
+        Scoring.WEAK_MISMATCH,
+        'Hesitant about <span>tops</span>'
+      );
     }
 
     if (yourPosition === Position.UsuallyBottom) {
-      if (theirPosition === Position.Switch) return new Score(Scoring.MATCH, `Loves <span>switches</span> (position)`);
+      if (theirPosition === Position.Switch)
+        return new Score(
+          Scoring.MATCH,
+          `Loves <span>switches</span> (position)`
+        );
 
-      if (theirPosition === Position.AlwaysTop || theirPosition === Position.UsuallyTop)
+      if (
+        theirPosition === Position.AlwaysTop ||
+        theirPosition === Position.UsuallyTop
+      )
         return new Score(Scoring.MATCH, `Loves <span>tops</span>`);
 
-      return new Score(Scoring.WEAK_MISMATCH, 'Hesitant about <span>bottoms</span>');
+      return new Score(
+        Scoring.WEAK_MISMATCH,
+        'Hesitant about <span>bottoms</span>'
+      );
     }
 
     if (yourPosition === Position.AlwaysBottom) {
-      if (theirPosition === Position.Switch) return new Score(Scoring.WEAK_MATCH, `Likes <span>switches</span> (position)`);
+      if (theirPosition === Position.Switch)
+        return new Score(
+          Scoring.WEAK_MATCH,
+          `Likes <span>switches</span> (position)`
+        );
 
-      if (theirPosition === Position.AlwaysTop || theirPosition === Position.UsuallyTop)
+      if (
+        theirPosition === Position.AlwaysTop ||
+        theirPosition === Position.UsuallyTop
+      )
         return new Score(Scoring.MATCH, `Loves <span>tops</span>`);
 
-      if (yourPosition === Position.AlwaysBottom && theirPosition === Position.AlwaysBottom)
+      if (
+        yourPosition === Position.AlwaysBottom &&
+        theirPosition === Position.AlwaysBottom
+      )
         return new Score(Scoring.MISMATCH, 'No <span>bottoms</span>');
 
-      return new Score(Scoring.WEAK_MISMATCH, 'Hesitant about <span>bottoms</span>');
+      return new Score(
+        Scoring.WEAK_MISMATCH,
+        'Hesitant about <span>bottoms</span>'
+      );
     }
 
     // You must be a switch
-    if (theirPosition === Position.Switch) return new Score(Scoring.MATCH, `Loves <span>switches</span> (position)`);
+    if (theirPosition === Position.Switch)
+      return new Score(Scoring.MATCH, `Loves <span>switches</span> (position)`);
 
     // if (yourRoleReversalPreference === KinkPreference.Favorite)
     //     return new Score(Scoring.MATCH, `Loves <span>role reversal</span>`);
@@ -944,16 +1209,31 @@ export class Matcher {
     // if (yourRoleReversalPreference === KinkPreference.Yes)
     //     return new Score(Scoring.MATCH, `Likes <span>role reversal</span>`);
 
-    if (theirPosition === Position.AlwaysTop || theirPosition === Position.UsuallyTop)
+    if (
+      theirPosition === Position.AlwaysTop ||
+      theirPosition === Position.UsuallyTop
+    )
       return new Score(Scoring.MATCH, `Loves <span>tops</span>`);
 
-    if (theirPosition === Position.AlwaysBottom || theirPosition === Position.UsuallyBottom)
+    if (
+      theirPosition === Position.AlwaysBottom ||
+      theirPosition === Position.UsuallyBottom
+    )
       return new Score(Scoring.MATCH, `Loves <span>bottoms</span>`);
 
     return new Score(Scoring.NEUTRAL);
   }
 
-  private resolveKinkBucketScore(bucket: 'all' | 'favorite' | 'yes' | 'maybe' | 'no' | 'positive' | 'negative'): KinkBucketScore {
+  private resolveKinkBucketScore(
+    bucket:
+      | 'all'
+      | 'favorite'
+      | 'yes'
+      | 'maybe'
+      | 'no'
+      | 'positive'
+      | 'negative'
+  ): KinkBucketScore {
     const yourKinks = Matcher.getAllStandardKinks(this.you);
     const theirKinks = Matcher.getAllStandardKinks(this.them);
 
@@ -962,17 +1242,24 @@ export class Matcher {
     const result: any = _.reduce(
       yourKinks,
       (accum, yourKinkValue: any, yourKinkId: any) => {
-        const theirKinkId = yourKinkId in kinkComparisonSwaps ? kinkComparisonSwaps[yourKinkId] : yourKinkId;
+        const theirKinkId =
+          yourKinkId in kinkComparisonSwaps
+            ? kinkComparisonSwaps[yourKinkId]
+            : yourKinkId;
 
         const isExcluded =
           yourKinkId in kinkComparisonExclusions ||
-          (Store.shared.kinks[yourKinkId] && Store.shared.kinks[yourKinkId].kink_group in kinkComparisonExclusionGroups);
+          (Store.shared.kinks[yourKinkId] &&
+            Store.shared.kinks[yourKinkId].kink_group in
+              kinkComparisonExclusionGroups);
 
         const isBucketMatch =
           yourKinkValue === bucket ||
           bucket === 'all' ||
-          (bucket === 'negative' && (yourKinkValue === 'no' || yourKinkValue === 'maybe')) ||
-          (bucket === 'positive' && (yourKinkValue === 'favorite' || yourKinkValue === 'yes'));
+          (bucket === 'negative' &&
+            (yourKinkValue === 'no' || yourKinkValue === 'maybe')) ||
+          (bucket === 'positive' &&
+            (yourKinkValue === 'favorite' || yourKinkValue === 'yes'));
 
         if (isBucketMatch && !isExcluded) {
           accum.total += 1;
@@ -986,7 +1273,9 @@ export class Matcher {
 
         if (isBucketMatch) {
           return {
-            score: accum.score + this.getKinkMatchScore(yourKinkValue, theirKinkValue),
+            score:
+              accum.score +
+              this.getKinkMatchScore(yourKinkValue, theirKinkValue),
             count: accum.count + 1,
             total: accum.total
           };
@@ -1003,7 +1292,9 @@ export class Matcher {
     result.weighted =
       result.count === 0 || Math.abs(result.score) < 1
         ? 0
-        : Math.log(result.total) * Math.log(Math.abs(result.score)) * Math.sign(result.score);
+        : Math.log(result.total) *
+          Math.log(Math.abs(result.score)) *
+          Math.sign(result.score);
     // (Math.log(result.count) / Math.log(kinkMatchWeights.logBase)) // log 8 base
     // * (result.score / result.count)
 
@@ -1041,7 +1332,10 @@ export class Matcher {
     return kinks as any;
   }
 
-  static findKinkById(c: Character, kinkId: number): KinkChoice | number | undefined {
+  static findKinkById(
+    c: Character,
+    kinkId: number
+  ): KinkChoice | number | undefined {
     if (kinkId in c.kinks) {
       return c.kinks[kinkId];
     }
@@ -1063,7 +1357,10 @@ export class Matcher {
     return _.get(kinkMatchScoreMap, `${aValue}.${bValue}`, 0) * 7; // forces range above 1.0
   }
 
-  static getTagValue(tagId: number, c: Character): CharacterInfotag | undefined {
+  static getTagValue(
+    tagId: number,
+    c: Character
+  ): CharacterInfotag | undefined {
     return c.infotags[tagId];
   }
 
@@ -1076,10 +1373,16 @@ export class Matcher {
   }
 
   static isCisGender(...genders: Gender[] | null[]): boolean {
-    return _.every(genders, (g: Gender) => g === Gender.Female || g === Gender.Male);
+    return _.every(
+      genders,
+      (g: Gender) => g === Gender.Female || g === Gender.Male
+    );
   }
 
-  static getKinkPreference(c: Character, kinkId: number): KinkPreference | null {
+  static getKinkPreference(
+    c: Character,
+    kinkId: number
+  ): KinkPreference | null {
     const kinkVal = Matcher.findKinkById(c, kinkId);
 
     if (kinkVal === undefined) {
@@ -1099,7 +1402,10 @@ export class Matcher {
     return kinkMapping[custom.choice];
   }
 
-  static getKinkGenderPreference(c: Character, gender: Gender): KinkPreference | null {
+  static getKinkGenderPreference(
+    c: Character,
+    gender: Gender
+  ): KinkPreference | null {
     if (!(gender in genderKinkMapping)) {
       return null;
     }
@@ -1107,7 +1413,10 @@ export class Matcher {
     return Matcher.getKinkPreference(c, genderKinkMapping[gender]);
   }
 
-  static getKinkSpeciesPreference(c: Character, species: Species): KinkPreference | null {
+  static getKinkSpeciesPreference(
+    c: Character,
+    species: Species
+  ): KinkPreference | null {
     return Matcher.getKinkPreference(c, species);
   }
 
@@ -1157,7 +1466,10 @@ export class Matcher {
     const s = Matcher.getMappedSpecies(mySpecies.string);
 
     if (!s) {
-      log.debug('matcher.species.unknown', { character: c.name, species: mySpecies.string });
+      log.debug('matcher.species.unknown', {
+        character: c.name,
+        species: mySpecies.string
+      });
     }
 
     return s;
@@ -1178,16 +1490,25 @@ export class Matcher {
   private static speciesMappingCache?: SpeciesMappingCache;
   private static likelyHumanCache?: SpeciesMappingCache;
 
-  private static matchMappedSpecies(species: string, mapping: SpeciesMappingCache, skipAscii: boolean = false): Species | null {
+  private static matchMappedSpecies(
+    species: string,
+    mapping: SpeciesMappingCache,
+    skipAscii: boolean = false
+  ): Species | null {
     let foundSpeciesId: Species | null = null;
     let match = '';
 
-    const finalSpecies = (skipAscii ? species : anyAscii(species)).toLowerCase().trim();
+    const finalSpecies = (skipAscii ? species : anyAscii(species))
+      .toLowerCase()
+      .trim();
 
     _.each(mapping, (matchers, speciesId: string) => {
       _.each(matchers, matcher => {
         // finalSpecies.indexOf(k) >= 0)
-        if (matcher.keyword.length > match.length && matcher.regexp.test(finalSpecies)) {
+        if (
+          matcher.keyword.length > match.length &&
+          matcher.regexp.test(finalSpecies)
+        ) {
           match = matcher.keyword;
           foundSpeciesId = parseInt(speciesId, 10);
         }
@@ -1199,11 +1520,13 @@ export class Matcher {
 
   static getMappedSpecies(species: string): Species | null {
     if (!Matcher.speciesMappingCache) {
-      Matcher.speciesMappingCache = Matcher.generateSpeciesMappingCache(speciesMapping);
+      Matcher.speciesMappingCache =
+        Matcher.generateSpeciesMappingCache(speciesMapping);
     }
 
     if (!Matcher.likelyHumanCache) {
-      Matcher.likelyHumanCache = Matcher.generateSpeciesMappingCache(likelyHuman);
+      Matcher.likelyHumanCache =
+        Matcher.generateSpeciesMappingCache(likelyHuman);
     }
 
     return (
@@ -1267,7 +1590,12 @@ export class Matcher {
     const yourScores = skipYours ? [] : _.values(m.you.scores);
     const theirScores = skipTheirs ? [] : _.values(m.them.scores);
 
-    return _.reduce(_.concat(yourScores, theirScores), (accum: number, score: Score) => accum + (score.score === scoreLevel ? 1 : 0), 0);
+    return _.reduce(
+      _.concat(yourScores, theirScores),
+      (accum: number, score: Score) =>
+        accum + (score.score === scoreLevel ? 1 : 0),
+      0
+    );
   }
 
   static countScoresAboveLevel(
@@ -1285,7 +1613,9 @@ export class Matcher {
 
     return _.reduce(
       _.concat(yourScores, theirScores),
-      (accum: number, score: Score) => accum + (score.score > scoreLevel && score.score !== Scoring.NEUTRAL ? 1 : 0),
+      (accum: number, score: Score) =>
+        accum +
+        (score.score > scoreLevel && score.score !== Scoring.NEUTRAL ? 1 : 0),
       0
     );
   }
@@ -1303,7 +1633,12 @@ export class Matcher {
 
     const ageStr = rawAge.string.toLowerCase().replace(/[,.]/g, '').trim();
 
-    if (ageStr.indexOf('shota') >= 0 || ageStr.indexOf('loli') >= 0 || ageStr.indexOf('lolli') >= 0 || ageStr.indexOf('pup') >= 0) {
+    if (
+      ageStr.indexOf('shota') >= 0 ||
+      ageStr.indexOf('loli') >= 0 ||
+      ageStr.indexOf('lolli') >= 0 ||
+      ageStr.indexOf('pup') >= 0
+    ) {
       return 10;
     }
 
@@ -1356,21 +1691,40 @@ export class Matcher {
       return { min: Math.min(v1, v2), max: Math.max(v1, v2) };
     }
 
-    if (ageStr.indexOf('shota') >= 0 || ageStr.indexOf('loli') >= 0 || ageStr.indexOf('lolli') >= 0 || ageStr.indexOf('pup') >= 0) {
+    if (
+      ageStr.indexOf('shota') >= 0 ||
+      ageStr.indexOf('loli') >= 0 ||
+      ageStr.indexOf('lolli') >= 0 ||
+      ageStr.indexOf('pup') >= 0
+    ) {
       return { min: 10, max: 10 };
     }
 
     return null;
   }
 
-  static calculateSearchScoreForMatch(score: Scoring, match: MatchReport, penalty: number): number {
-    if (match.you.you.name === 'YiffBot 4000' || match.you.them.name === 'YiffBot 4000') {
+  static calculateSearchScoreForMatch(
+    score: Scoring,
+    match: MatchReport,
+    penalty: number
+  ): number {
+    if (
+      match.you.you.name === 'YiffBot 4000' ||
+      match.you.them.name === 'YiffBot 4000'
+    ) {
       return kinkMatchWeights.unicornThreshold;
     }
 
     const totalScoreDimensions = match ? Matcher.countScoresTotal(match) : 0;
-    const dimensionsAtScoreLevel = match ? Matcher.countScoresAtLevel(match, score) || 0 : 0;
-    const dimensionsAboveScoreLevel = match ? Matcher.countScoresAboveLevel(match, Math.max(score, Scoring.WEAK_MATCH)) : 0;
+    const dimensionsAtScoreLevel = match
+      ? Matcher.countScoresAtLevel(match, score) || 0
+      : 0;
+    const dimensionsAboveScoreLevel = match
+      ? Matcher.countScoresAboveLevel(
+          match,
+          Math.max(score, Scoring.WEAK_MATCH)
+        )
+      : 0;
 
     let atLevelScore = 0;
     let aboveLevelScore = 0;
@@ -1382,23 +1736,31 @@ export class Matcher {
 
     if (dimensionsAtScoreLevel > 0 && totalScoreDimensions > 0) {
       const matchRatio = dimensionsAtScoreLevel / totalScoreDimensions;
-      theirAtLevelDimensions = Matcher.countScoresAtLevel(match, score, true, false) || 0;
+      theirAtLevelDimensions =
+        Matcher.countScoresAtLevel(match, score, true, false) || 0;
 
       // 1.0 == bad balance; 0.0 == ideal balance
-      atLevelMul = Math.abs(theirAtLevelDimensions / dimensionsAtScoreLevel - 0.5) * 2;
+      atLevelMul =
+        Math.abs(theirAtLevelDimensions / dimensionsAtScoreLevel - 0.5) * 2;
 
-      atLevelScore = (1 - atLevelMul * 0.5) * Math.pow(dimensionsAtScoreLevel, matchRatio);
+      atLevelScore =
+        (1 - atLevelMul * 0.5) * Math.pow(dimensionsAtScoreLevel, matchRatio);
     }
 
     if (dimensionsAboveScoreLevel > 0 && totalScoreDimensions > 0) {
       const matchRatio = dimensionsAboveScoreLevel / totalScoreDimensions;
 
-      theirAboveLevelDimensions = Matcher.countScoresAboveLevel(match, score, true, false) || 0;
+      theirAboveLevelDimensions =
+        Matcher.countScoresAboveLevel(match, score, true, false) || 0;
 
       // 1.0 == bad balance; 0.0 == ideal balance
-      aboveLevelMul = Math.abs(theirAboveLevelDimensions / dimensionsAboveScoreLevel - 0.5) * 2;
+      aboveLevelMul =
+        Math.abs(theirAboveLevelDimensions / dimensionsAboveScoreLevel - 0.5) *
+        2;
 
-      aboveLevelScore = (1 - aboveLevelMul * 0.5) * Math.pow(dimensionsAboveScoreLevel, matchRatio);
+      aboveLevelScore =
+        (1 - aboveLevelMul * 0.5) *
+        Math.pow(dimensionsAboveScoreLevel, matchRatio);
     }
 
     // const kinkScore = match.you.kinkScore.weighted;

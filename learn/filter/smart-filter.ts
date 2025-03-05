@@ -1,6 +1,13 @@
 import * as _ from 'lodash';
 import { Matcher } from '../matcher';
-import { BodyType, Build, Gender, Kink, Species, TagId } from '../matcher-types';
+import {
+  BodyType,
+  Build,
+  Gender,
+  Kink,
+  Species,
+  TagId
+} from '../matcher-types';
 import { SmartFilterSelection, SmartFilterSettings } from './types';
 import { Character } from '../../interfaces';
 import log from 'electron-log';
@@ -44,10 +51,24 @@ export class SmartFilter {
     const kinks = this.testKinks(c);
     const genders = this.testGenders(c);
 
-    const isFiltered = builds || bodyTypes || species || isAnthro || isHuman || kinks || genders;
-    const result = { isFiltered, builds, bodyTypes, species, isAnthro, isHuman, kinks, genders };
+    const isFiltered =
+      builds || bodyTypes || species || isAnthro || isHuman || kinks || genders;
+    const result = {
+      isFiltered,
+      builds,
+      bodyTypes,
+      species,
+      isAnthro,
+      isHuman,
+      kinks,
+      genders
+    };
 
-    log.silly('smart-filter.test', { name: c.name, filterName: this.opts.name, result });
+    log.silly('smart-filter.test', {
+      name: c.name,
+      filterName: this.opts.name,
+      result
+    });
 
     return result;
   }
@@ -85,7 +106,10 @@ export class SmartFilter {
 
     const build = Matcher.getTagValueList(TagId.Build, c);
 
-    return build !== null && _.findIndex(this.opts.builds || [], b => b === build) >= 0;
+    return (
+      build !== null &&
+      _.findIndex(this.opts.builds || [], b => b === build) >= 0
+    );
   }
 
   testGenders(c: Character): boolean {
@@ -95,7 +119,10 @@ export class SmartFilter {
 
     const gender = Matcher.getTagValueList(TagId.Gender, c);
 
-    return gender !== null && _.findIndex(this.opts.genders || [], g => g === gender) >= 0;
+    return (
+      gender !== null &&
+      _.findIndex(this.opts.genders || [], g => g === gender) >= 0
+    );
   }
 
   testBodyTypes(c: Character): boolean {
@@ -105,7 +132,10 @@ export class SmartFilter {
 
     const bodyType = Matcher.getTagValueList(TagId.BodyType, c);
 
-    return bodyType !== null && _.findIndex(this.opts.bodyTypes || [], b => b === bodyType) >= 0;
+    return (
+      bodyType !== null &&
+      _.findIndex(this.opts.bodyTypes || [], b => b === bodyType) >= 0
+    );
   }
 
   testSpecies(c: Character): boolean {
@@ -115,7 +145,10 @@ export class SmartFilter {
 
     const species = Matcher.species(c);
 
-    return species !== null && _.findIndex(this.opts.species || [], s => s === species) >= 0;
+    return (
+      species !== null &&
+      _.findIndex(this.opts.species || [], s => s === species) >= 0
+    );
   }
 
   testIsHuman(c: Character): boolean {
@@ -134,7 +167,13 @@ export type SmartFilterCollection = {
 export const smartFilters: SmartFilterCollection = {
   ageplay: new SmartFilter({
     name: 'ageplay',
-    kinks: [Kink.Ageplay, Kink.AgeProgression, Kink.AgeRegression, Kink.UnderageCharacters, Kink.Infantilism]
+    kinks: [
+      Kink.Ageplay,
+      Kink.AgeProgression,
+      Kink.AgeRegression,
+      Kink.UnderageCharacters,
+      Kink.Infantilism
+    ]
   }),
 
   anthro: new SmartFilter({
@@ -200,12 +239,24 @@ export const smartFilters: SmartFilterCollection = {
 
   incest: new SmartFilter({
     name: 'incest',
-    kinks: [Kink.Incest, Kink.IncestParental, Kink.IncestSiblings, Kink.ParentChildPlay, Kink.ForcedIncest]
+    kinks: [
+      Kink.Incest,
+      Kink.IncestParental,
+      Kink.IncestSiblings,
+      Kink.ParentChildPlay,
+      Kink.ForcedIncest
+    ]
   }),
 
   intersex: new SmartFilter({
     name: 'intersex',
-    genders: [Gender.Transgender, Gender.Herm, Gender.MaleHerm, Gender.Cuntboy, Gender.Shemale]
+    genders: [
+      Gender.Transgender,
+      Gender.Herm,
+      Gender.MaleHerm,
+      Gender.Cuntboy,
+      Gender.Shemale
+    ]
   }),
 
   male: new SmartFilter({
@@ -236,7 +287,14 @@ export const smartFilters: SmartFilterCollection = {
 
   pregnancy: new SmartFilter({
     name: 'pregnancy',
-    kinks: [Kink.AlternativePregnancy, Kink.AnalPregnancy, Kink.Birthing, Kink.ExtremePregnancy, Kink.MalePregnancy, Kink.Pregnancy]
+    kinks: [
+      Kink.AlternativePregnancy,
+      Kink.AnalPregnancy,
+      Kink.Birthing,
+      Kink.ExtremePregnancy,
+      Kink.MalePregnancy,
+      Kink.Pregnancy
+    ]
   }),
 
   pokemon: new SmartFilter({
@@ -251,7 +309,13 @@ export const smartFilters: SmartFilterCollection = {
 
   scat: new SmartFilter({
     name: 'scat',
-    kinks: [Kink.HyperScat, Kink.Scat, Kink.ScatTorture, Kink.Soiling, Kink.SwallowingFeces]
+    kinks: [
+      Kink.HyperScat,
+      Kink.Scat,
+      Kink.ScatTorture,
+      Kink.Soiling,
+      Kink.SwallowingFeces
+    ]
   }),
 
   std: new SmartFilter({
@@ -303,7 +367,13 @@ export const smartFilters: SmartFilterCollection = {
 
   watersports: new SmartFilter({
     name: 'watersports',
-    kinks: [Kink.HyperWatersports, Kink.PissEnemas, Kink.SwallowingUrine, Kink.Watersports, Kink.Wetting]
+    kinks: [
+      Kink.HyperWatersports,
+      Kink.PissEnemas,
+      Kink.SwallowingUrine,
+      Kink.Watersports,
+      Kink.Wetting
+    ]
   }),
 
   zoophilia: new SmartFilter({
@@ -325,7 +395,11 @@ export function testSmartFilters(
 
   const coreCharacter = core.characters.get(c.name);
 
-  if (coreCharacter?.isChatOp || coreCharacter?.isBookmarked || coreCharacter?.isFriend) {
+  if (
+    coreCharacter?.isChatOp ||
+    coreCharacter?.isBookmarked ||
+    coreCharacter?.isFriend
+  ) {
     return null;
   }
 
@@ -341,12 +415,20 @@ export function testSmartFilters(
 
     if (age !== null) {
       if (opts.minAge !== null && age < opts.minAge) {
-        log.debug('smart-filter.age.min', { name: c.name, age, minAge: opts.minAge });
+        log.debug('smart-filter.age.min', {
+          name: c.name,
+          age,
+          minAge: opts.minAge
+        });
         ageCheck.ageMin = true;
       }
 
       if (opts.maxAge !== null && age > opts.maxAge) {
-        log.debug('smart-filter.age.max', { name: c.name, age, maxAge: opts.maxAge });
+        log.debug('smart-filter.age.max', {
+          name: c.name,
+          age,
+          maxAge: opts.maxAge
+        });
         ageCheck.ageMax = true;
       }
     }
@@ -354,11 +436,17 @@ export function testSmartFilters(
 
   return {
     ageCheck,
-    filters: _.mapValues(smartFilters, (f, k) => (opts.smartFilters as any)[k] && f.test(c))
+    filters: _.mapValues(
+      smartFilters,
+      (f, k) => (opts.smartFilters as any)[k] && f.test(c)
+    )
   };
 }
 
-export function matchesSmartFilters(c: Character, opts: SmartFilterSettings): boolean {
+export function matchesSmartFilters(
+  c: Character,
+  opts: SmartFilterSettings
+): boolean {
   const match = testSmartFilters(c, opts);
 
   if (!match) {

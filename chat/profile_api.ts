@@ -53,14 +53,24 @@ const characterDataThroat = throat(2);
 
 // tslint:disable-next-line: ban-ts-ignore
 // @ts-ignore
-async function characterData(name: string | undefined, id: number = -1, skipEvent: boolean = false): Promise<Character> {
+async function characterData(
+  name: string | undefined,
+  id: number = -1,
+  skipEvent: boolean = false
+): Promise<Character> {
   // console.log('CharacterDataquery', name);
-  return characterDataThroat(async () => executeCharacterData(name, id, skipEvent));
+  return characterDataThroat(async () =>
+    executeCharacterData(name, id, skipEvent)
+  );
 }
 
 // tslint:disable-next-line: ban-ts-ignore
 // @ts-ignore
-async function executeCharacterData(name: string | undefined, id: number = -1, skipEvent: boolean = false): Promise<Character> {
+async function executeCharacterData(
+  name: string | undefined,
+  id: number = -1,
+  skipEvent: boolean = false
+): Promise<Character> {
   const data = await core.connection.queryApi<
     CharacterInfo & {
       badges: string[];
@@ -68,7 +78,13 @@ async function executeCharacterData(name: string | undefined, id: number = -1, s
       character_list: { id: number; name: string }[];
       current_user: { inline_mode: number; animated_icons: boolean };
       custom_kinks: {
-        [key: number]: { id: number; choice: 'favorite' | 'yes' | 'maybe' | 'no'; name: string; description: string; children: number[] };
+        [key: number]: {
+          id: number;
+          choice: 'favorite' | 'yes' | 'maybe' | 'no';
+          name: string;
+          description: string;
+          children: number[];
+        };
       };
       custom_title: string;
       images: CharacterImage[];
@@ -80,7 +96,10 @@ async function executeCharacterData(name: string | undefined, id: number = -1, s
     }
   >('character-data.php', { name });
   const newKinks: { [key: string]: KinkChoiceFull } = {};
-  for (const key in data.kinks) newKinks[key] = <KinkChoiceFull>(data.kinks[key] === 'fave' ? 'favorite' : data.kinks[key]);
+  for (const key in data.kinks)
+    newKinks[key] = <KinkChoiceFull>(
+      (data.kinks[key] === 'fave' ? 'favorite' : data.kinks[key])
+    );
   for (const key in data.custom_kinks) {
     const custom = data.custom_kinks[key];
     if (<'fave'>custom.choice === 'fave') custom.choice = 'favorite';
@@ -93,7 +112,10 @@ async function executeCharacterData(name: string | undefined, id: number = -1, s
     const characterInfotag = data.infotags[key];
     const infotag = Store.shared.infotags[key];
     if (!infotag) continue;
-    newInfotags[key] = infotag.type === 'list' ? { list: parseInt(characterInfotag, 10) } : { string: characterInfotag };
+    newInfotags[key] =
+      infotag.type === 'list'
+        ? { list: parseInt(characterInfotag, 10) }
+        : { string: characterInfotag };
   }
 
   Utils.settings.inlineDisplayMode = data.current_user.inline_mode;
@@ -138,7 +160,9 @@ function contactMethodIconUrl(name: string): string {
 async function fieldsGet(): Promise<void> {
   if (Store.shared !== undefined) return; //tslint:disable-line:strict-type-predicates
   try {
-    const fields = (await Axios.get(`${Utils.siteDomain}json/api/mapping-list.php`)).data as {
+    const fields = (
+      await Axios.get(`${Utils.siteDomain}json/api/mapping-list.php`)
+    ).data as {
       listitems: { [key: string]: ListItem };
       kinks: { [key: string]: Kink & { group_id: number } };
       kink_groups: { [key: string]: KinkGroup };
@@ -151,7 +175,13 @@ async function fieldsGet(): Promise<void> {
       kinkGroups: { [key: string]: KinkGroup };
       infotags: { [key: string]: Infotag };
       infotagGroups: { [key: string]: InfotagGroup };
-    } = { kinks: {}, kinkGroups: {}, infotags: {}, infotagGroups: {}, listItems: {} };
+    } = {
+      kinks: {},
+      kinkGroups: {},
+      infotags: {},
+      infotagGroups: {},
+      listItems: {}
+    };
     for (const id in fields.kinks) {
       const oldKink = fields.kinks[id];
       kinks.kinks[oldKink.id] = {
@@ -208,15 +238,28 @@ async function fieldsGet(): Promise<void> {
 }
 
 async function friendsGet(id: number): Promise<SimpleCharacter[]> {
-  return (await core.connection.queryApi<{ friends: SimpleCharacter[] }>('character-friends.php', { id })).friends;
+  return (
+    await core.connection.queryApi<{ friends: SimpleCharacter[] }>(
+      'character-friends.php',
+      { id }
+    )
+  ).friends;
 }
 
 async function imagesGet(id: number): Promise<CharacterImage[]> {
-  return (await core.connection.queryApi<{ images: CharacterImage[] }>('character-images.php', { id })).images;
+  return (
+    await core.connection.queryApi<{ images: CharacterImage[] }>(
+      'character-images.php',
+      { id }
+    )
+  ).images;
 }
 
 async function guestbookGet(id: number, offset: number): Promise<Guestbook> {
-  const data = await core.connection.queryApi<{ nextPage: boolean; posts: GuestbookPost[] }>('character-guestbook.php', {
+  const data = await core.connection.queryApi<{
+    nextPage: boolean;
+    posts: GuestbookPost[];
+  }>('character-guestbook.php', {
     id,
     page: offset / 10
   });
@@ -224,10 +267,15 @@ async function guestbookGet(id: number, offset: number): Promise<Guestbook> {
 }
 
 async function kinksGet(id: number): Promise<CharacterKink[]> {
-  const data = await core.connection.queryApi<{ kinks: { [key: string]: string } }>('character-data.php', { id });
+  const data = await core.connection.queryApi<{
+    kinks: { [key: string]: string };
+  }>('character-data.php', { id });
   return Object.keys(data.kinks).map(key => {
     const choice = data.kinks[key];
-    return { id: parseInt(key, 10), choice: <KinkChoice>(choice === 'fave' ? 'favorite' : choice) };
+    return {
+      id: parseInt(key, 10),
+      choice: <KinkChoice>(choice === 'fave' ? 'favorite' : choice)
+    };
   });
 }
 
@@ -242,11 +290,17 @@ export function init(settings: Settings, characters: SimpleCharacter[]): void {
   Vue.component('bbcode-editor', Editor);
   Utils.init(settings, characters);
   core.connection.onEvent('connecting', () => {
-    Utils.settings.defaultCharacter = characters.find(x => x.name === core.connection.character)!.id;
+    Utils.settings.defaultCharacter = characters.find(
+      x => x.name === core.connection.character
+    )!.id;
   });
   registerMethod('characterData', characterData);
   registerMethod('contactMethodIconUrl', contactMethodIconUrl);
-  registerMethod('sendNoteUrl', (character: CharacterInfo) => `${Utils.siteDomain}read_notes.php?send=${character.name}`);
+  registerMethod(
+    'sendNoteUrl',
+    (character: CharacterInfo) =>
+      `${Utils.siteDomain}read_notes.php?send=${character.name}`
+  );
   registerMethod('fieldsGet', fieldsGet);
   registerMethod('friendsGet', friendsGet);
   registerMethod('kinksGet', kinksGet);
@@ -254,26 +308,52 @@ export function init(settings: Settings, characters: SimpleCharacter[]): void {
   registerMethod('guestbookPageGet', guestbookGet);
   registerMethod('imageUrl', (image: CharacterImageOld) => image.url);
   registerMethod('memoUpdate', async (id: number, memo: string) => {
-    await core.connection.queryApi('character-memo-save.php', { target: id, note: memo });
+    await core.connection.queryApi('character-memo-save.php', {
+      target: id,
+      note: memo
+    });
   });
-  registerMethod('imageThumbUrl', (image: CharacterImage) => `${Utils.staticDomain}images/charthumb/${image.id}.${image.extension}`);
+  registerMethod(
+    'imageThumbUrl',
+    (image: CharacterImage) =>
+      `${Utils.staticDomain}images/charthumb/${image.id}.${image.extension}`
+  );
   registerMethod('bookmarkUpdate', async (id: number, state: boolean) => {
-    await core.connection.queryApi(`bookmark-${state ? 'add' : 'remove'}.php`, { id });
+    await core.connection.queryApi(`bookmark-${state ? 'add' : 'remove'}.php`, {
+      id
+    });
   });
   registerMethod('characterFriends', async (id: number) =>
-    core.connection.queryApi<FriendsByCharacter>('character-friend-list.php', { id })
+    core.connection.queryApi<FriendsByCharacter>('character-friend-list.php', {
+      id
+    })
   );
   registerMethod(
     'friendRequest',
     async (target_id: number, source_id: number) =>
-      (await core.connection.queryApi<{ request: FriendRequest }>('request-send2.php', { source_id, target_id })).request
+      (
+        await core.connection.queryApi<{ request: FriendRequest }>(
+          'request-send2.php',
+          { source_id, target_id }
+        )
+      ).request
   );
   registerMethod('friendDissolve', async (friend: Friend) =>
-    core.connection.queryApi<void>('friend-remove.php', { source_id: friend.source.id, dest_id: friend.target.id })
+    core.connection.queryApi<void>('friend-remove.php', {
+      source_id: friend.source.id,
+      dest_id: friend.target.id
+    })
   );
   registerMethod('friendRequestAccept', async (req: FriendRequest) => {
-    await core.connection.queryApi('request-accept.php', { request_id: req.id });
-    return { id: undefined!, source: req.target, target: req.source, createdAt: Date.now() / 1000 };
+    await core.connection.queryApi('request-accept.php', {
+      request_id: req.id
+    });
+    return {
+      id: undefined!,
+      source: req.target,
+      target: req.source,
+      createdAt: Date.now() / 1000
+    };
   });
   registerMethod('friendRequestCancel', async (req: FriendRequest) =>
     core.connection.queryApi<void>('request-cancel.php', { request_id: req.id })

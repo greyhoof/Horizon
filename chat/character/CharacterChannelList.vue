@@ -7,14 +7,17 @@
     <div class="user-channel-list" ref="pageBody" v-if="channels.length > 0">
       <template v-for="channel in channels">
         <h3>
-          <a href="#" @click.prevent="jumpToChannel(channel)">#{{ channel.name }}</a>
+          <a href="#" @click.prevent="jumpToChannel(channel)"
+            >#{{ channel.name }}</a
+          >
         </h3>
       </template>
     </div>
 
     <div class="user-channel-list" ref="pageBody" v-else>
       <i
-        ><user :character="character">{{ character.name }}</user> is not on any of the channels you are on.</i
+        ><user :character="character">{{ character.name }}</user> is not on any
+        of the channels you are on.</i
       >
     </div>
   </modal>
@@ -57,7 +60,10 @@
       }
 
       this.channels = _.sortBy(
-        _.filter(core.conversations.channelConversations, (cc: ChannelConversation) => !!cc.channel.members[this.character.name]),
+        _.filter(
+          core.conversations.channelConversations,
+          (cc: ChannelConversation) => !!cc.channel.members[this.character.name]
+        ),
         'name'
       );
     }

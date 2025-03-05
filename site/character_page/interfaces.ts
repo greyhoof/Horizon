@@ -16,13 +16,26 @@ export interface StoreMethods {
   bookmarkUpdate(id: number, state: boolean): Promise<void>;
 
   characterBlock?(id: number, block: boolean, reason?: string): Promise<void>;
-  characterCustomKinkAdd(id: number, name: string, description: string, choice: KinkChoice): Promise<void>;
-  characterData(name: string | undefined, id: number | undefined, skipEvent: boolean | undefined): Promise<Character>;
+  characterCustomKinkAdd(
+    id: number,
+    name: string,
+    description: string,
+    choice: KinkChoice
+  ): Promise<void>;
+  characterData(
+    name: string | undefined,
+    id: number | undefined,
+    skipEvent: boolean | undefined
+  ): Promise<Character>;
   characterDelete(id: number): Promise<void>;
   characterDuplicate(id: number, name: string): Promise<void>;
   characterFriends(id: number): Promise<FriendsByCharacter>;
   characterNameCheck(name: string): Promise<void>;
-  characterRename?(id: number, name: string, renamedFor?: string): Promise<void>;
+  characterRename?(
+    id: number,
+    name: string,
+    renamedFor?: string
+  ): Promise<void>;
   characterReport(reportData: CharacterReportData): Promise<void>;
 
   contactMethodIconUrl(name: string): string;
@@ -40,11 +53,29 @@ export interface StoreMethods {
 
   groupsGet(id: number): Promise<CharacterGroup[]>;
 
-  guestbookPageGet(character: number, offset?: number, limit?: number, unapproved_only?: boolean): Promise<Guestbook>;
-  guestbookPostApprove(character: number, id: number, approval: boolean): Promise<void>;
+  guestbookPageGet(
+    character: number,
+    offset?: number,
+    limit?: number,
+    unapproved_only?: boolean
+  ): Promise<Guestbook>;
+  guestbookPostApprove(
+    character: number,
+    id: number,
+    approval: boolean
+  ): Promise<void>;
   guestbookPostDelete(character: number, id: number): Promise<void>;
-  guestbookPostPost(target: number, source: number, message: string, privatePost: boolean): Promise<void>;
-  guestbookPostReply(character: number, id: number, reply: string | null): Promise<void>;
+  guestbookPostPost(
+    target: number,
+    source: number,
+    message: string,
+    privatePost: boolean
+  ): Promise<void>;
+  guestbookPostReply(
+    character: number,
+    id: number,
+    reply: string | null
+  ): Promise<void>;
 
   hasPermission?(permission: string): boolean;
 

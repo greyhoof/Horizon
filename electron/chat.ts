@@ -65,7 +65,8 @@ import { WordPosSearch } from '../learn/dictionary/word-pos-search';
 log.debug('init.chat');
 
 document.addEventListener('keydown', (e: KeyboardEvent) => {
-  if (e.ctrlKey && e.shiftKey && getKey(e) === Keys.KeyI) remote.getCurrentWebContents().toggleDevTools();
+  if (e.ctrlKey && e.shiftKey && getKey(e) === Keys.KeyI)
+    remote.getCurrentWebContents().toggleDevTools();
 });
 
 /* process.env.SPELLCHECKER_PREFER_HUNSPELL = '1';
@@ -86,7 +87,10 @@ if (process.env.NODE_ENV === 'production') {
   // setupRaven('https://a9239b17b0a14f72ba85e8729b9d1612@sentry.f-list.net/2', remote.app.getVersion());
 
   remote.getCurrentWebContents().on('devtools-opened', () => {
-    console.log(`%c${l('consoleWarning.head')}`, 'background: red; color: yellow; font-size: 30pt');
+    console.log(
+      `%c${l('consoleWarning.head')}`,
+      'background: red; color: yellow; font-size: 30pt'
+    );
     console.log(`%c${l('consoleWarning.body')}`, 'font-size: 16pt; color:red');
   });
 }
@@ -112,7 +116,9 @@ function openIncognito(url: string): void {
     opera: 'opera.exe -private'
   };
   let start = 'iexplore.exe -private';
-  for (const key in commands) if (browser!.indexOf(key) !== -1) start = commands[<keyof typeof commands>key];
+  for (const key in commands)
+    if (browser!.indexOf(key) !== -1)
+      start = commands[<keyof typeof commands>key];
   exec(`start ${start} ${url}`);
 }
 
@@ -120,7 +126,10 @@ const wordPosSearch = new WordPosSearch();
 
 webContents.on('context-menu', (_, props) => {
   const hasText = props.selectionText.trim().length > 0;
-  const can = (type: string) => (<Electron.EditFlags & { [key: string]: boolean }>props.editFlags)[`can${type}`] && hasText;
+  const can = (type: string) =>
+    (<Electron.EditFlags & { [key: string]: boolean }>props.editFlags)[
+      `can${type}`
+    ] && hasText;
 
   const menuTemplate: Electron.MenuItemConstructorOptions[] = [];
   if (hasText || props.isEditable)
@@ -148,12 +157,17 @@ webContents.on('context-menu', (_, props) => {
         enabled: props.editFlags.canPaste
       }
     );
-  else if (props.linkURL.length > 0 && props.mediaType === 'none' && props.linkURL.substr(0, props.pageURL.length) !== props.pageURL) {
+  else if (
+    props.linkURL.length > 0 &&
+    props.mediaType === 'none' &&
+    props.linkURL.substr(0, props.pageURL.length) !== props.pageURL
+  ) {
     menuTemplate.push({
       id: 'copyLink',
       label: l('action.copyLink'),
       click(): void {
-        if (process.platform === 'darwin') electron.clipboard.writeBookmark(props.linkText, props.linkURL);
+        if (process.platform === 'darwin')
+          electron.clipboard.writeBookmark(props.linkText, props.linkURL);
         else electron.clipboard.writeText(props.linkURL);
       }
     });
@@ -161,7 +175,9 @@ webContents.on('context-menu', (_, props) => {
       id: 'toggleStickyness',
       label: 'Toggle Sticky Preview',
       click(): void {
-        EventBus.$emit('imagepreview-toggle-stickyness', { url: props.linkURL });
+        EventBus.$emit('imagepreview-toggle-stickyness', {
+          url: props.linkURL
+        });
       }
     });
     if (process.platform === 'win32')
@@ -182,7 +198,8 @@ webContents.on('context-menu', (_, props) => {
     menuTemplate.unshift(
       {
         label: l('spellchecker.add'),
-        click: () => electron.ipcRenderer.send('dictionary-add', props.misspelledWord)
+        click: () =>
+          electron.ipcRenderer.send('dictionary-add', props.misspelledWord)
       },
       { type: 'separator' }
     );
@@ -193,12 +210,17 @@ webContents.on('context-menu', (_, props) => {
           click: () => webContents.replaceMisspelling(correction)
         }))
       );
-    else menuTemplate.unshift({ enabled: false, label: l('spellchecker.noCorrections') });
+    else
+      menuTemplate.unshift({
+        enabled: false,
+        label: l('spellchecker.noCorrections')
+      });
   } else if (settings.customDictionary.indexOf(props.selectionText) !== -1)
     menuTemplate.unshift(
       {
         label: l('spellchecker.remove'),
-        click: () => electron.ipcRenderer.send('dictionary-remove', props.selectionText)
+        click: () =>
+          electron.ipcRenderer.send('dictionary-remove', props.selectionText)
       },
       { type: 'separator' }
     );
@@ -211,13 +233,18 @@ webContents.on('context-menu', (_, props) => {
       {
         label: `Look up '${lookupWord}'`,
         click: async () => {
-          EventBus.$emit('word-definition', { lookupWord, x: props.x, y: props.y });
+          EventBus.$emit('word-definition', {
+            lookupWord,
+            x: props.x,
+            y: props.y
+          });
         }
       }
     );
   }
 
-  if (menuTemplate.length > 0) remote.Menu.buildFromTemplate(menuTemplate).popup({});
+  if (menuTemplate.length > 0)
+    remote.Menu.buildFromTemplate(menuTemplate).popup({});
 
   log.debug('context.text', {
     linkText: props.linkText,
@@ -231,7 +258,10 @@ let dictDir = path.join(remote.app.getPath('userData'), 'spellchecker');
 
 if (process.platform === 'win32')
   //get the path in DOS (8-character) format as special characters cause problems otherwise
-  exec(`for /d %I in ("${dictDir}") do @echo %~sI`, (_, stdout) => (dictDir = stdout.trim()));
+  exec(
+    `for /d %I in ("${dictDir}") do @echo %~sI`,
+    (_, stdout) => (dictDir = stdout.trim())
+  );
 
 // electron.webFrame.setSpellCheckProvider(
 // '', {spellCheck: (words, callback) => callback(words.filter((x) => spellchecker.isMisspelled(x)))});
@@ -246,16 +276,24 @@ function onSettings(s: GeneralSettings): void {
   // for(const word of s.customDictionary) spellchecker.add(word);
 }
 
-electron.ipcRenderer.on('settings', (_: Electron.IpcRendererEvent, s: GeneralSettings) => onSettings(s));
+electron.ipcRenderer.on(
+  'settings',
+  (_: Electron.IpcRendererEvent, s: GeneralSettings) => onSettings(s)
+);
 
-const params = <{ [key: string]: string | undefined }>qs.parse(window.location.search.substr(1));
+const params = <{ [key: string]: string | undefined }>(
+  qs.parse(window.location.search.substr(1))
+);
 let settings = <GeneralSettings>JSON.parse(params['settings']!);
 
 // console.log('SETTINGS', settings);
 
 if (params['import'] !== undefined)
   try {
-    if (SlimcatImporter.canImportGeneral() && confirm(l('importer.importGeneral'))) {
+    if (
+      SlimcatImporter.canImportGeneral() &&
+      confirm(l('importer.importGeneral'))
+    ) {
       SlimcatImporter.importGeneral(settings);
       electron.ipcRenderer.send('save-login', settings.account, settings.host);
     }
@@ -266,7 +304,11 @@ onSettings(settings);
 
 log.debug('init.chat.core');
 
-const connection = new Connection(`F-Chat 3.0 (${process.platform})`, remote.app.getVersion(), Socket);
+const connection = new Connection(
+  `F-Chat 3.0 (${process.platform})`,
+  remote.app.getVersion(),
+  Socket
+);
 initCore(connection, settings, Logs, SettingsStore, Notifications);
 
 log.debug('init.chat.vue');

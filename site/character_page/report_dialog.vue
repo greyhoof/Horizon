@@ -1,5 +1,10 @@
 <template>
-  <modal id="reportDialog" :action="'Report character' + name" :disabled="!dataValid || submitting" @submit.prevent="submitReport()">
+  <modal
+    id="reportDialog"
+    :action="'Report character' + name"
+    :disabled="!dataValid || submitting"
+    @submit.prevent="submitReport()"
+  >
     <div class="form-group">
       <label>Type</label>
       <select v-model="type" class="form-control">
@@ -30,7 +35,11 @@
       </div>
       <div class="form-group">
         <label>Reason/Message</label>
-        <bbcode-editor v-model="message" :maxlength="45000" :classes="'form-control'"></bbcode-editor>
+        <bbcode-editor
+          v-model="message"
+          :maxlength="45000"
+          :classes="'form-control'"
+        ></bbcode-editor>
       </div>
     </div>
     <div v-show="type === 'takedown'" class="alert alert-info">
@@ -74,9 +83,15 @@
     async submitReport(): Promise<void> {
       try {
         this.submitting = true;
-        const message = (this.type === 'profile' ? `Reporting character for violation: ${this.violation}\n\n` : '') + this.message;
+        const message =
+          (this.type === 'profile'
+            ? `Reporting character for violation: ${this.violation}\n\n`
+            : '') + this.message;
         await methods.characterReport({
-          subject: (this.type === 'name_request' ? 'Requesting name: ' : 'Reporting character: ') + this.name,
+          subject:
+            (this.type === 'name_request'
+              ? 'Requesting name: '
+              : 'Reporting character: ') + this.name,
           message,
           character: this.ourCharacter,
           type: this.type,

@@ -1,20 +1,43 @@
 <template>
-  <div style="display: flex; flex-direction: column; height: 100%; justify-content: center">
-    <div class="card bg-light" style="width: 400px; max-width: 100%; margin: 0 auto" v-if="!connected">
+  <div
+    style="
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      justify-content: center;
+    "
+  >
+    <div
+      class="card bg-light"
+      style="width: 400px; max-width: 100%; margin: 0 auto"
+      v-if="!connected"
+    >
       <div class="alert alert-danger" v-show="error">{{ error }}</div>
       <h3 class="card-header" style="margin-top: 0; display: flex">
         {{ l('title') }}
-        <a href="#" @click.prevent="showLogs()" class="btn" style="flex: 1; text-align: right">
-          <span class="fa fa-file-alt"></span> <span class="btn-text">{{ l('logs.title') }}</span>
+        <a
+          href="#"
+          @click.prevent="showLogs()"
+          class="btn"
+          style="flex: 1; text-align: right"
+        >
+          <span class="fa fa-file-alt"></span>
+          <span class="btn-text">{{ l('logs.title') }}</span>
         </a>
       </h3>
       <div class="card-body">
         <h4 class="card-title">{{ l('login.selectCharacter') }}</h4>
         <select v-model="selectedCharacter" class="form-control custom-select">
-          <option v-for="character in ownCharacters" :value="character">{{ character.name }}</option>
+          <option v-for="character in ownCharacters" :value="character">
+            {{ character.name }}
+          </option>
         </select>
         <div style="text-align: right; margin-top: 10px">
-          <button class="btn btn-primary" @click="connect" :disabled="connecting">
+          <button
+            class="btn btn-primary"
+            @click="connect"
+            :disabled="connecting"
+          >
             {{ l(connecting ? 'login.connecting' : 'login.connect') }}
           </button>
         </div>
@@ -33,7 +56,12 @@
       {{ l('chat.disconnected') }}
     </modal>
     <logs ref="logsDialog"></logs>
-    <div v-if="version && !connected" style="position: absolute; bottom: 0; right: 0">{{ version }}</div>
+    <div
+      v-if="version && !connected"
+      style="position: absolute; bottom: 0; right: 0"
+    >
+      {{ version }}
+    </div>
   </div>
 </template>
 
@@ -55,21 +83,39 @@
 
   type BBCodeNode = Node & { bbcodeTag?: string; bbcodeParam?: string };
 
-  function copyNode(str: string, node: BBCodeNode, end: Node, range: Range, flags: { endFound?: true }): string {
+  function copyNode(
+    str: string,
+    node: BBCodeNode,
+    end: Node,
+    range: Range,
+    flags: { endFound?: true }
+  ): string {
     if (node === end) flags.endFound = true;
     if (node.bbcodeTag !== undefined)
       str = `[${node.bbcodeTag}${node.bbcodeParam !== undefined ? `=${node.bbcodeParam}` : ''}]${str}[/${node.bbcodeTag}]`;
     if (node.nextSibling !== null && !flags.endFound) {
-      if (node instanceof HTMLElement && getComputedStyle(node).display === 'block') str += '\r\n';
+      if (
+        node instanceof HTMLElement &&
+        getComputedStyle(node).display === 'block'
+      )
+        str += '\r\n';
       str += scanNode(node.nextSibling!, end, range, flags);
     }
     if (node.parentElement === null) return str;
     return copyNode(str, node.parentNode!, end, range, flags);
   }
 
-  function scanNode(node: BBCodeNode, end: Node, range: Range, flags: { endFound?: true }, hide?: boolean): string {
+  function scanNode(
+    node: BBCodeNode,
+    end: Node,
+    range: Range,
+    flags: { endFound?: true },
+    hide?: boolean
+  ): string {
     let str = '';
-    hide = hide || (node instanceof HTMLElement && node.classList.contains('bbcode-pseudo'));
+    hide =
+      hide ||
+      (node instanceof HTMLElement && node.classList.contains('bbcode-pseudo'));
 
     const component = (node as any)?.__vue__;
 
@@ -78,18 +124,30 @@
     }
 
     if (node === end) flags.endFound = true;
-    if (node.bbcodeTag !== undefined) str += `[${node.bbcodeTag}${node.bbcodeParam !== undefined ? `=${node.bbcodeParam}` : ''}]`;
+    if (node.bbcodeTag !== undefined)
+      str += `[${node.bbcodeTag}${node.bbcodeParam !== undefined ? `=${node.bbcodeParam}` : ''}]`;
     // if(component?.$el?.bbcodeTag !== undefined) str += `[${component?.$el?.bbcodeTag}${component?.$el?.bbcodeParam !== undefined ? `=${component?.$el?.bbcodeParam}` : ''}]`;
-    if (node instanceof Text) str += node === range.endContainer ? node.nodeValue!.substr(0, range.endOffset) : node.nodeValue;
+    if (node instanceof Text)
+      str +=
+        node === range.endContainer
+          ? node.nodeValue!.substr(0, range.endOffset)
+          : node.nodeValue;
     else if (node instanceof HTMLImageElement) str += node.alt;
     // else if ((node as any)?.__vue__ && (node as any)?.__vue__ instanceof UrlTagView) {
     //   console.log('URLTAGVIEWNODE', node);
     // }
-    if (node.firstChild !== null && !flags.endFound) str += scanNode(node.firstChild, end, range, flags, hide);
+    if (node.firstChild !== null && !flags.endFound)
+      str += scanNode(node.firstChild, end, range, flags, hide);
     if (node.bbcodeTag !== undefined) str += `[/${node.bbcodeTag}]`;
     // if(component?.$el?.bbcodeTag !== undefined) str += `[/${component?.$el?.bbcodeTag}]`;
-    if (node instanceof HTMLElement && getComputedStyle(node).display === 'block' && !flags.endFound) str += '\r\n';
-    if (node.nextSibling !== null && !flags.endFound) str += scanNode(node.nextSibling, end, range, flags, hide);
+    if (
+      node instanceof HTMLElement &&
+      getComputedStyle(node).display === 'block' &&
+      !flags.endFound
+    )
+      str += '\r\n';
+    if (node.nextSibling !== null && !flags.endFound)
+      str += scanNode(node.nextSibling, end, range, flags, hide);
     return hide ? '' : str;
   }
 
@@ -102,7 +160,9 @@
     @Prop({ required: true })
     readonly defaultCharacter!: number;
     //tslint:disable-next-line:strict-boolean-expressions
-    selectedCharacter = this.ownCharacters.find(x => x.id === this.defaultCharacter) || this.ownCharacters[0];
+    selectedCharacter =
+      this.ownCharacters.find(x => x.id === this.defaultCharacter) ||
+      this.ownCharacters[0];
     @Prop
     readonly version?: string;
     error = '';
@@ -127,15 +187,33 @@
         let startValue = '';
         if (start instanceof HTMLElement) {
           start = start.childNodes[range.startOffset];
-          if (<Node | undefined>start === undefined) start = range.startContainer;
-          else startValue = start instanceof HTMLImageElement ? start.alt : scanNode(start.firstChild!, end, range, {});
-        } else startValue = start.nodeValue!.substring(range.startOffset, start === range.endContainer ? range.endOffset : undefined);
-        if (end instanceof HTMLElement && range.endOffset > 0) end = end.childNodes[range.endOffset - 1];
-        e.clipboardData!.setData('text/plain', copyNode(startValue, start, end, range, {}));
+          if (<Node | undefined>start === undefined)
+            start = range.startContainer;
+          else
+            startValue =
+              start instanceof HTMLImageElement
+                ? start.alt
+                : scanNode(start.firstChild!, end, range, {});
+        } else
+          startValue = start.nodeValue!.substring(
+            range.startOffset,
+            start === range.endContainer ? range.endOffset : undefined
+          );
+        if (end instanceof HTMLElement && range.endOffset > 0)
+          end = end.childNodes[range.endOffset - 1];
+        e.clipboardData!.setData(
+          'text/plain',
+          copyNode(startValue, start, end, range, {})
+        );
         e.preventDefault();
       }) as EventListener);
       window.addEventListener('keydown', e => {
-        if (getKey(e) === Keys.KeyC && e.shiftKey && (e.ctrlKey || e.metaKey) && !e.altKey) {
+        if (
+          getKey(e) === Keys.KeyC &&
+          e.shiftKey &&
+          (e.ctrlKey || e.metaKey) &&
+          !e.altKey
+        ) {
           this.copyPlain = true;
           document.execCommand('copy');
           e.preventDefault();
@@ -179,7 +257,8 @@
           },
           this.ownCharacters
         );
-        if (core.state.settings.notifications) await core.notifications.requestPermission();
+        if (core.state.settings.notifications)
+          await core.notifications.requestPermission();
       });
       core.connection.onEvent('connected', () => {
         log.debug('connection.connected', {
@@ -200,7 +279,12 @@
       core.watch(
         () => core.conversations.hasNew,
         hasNew => {
-          document.title = (hasNew ? '💬 ' : '') + l(core.connection.isOpen ? 'title.connected' : 'title', core.connection.character);
+          document.title =
+            (hasNew ? '💬 ' : '') +
+            l(
+              core.connection.isOpen ? 'title.connected' : 'title',
+              core.connection.character
+            );
         }
       );
       core.connection.onError(e => {
@@ -231,7 +315,13 @@
 
       // skipping await
       // tslint:disable-next-line: no-floating-promises
-      core.notifications.initSounds(['attention', 'login', 'logout', 'modalert', 'newnote']);
+      core.notifications.initSounds([
+        'attention',
+        'login',
+        'logout',
+        'modalert',
+        'newnote'
+      ]);
 
       core.connection.connect(this.selectedCharacter.name);
     }

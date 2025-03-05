@@ -52,21 +52,35 @@ class State implements Interfaces.State {
     return char;
   }
 
-  setStatus(character: Character, status: Interfaces.Status, text: string): void {
+  setStatus(
+    character: Character,
+    status: Interfaces.Status,
+    text: string
+  ): void {
     if (character.status === 'offline' && status !== 'offline') {
       if (character.isFriend) this.friends.push(character);
       if (character.isBookmarked) this.bookmarks.push(character);
     } else if (status === 'offline' && character.status !== 'offline') {
-      if (character.isFriend) this.friends.splice(this.friends.indexOf(character), 1);
-      if (character.isBookmarked) this.bookmarks.splice(this.bookmarks.indexOf(character), 1);
+      if (character.isFriend)
+        this.friends.splice(this.friends.indexOf(character), 1);
+      if (character.isBookmarked)
+        this.bookmarks.splice(this.bookmarks.indexOf(character), 1);
     }
     character.status = status;
     character.statusText = decodeHTML(text);
   }
 
   setOverride(name: string, type: 'avatarUrl', value: string | undefined): void;
-  setOverride(name: string, type: 'gender', value: Interfaces.Gender | undefined): void;
-  setOverride(name: string, type: 'status', value: Interfaces.Status | undefined): void;
+  setOverride(
+    name: string,
+    type: 'gender',
+    value: Interfaces.Gender | undefined
+  ): void;
+  setOverride(
+    name: string,
+    type: 'status',
+    value: Interfaces.Status | undefined
+  ): void;
   setOverride(name: string, type: keyof CharacterOverrides, value: any): void {
     const char = this.get(name);
 
@@ -76,7 +90,11 @@ class State implements Interfaces.State {
   async resolveOwnProfile(): Promise<void> {
     await methods.fieldsGet();
 
-    this.ownProfile = await methods.characterData(this.ownCharacter.name, -1, false);
+    this.ownProfile = await methods.characterData(
+      this.ownCharacter.name,
+      -1,
+      false
+    );
   }
 }
 
@@ -88,16 +106,24 @@ export default function (this: void, connection: Connection): Interfaces.State {
   connection.onEvent('connecting', async isReconnect => {
     state.friends = [];
     state.bookmarks = [];
-    state.bookmarkList = (await connection.queryApi<{ characters: string[] }>('bookmark-list.php')).characters;
+    state.bookmarkList = (
+      await connection.queryApi<{ characters: string[] }>('bookmark-list.php')
+    ).characters;
     state.friendList = (
-      await connection.queryApi<{ friends: { source: string; dest: string; last_online: number }[] }>('friend-list.php')
+      await connection.queryApi<{
+        friends: { source: string; dest: string; last_online: number }[];
+      }>('friend-list.php')
     ).friends.map(x => x.dest);
     if (isReconnect && <Character | undefined>state.ownCharacter !== undefined)
-      reconnectStatus = { status: state.ownCharacter.status, statusmsg: state.ownCharacter.statusText };
+      reconnectStatus = {
+        status: state.ownCharacter.status,
+        statusmsg: state.ownCharacter.statusText
+      };
     for (const key in state.characters) {
       const character = state.characters[key]!;
       character.isFriend = state.friendList.indexOf(character.name) !== -1;
-      character.isBookmarked = state.bookmarkList.indexOf(character.name) !== -1;
+      character.isBookmarked =
+        state.bookmarkList.indexOf(character.name) !== -1;
       character.status = 'offline';
       character.statusText = '';
     }
@@ -121,7 +147,10 @@ export default function (this: void, connection: Connection): Interfaces.State {
         state.get(data.character).isIgnored = true;
         break;
       case 'delete':
-        state.ignoreList.splice(state.ignoreList.indexOf(data.character.toLowerCase()), 1);
+        state.ignoreList.splice(
+          state.ignoreList.indexOf(data.character.toLowerCase()),
+          1
+        );
         state.get(data.character).isIgnored = false;
     }
   });
@@ -168,7 +197,13 @@ export default function (this: void, connection: Connection): Interfaces.State {
     char.isChatOp = false;
   });
   connection.onMessage('RTB', data => {
-    if (data.type !== 'trackadd' && data.type !== 'trackrem' && data.type !== 'friendadd' && data.type !== 'friendremove') return;
+    if (
+      data.type !== 'trackadd' &&
+      data.type !== 'trackrem' &&
+      data.type !== 'friendadd' &&
+      data.type !== 'friendremove'
+    )
+      return;
     const character = state.get(data.name);
     switch (data.type) {
       case 'trackadd':
@@ -179,7 +214,8 @@ export default function (this: void, connection: Connection): Interfaces.State {
       case 'trackrem':
         state.bookmarkList.splice(state.bookmarkList.indexOf(data.name), 1);
         character.isBookmarked = false;
-        if (character.status !== 'offline') state.bookmarks.splice(state.bookmarks.indexOf(character), 1);
+        if (character.status !== 'offline')
+          state.bookmarks.splice(state.bookmarks.indexOf(character), 1);
         break;
       case 'friendadd':
         if (character.isFriend) return;
@@ -190,7 +226,8 @@ export default function (this: void, connection: Connection): Interfaces.State {
       case 'friendremove':
         state.friendList.splice(state.friendList.indexOf(data.name), 1);
         character.isFriend = false;
-        if (character.status !== 'offline') state.friends.splice(state.friends.indexOf(character), 1);
+        if (character.status !== 'offline')
+          state.friends.splice(state.friends.indexOf(character), 1);
     }
   });
   return state;

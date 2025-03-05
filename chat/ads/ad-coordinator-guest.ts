@@ -14,16 +14,24 @@ export class AdCoordinatorGuest {
   protected adCounter = 0;
 
   constructor() {
-    ipcRenderer.on('grant-send-ad', (_event: IpcRendererEvent, adId: string) => this.processPendingAd(adId));
+    ipcRenderer.on('grant-send-ad', (_event: IpcRendererEvent, adId: string) =>
+      this.processPendingAd(adId)
+    );
   }
 
   processPendingAd(adId: string): void {
     if (!(adId in this.pendingAds)) {
-      log.debug('adid.pending.miss', { adId, character: core.characters.ownCharacter?.name });
+      log.debug('adid.pending.miss', {
+        adId,
+        character: core.characters.ownCharacter?.name
+      });
       return;
     }
 
-    log.debug('adid.pending.process', { adId, character: core.characters.ownCharacter?.name });
+    log.debug('adid.pending.process', {
+      adId,
+      character: core.characters.ownCharacter?.name
+    });
 
     this.pendingAds[adId].resolve();
 
@@ -36,7 +44,10 @@ export class AdCoordinatorGuest {
 
       this.pendingAds[adId] = { resolve, reject, from: Date.now() };
 
-      log.debug('adid.request', { adId, character: core.characters.ownCharacter?.name });
+      log.debug('adid.request', {
+        adId,
+        character: core.characters.ownCharacter?.name
+      });
 
       ipcRenderer.send('request-send-ad', adId);
     });
@@ -45,7 +56,11 @@ export class AdCoordinatorGuest {
   clear(): void {
     _.each(this.pendingAds, pa => pa.reject(new Error('Pending ad cleared')));
 
-    console.debug('adid.clear', _.keys(this.pendingAds), core.characters.ownCharacter?.name);
+    console.debug(
+      'adid.clear',
+      _.keys(this.pendingAds),
+      core.characters.ownCharacter?.name
+    );
 
     this.pendingAds = {};
   }

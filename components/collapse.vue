@@ -1,7 +1,18 @@
 <template>
   <div class="card bg-light">
-    <div class="card-header" @click="toggle()" style="cursor: pointer" :class="headerClass">
-      <h4>{{ title }} <span class="fas" :class="'fa-chevron-' + (collapsed ? 'down' : 'up')"></span></h4>
+    <div
+      class="card-header"
+      @click="toggle()"
+      style="cursor: pointer"
+      :class="headerClass"
+    >
+      <h4>
+        {{ title }}
+        <span
+          class="fas"
+          :class="'fa-chevron-' + (collapsed ? 'down' : 'up')"
+        ></span>
+      </h4>
     </div>
     <div :style="style" style="overflow: hidden">
       <div class="card-body" ref="content">
@@ -38,7 +49,10 @@
         }, 0);
       } else {
         this.style.height = `${(<HTMLElement>this.$refs['content']).scrollHeight}px`;
-        this.timeout = window.setTimeout(() => (this.style.height = undefined), 200);
+        this.timeout = window.setTimeout(
+          () => (this.style.height = undefined),
+          200
+        );
       }
     }
   }

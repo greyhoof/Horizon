@@ -1,20 +1,39 @@
 <template>
-  <dropdown class="filterable-select" linkClass="custom-select" :keepOpen="true">
+  <dropdown
+    class="filterable-select"
+    linkClass="custom-select"
+    :keepOpen="true"
+  >
     <template slot="title" v-if="multiple">{{ label }}</template>
     <slot v-else slot="title" :option="selected">{{ label }}</slot>
 
     <div style="padding: 10px">
-      <input v-model="filter" class="form-control" :placeholder="placeholder" @mousedown.stop />
+      <input
+        v-model="filter"
+        class="form-control"
+        :placeholder="placeholder"
+        @mousedown.stop
+      />
     </div>
     <div class="dropdown-items">
       <template v-if="multiple">
-        <a href="#" @click.stop="select(option)" v-for="option in filtered" class="dropdown-item">
+        <a
+          href="#"
+          @click.stop="select(option)"
+          v-for="option in filtered"
+          class="dropdown-item"
+        >
           <input type="checkbox" :checked="isSelected(option)" />
           <slot :option="option">{{ option }}</slot>
         </a>
       </template>
       <template v-else>
-        <a href="#" @click="select(option)" v-for="option in filtered" class="dropdown-item">
+        <a
+          href="#"
+          @click="select(option)"
+          v-for="option in filtered"
+          class="dropdown-item"
+        >
           <slot :option="option">{{ option }}</slot>
         </a>
       </template>
@@ -35,7 +54,9 @@
     readonly placeholder?: string;
     @Prop({ required: true })
     readonly options!: object[];
-    @Prop({ default: () => (filter: RegExp, value: string) => filter.test(value) })
+    @Prop({
+      default: () => (filter: RegExp, value: string) => filter.test(value)
+    })
     readonly filterFunc!: (filter: RegExp, value: object) => boolean;
     @Prop
     readonly multiple?: true = undefined;
@@ -45,7 +66,12 @@
     readonly title?: string;
     filter = '';
     // noinspection TypeScriptValidateTypes
-    selected: object | object[] | undefined = this.value !== undefined ? this.value : this.multiple !== undefined ? [] : undefined;
+    selected: object | object[] | undefined =
+      this.value !== undefined
+        ? this.value
+        : this.multiple !== undefined
+          ? []
+          : undefined;
 
     @Watch('value')
     watchValue(newValue: object | object[] | undefined): void {

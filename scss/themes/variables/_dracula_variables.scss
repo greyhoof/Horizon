@@ -101,7 +101,10 @@ $scoreFadedMismatchBg: adjust-color($scoreMismatchBg, $alpha: -0.6);
 $scoreFadedMismatchFg: adjust-color($scoreMismatchFg, $alpha: -0.6);
 
 $scoreStandoutMatchBorderColor: $dracula-green;
-$scoreStandoutMatchBgColor: set-alpha(darken(saturate($dracula-green, 5.63), 5.88), 0.471);
+$scoreStandoutMatchBgColor: set-alpha(
+  darken(saturate($dracula-green, 5.63), 5.88),
+  0.471
+);
 $scoreStandoutWeakMatchBorderColor: #014a01;
 $scoreStandoutWeakMatchBgColor: rgba(0, 79, 0, 0.4);
 $scoreStandoutNeutralBorderColor: $gray-100;

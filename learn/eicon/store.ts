@@ -20,7 +20,11 @@ export class EIconStore {
     const fn = this.getStoreFilename();
     const recordArray = _.values(this.lookup);
 
-    log.info('eicons.save', { records: recordArray.length, asOfTimestamp: this.asOfTimestamp, fn });
+    log.info('eicons.save', {
+      records: recordArray.length,
+      asOfTimestamp: this.asOfTimestamp,
+      fn
+    });
 
     fs.writeFileSync(
       fn,
@@ -46,11 +50,17 @@ export class EIconStore {
 
       const recordCount = _.keys(this.lookup).length;
 
-      log.info('eicons.loaded.local', { records: recordCount, asOfTimestamp: this.asOfTimestamp });
+      log.info('eicons.loaded.local', {
+        records: recordCount,
+        asOfTimestamp: this.asOfTimestamp
+      });
 
       await this.update();
 
-      log.info('eicons.loaded.update.remote', { records: recordCount, asOfTimestamp: this.asOfTimestamp });
+      log.info('eicons.loaded.update.remote', {
+        records: recordCount,
+        asOfTimestamp: this.asOfTimestamp
+      });
     } catch (err) {
       try {
         await this.downloadAll();
@@ -88,8 +98,14 @@ export class EIconStore {
 
     const changes = await this.updater.fetchUpdates(this.asOfTimestamp);
 
-    const removals = _.filter(changes.recordUpdates, changeRecord => changeRecord.action === '-');
-    const additions = _.filter(changes.recordUpdates, changeRecord => changeRecord.action === '+');
+    const removals = _.filter(
+      changes.recordUpdates,
+      changeRecord => changeRecord.action === '-'
+    );
+    const additions = _.filter(
+      changes.recordUpdates,
+      changeRecord => changeRecord.action === '+'
+    );
 
     _.each(removals, changeRecord => this.removeIcon(changeRecord));
     _.each(additions, changeRecord => this.addIcon(changeRecord));
@@ -98,7 +114,11 @@ export class EIconStore {
 
     this.asOfTimestamp = changes.asOfTimestamp;
 
-    log.info('eicons.update.processed', { removals: removals.length, additions: additions.length, asOf: this.asOfTimestamp });
+    log.info('eicons.update.processed', {
+      removals: removals.length,
+      additions: additions.length,
+      asOf: this.asOfTimestamp
+    });
 
     if (changes.recordUpdates.length > 0) {
       await this.save();
@@ -136,11 +156,17 @@ export class EIconStore {
     const found = _.filter(this.lookup, r => r.eicon.indexOf(lcSearch) >= 0);
 
     return found.sort((a, b) => {
-      if (a.eicon.substr(0, lcSearch.length) === lcSearch && b.eicon.substr(0, lcSearch.length) !== lcSearch) {
+      if (
+        a.eicon.substr(0, lcSearch.length) === lcSearch &&
+        b.eicon.substr(0, lcSearch.length) !== lcSearch
+      ) {
         return -1;
       }
 
-      if (b.eicon.substr(0, lcSearch.length) === lcSearch && a.eicon.substr(0, lcSearch.length) !== lcSearch) {
+      if (
+        b.eicon.substr(0, lcSearch.length) === lcSearch &&
+        a.eicon.substr(0, lcSearch.length) !== lcSearch
+      ) {
         return 1;
       }
 

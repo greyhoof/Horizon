@@ -1,7 +1,11 @@
 <template>
   <div class="form-group">
     <label v-if="label && id" :for="id">{{ label }}</label>
-    <slot :cls="{ 'is-invalid': hasErrors, 'is-valid': valid }" :invalid="hasErrors" :valid="valid"></slot>
+    <slot
+      :cls="{ 'is-invalid': hasErrors, 'is-valid': valid }"
+      :invalid="hasErrors"
+      :valid="valid"
+    ></slot>
     <small v-if="helptext" class="form-text" :id="helpId">{{ helptext }}</small>
     <div v-if="hasErrors" class="invalid-feedback">
       <ul v-if="errorList.length > 1">

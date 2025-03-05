@@ -6,7 +6,9 @@
         `Iteration ${iteration}, saving ${records.length} records, taking ${jsonStr.length} characters, at ${(Date.now() - startTime) / 1000}s`
       );
 
-      const blob = new Blob([jsonStr], { type: 'application/json;charset=utf-8;' });
+      const blob = new Blob([jsonStr], {
+        type: 'application/json;charset=utf-8;'
+      });
       const url = URL.createObjectURL(blob);
       const el = document.createElement('a');
       const d = new Date();
@@ -47,7 +49,9 @@
 
           if (!cursor) {
             if (records.length > 0) {
-              saveRecords(records, iteration, startTime).then(() => resolve(false));
+              saveRecords(records, iteration, startTime).then(() =>
+                resolve(false)
+              );
             }
 
             resolve(false);
@@ -64,7 +68,9 @@
           records.push(cursor.value);
 
           if (records.length >= recordLimit) {
-            saveRecords(records, iteration, startTime).then(() => resolve(true));
+            saveRecords(records, iteration, startTime).then(() =>
+              resolve(true)
+            );
 
             txn.abort();
             return;
@@ -92,6 +98,8 @@
       return getRecordsManager(result);
     };
 
-    getRecords(iteration, recordLimit, startTime).then(shouldContinue => getRecordsManager(shouldContinue));
+    getRecords(iteration, recordLimit, startTime).then(shouldContinue =>
+      getRecordsManager(shouldContinue)
+    );
   };
 })();

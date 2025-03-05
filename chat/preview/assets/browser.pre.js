@@ -34,7 +34,8 @@ const previewInitiationTime = Date.now();
       // Inject JQuery
       const el = document.createElement('script');
       el.type = 'text/javascript';
-      el.text = "console.log('JQuery Injection'); window.$ = window.jQuery = require('jquery');";
+      el.text =
+        "console.log('JQuery Injection'); window.$ = window.jQuery = require('jquery');";
       document.appendChild(el);
 
       if (!window.zest) {
@@ -57,9 +58,13 @@ const previewInitiationTime = Date.now();
         return;
       }
 
-      if (window.location.href.match(/^https?:\/\/[a-zA-Z0-9-]+\.tumblr\.com/)) {
+      if (
+        window.location.href.match(/^https?:\/\/[a-zA-Z0-9-]+\.tumblr\.com/)
+      ) {
         // Because Tumblr sucks with their iframes
-        const og = document.querySelectorAll('meta[property="og:image"]:not([content=""])');
+        const og = document.querySelectorAll(
+          'meta[property="og:image"]:not([content=""])'
+        );
 
         if (og.length > 0) {
           window.location.href = og[0].content;
@@ -90,7 +95,9 @@ const previewInitiationTime = Date.now();
       }
 
       try {
-        document.querySelectorAll('iframe, script' /*, style, head' */).forEach(e => e.remove());
+        document
+          .querySelectorAll('iframe, script' /*, style, head' */)
+          .forEach(e => e.remove());
       } catch (e) {
         console.error('Element remove', e);
       }

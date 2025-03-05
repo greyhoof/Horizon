@@ -14,7 +14,11 @@
       <div class="form-group">
         <p>Serve ads that match any one of these tags:</p>
 
-        <label class="control-label" :for="`adr-tag-${index}`" v-for="(tag, index) in tags">
+        <label
+          class="control-label"
+          :for="`adr-tag-${index}`"
+          v-for="(tag, index) in tags"
+        >
           <input type="checkbox" v-model="tag.value" :id="`adr-tag-${index}`" />
           {{ tag.title }}
         </label>
@@ -24,15 +28,30 @@
       <div class="form-group">
         <p>Serve ads on these channels:</p>
 
-        <p v-if="channels.length === 0">You have no channels open that support ad posting. Open some channels first.</p>
+        <p v-if="channels.length === 0">
+          You have no channels open that support ad posting. Open some channels
+          first.
+        </p>
 
         <label class="control-label">
-          <input type="checkbox" id="ard-all-channels" @change="selectAllChannels($event)" />
+          <input
+            type="checkbox"
+            id="ard-all-channels"
+            @change="selectAllChannels($event)"
+          />
           <i>Select/unselect all</i>
         </label>
 
-        <label class="control-label" :for="`adr-channel-${index}`" v-for="(channel, index) in channels">
-          <input type="checkbox" v-model="channel.value" :id="`adr-channel-${index}`" />
+        <label
+          class="control-label"
+          :for="`adr-channel-${index}`"
+          v-for="(channel, index) in channels"
+        >
+          <input
+            type="checkbox"
+            v-model="channel.value"
+            :id="`adr-channel-${index}`"
+          />
           {{ channel.title }}
         </label>
       </div>
@@ -40,11 +59,21 @@
       <h4>Post Order</h4>
       <div class="form-group">
         <label class="control-label" for="adOrderRandom">
-          <input type="radio" v-model="adOrder" value="random" id="adOrderRandom" />
+          <input
+            type="radio"
+            v-model="adOrder"
+            value="random"
+            id="adOrderRandom"
+          />
           Random order
         </label>
         <label class="control-label" for="adOrderAdCenter">
-          <input type="radio" v-model="adOrder" value="ad-center" id="adOrderAdCenter" />
+          <input
+            type="radio"
+            v-model="adOrder"
+            value="ad-center"
+            id="adOrderAdCenter"
+          />
           Follow order in Ad Center
         </label>
       </div>
@@ -53,8 +82,14 @@
       <div class="form-group">
         <label class="control-label" for="timeoutMinutes"> Timeout </label>
 
-        <select class="form-control" v-model="timeoutMinutes" id="timeoutMinutes">
-          <option v-for="timeout in timeoutOptions" :value="timeout.value">{{ timeout.title }}</option>
+        <select
+          class="form-control"
+          v-model="timeoutMinutes"
+          id="timeoutMinutes"
+        >
+          <option v-for="timeout in timeoutOptions" :value="timeout.value">
+            {{ timeout.title }}
+          </option>
         </select>
       </div>
 
@@ -66,8 +101,11 @@
       <h4>No Ads to Post!</h4>
 
       <p>
-        Use the <button class="btn btn-outline-secondary" @click="openAdEditor()">Ad Editor</button> to create some ads first, then return
-        here to post them.
+        Use the
+        <button class="btn btn-outline-secondary" @click="openAdEditor()">
+          Ad Editor
+        </button>
+        to create some ads first, then return here to post them.
       </p>
     </div>
   </modal>
@@ -104,11 +142,17 @@
 
     load() {
       this.channels = _.map(
-        _.filter(core.channels.joinedChannels, c => c.mode === 'ads' || c.mode === 'both'),
+        _.filter(
+          core.channels.joinedChannels,
+          c => c.mode === 'ads' || c.mode === 'both'
+        ),
         c => ({ value: false, title: c.name, id: c.id })
       );
 
-      this.tags = _.map(core.adCenter.getActiveTags(), t => ({ value: false, title: t }));
+      this.tags = _.map(core.adCenter.getActiveTags(), t => ({
+        value: false,
+        title: t
+      }));
 
       this.checkCanSubmit();
     }
@@ -119,7 +163,9 @@
 
     @Watch('tags', { deep: true })
     updateTags(): void {
-      this.matchCount = core.adCenter.getMatchingAds(this.getWantedTags()).length;
+      this.matchCount = core.adCenter.getMatchingAds(
+        this.getWantedTags()
+      ).length;
       this.checkCanSubmit();
     }
 
@@ -129,7 +175,10 @@
     }
 
     checkCanSubmit() {
-      const channelCount = _.filter(this.channels, channel => channel.value).length;
+      const channelCount = _.filter(
+        this.channels,
+        channel => channel.value
+      ).length;
       const tagCount = _.filter(this.tags, tag => tag.value).length;
 
       this.dialog.forceDisabled(tagCount === 0 || channelCount === 0);
@@ -202,7 +251,12 @@
         return;
       }
 
-      core.adCenter.schedule(tags, channelIds, this.adOrder, this.timeoutMinutes);
+      core.adCenter.schedule(
+        tags,
+        channelIds,
+        this.adOrder,
+        this.timeoutMinutes
+      );
 
       this.hide();
     }

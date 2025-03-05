@@ -4,7 +4,12 @@ import * as path from 'path';
 import { promisify } from 'util';
 import { Message as MessageImpl } from '../chat/common';
 import core from '../chat/core';
-import { Character, Conversation, Logs as Logging, Settings } from '../chat/interfaces';
+import {
+  Character,
+  Conversation,
+  Logs as Logging,
+  Settings
+} from '../chat/interfaces';
 import l from '../chat/localize';
 import { GeneralSettings } from './common';
 
@@ -17,7 +22,11 @@ declare module '../chat/interfaces' {
 const dayMs = 86400000;
 const read = promisify(fs.read);
 
-function writeFile(p: fs.PathLike | number, data: string | NodeJS.ArrayBufferView, options?: fs.WriteFileOptions): void {
+function writeFile(
+  p: fs.PathLike | number,
+  data: string | NodeJS.ArrayBufferView,
+  options?: fs.WriteFileOptions
+): void {
   try {
     fs.writeFileSync(p, data, options);
   } catch (e) {
@@ -46,7 +55,11 @@ interface Index {
 }
 
 export function getLogDir(this: void, character: string): string {
-  const dir = path.join(core.state.generalSettings!.logDirectory, character, 'logs');
+  const dir = path.join(
+    core.state.generalSettings!.logDirectory,
+    character,
+    'logs'
+  );
   fs.mkdirSync(dir, { recursive: true });
   return dir;
 }
@@ -63,7 +76,9 @@ export function checkIndex(
   name: string,
   size: number | (() => number)
 ): Buffer | undefined {
-  const date = Math.floor(message.time.getTime() / dayMs - message.time.getTimezoneOffset() / 1440);
+  const date = Math.floor(
+    message.time.getTime() / dayMs - message.time.getTimezoneOffset() / 1440
+  );
   let buffer: Buffer,
     offset = 0;
   let item = index[key];
@@ -86,8 +101,12 @@ export function checkIndex(
   return buffer;
 }
 
-export function serializeMessage(message: Message): { serialized: Buffer; size: number } {
-  const name = message.type !== Conversation.Message.Type.Event ? message.sender.name : '';
+export function serializeMessage(message: Message): {
+  serialized: Buffer;
+  size: number;
+} {
+  const name =
+    message.type !== Conversation.Message.Type.Event ? message.sender.name : '';
   const senderLength = Buffer.byteLength(name);
   const messageLength = Buffer.byteLength(message.text);
   const buffer = Buffer.allocUnsafe(senderLength + messageLength + 10);
@@ -105,15 +124,25 @@ export function serializeMessage(message: Message): { serialized: Buffer; size: 
 function deserializeMessage(
   buffer: Buffer,
   offset: number = 0,
-  characterGetter: (name: string) => Character = name => core.characters.get(name)
+  characterGetter: (name: string) => Character = name =>
+    core.characters.get(name)
 ): { size: number; message: Conversation.Message } {
   const time = buffer.readUInt32LE(offset);
   const type = buffer.readUInt8((offset += 4));
   const senderLength = buffer.readUInt8((offset += 1));
-  const sender = buffer.toString('utf8', (offset += 1), (offset += senderLength));
+  const sender = buffer.toString(
+    'utf8',
+    (offset += 1),
+    (offset += senderLength)
+  );
   const messageLength = buffer.readUInt16LE(offset);
   const text = buffer.toString('utf8', (offset += 2), offset + messageLength);
-  const message = new MessageImpl(type, characterGetter(sender), text, new Date(time * 1000));
+  const message = new MessageImpl(
+    type,
+    characterGetter(sender),
+    text,
+    new Date(time * 1000)
+  );
   return { message, size: senderLength + messageLength + 10 };
 }
 
@@ -157,14 +186,20 @@ export function fixLogs(character: string): void {
           overrides: {}
         }));
         const time = deserialized.message.time;
-        const day = Math.floor(time.getTime() / dayMs - time.getTimezoneOffset() / 1440);
+        const day = Math.floor(
+          time.getTime() / dayMs - time.getTimezoneOffset() / 1440
+        );
         if (day > lastDay) {
           buffer.writeUInt16LE(day, 0);
           buffer.writeUIntLE(pos, 2, 5);
           fs.writeSync(indexFd, buffer, 0, 7);
           lastDay = day;
         }
-        if (buffer.readUInt16LE(deserialized.size - 2) !== deserialized.size - 2) throw new Error();
+        if (
+          buffer.readUInt16LE(deserialized.size - 2) !==
+          deserialized.size - 2
+        )
+          throw new Error();
         pos += deserialized.size;
       }
     } catch {
@@ -215,7 +250,9 @@ export class Logs implements Logging {
     });
   }
 
-  async getBacklog(conversation: Conversation): Promise<ReadonlyArray<Conversation.Message>> {
+  async getBacklog(
+    conversation: Conversation
+  ): Promise<ReadonlyArray<Conversation.Message>> {
     const file = getLogFile(core.connection.character, conversation.key);
     if (!fs.existsSync(file)) return [];
     let count = 20;
@@ -245,10 +282,14 @@ export class Logs implements Logging {
   private getIndex(name: string): Index {
     if (this.loadedCharacter === name) return this.loadedIndex!;
     this.loadedCharacter = name;
-    return (this.loadedIndex = name === core.connection.character ? this.index : loadIndex(name));
+    return (this.loadedIndex =
+      name === core.connection.character ? this.index : loadIndex(name));
   }
 
-  async getLogDates(character: string, key: string): Promise<ReadonlyArray<Date>> {
+  async getLogDates(
+    character: string,
+    key: string
+  ): Promise<ReadonlyArray<Date>> {
     const entry = this.getIndex(character)[key];
     if (entry === undefined) return [];
     const dates = [];
@@ -259,16 +300,26 @@ export class Logs implements Logging {
     return dates;
   }
 
-  async getLogs(character: string, key: string, date: Date): Promise<ReadonlyArray<Conversation.Message>> {
+  async getLogs(
+    character: string,
+    key: string,
+    date: Date
+  ): Promise<ReadonlyArray<Conversation.Message>> {
     const index = this.getIndex(character)[key];
     if (index === undefined) return [];
-    const dateOffset = index.index[Math.floor(date.getTime() / dayMs - date.getTimezoneOffset() / 1440)];
+    const dateOffset =
+      index.index[
+        Math.floor(date.getTime() / dayMs - date.getTimezoneOffset() / 1440)
+      ];
     if (dateOffset === undefined) return [];
     const messages: Conversation.Message[] = [];
     const pos = index.offsets[dateOffset];
     const fd = fs.openSync(getLogFile(character, key), 'r');
     try {
-      const end = dateOffset + 1 < index.offsets.length ? index.offsets[dateOffset + 1] : fs.fstatSync(fd).size;
+      const end =
+        dateOffset + 1 < index.offsets.length
+          ? index.offsets[dateOffset + 1]
+          : fs.fstatSync(fd).size;
       const length = end - pos;
       const buffer = Buffer.allocUnsafe(length);
       await read(fd, buffer, 0, length, pos);
@@ -288,39 +339,59 @@ export class Logs implements Logging {
     }
   }
 
-  logMessage(conversation: { key: string; name: string }, message: Message): void {
+  logMessage(
+    conversation: { key: string; name: string },
+    message: Message
+  ): void {
     const file = getLogFile(core.connection.character, conversation.key);
     const buffer = serializeMessage(message).serialized;
     const hasIndex = this.index[conversation.key] !== undefined;
-    const indexBuffer = checkIndex(this.index, message, conversation.key, conversation.name, () =>
-      fs.existsSync(file) ? fs.statSync(file).size : 0
+    const indexBuffer = checkIndex(
+      this.index,
+      message,
+      conversation.key,
+      conversation.name,
+      () => (fs.existsSync(file) ? fs.statSync(file).size : 0)
     );
-    if (indexBuffer !== undefined) writeFile(`${file}.idx`, indexBuffer, { flag: hasIndex ? 'a' : 'wx' });
+    if (indexBuffer !== undefined)
+      writeFile(`${file}.idx`, indexBuffer, { flag: hasIndex ? 'a' : 'wx' });
     writeFile(file, buffer, { flag: 'a' });
   }
 
-  async getConversations(character: string): Promise<ReadonlyArray<{ key: string; name: string }>> {
+  async getConversations(
+    character: string
+  ): Promise<ReadonlyArray<{ key: string; name: string }>> {
     const index = this.getIndex(character);
     const conversations: { key: string; name: string }[] = [];
-    for (const key in index) conversations.push({ key, name: index[key]!.name });
+    for (const key in index)
+      conversations.push({ key, name: index[key]!.name });
     return conversations;
   }
 
   async getAvailableCharacters(): Promise<ReadonlyArray<string>> {
     const baseDir = core.state.generalSettings!.logDirectory;
     fs.mkdirSync(baseDir, { recursive: true });
-    return fs.readdirSync(baseDir).filter(x => fs.statSync(path.join(baseDir, x)).isDirectory());
+    return fs
+      .readdirSync(baseDir)
+      .filter(x => fs.statSync(path.join(baseDir, x)).isDirectory());
   }
 }
 
 function getSettingsDir(character: string = core.connection.character): string {
-  const dir = path.join(core.state.generalSettings!.logDirectory, character, 'settings');
+  const dir = path.join(
+    core.state.generalSettings!.logDirectory,
+    character,
+    'settings'
+  );
   fs.mkdirSync(dir, { recursive: true });
   return dir;
 }
 
 export class SettingsStore implements Settings.Store {
-  async get<K extends keyof Settings.Keys>(key: K, character?: string): Promise<Settings.Keys[K] | undefined> {
+  async get<K extends keyof Settings.Keys>(
+    key: K,
+    character?: string
+  ): Promise<Settings.Keys[K] | undefined> {
     try {
       const file = path.join(getSettingsDir(character), key);
 
@@ -337,11 +408,16 @@ export class SettingsStore implements Settings.Store {
 
   async getAvailableCharacters(): Promise<ReadonlyArray<string>> {
     const baseDir = core.state.generalSettings!.logDirectory;
-    return fs.readdirSync(baseDir).filter(x => fs.statSync(path.join(baseDir, x)).isDirectory());
+    return fs
+      .readdirSync(baseDir)
+      .filter(x => fs.statSync(path.join(baseDir, x)).isDirectory());
   }
 
   //tslint:disable-next-line:no-async-without-await
-  async set<K extends keyof Settings.Keys>(key: K, value: Settings.Keys[K]): Promise<void> {
+  async set<K extends keyof Settings.Keys>(
+    key: K,
+    value: Settings.Keys[K]
+  ): Promise<void> {
     writeFile(path.join(getSettingsDir(), key), JSON.stringify(value));
   }
 }

@@ -7,16 +7,34 @@
     @mouseover.stop="showTooltip = true"
     @mouseout.stop="showTooltip = false"
   >
-    <i v-show="kink.hasSubkinks" class="fa" :class="{ 'fa-minus': !listClosed, 'fa-plus': listClosed }"></i>
-    <i v-show="!kink.hasSubkinks && kink.isCustom" class="far custom-kink-icon"></i>
+    <i
+      v-show="kink.hasSubkinks"
+      class="fa"
+      :class="{ 'fa-minus': !listClosed, 'fa-plus': listClosed }"
+    ></i>
+    <i
+      v-show="!kink.hasSubkinks && kink.isCustom"
+      class="far custom-kink-icon"
+    ></i>
     <span class="kink-name">{{ kink.name }}</span>
-    <span class="kink-custom-desc" v-if="kink.isCustom && expandedCustom">{{ kink.description }}</span>
+    <span class="kink-custom-desc" v-if="kink.isCustom && expandedCustom">{{
+      kink.description
+    }}</span>
     <template v-if="kink.hasSubkinks">
       <div class="subkink-list" :class="{ closed: this.listClosed }">
-        <kink v-for="subkink in kink.subkinks" :kink="subkink" :key="subkink.id" :comparisons="comparisons" :highlights="highlights"></kink>
+        <kink
+          v-for="subkink in kink.subkinks"
+          :kink="subkink"
+          :key="subkink.id"
+          :comparisons="comparisons"
+          :highlights="highlights"
+        ></kink>
       </div>
     </template>
-    <div class="popover popover-top" v-if="showTooltip && (!kink.isCustom || !expandedCustom)">
+    <div
+      class="popover popover-top"
+      v-if="showTooltip && (!kink.isCustom || !expandedCustom)"
+    >
       <div class="arrow" style="left: 10%"></div>
       <h5 class="popover-header">{{ kink.name }}</h5>
       <div class="popover-body">
@@ -81,9 +99,15 @@
       classes[`kink-id-${this.kink.key}`] = true;
       classes[`kink-group-${this.kink.group}`] = true;
 
-      const theirKinkId = this.kink.id in kinkComparisonSwaps ? kinkComparisonSwaps[this.kink.id] : this.kink.id;
+      const theirKinkId =
+        this.kink.id in kinkComparisonSwaps
+          ? kinkComparisonSwaps[this.kink.id]
+          : this.kink.id;
 
-      if (!this.kink.isCustom && typeof this.comparisons[theirKinkId] !== 'undefined') {
+      if (
+        !this.kink.isCustom &&
+        typeof this.comparisons[theirKinkId] !== 'undefined'
+      ) {
         classes['comparison-result'] = true;
         classes[`comparison-${this.comparisons[theirKinkId]}`] = true;
       }

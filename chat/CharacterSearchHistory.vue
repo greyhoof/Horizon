@@ -1,7 +1,18 @@
 <template>
-  <modal ref="dialog" action="Search history" buttonText="Select" @open="onMounted()" @submit="selectStatus" dialogClass="w-100 modal-lg">
+  <modal
+    ref="dialog"
+    action="Search history"
+    buttonText="Select"
+    @open="onMounted()"
+    @submit="selectStatus"
+    dialogClass="w-100 modal-lg"
+  >
     <form class="search-history" v-if="history.length > 0">
-      <div class="form-row" v-for="(search, index) in history" :class="{ 'selected-row': index === selectedSearch }">
+      <div
+        class="form-row"
+        v-for="(search, index) in history"
+        :class="{ 'selected-row': index === selectedSearch }"
+      >
         <div class="form-col radio-col">
           <input
             type="radio"
@@ -11,12 +22,22 @@
             v-bind:value="index"
           />
         </div>
-        <div class="form-col content-col" @click="select(index)" @dblclick="submit">
-          <span class="before-content"><i class="fas" :class="{ 'fa-check-circle': index === selectedSearch }" /></span>
+        <div
+          class="form-col content-col"
+          @click="select(index)"
+          @dblclick="submit"
+        >
+          <span class="before-content"
+            ><i
+              class="fas"
+              :class="{ 'fa-check-circle': index === selectedSearch }"
+          /></span>
           <label class="custom-control-label" :for="'search_history_' + index">
             {{ describeSearch(search) }}
           </label>
-          <span class="content-action" @click="removeSearchHistoryEntry(index)"><i class="fas fa-times-circle" /></span>
+          <span class="content-action" @click="removeSearchHistoryEntry(index)"
+            ><i class="fas fa-times-circle"
+          /></span>
         </div>
       </div>
     </form>
@@ -37,7 +58,11 @@
   import { ExtendedSearchData, SearchData } from './interfaces';
 
   @Component({
-    components: { modal: Modal, dropdown: Dropdown, bbcode: BBCodeView(core.bbCodeParser) }
+    components: {
+      modal: Modal,
+      dropdown: Dropdown,
+      bbcode: BBCodeView(core.bbCodeParser)
+    }
   })
   export default class CharacterSearchHistory extends CustomDialog {
     @Prop({ required: true })
@@ -58,7 +83,10 @@
       if (this.curSearch) {
         const cleanedSearch = JSON.stringify(this.curSearch, null, 0);
 
-        const index = _.findIndex(this.history, c => JSON.stringify(c, null, 0) === cleanedSearch);
+        const index = _.findIndex(
+          this.history,
+          c => JSON.stringify(c, null, 0) === cleanedSearch
+        );
 
         if (index >= 0) {
           this.selectedSearch = index;
@@ -68,7 +96,12 @@
 
     selectStatus(): void {
       if (this.selectedSearch !== null) {
-        this.callback(_.merge({ species: [], bodytypes: [] }, this.history[this.selectedSearch]) as ExtendedSearchData);
+        this.callback(
+          _.merge(
+            { species: [], bodytypes: [] },
+            this.history[this.selectedSearch]
+          ) as ExtendedSearchData
+        );
       }
     }
 

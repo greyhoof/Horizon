@@ -7,7 +7,11 @@
     dialog-class="modal-lg modal-dialog-centered"
   >
     <div class="form-group" v-if="editing">
-      <textarea v-model="message" maxlength="1000" class="form-control"></textarea>
+      <textarea
+        v-model="message"
+        maxlength="1000"
+        class="form-control"
+      ></textarea>
     </div>
     <div v-else>
       <p>{{ message }}</p>

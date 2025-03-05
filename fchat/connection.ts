@@ -15,10 +15,17 @@ let lastApiTicketFetch = Date.now();
 const queryApiThroat = throat(2);
 const queryTicketThroat = throat(1);
 
-async function queryApi(this: void, endpoint: string, data: object): Promise<AxiosResponse> {
+async function queryApi(
+  this: void,
+  endpoint: string,
+  data: object
+): Promise<AxiosResponse> {
   lastFetch = Date.now();
 
-  return Axios.post(`https://www.f-list.net/json/api/${endpoint}`, qs.stringify(data));
+  return Axios.post(
+    `https://www.f-list.net/json/api/${endpoint}`,
+    qs.stringify(data)
+  );
 }
 
 export default class Connection implements Interfaces.Connection {
@@ -26,8 +33,14 @@ export default class Connection implements Interfaces.Connection {
   vars: Interfaces.Vars = <any>{}; //tslint:disable-line:no-any
   protected socket: WebSocketConnection | undefined = undefined;
   //tslint:disable-next-line:no-object-literal-type-assertion
-  private messageHandlers = <{ [key in keyof Interfaces.ServerCommands]: Interfaces.CommandHandler<key>[] }>{};
-  private connectionHandlers: { [key in Interfaces.EventType]?: Interfaces.EventHandler[] } = {};
+  private messageHandlers = <
+    {
+      [key in keyof Interfaces.ServerCommands]: Interfaces.CommandHandler<key>[];
+    }
+  >{};
+  private connectionHandlers: {
+    [key in Interfaces.EventType]?: Interfaces.EventHandler[];
+  } = {};
   private errorHandlers: ((error: Error) => void)[] = [];
   private ticket = '';
   private cleanClose = false;
@@ -44,9 +57,15 @@ export default class Connection implements Interfaces.Connection {
     private readonly socketProvider: new () => WebSocketConnection
   ) {}
 
-  setCredentials(account: string, ticketProvider: Interfaces.TicketProvider | string): void {
+  setCredentials(
+    account: string,
+    ticketProvider: Interfaces.TicketProvider | string
+  ): void {
     this.account = account;
-    this.ticketProvider = typeof ticketProvider === 'string' ? async () => this.getTicket(ticketProvider) : ticketProvider;
+    this.ticketProvider =
+      typeof ticketProvider === 'string'
+        ? async () => this.getTicket(ticketProvider)
+        : ticketProvider;
   }
 
   async connect(character: string): Promise<void> {
@@ -92,7 +111,8 @@ export default class Connection implements Interfaces.Connection {
     });
     this.socket.onMessage(async (msg: string) => {
       const type = <keyof Interfaces.ServerCommands>msg.substr(0, 3);
-      const data = msg.length > 6 ? <object>JSON.parse(msg.substr(4)) : undefined;
+      const data =
+        msg.length > 6 ? <object>JSON.parse(msg.substr(4)) : undefined;
 
       log.silly('socket.recv', {
         type,
@@ -114,12 +134,22 @@ export default class Connection implements Interfaces.Connection {
       this.socket = undefined;
       await this.invokeHandlers('closed', !this.cleanClose);
     });
-    this.socket.onError((error: Error) => this.invokeErrorHandlers(error, true));
+    this.socket.onError((error: Error) =>
+      this.invokeErrorHandlers(error, true)
+    );
   }
 
   private reconnect(): void {
-    this.reconnectTimer = setTimeout(async () => this.connect(this.character), this.reconnectDelay);
-    this.reconnectDelay = this.reconnectDelay >= 30000 ? 60000 : this.reconnectDelay >= 10000 ? 30000 : 10000;
+    this.reconnectTimer = setTimeout(
+      async () => this.connect(this.character),
+      this.reconnectDelay
+    );
+    this.reconnectDelay =
+      this.reconnectDelay >= 30000
+        ? 60000
+        : this.reconnectDelay >= 10000
+          ? 30000
+          : 10000;
   }
 
   close(keepState: boolean = true): void {
@@ -134,10 +164,15 @@ export default class Connection implements Interfaces.Connection {
   }
 
   get isOpen(): boolean {
-    return this.socket !== undefined && this.socket.readyState === ReadyState.OPEN;
+    return (
+      this.socket !== undefined && this.socket.readyState === ReadyState.OPEN
+    );
   }
 
-  async queryApi<T = object>(endpoint: string, data?: { account?: string; ticket?: string }): Promise<T> {
+  async queryApi<T = object>(
+    endpoint: string,
+    data?: { account?: string; ticket?: string }
+  ): Promise<T> {
     return queryApiThroat(async () => this.queryApiExec<T>(endpoint, data));
   }
 
@@ -163,7 +198,10 @@ export default class Connection implements Interfaces.Connection {
     return this.ticket;
   }
 
-  protected async queryApiExec<T = object>(endpoint: string, data?: { account?: string; ticket?: string }): Promise<T> {
+  protected async queryApiExec<T = object>(
+    endpoint: string,
+    data?: { account?: string; ticket?: string }
+  ): Promise<T> {
     if (!this.ticketProvider) throw new Error('No credentials set!');
 
     log.debug('api.query.start', {
@@ -181,7 +219,11 @@ export default class Connection implements Interfaces.Connection {
 
     let res = <T & { error: string }>(await queryApi(endpoint, data)).data;
 
-    if (res.error === 'Invalid ticket.' || res.error === 'Your login ticket has expired (five minutes) or no ticket requested.') {
+    if (
+      res.error === 'Invalid ticket.' ||
+      res.error ===
+        'Your login ticket has expired (five minutes) or no ticket requested.'
+    ) {
       log.debug('api.ticket.loss', {
         error: res.error,
         character: core.characters.ownCharacter?.name,
@@ -235,21 +277,39 @@ export default class Connection implements Interfaces.Connection {
     handlers.splice(handlers.indexOf(handler), 1);
   }
 
-  onMessage<K extends keyof Interfaces.ServerCommands>(type: K, handler: Interfaces.CommandHandler<K>): void {
-    let handlers = <Interfaces.CommandHandler<K>[] | undefined>this.messageHandlers[type];
+  onMessage<K extends keyof Interfaces.ServerCommands>(
+    type: K,
+    handler: Interfaces.CommandHandler<K>
+  ): void {
+    let handlers = <Interfaces.CommandHandler<K>[] | undefined>(
+      this.messageHandlers[type]
+    );
     if (handlers === undefined) handlers = this.messageHandlers[type] = [];
     handlers.push(handler);
   }
 
-  offMessage<K extends keyof Interfaces.ServerCommands>(type: K, handler: Interfaces.CommandHandler<K>): void {
-    const handlers = <Interfaces.CommandHandler<K>[] | undefined>this.messageHandlers[type];
+  offMessage<K extends keyof Interfaces.ServerCommands>(
+    type: K,
+    handler: Interfaces.CommandHandler<K>
+  ): void {
+    const handlers = <Interfaces.CommandHandler<K>[] | undefined>(
+      this.messageHandlers[type]
+    );
     if (handlers === undefined) return;
     handlers.splice(handlers.indexOf(handler), 1);
   }
 
-  send<K extends keyof Interfaces.ClientCommands>(command: K, data?: Interfaces.ClientCommands[K]): void {
-    if (this.socket !== undefined && this.socket.readyState === WebSocketConnection.ReadyState.OPEN) {
-      const msg = <string>command + (data !== undefined ? ` ${JSON.stringify(data)}` : '');
+  send<K extends keyof Interfaces.ClientCommands>(
+    command: K,
+    data?: Interfaces.ClientCommands[K]
+  ): void {
+    if (
+      this.socket !== undefined &&
+      this.socket.readyState === WebSocketConnection.ReadyState.OPEN
+    ) {
+      const msg =
+        <string>command +
+        (data !== undefined ? ` ${JSON.stringify(data)}` : '');
 
       log.silly('socket.send', { data: msg });
 
@@ -258,10 +318,16 @@ export default class Connection implements Interfaces.Connection {
   }
 
   //tslint:disable:no-unsafe-any no-any
-  protected async handleMessage<T extends keyof Interfaces.ServerCommands>(type: T, data: any): Promise<void> {
+  protected async handleMessage<T extends keyof Interfaces.ServerCommands>(
+    type: T,
+    data: any
+  ): Promise<void> {
     const time = new Date();
-    const handlers = <Interfaces.CommandHandler<T>[] | undefined>this.messageHandlers[type];
-    if (handlers !== undefined) for (const handler of handlers) await handler(data, time);
+    const handlers = <Interfaces.CommandHandler<T>[] | undefined>(
+      this.messageHandlers[type]
+    );
+    if (handlers !== undefined)
+      for (const handler of handlers) await handler(data, time);
     switch (type) {
       case 'VAR':
         this.vars[<keyof Interfaces.Vars>data.variable] = data.value;
@@ -306,7 +372,13 @@ export default class Connection implements Interfaces.Connection {
       (
         await Axios.post(
           'https://www.f-list.net/json/getApiTicket.php',
-          qs.stringify({ account: this.account, password, no_friends: true, no_bookmarks: true, no_characters: true })
+          qs.stringify({
+            account: this.account,
+            password,
+            no_friends: true,
+            no_bookmarks: true,
+            no_characters: true
+          })
         )
       ).data
     );
@@ -333,7 +405,10 @@ export default class Connection implements Interfaces.Connection {
     throw new Error(data.error);
   }
 
-  private async invokeHandlers(type: Interfaces.EventType, isReconnect: boolean): Promise<void> {
+  private async invokeHandlers(
+    type: Interfaces.EventType,
+    isReconnect: boolean
+  ): Promise<void> {
     const handlers = this.connectionHandlers[type];
     if (handlers === undefined) return;
     for (const handler of handlers) await handler(isReconnect);

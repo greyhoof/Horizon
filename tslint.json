@@ -17,7 +17,14 @@
     "max-line-length": [true, 140],
     "newline-before-return": false,
     "quotemark": [true, "single"],
-    "whitespace": [true, "check-decl", "check-operator", "check-separator", "check-preblock", "check-rest-spread"]
+    "whitespace": [
+      true,
+      "check-decl",
+      "check-operator",
+      "check-separator",
+      "check-preblock",
+      "check-rest-spread"
+    ]
   },
   "rules": {
     "align": [true, "members", "parameters", "statements"],

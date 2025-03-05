@@ -1,20 +1,58 @@
 <template>
   <span v-show="isShown">
-    <div class="modal" @mousedown.self="hideWithCheck()" style="display: flex; justify-content: center">
-      <div class="modal-dialog" :class="dialogClass" style="display: flex; align-items: center; margin-left: 0; margin-right: 0">
+    <div
+      class="modal"
+      @mousedown.self="hideWithCheck()"
+      style="display: flex; justify-content: center"
+    >
+      <div
+        class="modal-dialog"
+        :class="dialogClass"
+        style="
+          display: flex;
+          align-items: center;
+          margin-left: 0;
+          margin-right: 0;
+        "
+      >
         <div class="modal-content" style="max-height: 100%">
           <div class="modal-header" style="flex-shrink: 0">
             <h4 class="modal-title">
               <slot name="title">{{ action }}</slot>
             </h4>
-            <button type="button" class="close" @click="hide" aria-label="Close" v-show="!keepOpen">&times;</button>
+            <button
+              type="button"
+              class="close"
+              @click="hide"
+              aria-label="Close"
+              v-show="!keepOpen"
+            >
+              &times;
+            </button>
           </div>
-          <div class="modal-body" style="overflow: auto; -webkit-overflow-scrolling: auto" tabindex="-1">
+          <div
+            class="modal-body"
+            style="overflow: auto; -webkit-overflow-scrolling: auto"
+            tabindex="-1"
+          >
             <slot></slot>
           </div>
           <div class="modal-footer" v-if="buttons">
-            <button type="button" class="btn btn-secondary" @click="hideWithCheck" v-if="showCancel">Cancel</button>
-            <button type="button" class="btn" :class="buttonClass" @click="submit" :disabled="shouldBeDisabled()">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              @click="hideWithCheck"
+              v-if="showCancel"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn"
+              :class="buttonClass"
+              @click="submit"
+              :disabled="shouldBeDisabled()"
+            >
               {{ submitText }}
             </button>
           </div>
@@ -33,7 +71,8 @@
 
   const dialogStack: Modal[] = [];
   window.addEventListener('keydown', e => {
-    if (getKey(e) === Keys.Escape && dialogStack.length > 0) dialogStack[dialogStack.length - 1].hideWithCheck();
+    if (getKey(e) === Keys.Escape && dialogStack.length > 0)
+      dialogStack[dialogStack.length - 1].hideWithCheck();
   });
   window.addEventListener(
     'backbutton',

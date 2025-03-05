@@ -20,7 +20,9 @@ export class CharacterPreviewHelper extends ImagePreviewHelper {
       return;
     }
 
-    const match = url.match(CharacterPreviewHelper.FLIST_CHARACTER_PROTOCOL_TESTER);
+    const match = url.match(
+      CharacterPreviewHelper.FLIST_CHARACTER_PROTOCOL_TESTER
+    );
 
     if (!match) {
       return;

@@ -1,5 +1,10 @@
 <template>
-  <modal dialogClass="modal-lg" :buttons="false" :action="l('commands.help')" id="command-help">
+  <modal
+    dialogClass="modal-lg"
+    :buttons="false"
+    :action="l('commands.help')"
+    id="command-help"
+  >
     <div style="overflow: auto">
       <div v-for="command in filteredCommands">
         <h4>{{ command.name }}</h4>
@@ -34,7 +39,11 @@
   import Modal from '../components/Modal.vue';
   import core from './core';
   import l from './localize';
-  import commands, { CommandContext, ParamType, Permission } from './slash_commands';
+  import commands, {
+    CommandContext,
+    ParamType,
+    Permission
+  } from './slash_commands';
 
   type CommandItem = {
     name: string;
@@ -66,7 +75,9 @@
         const command = commands[key]!;
         if (
           command.documented !== undefined ||
-          (command.permission !== undefined && command.permission > 0 && (command.permission & permissions) === 0)
+          (command.permission !== undefined &&
+            command.permission > 0 &&
+            (command.permission & permissions) === 0)
         )
           continue;
         const params = [];
@@ -74,26 +85,40 @@
         if (command.params !== undefined)
           for (let i = 0; i < command.params.length; ++i) {
             const param = command.params[i];
-            const paramKey = param.type === ParamType.Character ? 'param_character' : `${key}.param${i}`;
+            const paramKey =
+              param.type === ParamType.Character
+                ? 'param_character'
+                : `${key}.param${i}`;
             const name = l(`commands.${paramKey}`);
             const data = {
-              name: param.optional !== undefined ? l('commands.help.paramOptional', name) : name,
+              name:
+                param.optional !== undefined
+                  ? l('commands.help.paramOptional', name)
+                  : name,
               help: l(`commands.${paramKey}.help`)
             };
             params.push(data);
-            syntax += (param.optional !== undefined ? `[${name}]` : `<${name}>`) + (param.delimiter !== undefined ? param.delimiter : ' ');
+            syntax +=
+              (param.optional !== undefined ? `[${name}]` : `<${name}>`) +
+              (param.delimiter !== undefined ? param.delimiter : ' ');
           }
         let context = '';
         if (command.context !== undefined) {
-          if ((command.context & CommandContext.Channel) > 0) context += `${l('commands.help.contextChannel')}\n`;
-          if ((command.context & CommandContext.Private) > 0) context += `${l('commands.help.contextPrivate')}\n`;
-          if ((command.context & CommandContext.Console) > 0) context += `${l('commands.help.contextConsole')}\n`;
+          if ((command.context & CommandContext.Channel) > 0)
+            context += `${l('commands.help.contextChannel')}\n`;
+          if ((command.context & CommandContext.Private) > 0)
+            context += `${l('commands.help.contextPrivate')}\n`;
+          if ((command.context & CommandContext.Console) > 0)
+            context += `${l('commands.help.contextConsole')}\n`;
         }
         this.commands.push({
           name: `/${key} - ${l(`commands.${key}`)}`,
           help: l(`commands.${key}.help`),
           context,
-          permission: command.permission !== undefined ? l(`commands.help.permission${Permission[command.permission]}`) : undefined,
+          permission:
+            command.permission !== undefined
+              ? l(`commands.help.permission${Permission[command.permission]}`)
+              : undefined,
           params,
           syntax
         });

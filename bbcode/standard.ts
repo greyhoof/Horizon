@@ -47,16 +47,51 @@ export class StandardBBCodeParser extends CoreBBCodeParser {
     this.addTag(new BBCodeSimpleTag('right', 'span', ['rightText']));
     this.addTag(new BBCodeSimpleTag('center', 'span', ['centerText']));
     this.addTag(new BBCodeSimpleTag('justify', 'span', ['justifyText']));
-    this.addTag(new BBCodeSimpleTag('big', 'span', ['bigText'], ['url', 'i', 'u', 'b', 'color', 's']));
-    this.addTag(new BBCodeSimpleTag('small', 'span', ['smallText'], ['url', 'i', 'u', 'b', 'color', 's']));
-    this.addTag(new BBCodeSimpleTag('sub', 'span', ['smallText'], ['url', 'i', 'u', 'b', 'color', 's']));
+    this.addTag(
+      new BBCodeSimpleTag(
+        'big',
+        'span',
+        ['bigText'],
+        ['url', 'i', 'u', 'b', 'color', 's']
+      )
+    );
+    this.addTag(
+      new BBCodeSimpleTag(
+        'small',
+        'span',
+        ['smallText'],
+        ['url', 'i', 'u', 'b', 'color', 's']
+      )
+    );
+    this.addTag(
+      new BBCodeSimpleTag(
+        'sub',
+        'span',
+        ['smallText'],
+        ['url', 'i', 'u', 'b', 'color', 's']
+      )
+    );
     this.addTag(new BBCodeSimpleTag('indent', 'div', ['indentText']));
     this.addTag(
       new BBCodeSimpleTag(
         'heading',
         'h2',
         [],
-        ['collapse', 'justify', 'center', 'left', 'right', 'url', 'i', 'u', 'b', 'color', 's', 'big', 'sub']
+        [
+          'collapse',
+          'justify',
+          'center',
+          'left',
+          'right',
+          'url',
+          'i',
+          'u',
+          'b',
+          'color',
+          's',
+          'big',
+          'sub'
+        ]
       )
     );
     this.addTag(new BBCodeSimpleTag('row', 'div', ['row']));
@@ -100,7 +135,8 @@ export class StandardBBCodeParser extends CoreBBCodeParser {
         for (let iii = 0; iii < splitParam.length; iii++) {
           const element = splitParam[iii];
           headerText.appendChild(document.createTextNode(element));
-          if (iii < splitParam.length - 1) headerText.appendChild(parser.createElement('hr'));
+          if (iii < splitParam.length - 1)
+            headerText.appendChild(parser.createElement('hr'));
         }
         outer.appendChild(headerText);
         const body = parser.createElement('div');
@@ -113,7 +149,8 @@ export class StandardBBCodeParser extends CoreBBCodeParser {
         let timeout: number;
         headerText.addEventListener('click', () => {
           const isCollapsed = parseInt(body.style.height!, 10) === 0;
-          if (isCollapsed) timeout = window.setTimeout(() => (body.style.height = ''), 200);
+          if (isCollapsed)
+            timeout = window.setTimeout(() => (body.style.height = ''), 200);
           else {
             clearTimeout(timeout);
             body.style.transition = 'initial';
@@ -197,18 +234,27 @@ export class StandardBBCodeParser extends CoreBBCodeParser {
         }
         const inline = parser.inlines[param];
         if (typeof inline !== 'object') {
-          parser.warning(`Could not find an inline image with id ${param} It will not be visible.`);
+          parser.warning(
+            `Could not find an inline image with id ${param} It will not be visible.`
+          );
           return undefined;
         }
         inline.name = content;
         let element: HTMLElement;
-        if (displayMode === InlineDisplayMode.DISPLAY_NONE || (displayMode === InlineDisplayMode.DISPLAY_SFW && inline.nsfw)) {
+        if (
+          displayMode === InlineDisplayMode.DISPLAY_NONE ||
+          (displayMode === InlineDisplayMode.DISPLAY_SFW && inline.nsfw)
+        ) {
           const el = (element = parser.createElement('a'));
           el.className = 'unloadedInline';
           el.href = '#';
           el.dataset.inlineId = param;
           el.onclick = () => {
-            (<HTMLElement[]>Array.prototype.slice.call(document.getElementsByClassName('unloadedInline'))).forEach(e => {
+            (<HTMLElement[]>(
+              Array.prototype.slice.call(
+                document.getElementsByClassName('unloadedInline')
+              )
+            )).forEach(e => {
               const showInline = parser.inlines![e.dataset.inlineId!];
               if (typeof showInline !== 'object') return;
               e.parentElement!.replaceChild(parser.createInline(showInline), e);
@@ -237,7 +283,14 @@ export class StandardBBCodeParser extends CoreBBCodeParser {
           return;
         }
 
-        const view = new UrlTagView({ el: root, propsData: { url: tagData.url, text: tagData.textContent, domain: tagData.domain } });
+        const view = new UrlTagView({
+          el: root,
+          propsData: {
+            url: tagData.url,
+            text: tagData.textContent,
+            domain: tagData.domain
+          }
+        });
         this.cleanup.push(view);
 
         return root;

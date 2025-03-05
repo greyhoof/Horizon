@@ -12,7 +12,8 @@ export interface SiteSessionInterface {
   stop(): Promise<void>;
 }
 
-export interface SiteSessionInterfaceCollection extends Record<string, SiteSessionInterface> {
+export interface SiteSessionInterfaceCollection
+  extends Record<string, SiteSessionInterface> {
   notes: NoteChecker;
 }
 
@@ -27,7 +28,9 @@ export class SiteSession {
   private account = '';
   private password = '';
 
-  private request: request.RequestPromiseAPI = request.defaults({ jar: request.jar() });
+  private request: request.RequestPromiseAPI = request.defaults({
+    jar: request.jar()
+  });
 
   private csrf = '';
 
@@ -146,9 +149,18 @@ export class SiteSession {
     );
   }
 
-  async get(uri: string, mustBeLoggedIn: boolean = false, config: Partial<request.Options> = {}): Promise<request.RequestPromise> {
+  async get(
+    uri: string,
+    mustBeLoggedIn: boolean = false,
+    config: Partial<request.Options> = {}
+  ): Promise<request.RequestPromise> {
     return this.sessionThroat(async () => {
-      const finalConfig = await this.prepareRequest('get', uri, mustBeLoggedIn, config);
+      const finalConfig = await this.prepareRequest(
+        'get',
+        uri,
+        mustBeLoggedIn,
+        config
+      );
 
       return this.request(finalConfig);
     });
@@ -161,7 +173,12 @@ export class SiteSession {
     config: Partial<request.Options> = {}
   ): Promise<request.RequestPromise> {
     return this.sessionThroat(async () => {
-      const finalConfig = await this.prepareRequest('post', uri, mustBeLoggedIn, _.merge({ form: data }, config));
+      const finalConfig = await this.prepareRequest(
+        'post',
+        uri,
+        mustBeLoggedIn,
+        _.merge({ form: data }, config)
+      );
 
       return this.request(finalConfig);
     });

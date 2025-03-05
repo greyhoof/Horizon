@@ -24,7 +24,18 @@ export function getByteLength(this: any | never, str: string): number {
     if (c > 0xd800 && c < 0xd8ff)
       //surrogate pairs
       c = (c - 0xd800) * 0x400 + str.charCodeAt(++i) - 0xdc00 + 0x10000;
-    byteLen += c < 0x80 ? 1 : c < 0x800 ? 2 : c < 0x10000 ? 3 : c < 0x200000 ? 4 : c < 0x4000000 ? 5 : 6;
+    byteLen +=
+      c < 0x80
+        ? 1
+        : c < 0x800
+          ? 2
+          : c < 0x10000
+            ? 3
+            : c < 0x200000
+              ? 4
+              : c < 0x4000000
+                ? 5
+                : 6;
   }
   return byteLen;
 }
@@ -122,15 +133,24 @@ export class ConversationSettings implements Conversation.Settings {
   highlightWords: string[] = [];
   joinMessages = Conversation.Setting.Default;
   defaultHighlights = true;
-  adSettings: Conversation.AdSettings = { ads: [], randomOrder: false, lastAdTimestamp: 0 };
+  adSettings: Conversation.AdSettings = {
+    ads: [],
+    randomOrder: false,
+    lastAdTimestamp: 0
+  };
 }
 
 function pad(num: number): string | number {
   return num < 10 ? `0${num}` : num;
 }
 
-export function formatTime(this: any | never, date: Date, noDate: boolean = false): string {
-  if (!noDate && isToday(date)) return `${pad(date.getHours())}:${pad(date.getMinutes())}`;
+export function formatTime(
+  this: any | never,
+  date: Date,
+  noDate: boolean = false
+): string {
+  if (!noDate && isToday(date))
+    return `${pad(date.getHours())}:${pad(date.getMinutes())}`;
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
 }
 
@@ -177,7 +197,8 @@ export class Message implements Conversation.ChatMessage {
     readonly text: string,
     readonly time: Date = new Date()
   ) {
-    if (Conversation.Message.Type[type] === undefined) throw new Error('Unknown type'); //tslint:disable-line
+    if (Conversation.Message.Type[type] === undefined)
+      throw new Error('Unknown type'); //tslint:disable-line
   }
 }
 

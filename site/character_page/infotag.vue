@@ -1,7 +1,11 @@
 <template>
   <div :class="tagClasses">
     <span class="infotag-label">{{ infotag.name }}: </span>
-    <span v-if="infotag.infotag_group !== contactGroupId" class="infotag-value">{{ value }}</span>
+    <span
+      v-if="infotag.infotag_group !== contactGroupId"
+      class="infotag-value"
+      >{{ value }}</span
+    >
     <span v-else class="infotag-value"
       ><a :href="contactLink">{{ contactValue }}</a></span
     >
@@ -72,7 +76,12 @@
     }
 
     yourInterestIsRelevant(id: number): boolean {
-      return id === TagId.Gender || id === TagId.Age || id === TagId.Species || id === TagId.BodyType;
+      return (
+        id === TagId.Gender ||
+        id === TagId.Age ||
+        id === TagId.Species ||
+        id === TagId.BodyType
+      );
     }
 
     get contactLink(): string | undefined {
@@ -88,10 +97,13 @@
         case 'text':
           return this.data.string!;
         case 'number':
-          if (this.infotag.allow_legacy && !this.data.number) return this.data.string !== undefined ? this.data.string : '';
+          if (this.infotag.allow_legacy && !this.data.number)
+            return this.data.string !== undefined ? this.data.string : '';
           return this.data.number!.toPrecision();
       }
-      const listitem = <ListItem | undefined>Store.shared.listItems[this.data.list!];
+      const listitem = <ListItem | undefined>(
+        Store.shared.listItems[this.data.list!]
+      );
       if (typeof listitem === 'undefined') return '';
       return listitem.value;
     }

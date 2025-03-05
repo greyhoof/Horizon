@@ -7,9 +7,13 @@
     >
       <a :href="report.url" @click="dismissReport(report)">
         <span class="count">{{ report.count }}</span>
-        {{ `${report.count !== 1 ? report.title : report.title.substr(0, report.title.length - 1)}` }}
+        {{
+          `${report.count !== 1 ? report.title : report.title.substr(0, report.title.length - 1)}`
+        }}
       </a>
-      <a @click="dismissReport(report)" class="dismiss"><i class="fas fa-times-circle"></i></a>
+      <a @click="dismissReport(report)" class="dismiss"
+        ><i class="fas fa-times-circle"></i
+      ></a>
     </div>
   </div>
 </template>
@@ -70,7 +74,10 @@
     }
 
     hasReports(): boolean {
-      return !!_.find(this.reports, r => r.count > 0 && r.dismissedCount !== r.count);
+      return !!_.find(
+        this.reports,
+        r => r.count > 0 && r.dismissedCount !== r.count
+      );
     }
 
     updateCounts(): void {

@@ -1,5 +1,12 @@
 <template>
-  <modal :buttons="false" ref="dialog" @open="onOpen" @close="onClose" style="width: 98%" dialogClass="ads-dialog">
+  <modal
+    :buttons="false"
+    ref="dialog"
+    @open="onOpen"
+    @close="onClose"
+    style="width: 98%"
+    dialogClass="ads-dialog"
+  >
     <template slot="title">
       Channel Ads for <user :character="character">{{ character.name }}</user>
     </template>
@@ -7,7 +14,8 @@
     <div class="row ad-viewer" ref="pageBody" v-if="messages.length > 0">
       <template v-for="message in messages">
         <h3>
-          #{{ message.channelName }} <span class="message-time">{{ formatTime(message.datePosted) }}</span>
+          #{{ message.channelName }}
+          <span class="message-time">{{ formatTime(message.datePosted) }}</span>
         </h3>
         <div class="border-bottom">
           <bbcode :text="message.message"></bbcode>
@@ -17,7 +25,8 @@
 
     <div class="row ad-viewer" ref="pageBody" v-else>
       <i
-        ><user :character="character">{{ character.name }}</user> has not posted any ads on the channels you are on.</i
+        ><user :character="character">{{ character.name }}</user> has not posted
+        any ads on the channels you are on.</i
       >
     </div>
   </modal>
@@ -36,7 +45,11 @@
   import { BBCodeView } from '../../bbcode/view';
 
   @Component({
-    components: { modal: Modal, user: UserView, bbcode: BBCodeView(core.bbCodeParser) }
+    components: {
+      modal: Modal,
+      user: UserView,
+      bbcode: BBCodeView(core.bbCodeParser)
+    }
   })
   export default class CharacterAdView extends CustomDialog {
     @Prop({ required: true })
@@ -63,7 +76,9 @@
 
       const cache = core.cache.adCache.get(this.character.name);
 
-      this.messages = (cache ? _.takeRight(cache.posts, 10).reverse() : []) as AdCachedPosting[];
+      this.messages = (
+        cache ? _.takeRight(cache.posts, 10).reverse() : []
+      ) as AdCachedPosting[];
     }
 
     async onOpen(): Promise<void> {

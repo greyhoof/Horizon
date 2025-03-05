@@ -1,8 +1,15 @@
 <template>
-  <a href="#" @click.prevent="joinChannel()" :disabled="channel && channel.isJoined">
+  <a
+    href="#"
+    @click.prevent="joinChannel()"
+    :disabled="channel && channel.isJoined"
+  >
     <span class="fa fa-hashtag"></span>
     <template v-if="channel"
-      >{{ channel.name }}<span class="bbcode-pseudo"> ({{ channel.memberCount }})</span></template
+      >{{ channel.name
+      }}<span class="bbcode-pseudo">
+        ({{ channel.memberCount }})</span
+      ></template
     >
     <template v-else>{{ text }}</template>
   </a>
@@ -27,7 +34,8 @@
     }
 
     joinChannel(): void {
-      if (this.channel === undefined || !this.channel.isJoined) core.channels.join(this.id);
+      if (this.channel === undefined || !this.channel.isJoined)
+        core.channels.join(this.id);
       const channel = core.conversations.byKey(`#${this.id}`);
       if (channel !== undefined) channel.show();
     }

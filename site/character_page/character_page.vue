@@ -1,20 +1,48 @@
 <template>
   <div class="row character-page" id="pageBody" ref="pageBody">
     <div class="col-12" style="min-height: 0">
-      <div class="alert alert-info" v-show="loading">Loading character information.</div>
+      <div class="alert alert-info" v-show="loading">
+        Loading character information.
+      </div>
       <div class="alert alert-danger" v-show="error">{{ error }}</div>
     </div>
-    <div class="col-md-4 col-lg-3 col-xl-2" v-if="!loading && character && character.character && characterMatch && selfCharacter">
-      <sidebar :character="character" :characterMatch="characterMatch" @memo="memo" @bookmarked="bookmarked" :oldApi="oldApi"></sidebar>
+    <div
+      class="col-md-4 col-lg-3 col-xl-2"
+      v-if="
+        !loading &&
+        character &&
+        character.character &&
+        characterMatch &&
+        selfCharacter
+      "
+    >
+      <sidebar
+        :character="character"
+        :characterMatch="characterMatch"
+        @memo="memo"
+        @bookmarked="bookmarked"
+        :oldApi="oldApi"
+      ></sidebar>
     </div>
     <div
       class="col-md-8 col-lg-9 col-xl-10 profile-body"
-      v-if="!loading && character && character.character && characterMatch && selfCharacter"
+      v-if="
+        !loading &&
+        character &&
+        character.character &&
+        characterMatch &&
+        selfCharacter
+      "
     >
       <div id="characterView">
         <div>
-          <div v-if="character.ban_reason" id="headerBanReason" class="alert alert-warning">
-            This character has been banned and is not visible to the public. Reason:
+          <div
+            v-if="character.ban_reason"
+            id="headerBanReason"
+            class="alert alert-warning"
+          >
+            This character has been banned and is not visible to the public.
+            Reason:
             <br />
             {{ character.ban_reason }}
             <template v-if="character.timeout"
@@ -22,28 +50,52 @@
               <date :time="character.timeout"></date>
             </template>
           </div>
-          <div v-if="character.block_reason" id="headerBlocked" class="alert alert-warning">
-            This character has been blocked and is not visible to the public. Reason:
+          <div
+            v-if="character.block_reason"
+            id="headerBlocked"
+            class="alert alert-warning"
+          >
+            This character has been blocked and is not visible to the public.
+            Reason:
             <br />
             {{ character.block_reason }}
           </div>
-          <div v-if="character.memo" id="headerCharacterMemo" class="alert alert-info">Memo: {{ character.memo.memo }}</div>
+          <div
+            v-if="character.memo"
+            id="headerCharacterMemo"
+            class="alert alert-info"
+          >
+            Memo: {{ character.memo.memo }}
+          </div>
           <div class="card bg-light">
             <div class="card-header character-card-header">
               <tabs class="card-header-tabs" v-model="tab">
                 <span>Overview</span>
                 <span>Info</span>
                 <span v-if="!oldApi"
-                  >Groups <span class="tab-count" v-if="groups !== null">({{ groups.length }})</span></span
+                  >Groups
+                  <span class="tab-count" v-if="groups !== null"
+                    >({{ groups.length }})</span
+                  ></span
                 >
                 <span
-                  >Images <span class="tab-count">({{ character.character.image_count }})</span></span
+                  >Images
+                  <span class="tab-count"
+                    >({{ character.character.image_count }})</span
+                  ></span
                 >
                 <span v-if="character.settings.guestbook"
-                  >Guestbook <span class="tab-count" v-if="guestbook !== null">({{ guestbook.posts.length }})</span></span
+                  >Guestbook
+                  <span class="tab-count" v-if="guestbook !== null"
+                    >({{ guestbook.posts.length }})</span
+                  ></span
                 >
-                <span v-if="character.is_self || character.settings.show_friends"
-                  >Friends <span class="tab-count" v-if="friends !== null">({{ friends.length }})</span></span
+                <span
+                  v-if="character.is_self || character.settings.show_friends"
+                  >Friends
+                  <span class="tab-count" v-if="friends !== null"
+                    >({{ friends.length }})</span
+                  ></span
                 >
                 <span>Recon</span>
               </tabs>
@@ -51,9 +103,15 @@
             <div class="card-body">
               <div class="tab-content">
                 <div role="tabpanel" v-show="tab === '0'" id="overview">
-                  <match-report :characterMatch="characterMatch" v-if="shouldShowMatch()"></match-report>
+                  <match-report
+                    :characterMatch="characterMatch"
+                    v-if="shouldShowMatch()"
+                  ></match-report>
 
-                  <div style="margin-bottom: 10px" class="character-description">
+                  <div
+                    style="margin-bottom: 10px"
+                    class="character-description"
+                  >
                     <bbcode :text="character.character.description"></bbcode>
                   </div>
 
@@ -65,10 +123,17 @@
                   ></character-kinks>
                 </div>
                 <div role="tabpanel" v-show="tab === '1'" id="infotags">
-                  <character-infotags :character="character" ref="tab1" :characterMatch="characterMatch"></character-infotags>
+                  <character-infotags
+                    :character="character"
+                    ref="tab1"
+                    :characterMatch="characterMatch"
+                  ></character-infotags>
                 </div>
                 <div role="tabpanel" v-show="tab === '2'" v-if="!oldApi">
-                  <character-groups :character="character" ref="tab2"></character-groups>
+                  <character-groups
+                    :character="character"
+                    ref="tab2"
+                  ></character-groups>
                 </div>
                 <div role="tabpanel" v-show="tab === '3'">
                   <character-images
@@ -78,14 +143,34 @@
                     :injected-images="images"
                   ></character-images>
                 </div>
-                <div v-if="character.settings.guestbook" role="tabpanel" v-show="tab === '4'" id="guestbook">
-                  <character-guestbook :character="character" :oldApi="oldApi" ref="tab4"></character-guestbook>
+                <div
+                  v-if="character.settings.guestbook"
+                  role="tabpanel"
+                  v-show="tab === '4'"
+                  id="guestbook"
+                >
+                  <character-guestbook
+                    :character="character"
+                    :oldApi="oldApi"
+                    ref="tab4"
+                  ></character-guestbook>
                 </div>
-                <div v-if="character.is_self || character.settings.show_friends" role="tabpanel" v-show="tab === '5'" id="friends">
-                  <character-friends :character="character" ref="tab5"></character-friends>
+                <div
+                  v-if="character.is_self || character.settings.show_friends"
+                  role="tabpanel"
+                  v-show="tab === '5'"
+                  id="friends"
+                >
+                  <character-friends
+                    :character="character"
+                    ref="tab5"
+                  ></character-friends>
                 </div>
                 <div role="tabpanel" v-show="tab === '6'">
-                  <character-recon :character="character" ref="tab6"></character-recon>
+                  <character-recon
+                    :character="character"
+                    ref="tab6"
+                  ></character-recon>
                 </div>
               </div>
             </div>
@@ -108,7 +193,12 @@
   import { CharacterCacheRecord } from '../../learn/profile-cache';
   import * as Utils from '../utils';
   import { methods, Store } from './data_store';
-  import { Character, CharacterGroup, Guestbook, SharedStore } from './interfaces';
+  import {
+    Character,
+    CharacterGroup,
+    Guestbook,
+    SharedStore
+  } from './interfaces';
 
   import DateDisplay from '../../components/date_display.vue';
   import Tabs from '../../components/tabs';
@@ -240,7 +330,10 @@
       if (typeof target.show === 'function') target.show();
     }
 
-    async load(mustLoad: boolean = true, skipCache: boolean = false): Promise<void> {
+    async load(
+      mustLoad: boolean = true,
+      skipCache: boolean = false
+    ): Promise<void> {
       this.loading = true;
       this.refreshing = false;
       this.error = '';
@@ -253,19 +346,24 @@
         await methods.fieldsGet();
 
         if (
-          (this.selfCharacter === undefined && Utils.settings.defaultCharacter >= 0) ||
-          _.get(this.selfCharacter, 'character.name') !== core.characters.ownCharacter.name
+          (this.selfCharacter === undefined &&
+            Utils.settings.defaultCharacter >= 0) ||
+          _.get(this.selfCharacter, 'character.name') !==
+            core.characters.ownCharacter.name
         ) {
           due.push(this.loadSelfCharacter());
         }
 
-        if (mustLoad || this.character === undefined) due.push(this._getCharacter(skipCache));
+        if (mustLoad || this.character === undefined)
+          due.push(this._getCharacter(skipCache));
 
         await Promise.all(due);
       } catch (e) {
         console.error(e);
 
-        this.error = Utils.isJSONError(e) ? <string>e.response.data.error : (<Error>e).message;
+        this.error = Utils.isJSONError(e)
+          ? <string>e.response.data.error
+          : (<Error>e).message;
         Utils.ajaxError(e, 'Failed to load character information.');
       }
 
@@ -279,7 +377,10 @@
           return;
         }
 
-        this.guestbook = await methods.guestbookPageGet(this.character.character.id, 1);
+        this.guestbook = await methods.guestbookPageGet(
+          this.character.character.id,
+          1
+        );
       } catch (err) {
         console.error(err);
         this.guestbook = null;
@@ -302,7 +403,10 @@
 
     async updateFriends(): Promise<void> {
       try {
-        if (!this.character || (!this.character.is_self && !this.character.settings.show_friends)) {
+        if (
+          !this.character ||
+          (!this.character.is_self && !this.character.settings.show_friends)
+        ) {
           this.friends = null;
           return;
         }
@@ -329,7 +433,12 @@
     }
 
     async updateMeta(name: string): Promise<void> {
-      await Promise.all([this.updateImages(), this.updateGuestbook(), this.updateFriends(), this.updateGroups()]);
+      await Promise.all([
+        this.updateImages(),
+        this.updateGuestbook(),
+        this.updateFriends(),
+        this.updateGroups()
+      ]);
 
       await core.cache.profileCache.registerMeta(name, {
         lastMetaFetched: new Date(),
@@ -389,7 +498,10 @@
 
       const cache = await this.fetchCharacterCache();
 
-      this.character = cache && !skipCache ? cache.character : await methods.characterData(this.name, this.id, false);
+      this.character =
+        cache && !skipCache
+          ? cache.character
+          : await methods.characterData(this.name, this.id, false);
 
       standardParser.inlines = this.character.character.inlines;
 
@@ -405,7 +517,8 @@
         !skipCache &&
         cache.meta &&
         cache.meta.lastMetaFetched &&
-        Date.now() - cache.meta.lastMetaFetched.getTime() < CHARACTER_META_CACHE_EXPIRE
+        Date.now() - cache.meta.lastMetaFetched.getTime() <
+          CHARACTER_META_CACHE_EXPIRE
       ) {
         // do nothing
       } else {
@@ -416,7 +529,9 @@
 
         // No await on purpose:
         // tslint:disable-next-line no-floating-promises
-        this.updateMeta(this.name).catch(err => console.error('profile.updateMeta', err));
+        this.updateMeta(this.name).catch(err =>
+          console.error('profile.updateMeta', err)
+        );
       }
 
       // console.log('LoadChar', this.name, this.character);
@@ -424,7 +539,10 @@
 
       // old profile cache, let's refresh
       if (cache && cache.lastFetched) {
-        if (Date.now() - cache.lastFetched.getTime() >= CHARACTER_CACHE_EXPIRE) {
+        if (
+          Date.now() - cache.lastFetched.getTime() >=
+          CHARACTER_CACHE_EXPIRE
+        ) {
           // No await on purpose:
           // tslint:disable-next-line no-floating-promises
           this.refreshCharacter();
@@ -436,7 +554,11 @@
       this.refreshing = true;
 
       try {
-        const character = await methods.characterData(this.name, this.id, false);
+        const character = await methods.characterData(
+          this.name,
+          this.id,
+          false
+        );
 
         if (!this.refreshing || this.name !== character.character.name) {
           return;
@@ -457,7 +579,10 @@
     private updateMatches(): void {
       if (!this.selfCharacter || !this.character) return;
 
-      this.characterMatch = Matcher.identifyBestMatchReport(this.selfCharacter.character, this.character.character);
+      this.characterMatch = Matcher.identifyBestMatchReport(
+        this.selfCharacter.character,
+        this.character.character
+      );
 
       // console.log('Match', this.selfCharacter.character.name, this.character.character.name, this.characterMatch);
     }

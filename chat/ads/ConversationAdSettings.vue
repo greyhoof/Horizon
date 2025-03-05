@@ -11,14 +11,21 @@
       <h4>Prepare to Move</h4>
 
       <p>
-        Channel-specific ads are being phased out. Use <button class="btn btn-outline-secondary" @click="openAdEditor()">Ad Editor</button>
+        Channel-specific ads are being phased out. Use
+        <button class="btn btn-outline-secondary" @click="openAdEditor()">
+          Ad Editor
+        </button>
         and
-        <button class="btn btn-outline-secondary" @click="openPostAds()">Post Ads</button>
+        <button class="btn btn-outline-secondary" @click="openPostAds()">
+          Post Ads
+        </button>
         instead, always available on the left sidebar.
       </p>
 
       <p>
-        <button class="btn btn-outline-secondary" @click="copyAds()">Copy Channel Ads to Ad Editor</button>
+        <button class="btn btn-outline-secondary" @click="copyAds()">
+          Copy Channel Ads to Ad Editor
+        </button>
       </p>
     </div>
 
@@ -32,9 +39,18 @@
     <div class="form-group ad-list" v-for="(ad, index) in ads">
       <label :for="'ad' + conversation.key + '-' + index" class="control-label"
         >Ad #{{ index + 1 }}
-        <a v-if="index > 0" @click="moveAdUp(index)" title="Move Up"><i class="fa fa-arrow-up"></i></a>
-        <a v-if="index < ads.length - 1" @click="moveAdDown(index)" title="Move Down"><i class="fa fa-arrow-down"></i></a>
-        <a @click="removeAd(index)" title="Remove Ad"><i class="fas fa-times-circle"></i></a>
+        <a v-if="index > 0" @click="moveAdUp(index)" title="Move Up"
+          ><i class="fa fa-arrow-up"></i
+        ></a>
+        <a
+          v-if="index < ads.length - 1"
+          @click="moveAdDown(index)"
+          title="Move Down"
+          ><i class="fa fa-arrow-down"></i
+        ></a>
+        <a @click="removeAd(index)" title="Remove Ad"
+          ><i class="fas fa-times-circle"></i
+        ></a>
       </label>
 
       <editor
@@ -46,7 +62,9 @@
       >
       </editor>
     </div>
-    <button class="btn btn-outline-secondary" @click="addAd()">Add Another</button>
+    <button class="btn btn-outline-secondary" @click="addAd()">
+      Add Another
+    </button>
   </modal>
 </template>
 
@@ -91,7 +109,9 @@
 
         adSettings: {
           ...this.conversation.settings.adSettings,
-          ads: this.ads.map((ad: string) => ad.trim()).filter((ad: string) => ad.length > 0),
+          ads: this.ads
+            .map((ad: string) => ad.trim())
+            .filter((ad: string) => ad.length > 0),
           randomOrder: this.randomOrder
         }
       };

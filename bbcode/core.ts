@@ -1,4 +1,9 @@
-import { BBCodeCustomTag, BBCodeParser, BBCodeSimpleTag, BBCodeTextTag } from './parser';
+import {
+  BBCodeCustomTag,
+  BBCodeParser,
+  BBCodeSimpleTag,
+  BBCodeTextTag
+} from './parser';
 
 const urlFormat = '((?:https?|ftps?|irc)://[^\\s/$.?#"\']+\\.[^\\s"]+)';
 export const findUrlRegex = new RegExp(`(\\[url[=\\]]\\s*)?${urlFormat}`, 'gi');
@@ -9,7 +14,9 @@ export type BBCodeElement = HTMLElement & { cleanup?(): void };
 export function domain(url: string): string | undefined {
   const pieces = urlRegex.exec(url);
   if (pieces === null) return;
-  const match = pieces[1].match(/(?:(https?|ftps?|irc):)?\/\/(?:www.)?([^\/]+)/);
+  const match = pieces[1].match(
+    /(?:(https?|ftps?|irc):)?\/\/(?:www.)?([^\/]+)/
+  );
   return match !== null ? match[2] : undefined;
 }
 
@@ -68,12 +75,24 @@ export class CoreBBCodeParser extends BBCodeParser {
     this.addTag(new BBCodeSimpleTag('u', 'u'));
     this.addTag(new BBCodeSimpleTag('s', 'del'));
     this.addTag(new BBCodeSimpleTag('noparse', 'span', [], []));
-    this.addTag(new BBCodeSimpleTag('sub', 'sub', [], ['b', 'i', 'u', 's', 'color']));
-    this.addTag(new BBCodeSimpleTag('big', 'span', ['bigText'], ['b', 'i', 'u', 's', 'color']));
-    this.addTag(new BBCodeSimpleTag('sup', 'sup', [], ['b', 'i', 'u', 's', 'color']));
+    this.addTag(
+      new BBCodeSimpleTag('sub', 'sub', [], ['b', 'i', 'u', 's', 'color'])
+    );
+    this.addTag(
+      new BBCodeSimpleTag(
+        'big',
+        'span',
+        ['bigText'],
+        ['b', 'i', 'u', 's', 'color']
+      )
+    );
+    this.addTag(
+      new BBCodeSimpleTag('sup', 'sup', [], ['b', 'i', 'u', 's', 'color'])
+    );
     this.addTag(
       new BBCodeCustomTag('color', (parser, parent, param) => {
-        const cregex = /^(red|blue|white|yellow|pink|gray|green|orange|purple|black|brown|cyan)$/;
+        const cregex =
+          /^(red|blue|white|yellow|pink|gray|green|orange|purple|black|brown|cyan)$/;
         if (!cregex.test(param)) {
           parser.warning('Invalid color parameter provided.');
           return undefined;
@@ -135,7 +154,9 @@ export class CoreBBCodeParser extends BBCodeParser {
 
   parseEverything(input: string): HTMLElement {
     if (this.makeLinksClickable && input.length > 0)
-      input = input.replace(findUrlRegex, (match, tag) => (tag === undefined ? `[url]${match}[/url]` : match));
+      input = input.replace(findUrlRegex, (match, tag) =>
+        tag === undefined ? `[url]${match}[/url]` : match
+      );
     return super.parseEverything(input);
   }
 }

@@ -8,7 +8,11 @@
     dialogClass="w-100 modal-lg"
   >
     <form class="status-picker" v-if="history.length > 0">
-      <div class="form-row" v-for="(historicStatus, index) in history" :class="{ 'selected-row': index === selectedStatus }">
+      <div
+        class="form-row"
+        v-for="(historicStatus, index) in history"
+        :class="{ 'selected-row': index === selectedStatus }"
+      >
         <div class="form-col radio-col">
           <input
             type="radio"
@@ -18,12 +22,22 @@
             v-bind:value="index"
           />
         </div>
-        <div class="form-col content-col" @click="select(index)" @dblclick="submit">
-          <span class="before-content"><i class="fas" :class="{ 'fa-check-circle': index === selectedStatus }" /></span>
+        <div
+          class="form-col content-col"
+          @click="select(index)"
+          @dblclick="submit"
+        >
+          <span class="before-content"
+            ><i
+              class="fas"
+              :class="{ 'fa-check-circle': index === selectedStatus }"
+          /></span>
           <label class="custom-control-label" :for="'history_status_' + index">
             <bbcode :text="historicStatus"></bbcode>
           </label>
-          <span class="content-action" @click="removeStatusHistoryEntry(index)"><i class="fas fa-times-circle" /></span>
+          <span class="content-action" @click="removeStatusHistoryEntry(index)"
+            ><i class="fas fa-times-circle"
+          /></span>
         </div>
       </div>
     </form>
@@ -64,7 +78,10 @@
       if (this.curStatus && this.curStatus.trim() !== '') {
         const cleanedStatus = this.curStatus.toLowerCase().trim();
 
-        const index = _.findIndex(this.history, (c: string) => c.toString().toLowerCase().trim() === cleanedStatus);
+        const index = _.findIndex(
+          this.history,
+          (c: string) => c.toString().toLowerCase().trim() === cleanedStatus
+        );
 
         if (index >= 0) {
           this.selectedStatus = index;
@@ -83,7 +100,11 @@
     }
 
     async removeStatusHistoryEntry(index: number): Promise<void> {
-      if (Dialog.confirmDialog('Are you sure you want to remove this status message?')) {
+      if (
+        Dialog.confirmDialog(
+          'Are you sure you want to remove this status message?'
+        )
+      ) {
         this.history.splice(index, 1);
 
         await core.settingsStore.set('statusHistory', this.history);

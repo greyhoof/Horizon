@@ -1,6 +1,16 @@
 <template>
-  <modal id="copyCustomDialog" action="Copy Custom Kink" :disabled="!valid || submitting" @submit.prevent="copyCustom()">
-    <form-group field="name" :errors="formErrors" label="Name" id="copyCustomName">
+  <modal
+    id="copyCustomDialog"
+    action="Copy Custom Kink"
+    :disabled="!valid || submitting"
+    @submit.prevent="copyCustom()"
+  >
+    <form-group
+      field="name"
+      :errors="formErrors"
+      label="Name"
+      id="copyCustomName"
+    >
       <input
         type="text"
         class="form-control"
@@ -12,7 +22,12 @@
         :class="props.cls"
       />
     </form-group>
-    <form-group field="description" :errors="formErrors" label="Description" id="copyCustomDescription">
+    <form-group
+      field="description"
+      :errors="formErrors"
+      label="Description"
+      id="copyCustomDescription"
+    >
       <input
         type="text"
         class="form-control"
@@ -24,16 +39,37 @@
         :class="props.cls"
       />
     </form-group>
-    <form-group field="choice" :errors="formErrors" label="Choice" id="copyCustomChoice">
-      <select v-model="choice" class="form-control" slot-scope="props" :class="props.cls" id="copyCustomChoice">
+    <form-group
+      field="choice"
+      :errors="formErrors"
+      label="Choice"
+      id="copyCustomChoice"
+    >
+      <select
+        v-model="choice"
+        class="form-control"
+        slot-scope="props"
+        :class="props.cls"
+        id="copyCustomChoice"
+      >
         <option value="favorite">Favorite</option>
         <option value="yes">Yes</option>
         <option value="maybe">Maybe</option>
         <option value="no">No</option>
       </select>
     </form-group>
-    <form-group field="target" :errors="formErrors" label="Target Character" id="copyCustomTarget">
-      <character-select v-model="target" slot-scope="props" :class="props.cls" id="copyCustomTarget"></character-select>
+    <form-group
+      field="target"
+      :errors="formErrors"
+      label="Target Character"
+      id="copyCustomTarget"
+    >
+      <character-select
+        v-model="target"
+        slot-scope="props"
+        :class="props.cls"
+        id="copyCustomTarget"
+      ></character-select>
     </form-group>
   </modal>
 </template>
@@ -68,7 +104,12 @@
       try {
         this.formErrors = {};
         this.submitting = true;
-        await methods.characterCustomKinkAdd(this.target, this.name, this.description, this.choice);
+        await methods.characterCustomKinkAdd(
+          this.target,
+          this.name,
+          this.description,
+          this.choice
+        );
         this.submitting = false;
         this.hide();
       } catch (e) {

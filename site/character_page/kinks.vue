@@ -1,15 +1,28 @@
 <template>
-  <div class="character-kinks-block" @contextmenu="contextMenu" @touchstart="contextMenu" @touchend="contextMenu">
+  <div
+    class="character-kinks-block"
+    @contextmenu="contextMenu"
+    @touchstart="contextMenu"
+    @touchend="contextMenu"
+  >
     <div class="compare-highlight-block d-flex justify-content-between">
       <div class="expand-custom-kinks-block form-inline">
-        <button class="btn btn-primary" @click="toggleExpandedCustomKinks" :disabled="loading">
+        <button
+          class="btn btn-primary"
+          @click="toggleExpandedCustomKinks"
+          :disabled="loading"
+        >
           {{ expandedCustoms ? 'Collapse' : 'Expand' }} Custom Kinks
         </button>
       </div>
 
       <div v-if="shared.authenticated" class="quick-compare-block form-inline">
         <character-select v-model="characterToCompare"></character-select>
-        <button class="btn btn-outline-secondary" @click="compareKinks()" :disabled="loading || !characterToCompare">
+        <button
+          class="btn btn-outline-secondary"
+          @click="compareKinks()"
+          :disabled="loading || !characterToCompare"
+        >
           {{ compareButtonText }}
         </button>
       </div>
@@ -17,7 +30,14 @@
       <div class="form-inline">
         <select v-model="highlightGroup" class="form-control">
           <option :value="undefined">None</option>
-          <option v-for="group in kinkGroups" v-if="group" :value="group.id" :key="group.id">{{ group.name }}</option>
+          <option
+            v-for="group in kinkGroups"
+            v-if="group"
+            :value="group.id"
+            :key="group.id"
+          >
+            {{ group.name }}
+          </option>
         </select>
       </div>
     </div>
@@ -91,7 +111,11 @@
         </div>
       </div>
     </div>
-    <context-menu v-if="shared.authenticated && !oldApi" prop-name="custom" ref="context-menu"></context-menu>
+    <context-menu
+      v-if="shared.authenticated && !oldApi"
+      prop-name="custom"
+      ref="context-menu"
+    ></context-menu>
   </div>
 </template>
 
@@ -137,7 +161,10 @@
 
     // iterateThroughAllKinks(c: Character, cb: (
 
-    resolveKinkChoice(c: Character, kinkValue: string | number | undefined): string | null {
+    resolveKinkChoice(
+      c: Character,
+      kinkValue: string | number | undefined
+    ): string | null {
       if (typeof kinkValue === 'string') {
         return kinkValue;
       }
@@ -155,21 +182,27 @@
 
     convertCharacterKinks(c: Character): CharacterKink[] {
       return _.filter(
-        _.map(c.character.kinks, (kinkValue: string | number | undefined, kinkId: string) => {
-          const resolvedChoice = this.resolveKinkChoice(c, kinkValue);
+        _.map(
+          c.character.kinks,
+          (kinkValue: string | number | undefined, kinkId: string) => {
+            const resolvedChoice = this.resolveKinkChoice(c, kinkValue);
 
-          if (!resolvedChoice) return null;
+            if (!resolvedChoice) return null;
 
-          return {
-            id: parseInt(kinkId, 10),
-            choice: resolvedChoice as KinkChoice
-          };
-        }),
+            return {
+              id: parseInt(kinkId, 10),
+              choice: resolvedChoice as KinkChoice
+            };
+          }
+        ),
         v => v !== null
       ) as CharacterKink[];
     }
 
-    async compareKinks(overridingCharacter?: Character, forced: boolean = false): Promise<void> {
+    async compareKinks(
+      overridingCharacter?: Character,
+      forced: boolean = false
+    ): Promise<void> {
       if (this.comparing && !forced) {
         this.comparison = {};
         this.comparing = false;
@@ -249,7 +282,12 @@
       const characterKinks = this.character.character.kinks;
       const characterCustoms = this.character.character.customs;
       const displayCustoms: { [key: string]: DisplayKink | undefined } = {};
-      const outputKinks: { [key: string]: DisplayKink[] } = { favorite: [], yes: [], maybe: [], no: [] };
+      const outputKinks: { [key: string]: DisplayKink[] } = {
+        favorite: [],
+        yes: [],
+        maybe: [],
+        no: []
+      };
       const makeKink = (kink: Kink): DisplayKink => ({
         id: kink.id,
         name: kink.name,
@@ -262,7 +300,8 @@
         key: kink.id.toString()
       });
       const kinkSorter = (a: DisplayKink, b: DisplayKink) => {
-        if (this.character.settings.customs_first && a.isCustom !== b.isCustom) return a.isCustom < b.isCustom ? 1 : -1;
+        if (this.character.settings.customs_first && a.isCustom !== b.isCustom)
+          return a.isCustom < b.isCustom ? 1 : -1;
 
         if (a.name === b.name) return 0;
         return a.name < b.name ? -1 : 1;
@@ -289,7 +328,10 @@
         const kink = <Kink | undefined>kinks[kinkId];
         if (kink === undefined) continue;
         const newKink = makeKink(kink);
-        if (typeof kinkChoice === 'number' && typeof displayCustoms[kinkChoice] !== 'undefined') {
+        if (
+          typeof kinkChoice === 'number' &&
+          typeof displayCustoms[kinkChoice] !== 'undefined'
+        ) {
           const custom = displayCustoms[kinkChoice]!;
           newKink.ignore = true;
           custom.hasSubkinks = true;
@@ -310,7 +352,8 @@
     }
 
     contextMenu(event: TouchEvent): void {
-      if (this.shared.authenticated && !this.oldApi) (<CopyCustomMenu>this.$refs['context-menu']).outerClick(event);
+      if (this.shared.authenticated && !this.oldApi)
+        (<CopyCustomMenu>this.$refs['context-menu']).outerClick(event);
     }
   }
 </script>

@@ -1,6 +1,12 @@
 <template>
-  <Modal :action="'Friends for ' + name" :buttons="false" dialog-class="modal-dialog-centered modal-lg">
-    <div v-show="loading" class="alert alert-info">Loading friend information.</div>
+  <Modal
+    :action="'Friends for ' + name"
+    :buttons="false"
+    dialog-class="modal-dialog-centered modal-lg"
+  >
+    <div v-show="loading" class="alert alert-info">
+      Loading friend information.
+    </div>
     <div v-show="error" class="alert alert-danger">{{ error }}</div>
     <template v-if="!loading">
       <div v-if="existing.length" class="card bg-light">
@@ -10,11 +16,22 @@
         <div class="card-body">
           <div v-for="friend in existing" class="friend-item">
             <character-link :character="friend.source"
-              ><img class="character-avatar icon" :src="avatarUrl(friend.source.name)" />
+              ><img
+                class="character-avatar icon"
+                :src="avatarUrl(friend.source.name)"
+              />
               {{ friend.source.name }}
             </character-link>
-            <span class="date">Since: <date-display :time="friend.createdAt"></date-display></span>
-            <button type="button" class="btn btn-danger" @click="dissolve(friend)">Remove</button>
+            <span class="date"
+              >Since: <date-display :time="friend.createdAt"></date-display
+            ></span>
+            <button
+              type="button"
+              class="btn btn-danger"
+              @click="dissolve(friend)"
+            >
+              Remove
+            </button>
           </div>
         </div>
       </div>
@@ -25,11 +42,22 @@
         <div class="card-body">
           <div v-for="request in pending" class="friend-item">
             <character-link :character="request.source"
-              ><img class="character-avatar icon" :src="avatarUrl(request.source.name)" />
+              ><img
+                class="character-avatar icon"
+                :src="avatarUrl(request.source.name)"
+              />
               {{ request.source.name }}
             </character-link>
-            <span class="date">Sent: <date-display :time="request.createdAt"></date-display></span>
-            <button type="button" class="btn btn-danger" @click="cancel(request)">Cancel</button>
+            <span class="date"
+              >Sent: <date-display :time="request.createdAt"></date-display
+            ></span>
+            <button
+              type="button"
+              class="btn btn-danger"
+              @click="cancel(request)"
+            >
+              Cancel
+            </button>
           </div>
         </div>
       </div>
@@ -40,12 +68,29 @@
         <div class="card-body">
           <div v-for="request in incoming" class="friend-item">
             <character-link :character="request.target"
-              ><img class="character-avatar icon" :src="avatarUrl(request.target.name)" />
+              ><img
+                class="character-avatar icon"
+                :src="avatarUrl(request.target.name)"
+              />
               {{ request.target.name }}
             </character-link>
-            <span class="date">Sent: <date-display :time="request.createdAt"></date-display></span>
-            <button type="button" class="btn btn-success acceptFriend" @click="accept(request)">Accept</button>
-            <button type="button" class="btn btn-danger ignoreFriend" @click="ignore(request)">Ignore</button>
+            <span class="date"
+              >Sent: <date-display :time="request.createdAt"></date-display
+            ></span>
+            <button
+              type="button"
+              class="btn btn-success acceptFriend"
+              @click="accept(request)"
+            >
+              Accept
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger ignoreFriend"
+              @click="ignore(request)"
+            >
+              Ignore
+            </button>
           </div>
         </div>
       </div>
@@ -55,9 +100,20 @@
         </div>
         <div class="card-body">
           <div class="form-inline">
-            <label class="control-label" for="friendRequestCharacter">Character: </label>
-            <character-select id="friendRequestCharacter" v-model="ourCharacter"></character-select>
-            <button @click="request" class="btn btn-secondary" :disable="requesting || !ourCharacter">Request</button>
+            <label class="control-label" for="friendRequestCharacter"
+              >Character:
+            </label>
+            <character-select
+              id="friendRequestCharacter"
+              v-model="ourCharacter"
+            ></character-select>
+            <button
+              @click="request"
+              class="btn btn-secondary"
+              :disable="requesting || !ourCharacter"
+            >
+              Request
+            </button>
           </div>
         </div>
       </div>
@@ -99,7 +155,10 @@
     async request(): Promise<void> {
       try {
         this.requesting = true;
-        const newRequest = await methods.friendRequest(this.character.character.id, this.ourCharacter);
+        const newRequest = await methods.friendRequest(
+          this.character.character.id,
+          this.ourCharacter
+        );
         if (typeof newRequest === 'number')
           this.pending.push({
             id: newRequest,
@@ -160,7 +219,9 @@
       super.show();
       try {
         this.loading = true;
-        const friendData = await methods.characterFriends(this.character.character.id);
+        const friendData = await methods.characterFriends(
+          this.character.character.id
+        );
         this.incoming = friendData.incoming;
         this.pending = friendData.pending;
         this.existing = friendData.existing;

@@ -8,7 +8,11 @@ type IndexedCallback = (params: Record<string, any>) => Promise<any>;
 
 let indexed: IndexedStore;
 
-const reply = (req: IndexedRequest, result?: any, err?: string | Error): void => {
+const reply = (
+  req: IndexedRequest,
+  result?: any,
+  err?: string | Error
+): void => {
   const res: any = {
     type: 'res',
     id: req.id,
@@ -28,14 +32,22 @@ const reply = (req: IndexedRequest, result?: any, err?: string | Error): void =>
 
 const generateMessageProcessor = () => {
   const messageMapper: Record<ProfileStoreCommand, IndexedCallback> = {
-    flush: (params: Record<string, any>) => indexed.flushProfiles(params.daysToExpire),
+    flush: (params: Record<string, any>) =>
+      indexed.flushProfiles(params.daysToExpire),
     start: () => indexed.start(),
     stop: () => indexed.stop(),
     get: (params: Record<string, any>) => indexed.getProfile(params.name),
-    store: (params: Record<string, any>) => indexed.storeProfile(params.character),
+    store: (params: Record<string, any>) =>
+      indexed.storeProfile(params.character),
 
     'update-meta': (params: Record<string, any>) =>
-      indexed.updateProfileMeta(params.name, params.images, params.guestbook, params.friends, params.groups),
+      indexed.updateProfileMeta(
+        params.name,
+        params.images,
+        params.guestbook,
+        params.friends,
+        params.groups
+      ),
 
     init: async (params: Record<string, any>): Promise<void> => {
       indexed = await IndexedStore.open(params.dbName);

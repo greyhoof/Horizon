@@ -1,11 +1,27 @@
 <template>
-  <modal :action="'Ad Editor'" @submit="submit" ref="dialog" @open="load" dialogClass="w-100" :buttonText="'Save'">
+  <modal
+    :action="'Ad Editor'"
+    @submit="submit"
+    ref="dialog"
+    @open="load"
+    dialogClass="w-100"
+    :buttonText="'Save'"
+  >
     <div class="form-group ad-list" v-for="(ad, index) in ads">
       <label :for="'adm-content-' + index" class="control-label"
         >Ad #{{ index + 1 }}
-        <a v-if="index > 0" @click="moveAdUp(index)" title="Move Up"><i class="fa fa-arrow-up"></i></a>
-        <a v-if="index < ads.length - 1" @click="moveAdDown(index)" title="Move Down"><i class="fa fa-arrow-down"></i></a>
-        <a @click="removeAd(index)" title="Remove Ad"><i class="fas fa-times-circle"></i></a>
+        <a v-if="index > 0" @click="moveAdUp(index)" title="Move Up"
+          ><i class="fa fa-arrow-up"></i
+        ></a>
+        <a
+          v-if="index < ads.length - 1"
+          @click="moveAdDown(index)"
+          title="Move Down"
+          ><i class="fa fa-arrow-down"></i
+        ></a>
+        <a @click="removeAd(index)" title="Remove Ad"
+          ><i class="fas fa-times-circle"></i
+        ></a>
       </label>
 
       <editor
@@ -29,12 +45,18 @@
       ></tagEditor>
 
       <label class="control-label disable" :for="'adm-disabled-' + index">
-        <input type="checkbox" :id="'adm-disabled-' + index" v-model="ad.disabled" />
+        <input
+          type="checkbox"
+          :id="'adm-disabled-' + index"
+          v-model="ad.disabled"
+        />
         Disable
       </label>
     </div>
 
-    <button class="btn btn-outline-secondary" @click="addAd()">Add Another</button>
+    <button class="btn btn-outline-secondary" @click="addAd()">
+      Add Another
+    </button>
   </modal>
 </template>
 

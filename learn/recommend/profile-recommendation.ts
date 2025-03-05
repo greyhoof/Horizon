@@ -2,7 +2,12 @@ import _ from 'lodash';
 import Axios from 'axios';
 
 import { CharacterAnalysis, Matcher } from '../matcher';
-import { FurryPreference, Kink, mammalSpecies, Species } from '../matcher-types';
+import {
+  FurryPreference,
+  Kink,
+  mammalSpecies,
+  Species
+} from '../matcher-types';
 import { characterImage } from '../../chat/common';
 import { ProfileCache } from '../profile-cache';
 
@@ -82,7 +87,9 @@ export class ProfileRecommendationAnalyzer {
   }
 
   protected async checkHqPortrait(): Promise<void> {
-    const profileUrl = ProfileCache.extractHighQualityPortraitURL(this.profile.character.description);
+    const profileUrl = ProfileCache.extractHighQualityPortraitURL(
+      this.profile.character.description
+    );
 
     if (!profileUrl) {
       this.add(
@@ -112,7 +119,10 @@ export class ProfileRecommendationAnalyzer {
         'Profiles with images are more attractive to other players.',
         'https://wiki.f-list.net/Guide:_Character_Profiles#Images'
       );
-    } else if (this.profile.character.image_count > 1 && this.profile.character.image_count < 3) {
+    } else if (
+      this.profile.character.image_count > 1 &&
+      this.profile.character.image_count < 3
+    ) {
       this.add(
         `ADD_MORE_IMAGES`,
         ProfileRecommendationLevel.NOTE,
@@ -358,7 +368,10 @@ export class ProfileRecommendationAnalyzer {
     }
 
     if (p.furryPreference === FurryPreference.HumansOnly) {
-      if (Matcher.getKinkPreference(c, Kink.AnimalsFerals)! >= 0 || Matcher.getKinkPreference(c, Kink.Zoophilia)! >= 0) {
+      if (
+        Matcher.getKinkPreference(c, Kink.AnimalsFerals)! >= 0 ||
+        Matcher.getKinkPreference(c, Kink.Zoophilia)! >= 0
+      ) {
         // do nothing
       } else {
         const likedAnthros = this.getLikedAnimals();
@@ -377,7 +390,14 @@ export class ProfileRecommendationAnalyzer {
     if (p.furryPreference !== FurryPreference.HumansOnly) {
       const likedAnthros = this.getLikedAnimals();
 
-      if (likedAnthros && !_.difference(likedAnthros, [Kink.AnthroCharacters, Kink.Mammals, Kink.Humans] as any as Species[])) {
+      if (
+        likedAnthros &&
+        !_.difference(likedAnthros, [
+          Kink.AnthroCharacters,
+          Kink.Mammals,
+          Kink.Humans
+        ] as any as Species[])
+      ) {
         this.add(
           'KINK_NO_SPECIES',
           ProfileRecommendationLevel.NOTE,
@@ -391,6 +411,9 @@ export class ProfileRecommendationAnalyzer {
   protected getLikedAnimals(): Species[] {
     const c = this.profile.character;
 
-    return _.filter(mammalSpecies, species => Matcher.getKinkPreference(c, species)! > 0);
+    return _.filter(
+      mammalSpecies,
+      species => Matcher.getKinkPreference(c, species)! > 0
+    );
   }
 }

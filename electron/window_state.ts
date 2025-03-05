@@ -18,8 +18,16 @@ function mapToScreen(state: SavedWindowState): SavedWindowState {
   let x = state.x !== undefined ? state.x : 0;
   let y = state.y !== undefined ? state.y : 0;
   const primaryDisplay = screen.getPrimaryDisplay();
-  const targetDisplay = screen.getDisplayMatching({ x, y, height: state.height, width: state.width });
-  if (primaryDisplay.scaleFactor !== 1 && targetDisplay.id !== primaryDisplay.id) {
+  const targetDisplay = screen.getDisplayMatching({
+    x,
+    y,
+    height: state.height,
+    width: state.width
+  });
+  if (
+    primaryDisplay.scaleFactor !== 1 &&
+    targetDisplay.id !== primaryDisplay.id
+  ) {
     x /= primaryDisplay.scaleFactor;
     y /= primaryDisplay.scaleFactor;
   }
@@ -49,7 +57,9 @@ export function getSavedWindowState(): SavedWindowState {
   };
   if (!fs.existsSync(windowStatePath)) return defaultState;
   try {
-    let savedState = <SavedWindowState>JSON.parse(fs.readFileSync(windowStatePath, 'utf-8'));
+    let savedState = <SavedWindowState>(
+      JSON.parse(fs.readFileSync(windowStatePath, 'utf-8'))
+    );
     savedState = mapToScreen(savedState);
     return savedState;
   } catch (e) {

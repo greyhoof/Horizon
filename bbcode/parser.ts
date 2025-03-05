@@ -10,7 +10,9 @@ abstract class BBCodeTag {
   }
 
   isAllowed(tag: string): boolean {
-    return this.allowedTags === undefined || this.allowedTags[tag] !== undefined;
+    return (
+      this.allowedTags === undefined || this.allowedTags[tag] !== undefined
+    );
   }
 
   setAllowedTags(allowed: string[]): void {
@@ -18,7 +20,12 @@ abstract class BBCodeTag {
     for (const tag of allowed) this.allowedTags[tag] = true;
   }
 
-  abstract createElement(parser: BBCodeParser, parent: HTMLElement, param: string, content: string): HTMLElement | undefined;
+  abstract createElement(
+    parser: BBCodeParser,
+    parent: HTMLElement,
+    param: string,
+    content: string
+  ): HTMLElement | undefined;
 }
 
 export class BBCodeSimpleTag extends BBCodeTag {
@@ -31,10 +38,15 @@ export class BBCodeSimpleTag extends BBCodeTag {
     super(tag, tagList);
   }
 
-  createElement(parser: BBCodeParser, parent: HTMLElement, param: string): HTMLElement {
+  createElement(
+    parser: BBCodeParser,
+    parent: HTMLElement,
+    param: string
+  ): HTMLElement {
     if (param.length > 0) parser.warning('Unexpected parameter');
     const el = <HTMLElement>parser.createElement(this.elementName);
-    if (this.classes !== undefined && this.classes.length > 0) el.className = this.classes.join(' ');
+    if (this.classes !== undefined && this.classes.length > 0)
+      el.className = this.classes.join(' ');
     parent.appendChild(el);
     /*tslint:disable-next-line:no-unsafe-any*/ // false positive
     return el;
@@ -44,13 +56,21 @@ export class BBCodeSimpleTag extends BBCodeTag {
 export class BBCodeCustomTag extends BBCodeTag {
   constructor(
     tag: string,
-    private customCreator: (parser: BBCodeParser, parent: HTMLElement, param: string) => HTMLElement | undefined,
+    private customCreator: (
+      parser: BBCodeParser,
+      parent: HTMLElement,
+      param: string
+    ) => HTMLElement | undefined,
     tagList?: string[]
   ) {
     super(tag, tagList);
   }
 
-  createElement(parser: BBCodeParser, parent: HTMLElement, param: string): HTMLElement | undefined {
+  createElement(
+    parser: BBCodeParser,
+    parent: HTMLElement,
+    param: string
+  ): HTMLElement | undefined {
     return this.customCreator(parser, parent, param);
   }
 }
@@ -58,12 +78,22 @@ export class BBCodeCustomTag extends BBCodeTag {
 export class BBCodeTextTag extends BBCodeTag {
   constructor(
     tag: string,
-    private customCreator: (parser: BBCodeParser, parent: HTMLElement, param: string, content: string) => HTMLElement | undefined
+    private customCreator: (
+      parser: BBCodeParser,
+      parent: HTMLElement,
+      param: string,
+      content: string
+    ) => HTMLElement | undefined
   ) {
     super(tag, []);
   }
 
-  createElement(parser: BBCodeParser, parent: HTMLElement, param: string, content: string): HTMLElement | undefined {
+  createElement(
+    parser: BBCodeParser,
+    parent: HTMLElement,
+    param: string,
+    content: string
+  ): HTMLElement | undefined {
     return this.customCreator(parser, parent, param, content);
   }
 }
@@ -91,7 +121,9 @@ export class BBCodeParser {
     return parent;
   }
 
-  createElement<K extends keyof HTMLElementTagNameMap>(tag: K): HTMLElementTagNameMap[K] {
+  createElement<K extends keyof HTMLElementTagNameMap>(
+    tag: K
+  ): HTMLElementTagNameMap[K] {
     return document.createElement(tag);
   }
 
@@ -136,7 +168,11 @@ export class BBCodeParser {
     if (self !== undefined) {
       const parentAllowed = isAllowed;
       isAllowed = name => self.isAllowed(name) && parentAllowed(name);
-      currentTag = this._currentTag = { tag: self.tag, line: this._line, column: this._column };
+      currentTag = this._currentTag = {
+        tag: self.tag,
+        line: this._line,
+        column: this._column
+      };
     }
     let tagStart = -1,
       paramStart = -1,
@@ -172,7 +208,10 @@ export class BBCodeParser {
           tagStart = -1;
           continue;
         }
-        const param = paramStart > tagStart ? input.substring(paramStart + 1, i).trim() : '';
+        const param =
+          paramStart > tagStart
+            ? input.substring(paramStart + 1, i).trim()
+            : '';
         const close = tagKey[0] === '/';
         if (close) tagKey = tagKey.substr(1).trim();
         if (this._tags[tagKey] === undefined) {
@@ -194,7 +233,11 @@ export class BBCodeParser {
           const tag = this._tags[tagKey]!;
           const allowed = isAllowed(tagKey);
           if (parent !== undefined) {
-            parent.appendChild(document.createTextNode(input.substring(mark, allowed ? tagStart : i + 1)));
+            parent.appendChild(
+              document.createTextNode(
+                input.substring(mark, allowed ? tagStart : i + 1)
+              )
+            );
             mark = i + 1;
           }
           if (!allowed || parent === undefined || depth > 100) {
@@ -205,35 +248,71 @@ export class BBCodeParser {
           let element: HTMLElement | undefined;
           if (tag instanceof BBCodeTextTag) {
             i = this.parse(input, i + 1, tag, undefined, isAllowed, depth + 1);
-            element = tag.createElement(this, parent, param, input.substring(mark, input.lastIndexOf('[', i)));
-            if (element === undefined) parent.appendChild(document.createTextNode(input.substring(tagStart, i + 1)));
+            element = tag.createElement(
+              this,
+              parent,
+              param,
+              input.substring(mark, input.lastIndexOf('[', i))
+            );
+            if (element === undefined)
+              parent.appendChild(
+                document.createTextNode(input.substring(tagStart, i + 1))
+              );
           } else {
             element = tag.createElement(this, parent, param, '');
-            if (element === undefined) parent.appendChild(document.createTextNode(input.substring(tagStart, i + 1)));
-            if (!tag.noClosingTag) i = this.parse(input, i + 1, tag, element !== undefined ? element : parent, isAllowed, depth + 1);
-            if (element === undefined) parent.appendChild(document.createTextNode(input.substring(input.lastIndexOf('[', i), i + 1)));
+            if (element === undefined)
+              parent.appendChild(
+                document.createTextNode(input.substring(tagStart, i + 1))
+              );
+            if (!tag.noClosingTag)
+              i = this.parse(
+                input,
+                i + 1,
+                tag,
+                element !== undefined ? element : parent,
+                isAllowed,
+                depth + 1
+              );
+            if (element === undefined)
+              parent.appendChild(
+                document.createTextNode(
+                  input.substring(input.lastIndexOf('[', i), i + 1)
+                )
+              );
           }
           mark = i + 1;
           this._currentTag = currentTag;
           if (element === undefined) continue;
           (<HTMLElement & { bbcodeTag: string }>element).bbcodeTag = tagKey;
-          if (param.length > 0) (<HTMLElement & { bbcodeParam: string }>element).bbcodeParam = param;
+          if (param.length > 0)
+            (<HTMLElement & { bbcodeParam: string }>element).bbcodeParam =
+              param;
         } else if (self !== undefined) {
           //tslint:disable-line:curly
           if (self.tag === tagKey) {
-            if (parent !== undefined) parent.appendChild(document.createTextNode(input.substring(mark, selfAllowed ? tagStart : i + 1)));
+            if (parent !== undefined)
+              parent.appendChild(
+                document.createTextNode(
+                  input.substring(mark, selfAllowed ? tagStart : i + 1)
+                )
+              );
             return i;
           }
           if (!selfAllowed) return mark - 1;
-          if (isAllowed(tagKey)) this.warning(`Unexpected closing ${tagKey} tag. Needed ${self} tag instead.`);
-        } else if (isAllowed(tagKey)) this.warning(`Found closing ${tagKey} tag that was never opened.`);
+          if (isAllowed(tagKey))
+            this.warning(
+              `Unexpected closing ${tagKey} tag. Needed ${self} tag instead.`
+            );
+        } else if (isAllowed(tagKey))
+          this.warning(`Found closing ${tagKey} tag that was never opened.`);
       }
     }
     if (mark < input.length && parent !== undefined) {
       parent.appendChild(document.createTextNode(input.substring(mark)));
       mark = input.length;
     }
-    if (self !== undefined) this.warning('Automatically closing tag at end of input.');
+    if (self !== undefined)
+      this.warning('Automatically closing tag at end of input.');
     return mark;
   }
 }

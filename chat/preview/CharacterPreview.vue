@@ -7,17 +7,33 @@
 
       <div class="col-10">
         <h1 class="user-view">
-          <span class="character-name" :class="(statusClasses || {}).userClass">{{ character.character.name }}</span>
-          <span v-if="statusClasses && statusClasses.matchScore === 'unicorn'" :class="(statusClasses || {}).matchClass">Unicorn</span>
+          <span
+            class="character-name"
+            :class="(statusClasses || {}).userClass"
+            >{{ character.character.name }}</span
+          >
+          <span
+            v-if="statusClasses && statusClasses.matchScore === 'unicorn'"
+            :class="(statusClasses || {}).matchClass"
+            >Unicorn</span
+          >
         </h1>
         <h3>{{ getOnlineStatus() }}</h3>
 
         <div class="summary">
           <span class="uc">
-            <span v-if="age" :class="byScore(TagId.Age)">{{ age }}-years-old </span>
-            <span v-if="sexualOrientation" :class="byScore(TagId.Orientation)">{{ sexualOrientation }} </span>
-            <span v-if="gender" :class="byScore(TagId.Gender)">{{ gender }} </span>
-            <span v-if="species" :class="byScore(TagId.Species)">{{ species }} </span>
+            <span v-if="age" :class="byScore(TagId.Age)"
+              >{{ age }}-years-old
+            </span>
+            <span v-if="sexualOrientation" :class="byScore(TagId.Orientation)"
+              >{{ sexualOrientation }}
+            </span>
+            <span v-if="gender" :class="byScore(TagId.Gender)"
+              >{{ gender }}
+            </span>
+            <span v-if="species" :class="byScore(TagId.Species)"
+              >{{ species }}
+            </span>
           </span>
 
           <span v-if="furryPref" :class="byScore(TagId.FurryPreference)"
@@ -32,8 +48,12 @@
 
         <div class="filter-matches" v-if="smartFilterIsFiltered">
           <span class="matched-tags">
-            <span v-for="filterName in smartFilterDetails" class="mismatch smart-filter-tag" :class="filterName"
-              ><i class="fas fa-solid fa-filter"></i> {{ (smartFilterLabels[filterName] || {}).name }}</span
+            <span
+              v-for="filterName in smartFilterDetails"
+              class="mismatch smart-filter-tag"
+              :class="filterName"
+              ><i class="fas fa-solid fa-filter"></i>
+              {{ (smartFilterLabels[filterName] || {}).name }}</span
             >
           </span>
         </div>
@@ -48,11 +68,19 @@
         </div>
 
         <div class="status-message" v-if="statusMessage">
-          <h4>Status <span v-if="latestAd && statusMessage === latestAd.message">&amp; Latest Ad</span></h4>
+          <h4>
+            Status
+            <span v-if="latestAd && statusMessage === latestAd.message"
+              >&amp; Latest Ad</span
+            >
+          </h4>
           <bbcode :text="statusMessage"></bbcode>
         </div>
 
-        <div class="conversation" v-if="conversation && conversation.length > 0">
+        <div
+          class="conversation"
+          v-if="conversation && conversation.length > 0"
+        >
           <h4>Latest Messages</h4>
 
           <template v-for="message in conversation">
@@ -60,9 +88,15 @@
           </template>
         </div>
 
-        <div class="latest-ad-message" v-if="latestAd && latestAd.message !== statusMessage">
+        <div
+          class="latest-ad-message"
+          v-if="latestAd && latestAd.message !== statusMessage"
+        >
           <h4>
-            Latest Ad <span class="message-time">{{ formatTime(latestAd.datePosted) }}</span>
+            Latest Ad
+            <span class="message-time">{{
+              formatTime(latestAd.datePosted)
+            }}</span>
           </h4>
           <bbcode :text="latestAd.message"></bbcode>
         </div>
@@ -86,11 +120,22 @@
   import { formatTime } from '../common';
   import * as Utils from '../../site/utils';
   import MatchTags from './MatchTags.vue';
-  import { furryPreferenceMapping, Gender, kinkMapping, Orientation, Species, SubDomRole, TagId } from '../../learn/matcher-types';
+  import {
+    furryPreferenceMapping,
+    Gender,
+    kinkMapping,
+    Orientation,
+    Species,
+    SubDomRole,
+    TagId
+  } from '../../learn/matcher-types';
   import { BBCodeView } from '../../bbcode/view';
   import { EventBus } from './event-bus';
   import { Character, CustomKink } from '../../interfaces';
-  import { matchesSmartFilters, testSmartFilters } from '../../learn/filter/smart-filter';
+  import {
+    matchesSmartFilters,
+    testSmartFilters
+  } from '../../learn/filter/smart-filter';
   import { smartFilterTypes } from '../../learn/filter/types';
   import { Conversation } from '../interfaces';
   import MessageView from '../message_view';
@@ -153,16 +198,25 @@
         return this.onlineCharacter.overrides.avatarUrl;
       }
 
-      return Utils.avatarURL(this.characterName || this.character?.character.name || '');
+      return Utils.avatarURL(
+        this.characterName || this.character?.character.name || ''
+      );
     }
 
     @Hook('mounted')
     mounted(): void {
       // tslint:disable-next-line no-unsafe-any no-any
-      this.scoreWatcher = (event: { character: Character; score: number }): void => {
+      this.scoreWatcher = (event: {
+        character: Character;
+        score: number;
+      }): void => {
         // console.log('scoreWatcher', event);
 
-        if (event.character && this.characterName && event.character.name === this.characterName) {
+        if (
+          event.character &&
+          this.characterName &&
+          event.character.name === this.characterName
+        ) {
           this.load(this.characterName, true);
         }
       };
@@ -186,7 +240,8 @@
         this.match &&
         this.character &&
         this.ownCharacter &&
-        this.ownCharacter.character.name === core.characters.ownProfile.character.name
+        this.ownCharacter.character.name ===
+          core.characters.ownProfile.character.name
       ) {
         this.updateOnlineStatus();
         this.updateAdStatus();
@@ -211,7 +266,10 @@
 
       setTimeout(async () => {
         this.character = await this.getCharacterData(characterName);
-        this.match = Matcher.identifyBestMatchReport(this.ownCharacter!.character, this.character!.character);
+        this.match = Matcher.identifyBestMatchReport(
+          this.ownCharacter!.character,
+          this.character!.character
+        );
 
         void this.updateConversationStatus();
 
@@ -227,14 +285,20 @@
         return;
       }
 
-      this.smartFilterIsFiltered = matchesSmartFilters(this.character.character, core.state.settings.risingFilter);
+      this.smartFilterIsFiltered = matchesSmartFilters(
+        this.character.character,
+        core.state.settings.risingFilter
+      );
       this.smartFilterDetails = [];
 
       if (!this.smartFilterIsFiltered) {
         return;
       }
 
-      const results = testSmartFilters(this.character.character, core.state.settings.risingFilter);
+      const results = testSmartFilters(
+        this.character.character,
+        core.state.settings.risingFilter
+      );
 
       if (!results) {
         return;
@@ -261,7 +325,11 @@
         return;
       }
 
-      const messages = await core.logs.getLogs(ownName, logKey, _.last(logDates) as Date);
+      const messages = await core.logs.getLogs(
+        ownName,
+        logKey,
+        _.last(logDates) as Date
+      );
       const matcher = /\[AUTOMATED MESSAGE]/;
 
       this.conversation = _.map(
@@ -285,13 +353,24 @@
       }
 
       this.statusMessage = this.onlineCharacter.statusText;
-      this.statusClasses = getStatusClasses(this.onlineCharacter, undefined, true, false, true);
+      this.statusClasses = getStatusClasses(
+        this.onlineCharacter,
+        undefined,
+        true,
+        false,
+        true
+      );
     }
 
     updateAdStatus(): void {
       const cache = core.cache.adCache.get(this.characterName!);
 
-      if (!cache || cache.posts.length === 0 || Date.now() - cache.posts[cache.posts.length - 1].datePosted.getTime() > 45 * 60 * 1000) {
+      if (
+        !cache ||
+        cache.posts.length === 0 ||
+        Date.now() - cache.posts[cache.posts.length - 1].datePosted.getTime() >
+          45 * 60 * 1000
+      ) {
         this.latestAd = undefined;
         return;
       }
@@ -305,14 +384,19 @@
 
     updateCustoms(): void {
       this.customs = _.orderBy(
-        _.map(_.reject(Object.values(this.character!.character.customs ?? {}), c => _.isUndefined(c)) as CustomKink[], (c: CustomKink) => {
-          const val: CustomKinkWithScore = _.assign({}, c, {
-            score: kinkMapping[c.choice] as number,
-            name: c.name.trim().replace(/^\W+/, '').replace(/\W+$/, '')
-          }) as CustomKinkWithScore;
+        _.map(
+          _.reject(Object.values(this.character!.character.customs ?? {}), c =>
+            _.isUndefined(c)
+          ) as CustomKink[],
+          (c: CustomKink) => {
+            const val: CustomKinkWithScore = _.assign({}, c, {
+              score: kinkMapping[c.choice] as number,
+              name: c.name.trim().replace(/^\W+/, '').replace(/\W+$/, '')
+            }) as CustomKinkWithScore;
 
-          return val;
-        }),
+            return val;
+          }
+        ),
         ['score', 'name'],
         ['desc', 'asc']
       );
@@ -343,12 +427,26 @@
         console.error('Missing Orientation', a.orientation, c.name);
       }
 
-      this.age = a.age ? this.readable(`${a.age}`) : (rawAge && /[0-9]/.test(rawAge.string || '') && rawAge.string) || undefined;
-      this.species = a.species ? this.readable(Species[a.species]) : (rawSpecies && rawSpecies.string) || undefined;
-      this.gender = a.gender && a.gender !== Gender.None ? this.readable(Gender[a.gender]) : undefined;
-      this.furryPref = a.furryPreference ? this.readable(furryPreferenceMapping[a.furryPreference]) : undefined;
-      this.subDomRole = a.subDomRole ? this.readable(SubDomRole[a.subDomRole]) : undefined;
-      this.sexualOrientation = a.orientation ? this.readable(Orientation[a.orientation]) : undefined;
+      this.age = a.age
+        ? this.readable(`${a.age}`)
+        : (rawAge && /[0-9]/.test(rawAge.string || '') && rawAge.string) ||
+          undefined;
+      this.species = a.species
+        ? this.readable(Species[a.species])
+        : (rawSpecies && rawSpecies.string) || undefined;
+      this.gender =
+        a.gender && a.gender !== Gender.None
+          ? this.readable(Gender[a.gender])
+          : undefined;
+      this.furryPref = a.furryPreference
+        ? this.readable(furryPreferenceMapping[a.furryPreference])
+        : undefined;
+      this.subDomRole = a.subDomRole
+        ? this.readable(SubDomRole[a.subDomRole])
+        : undefined;
+      this.sexualOrientation = a.orientation
+        ? this.readable(Orientation[a.orientation])
+        : undefined;
     }
 
     readable(s: string): string {
