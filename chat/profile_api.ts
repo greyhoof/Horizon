@@ -68,7 +68,7 @@ async function characterData(
 // @ts-ignore
 async function executeCharacterData(
   name: string | undefined,
-  id: number = -1,
+  _id: number = -1,
   skipEvent: boolean = false
 ): Promise<Character> {
   const data = await core.connection.queryApi<

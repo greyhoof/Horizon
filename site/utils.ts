@@ -25,9 +25,7 @@ export function characterURL(name: string): string {
 }
 
 //tslint:disable-next-line:no-any
-export function isJSONError(
-  error: any
-): error is Error & {
+export function isJSONError(error: any): error is Error & {
   response: AxiosResponse<{ [key: string]: object | string | number }>;
 } {
   return (

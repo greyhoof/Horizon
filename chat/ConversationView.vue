@@ -168,9 +168,7 @@
               type="button"
               @click="toggleAutoPostAds()"
             >
-              {{
-                conversation.adManager.isActive() ? 'Pause' : 'Start'
-              }}
+              {{ conversation.adManager.isActive() ? 'Pause' : 'Start' }}
               Posting Ads
             </button>
             <button

@@ -369,19 +369,17 @@ export default class Connection implements Interfaces.Connection {
     lastApiTicketFetch = Date.now();
 
     const data = <{ ticket?: string; error: string }>(
-      (
-        await Axios.post(
-          'https://www.f-list.net/json/getApiTicket.php',
-          qs.stringify({
-            account: this.account,
-            password,
-            no_friends: true,
-            no_bookmarks: true,
-            no_characters: true
-          })
-        )
-      ).data
-    );
+      await Axios.post(
+        'https://www.f-list.net/json/getApiTicket.php',
+        qs.stringify({
+          account: this.account,
+          password,
+          no_friends: true,
+          no_bookmarks: true,
+          no_characters: true
+        })
+      )
+    ).data;
 
     if (data.ticket !== undefined) {
       log.debug('api.getTicket.success', {
