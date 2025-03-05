@@ -428,7 +428,7 @@
     risingShowPortraitNearInput!: boolean;
     risingShowPortraitInMessage!: boolean;
     risingShowHighQualityPortraits!: boolean;
-    horizonShowCustomCharacterColors !: boolean;
+    horizonShowCustomCharacterColors!: boolean;
 
     risingFilter!: SmartFilterSettings = {} as any;
 
@@ -477,7 +477,7 @@
       this.risingShowPortraitNearInput = settings.risingShowPortraitNearInput;
       this.risingShowPortraitInMessage = settings.risingShowPortraitInMessage;
       this.risingShowHighQualityPortraits = settings.risingShowHighQualityPortraits;
-      this.horizonShowCustomCharacterColors = settings.horizonShowCustomCharacterColors
+      this.horizonShowCustomCharacterColors = settings.horizonShowCustomCharacterColors;
 
       this.risingFilter = settings.risingFilter;
 
