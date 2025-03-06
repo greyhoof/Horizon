@@ -1,12 +1,31 @@
 <template>
   <!-- hiding elements instead of using 'v-if' is used here as an optimization -->
-  <div class="image-preview-wrapper" :class="{ interactive: sticky, visible: visible }">
+  <div
+    class="image-preview-wrapper"
+    :class="{ interactive: sticky, visible: visible }"
+  >
     <div class="image-preview-toolbar" v-show="sticky || debug">
-      <a @click="toggleDevMode()" :class="{ toggled: debug }" title="Debug Mode"><i class="fa fa-terminal"></i></a>
-      <a @click="toggleJsMode()" :class="{ toggled: runJs }" title="Expand Images"><i class="fa fa-magic"></i></a>
-      <a @click="reloadUrl()" title="Reload Image"><i class="fa fa-redo-alt"></i></a>
-      <a @click="reset()" title="Reset Image Viewer"><i class="fa fa-recycle"></i></a>
-      <a @click="toggleStickyMode()" :class="{ toggled: sticky }" title="Toggle Stickyness"><i class="fa fa-thumbtack"></i></a>
+      <a @click="toggleDevMode()" :class="{ toggled: debug }" title="Debug Mode"
+        ><i class="fa fa-terminal"></i
+      ></a>
+      <a
+        @click="toggleJsMode()"
+        :class="{ toggled: runJs }"
+        title="Expand Images"
+        ><i class="fa fa-magic"></i
+      ></a>
+      <a @click="reloadUrl()" title="Reload Image"
+        ><i class="fa fa-redo-alt"></i
+      ></a>
+      <a @click="reset()" title="Reset Image Viewer"
+        ><i class="fa fa-recycle"></i
+      ></a>
+      <a
+        @click="toggleStickyMode()"
+        :class="{ toggled: sticky }"
+        title="Toggle Stickyness"
+        ><i class="fa fa-thumbtack"></i
+      ></a>
     </div>
 
     <!-- note: preload requires a webpack config CopyPlugin configuration -->
@@ -25,11 +44,21 @@
     >
     </webview>
 
-    <div class="image-preview-local" :style="previewStyles.LocalImagePreviewHelper"></div>
+    <div
+      class="image-preview-local"
+      :style="previewStyles.LocalImagePreviewHelper"
+    ></div>
 
-    <character-preview :style="previewStyles.CharacterPreviewHelper" ref="characterPreview"></character-preview>
+    <character-preview
+      :style="previewStyles.CharacterPreviewHelper"
+      ref="characterPreview"
+    ></character-preview>
 
-    <i id="preview-spinner" class="fas fa-circle-notch fa-spin" v-show="shouldShowSpinner"></i>
+    <i
+      id="preview-spinner"
+      class="fas fa-circle-notch fa-spin"
+      v-show="shouldShowSpinner"
+    ></i>
     <i id="preview-error" class="fas fa-times" v-show="shouldShowError"></i>
   </div>
 </template>
@@ -43,7 +72,13 @@
   import { domain } from '../../bbcode/core';
   import { ImageDomMutator } from './image-dom-mutator';
 
-  import { ExternalImagePreviewHelper, LocalImagePreviewHelper, PreviewManager, CharacterPreviewHelper, RenderStyle } from './helper';
+  import {
+    ExternalImagePreviewHelper,
+    LocalImagePreviewHelper,
+    PreviewManager,
+    CharacterPreviewHelper,
+    RenderStyle
+  } from './helper';
 
   import { Point } from 'electron';
   import * as remote from '@electron/remote';
@@ -54,7 +89,9 @@
 
   const screen = remote.screen;
 
-  const FLIST_PROFILE_MATCH = _.cloneDeep(/https?:\/\/(www.)?f-list.net\/c\/([a-zA-Z0-9+%_.!~*'()]+)\/?/);
+  const FLIST_PROFILE_MATCH = _.cloneDeep(
+    /https?:\/\/(www.)?f-list.net\/c\/([a-zA-Z0-9+%_.!~*'()]+)\/?/
+  );
 
   interface DidFailLoadEvent extends Event {
     errorCode: number;
@@ -122,14 +159,18 @@
 
       EventBus.$on('imagepreview-dismiss', (eventData: EventBusEvent) => {
         // console.log('Event dismiss', eventData.url);
-        this.dismiss(this.negotiateUrl((eventData.url as string) || ''), eventData.force as boolean);
+        this.dismiss(
+          this.negotiateUrl((eventData.url as string) || ''),
+          eventData.force as boolean
+        );
       });
 
       EventBus.$on('imagepreview-show', (eventData: EventBusEvent) => {
         // console.log('Event show', eventData.url);
 
         const url = this.negotiateUrl((eventData.url as string) || '');
-        const isInternalPreview = CharacterPreviewHelper.FLIST_CHARACTER_PROTOCOL_TESTER.test(url);
+        const isInternalPreview =
+          CharacterPreviewHelper.FLIST_CHARACTER_PROTOCOL_TESTER.test(url);
 
         if (
           (!core.state.settings.risingCharacterPreview && isInternalPreview) ||
@@ -141,21 +182,29 @@
         this.show(url);
       });
 
-      EventBus.$on('imagepreview-toggle-stickyness', (eventData: EventBusEvent) => {
-        if (!core.state.settings.risingLinkPreview) {
-          return;
-        }
+      EventBus.$on(
+        'imagepreview-toggle-stickyness',
+        (eventData: EventBusEvent) => {
+          if (!core.state.settings.risingLinkPreview) {
+            return;
+          }
 
-        const eventUrl = this.jsMutator.mutateUrl(this.negotiateUrl((eventData.url as string) || ''));
+          const eventUrl = this.jsMutator.mutateUrl(
+            this.negotiateUrl((eventData.url as string) || '')
+          );
 
-        if ((eventData.force === true || this.url === eventUrl) && this.visible) {
-          this.sticky = !this.sticky;
+          if (
+            (eventData.force === true || this.url === eventUrl) &&
+            this.visible
+          ) {
+            this.sticky = !this.sticky;
 
-          if (eventData.force) {
-            this.hide();
+            if (eventData.force) {
+              this.hide();
+            }
           }
         }
-      });
+      );
 
       const webview = this.getWebview();
 
@@ -169,7 +218,10 @@
         'update-target-url', // 'did-navigate', // 'dom-ready',
         (event: EventBusEvent) => {
           const url = webview.getURL();
-          const js = this.jsMutator.getMutatorJsForSite(url, 'update-target-url');
+          const js = this.jsMutator.getMutatorJsForSite(
+            url,
+            'update-target-url'
+          );
 
           // tslint:disable-next-line
           this.executeJavaScript(js, 'update-target-url', event);
@@ -201,10 +253,15 @@
 
           if (url.match(/^https?:\/\/(www.)?pornhub.com/)) {
             const qjs =
-              this.jsMutator.getMutatorJsForSite(url, 'update-target-url') || this.jsMutator.getMutatorJsForSite(url, 'dom-ready');
+              this.jsMutator.getMutatorJsForSite(url, 'update-target-url') ||
+              this.jsMutator.getMutatorJsForSite(url, 'dom-ready');
 
             // tslint:disable-next-line
-            this.executeJavaScript(qjs, 'did-fail-load-but-still-loading', event);
+            this.executeJavaScript(
+              qjs,
+              'did-fail-load-but-still-loading',
+              event
+            );
             return;
           }
 
@@ -228,7 +285,10 @@
         //   return;
         // }
 
-        const js = this.jsMutator.getErrorMutator(e.errorCode, e.errorDescription);
+        const js = this.jsMutator.getErrorMutator(
+          e.errorCode,
+          e.errorDescription
+        );
 
         // tslint:disable-next-line
         this.executeJavaScript(js, 'did-fail-load', event);
@@ -238,7 +298,10 @@
         const e = event as DidNavigateEvent;
 
         if (e.httpResponseCode >= 400) {
-          const js = this.jsMutator.getErrorMutator(e.httpResponseCode, e.httpStatusText);
+          const js = this.jsMutator.getErrorMutator(
+            e.httpResponseCode,
+            e.httpStatusText
+          );
 
           // tslint:disable-next-line
           this.executeJavaScript(js, 'did-navigate', event);
@@ -255,7 +318,10 @@
 
         if (event.channel === 'webview.img') {
           // tslint:disable-next-line:no-unsafe-any
-          this.updatePreviewSize(parseInt(event.args[0], 10), parseInt(event.args[1], 10));
+          this.updatePreviewSize(
+            parseInt(event.args[0], 10),
+            parseInt(event.args[1], 10)
+          );
         }
       });
 
@@ -287,10 +353,19 @@
       );
 
       setInterval(() => {
-        if ((this.visible && !this.exitInterval && !this.shouldDismiss) || this.interval)
+        if (
+          (this.visible && !this.exitInterval && !this.shouldDismiss) ||
+          this.interval
+        )
           this.initialCursorPosition = screen.getCursorScreenPoint();
 
-        if (this.visible && this.shouldDismiss && this.hasMouseMovedSince() && !this.exitInterval && !this.interval) {
+        if (
+          this.visible &&
+          this.shouldDismiss &&
+          this.hasMouseMovedSince() &&
+          !this.exitInterval &&
+          !this.interval
+        ) {
           this.debugLog('ImagePreview: call hide from interval');
 
           this.hide();
@@ -323,7 +398,12 @@
       }
 
       if (width && height) {
-        this.debugLog('ImagePreview: updatePreviewSize', width, height, width / height);
+        this.debugLog(
+          'ImagePreview: updatePreviewSize',
+          width,
+          height,
+          width / height
+        );
 
         helper.setRatio(width / height);
         this.reRenderStyles();
@@ -364,7 +444,10 @@
 
       // console.log('DISMISS');
 
-      const due = this.visible ? this.MinTimePreviewVisible - Math.min(this.MinTimePreviewVisible, Date.now() - this.visibleSince) : 0;
+      const due = this.visible
+        ? this.MinTimePreviewVisible -
+          Math.min(this.MinTimePreviewVisible, Date.now() - this.visibleSince)
+        : 0;
 
       this.cancelTimer();
 
@@ -375,7 +458,12 @@
 
       if (!this.hasMouseMovedSince() && !force) return;
 
-      this.debugLog('ImagePreview: dismiss.exec', due, this.previewManager.getVisibilityStatus(), url);
+      this.debugLog(
+        'ImagePreview: dismiss.exec',
+        due,
+        this.previewManager.getVisibilityStatus(),
+        url
+      );
 
       // This timeout makes the preview window disappear with a slight delay, which helps UX
       // when dealing with situations such as quickly scrolling text that moves the cursor away
@@ -430,7 +518,10 @@
       this.interval = setTimeout(() => {
         this.debugLog('ImagePreview: show.timeout', this.url);
 
-        const helper = this.previewManager.show(this.url || undefined, this.domain);
+        const helper = this.previewManager.show(
+          this.url || undefined,
+          this.domain
+        );
 
         this.interval = null;
         this.visible = true;
@@ -455,7 +546,10 @@
       try {
         const p = screen.getCursorScreenPoint();
 
-        return p.x !== this.initialCursorPosition.x || p.y !== this.initialCursorPosition.y;
+        return (
+          p.x !== this.initialCursorPosition.x ||
+          p.y !== this.initialCursorPosition.y
+        );
       } catch (err) {
         console.error('ImagePreview', err);
         return true;
@@ -504,7 +598,11 @@
       }
     }
 
-    async executeJavaScript(js: string | undefined, context: string = 'unknown', logDetails?: any): Promise<any> {
+    async executeJavaScript(
+      js: string | undefined,
+      context: string = 'unknown',
+      logDetails?: any
+    ): Promise<any> {
       // console.log('EXECUTE JS', js);
 
       if (!this.runJs) return;
@@ -512,14 +610,19 @@
       const webview = this.getWebview();
 
       if (!js) {
-        this.debugLog(`ImagePreview ${context}: No JavaScript to execute`, logDetails);
+        this.debugLog(
+          `ImagePreview ${context}: No JavaScript to execute`,
+          logDetails
+        );
         return;
       }
 
       this.debugLog(`ImagePreview execute-${context}`, js, logDetails);
 
       try {
-        const result = await (webview.executeJavaScript(js) as unknown as Promise<any>);
+        const result = await (webview.executeJavaScript(
+          js
+        ) as unknown as Promise<any>);
 
         this.debugLog(`ImagePreview result-${context}`, result);
 
@@ -598,7 +701,13 @@
     }
 
     setState(state: string): void {
-      this.debugLog('ImagePreview set-state', state, this.visibleSince > 0 ? `${(Date.now() - this.visibleSince) / 1000}s` : '');
+      this.debugLog(
+        'ImagePreview set-state',
+        state,
+        this.visibleSince > 0
+          ? `${(Date.now() - this.visibleSince) / 1000}s`
+          : ''
+      );
 
       this.state = state;
       this.shouldShowSpinner = this.testSpinner();
@@ -606,7 +715,9 @@
     }
 
     testSpinner(): boolean {
-      return this.visibleSince > 0 ? this.state === 'loading' && Date.now() - this.visibleSince > 1000 : false;
+      return this.visibleSince > 0
+        ? this.state === 'loading' && Date.now() - this.visibleSince > 1000
+        : false;
     }
 
     testError(): boolean {

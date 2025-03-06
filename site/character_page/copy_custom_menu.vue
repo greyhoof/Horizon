@@ -31,12 +31,16 @@
 
     itemSelected(element: HTMLElement): void {
       const getName = (children: ReadonlyArray<HTMLElement>): string => {
-        for (const child of children) if (child.className === 'kink-name') return child.textContent!;
+        for (const child of children)
+          if (child.className === 'kink-name') return child.textContent!;
         return 'Unknown';
       };
       const name = getName(<any>element.children); //tslint:disable-line:no-any
       const description = element.title;
-      (<CopyCustomDialog>this.$refs['copy-dialog']).showDialog(name, description);
+      (<CopyCustomDialog>this.$refs['copy-dialog']).showDialog(
+        name,
+        description
+      );
     }
 
     @Hook('mounted')

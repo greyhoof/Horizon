@@ -21,7 +21,9 @@
     readonly target!: string;
 
     get deleted(): boolean {
-      return typeof this.character === 'string' ? false : this.character.deleted;
+      return typeof this.character === 'string'
+        ? false
+        : this.character.deleted;
     }
 
     get linkClasses(): string {
@@ -33,7 +35,9 @@
     }
 
     get name(): string {
-      return typeof this.character === 'string' ? this.character : this.character.name;
+      return typeof this.character === 'string'
+        ? this.character
+        : this.character.name;
     }
   }
 </script>

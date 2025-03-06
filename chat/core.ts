@@ -4,7 +4,16 @@ import { Channels, Characters } from '../fchat';
 import BBCodeParser from './bbcode';
 import { Settings as SettingsImpl } from './common';
 import Conversations from './conversations';
-import { Channel, Character, Connection, Conversation, Logs, Notifications, Settings, State as StateInterface } from './interfaces';
+import {
+  Channel,
+  Character,
+  Connection,
+  Conversation,
+  Logs,
+  Notifications,
+  Settings,
+  State as StateInterface
+} from './interfaces';
 import { AdCoordinatorGuest } from './ads/ad-coordinator-guest';
 import { AdCenter } from './ads/ad-center';
 import { GeneralSettings } from '../electron/common';
@@ -33,7 +42,8 @@ class State implements StateInterface {
   set settings(value: Settings) {
     this._settings = value;
     //tslint:disable-next-line:no-floating-promises
-    if (data.settingsStore !== undefined) data.settingsStore.set('settings', value);
+    if (data.settingsStore !== undefined)
+      data.settingsStore.set('settings', value);
     data.bbCodeParser = createBBCodeParser();
   }
 }
@@ -71,11 +81,17 @@ const data = {
   adCenter: <AdCenter | undefined>undefined,
   siteSession: <SiteSession | undefined>undefined,
 
-  register<K extends 'characters' | 'conversations' | 'channels'>(module: K, subState: VueState[K]): void {
+  register<K extends 'characters' | 'conversations' | 'channels'>(
+    module: K,
+    subState: VueState[K]
+  ): void {
     Vue.set(vue, module, subState);
     (<VueState[K]>data[module]) = subState;
   },
-  watch<T>(getter: (this: VueState) => T, callback: (n: any, o: any) => void): void {
+  watch<T>(
+    getter: (this: VueState) => T,
+    callback: (n: any, o: any) => void
+  ): void {
     vue.$watch(getter, callback);
   },
   async reloadSettings(): Promise<void> {
@@ -121,7 +137,8 @@ export function init(
   data.watch(
     () => state.hiddenUsers,
     async newValue => {
-      if (data.settingsStore !== undefined) await data.settingsStore.set('hiddenUsers', newValue);
+      if (data.settingsStore !== undefined)
+        await data.settingsStore.set('hiddenUsers', newValue);
     }
   );
   // boom (shotgun reloading sound)

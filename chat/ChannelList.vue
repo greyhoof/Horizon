@@ -1,21 +1,53 @@
 <template>
-  <modal :buttons="false" :action="l('chat.channels')" @open="opened" @close="closed" dialog-class="w-100 channel-list">
+  <modal
+    :buttons="false"
+    :action="l('chat.channels')"
+    @open="opened"
+    @close="closed"
+    dialog-class="w-100 channel-list"
+  >
     <div style="display: flex; flex-direction: column">
-      <tabs style="flex-shrink: 0" :tabs="[l('channelList.public'), l('channelList.private')]" v-model="tab"></tabs>
+      <tabs
+        style="flex-shrink: 0"
+        :tabs="[l('channelList.public'), l('channelList.private')]"
+        v-model="tab"
+      ></tabs>
       <div style="display: flex; flex-direction: column">
         <div class="input-group" style="padding: 10px 0; flex-shrink: 0">
           <div class="input-group-prepend">
-            <div class="input-group-text"><span class="fas fa-search"></span></div>
+            <div class="input-group-text">
+              <span class="fas fa-search"></span>
+            </div>
           </div>
-          <input class="form-control" style="flex: 1; margin-right: 10px" v-model="filter" :placeholder="l('filter')" />
-          <a href="#" @click.prevent="sortCount = !sortCount" style="align-self: center">
-            <span class="fa fa-2x" :class="{ 'fa-sort-amount-down': sortCount, 'fa-sort-alpha-down': !sortCount }"></span>
+          <input
+            class="form-control"
+            style="flex: 1; margin-right: 10px"
+            v-model="filter"
+            :placeholder="l('filter')"
+          />
+          <a
+            href="#"
+            @click.prevent="sortCount = !sortCount"
+            style="align-self: center"
+          >
+            <span
+              class="fa fa-2x"
+              :class="{
+                'fa-sort-amount-down': sortCount,
+                'fa-sort-alpha-down': !sortCount
+              }"
+            ></span>
           </a>
         </div>
         <div style="overflow: auto" v-show="tab === '0'">
           <div v-for="channel in officialChannels" :key="channel.id">
             <label :for="channel.id">
-              <input type="checkbox" :checked="channel.isJoined" :id="channel.id" @click.prevent="setJoined(channel)" />
+              <input
+                type="checkbox"
+                :checked="channel.isJoined"
+                :id="channel.id"
+                @click.prevent="setJoined(channel)"
+              />
               {{ channel.name }} ({{ channel.memberCount }})
             </label>
           </div>
@@ -23,17 +55,31 @@
         <div style="overflow: auto" v-show="tab === '1'">
           <div v-for="channel in openRooms" :key="channel.id">
             <label :for="channel.id">
-              <input type="checkbox" :checked="channel.isJoined" :id="channel.id" @click.prevent="setJoined(channel)" />
+              <input
+                type="checkbox"
+                :checked="channel.isJoined"
+                :id="channel.id"
+                @click.prevent="setJoined(channel)"
+              />
               {{ channel.name }} ({{ channel.memberCount }})
             </label>
           </div>
         </div>
         <div class="input-group" style="padding: 10px 0; flex-shrink: 0">
           <div class="input-group-prepend">
-            <div class="input-group-text"><span class="fas fa-plus"></span></div>
+            <div class="input-group-text">
+              <span class="fas fa-plus"></span>
+            </div>
           </div>
-          <input class="form-control" style="flex: 1; margin-right: 10px" v-model="createName" :placeholder="l('channelList.createName')" />
-          <button class="btn btn-primary" @click="create">{{ l('channelList.create') }}</button>
+          <input
+            class="form-control"
+            style="flex: 1; margin-right: 10px"
+            v-model="createName"
+            :placeholder="l('channelList.createName')"
+          />
+          <button class="btn btn-primary" @click="create">
+            {{ l('channelList.create') }}
+          </button>
         </div>
       </div>
     </div>
@@ -68,7 +114,9 @@
       return this.applyFilter(core.channels.officialChannels);
     }
 
-    applyFilter(list: { [key: string]: Channel.ListItem | undefined }): ReadonlyArray<Channel.ListItem> {
+    applyFilter(list: {
+      [key: string]: Channel.ListItem | undefined;
+    }): ReadonlyArray<Channel.ListItem> {
       const channels: Channel.ListItem[] = [];
       if (this.filter.length > 0) {
         const search = new RegExp(this.filter.replace(/[^\w]/gi, '\\$&'), 'i');
@@ -77,7 +125,11 @@
           if (search.test(item.name)) channels.push(item);
         }
       } else for (const key in list) channels.push(list[key]!);
-      channels.sort(this.sortCount ? (x, y) => y.memberCount - x.memberCount : (x, y) => x.name.localeCompare(y.name));
+      channels.sort(
+        this.sortCount
+          ? (x, y) => y.memberCount - x.memberCount
+          : (x, y) => x.name.localeCompare(y.name)
+      );
       return channels;
     }
 
@@ -95,7 +147,9 @@
     }
 
     setJoined(channel: Channel.ListItem): void {
-      channel.isJoined ? core.channels.leave(channel.id) : core.channels.join(channel.id);
+      channel.isJoined
+        ? core.channels.leave(channel.id)
+        : core.channels.join(channel.id);
     }
   }
 </script>

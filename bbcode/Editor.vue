@@ -1,5 +1,8 @@
 <template>
-  <div class="bbcode-editor" style="display: flex; flex-wrap: wrap; justify-content: flex-end">
+  <div
+    class="bbcode-editor"
+    style="display: flex; flex-wrap: wrap; justify-content: flex-end"
+  >
     <slot></slot>
     <a
       tabindex="0"
@@ -21,7 +24,11 @@
       v-if="hasToolbar"
       style="flex: 1 51%; position: relative"
     >
-      <div class="popover popover-top color-selector" v-show="colorPopupVisible" v-on-clickaway="dismissColorSelector">
+      <div
+        class="popover popover-top color-selector"
+        v-show="colorPopupVisible"
+        v-on-clickaway="dismissColorSelector"
+      >
         <div class="popover-body">
           <div class="btn-group" role="group" aria-label="Color">
             <button
@@ -37,7 +44,10 @@
         </div>
       </div>
 
-      <EIconSelector :onSelect="onSelectEIcon" ref="eIconSelector"></EIconSelector>
+      <EIconSelector
+        :onSelect="onSelectEIcon"
+        ref="eIconSelector"
+      ></EIconSelector>
 
       <div class="btn-group toolbar-buttons" style="flex-wrap: wrap">
         <div v-if="!!characterName" class="character-btn">
@@ -62,7 +72,15 @@
           <i class="fa fa-eye"></i>
         </div>
       </div>
-      <button type="button" class="close" aria-label="Close" style="margin-left: 10px" @click="showToolbar = false">&times;</button>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        style="margin-left: 10px"
+        @click="showToolbar = false"
+      >
+        &times;
+      </button>
     </div>
     <div class="bbcode-editor-text-area" style="order: 100; width: 100%">
       <textarea
@@ -145,7 +163,20 @@
     @Prop({ default: 'normal' })
     readonly type: 'normal' | 'big' = 'normal';
 
-    buttonColors = ['red', 'orange', 'yellow', 'green', 'cyan', 'purple', 'blue', 'pink', 'black', 'brown', 'white', 'gray'];
+    buttonColors = [
+      'red',
+      'orange',
+      'yellow',
+      'green',
+      'cyan',
+      'purple',
+      'blue',
+      'pink',
+      'black',
+      'brown',
+      'white',
+      'gray'
+    ];
     colorPopupVisible = false;
 
     preview = false;
@@ -188,7 +219,11 @@
       this.maxHeight = parseInt(styles.maxHeight, 10) || 250;
       this.minHeight = parseInt(styles.minHeight, 10) || 60;
       setInterval(() => {
-        if (Date.now() - this.lastInput >= 500 && this.text !== this.undoStack[0] && this.undoIndex === 0) {
+        if (
+          Date.now() - this.lastInput >= 500 &&
+          this.text !== this.undoStack[0] &&
+          this.undoIndex === 0
+        ) {
           if (this.undoStack.length >= 30) this.undoStack.pop();
           this.undoStack.unshift(this.text);
         }
@@ -222,7 +257,9 @@
     get buttons(): EditorButton[] {
       const buttons = this.defaultButtons.slice();
 
-      if (this.extras !== undefined) for (let i = 0, l = this.extras.length; i < l; i++) buttons.push(this.extras[i]);
+      if (this.extras !== undefined)
+        for (let i = 0, l = this.extras.length; i < l; i++)
+          buttons.push(this.extras[i]);
 
       const colorButtonIndex = _.findIndex(buttons, b => b.tag === 'color');
 
@@ -284,15 +321,21 @@
     applyText(startText: string, endText: string, withInject?: string): void {
       const selection = this.getSelection();
       if (selection.length > 0) {
-        const replacement = startText + (withInject || selection.text) + endText;
+        const replacement =
+          startText + (withInject || selection.text) + endText;
         this.text = this.replaceSelection(replacement);
-        this.setSelection(selection.start, selection.start + replacement.length);
+        this.setSelection(
+          selection.start,
+          selection.start + replacement.length
+        );
       } else {
         const start = this.text.substr(0, selection.start) + startText;
         const end = endText + this.text.substr(selection.start);
         this.text = start + (withInject || '') + end;
 
-        const selectionPoint = withInject ? start.length + withInject.length + endText.length : start.length;
+        const selectionPoint = withInject
+          ? start.length + withInject.length + endText.length
+          : start.length;
 
         this.$nextTick(() => this.setSelection(selectionPoint));
       }
@@ -349,15 +392,22 @@
       this.applyButtonEffect(button);
     }
 
-    applyButtonEffect(button: EditorButton, withArgument?: string, withInject?: string): void {
+    applyButtonEffect(
+      button: EditorButton,
+      withArgument?: string,
+      withInject?: string
+    ): void {
       // Allow emitted variations for custom buttons.
-      this.$once('insert', (startText: string, endText: string) => this.applyText(startText, endText));
+      this.$once('insert', (startText: string, endText: string) =>
+        this.applyText(startText, endText)
+      );
       // noinspection TypeScriptValidateTypes
       if (button.handler !== undefined) {
         // tslint:ignore-next-line:no-any
         return button.handler.call(this as any, this);
       }
-      if (button.startText === undefined || withArgument) button.startText = `[${button.tag}${withArgument ? '=' + withArgument : ''}]`;
+      if (button.startText === undefined || withArgument)
+        button.startText = `[${button.tag}${withArgument ? '=' + withArgument : ''}]`;
       if (button.endText === undefined) button.endText = `[/${button.tag}]`;
 
       const ebl = button.endText ? button.endText.length : 0;
@@ -382,7 +432,8 @@
       if ((e.metaKey || e.ctrlKey) && !e.shiftKey && !e.altKey) {
         if (key === Keys.KeyZ) {
           e.preventDefault();
-          if (this.undoIndex === 0 && this.undoStack[0] !== this.text) this.undoStack.unshift(this.text);
+          if (this.undoIndex === 0 && this.undoStack[0] !== this.text)
+            this.undoStack.unshift(this.text);
           if (this.undoStack.length > this.undoIndex + 1) {
             this.text = this.undoStack[++this.undoIndex];
             this.$emit('input', this.text);
@@ -446,7 +497,8 @@
         const previewElement = <BBCodeElement>targetElement.firstChild;
         // noinspection TypeScriptValidateTypes
         if (previewElement.cleanup !== undefined) previewElement.cleanup();
-        if (targetElement.firstChild !== null) targetElement.removeChild(targetElement.firstChild);
+        if (targetElement.firstChild !== null)
+          targetElement.removeChild(targetElement.firstChild);
       } else {
         this.preview = true;
         this.parser.storeWarnings = true;

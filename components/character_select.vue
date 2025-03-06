@@ -1,6 +1,8 @@
 <template>
   <select :value="value" @change="emit">
-    <option v-for="character in characters" :value="character.id">{{ character.name }}</option>
+    <option v-for="character in characters" :value="character.id">
+      {{ character.name }}
+    </option>
     <slot></slot>
   </select>
 </template>

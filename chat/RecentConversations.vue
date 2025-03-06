@@ -1,6 +1,14 @@
 <template>
-  <modal :buttons="false" :action="l('chat.recentConversations')" dialogClass="w-100 modal-lg">
-    <tabs style="flex-shrink: 0; margin-bottom: 10px" v-model="selectedTab" :tabs="[l('chat.pms'), l('chat.channels')]"></tabs>
+  <modal
+    :buttons="false"
+    :action="l('chat.recentConversations')"
+    dialogClass="w-100 modal-lg"
+  >
+    <tabs
+      style="flex-shrink: 0; margin-bottom: 10px"
+      v-model="selectedTab"
+      :tabs="[l('chat.pms'), l('chat.channels')]"
+    ></tabs>
     <div>
       <div v-show="selectedTab === '0'" class="recent-conversations">
         <user-view
@@ -11,7 +19,12 @@
         ></user-view>
       </div>
       <div v-show="selectedTab === '1'" class="recent-conversations">
-        <channel-view v-for="recent in recentChannels" :key="recent.channel" :id="recent.channel" :text="recent.name"></channel-view>
+        <channel-view
+          v-for="recent in recentChannels"
+          :key="recent.channel"
+          :id="recent.channel"
+          :text="recent.name"
+        ></channel-view>
       </div>
     </div>
   </modal>
@@ -29,7 +42,12 @@
   import UserView from './UserView.vue';
 
   @Component({
-    components: { 'user-view': UserView, 'channel-view': ChannelView, modal: Modal, tabs: Tabs }
+    components: {
+      'user-view': UserView,
+      'channel-view': ChannelView,
+      modal: Modal,
+      tabs: Tabs
+    }
   })
   export default class RecentConversations extends CustomDialog {
     l = l;

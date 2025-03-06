@@ -39,7 +39,8 @@
         :options="options.species"
       >
         <template slot-scope="s"
-          >{{ s.option.shortName }} <small>{{ s.option.details }}</small></template
+          >{{ s.option.shortName }}
+          <small>{{ s.option.details }}</small></template
         >
       </filterable-select>
 
@@ -48,36 +49,75 @@
       </div>
 
       <div class="btn-group">
-        <button class="btn btn-outline-secondary" @click.prevent="showHistory()">History</button>
-        <button class="btn btn-outline-secondary" @click.prevent="reset()">Reset</button>
+        <button
+          class="btn btn-outline-secondary"
+          @click.prevent="showHistory()"
+        >
+          History
+        </button>
+        <button class="btn btn-outline-secondary" @click.prevent="reset()">
+          Reset
+        </button>
       </div>
 
-      <search-history ref="searchHistory" :callback="updateSearch" :curSearch="data"></search-history>
+      <search-history
+        ref="searchHistory"
+        :callback="updateSearch"
+        :curSearch="data"
+      ></search-history>
     </div>
     <div v-else-if="state === 'results'" class="results">
       <div class="debug" v-show="false">
         <textarea v-model="debugSearchJson"></textarea>
-        <button class="btn" @click.prevent="debugUpdateResults()">Update</button>
+        <button class="btn" @click.prevent="debugUpdateResults()">
+          Update
+        </button>
       </div>
 
       <h4 v-if="hasReceivedResults">
         {{ results.length }} {{ l('characterSearch.results') }}
 
         <span v-if="resultsPending > 0" class="pending"
-          >Scoring {{ resultsPending }}... <i class="fas fa-circle-notch fa-spin search-spinner"></i
+          >Scoring {{ resultsPending }}...
+          <i class="fas fa-circle-notch fa-spin search-spinner"></i
         ></span>
       </h4>
       <h4 v-else>Searching...</h4>
 
-      <div v-for="record in results" :key="record.character.name" class="search-result" :class="'status-' + record.character.status">
+      <div
+        v-for="record in results"
+        :key="record.character.name"
+        class="search-result"
+        :class="'status-' + record.character.status"
+      >
         <template v-if="record.character.status === 'looking'" v-once>
-          <img :src="characterImage(record.character.name)" v-if="showAvatars" />
-          <user :character="record.character" :showStatus="true" :match="shouldShowMatch" :avatar="false"></user>
-          <bbcode :text="record.character.statusText" class="status-text"></bbcode>
+          <img
+            :src="characterImage(record.character.name)"
+            v-if="showAvatars"
+          />
+          <user
+            :character="record.character"
+            :showStatus="true"
+            :match="shouldShowMatch"
+            :avatar="false"
+          ></user>
+          <bbcode
+            :text="record.character.statusText"
+            class="status-text"
+          ></bbcode>
         </template>
         <template v-else v-once>
-          <user :character="record.character" :showStatus="true" :match="shouldShowMatch" :avatar="shouldShowAvatar"></user>
-          <bbcode :text="record.character.statusText" v-if="!!record.character.statusText" class="status-text"></bbcode>
+          <user
+            :character="record.character"
+            :showStatus="true"
+            :match="shouldShowMatch"
+            :avatar="shouldShowAvatar"
+          ></user>
+          <bbcode
+            :text="record.character.statusText"
+            v-if="!!record.character.statusText"
+            class="status-text"
+          ></bbcode>
         </template>
       </div>
     </div>
@@ -107,7 +147,14 @@
   import Modal from '../components/Modal.vue';
   import { characterImage } from './common';
   import core from './core';
-  import { Character, Connection, ExtendedSearchData, SearchData, SearchKink, SearchSpecies } from './interfaces';
+  import {
+    Character,
+    Connection,
+    ExtendedSearchData,
+    SearchData,
+    SearchKink,
+    SearchSpecies
+  } from './interfaces';
   import l from './localize';
   import UserView from './UserView.vue';
   import * as _ from 'lodash';
@@ -220,7 +267,15 @@
       bodytypes: []
     };
 
-    listItems: ReadonlyArray<keyof SearchData> = ['genders', 'orientations', 'languages', 'furryprefs', 'roles', 'positions', 'bodytypes']; // SearchData is correct
+    listItems: ReadonlyArray<keyof SearchData> = [
+      'genders',
+      'orientations',
+      'languages',
+      'furryprefs',
+      'roles',
+      'positions',
+      'bodytypes'
+    ]; // SearchData is correct
 
     searchString = '';
 
@@ -258,18 +313,38 @@
 
     @Hook('created')
     async created(): Promise<void> {
-      if (options === undefined) options = <Options | undefined>(await Axios.get('https://www.f-list.net/json/api/mapping-list.php')).data;
+      if (options === undefined)
+        options = <Options | undefined>(
+          (await Axios.get('https://www.f-list.net/json/api/mapping-list.php'))
+            .data
+        );
       if (options === undefined) return;
       this.options = Object.freeze({
-        kinks: options.kinks.sort((x, y) => (x.name < y.name ? -1 : x.name > y.name ? 1 : 0)),
-        genders: options.listitems.filter(x => x.name === 'gender').map(x => x.value),
-        orientations: options.listitems.filter(x => x.name === 'orientation').map(x => x.value),
-        languages: options.listitems.filter(x => x.name === 'languagepreference').map(x => x.value),
-        furryprefs: options.listitems.filter(x => x.name === 'furrypref').map(x => x.value),
-        roles: options.listitems.filter(x => x.name === 'subdom').map(x => x.value),
-        positions: options.listitems.filter(x => x.name === 'position').map(x => x.value),
+        kinks: options.kinks.sort((x, y) =>
+          x.name < y.name ? -1 : x.name > y.name ? 1 : 0
+        ),
+        genders: options.listitems
+          .filter(x => x.name === 'gender')
+          .map(x => x.value),
+        orientations: options.listitems
+          .filter(x => x.name === 'orientation')
+          .map(x => x.value),
+        languages: options.listitems
+          .filter(x => x.name === 'languagepreference')
+          .map(x => x.value),
+        furryprefs: options.listitems
+          .filter(x => x.name === 'furrypref')
+          .map(x => x.value),
+        roles: options.listitems
+          .filter(x => x.name === 'subdom')
+          .map(x => x.value),
+        positions: options.listitems
+          .filter(x => x.name === 'position')
+          .map(x => x.value),
         species: this.getSpeciesOptions(),
-        bodytypes: options.listitems.filter(x => x.name === 'bodytype').map(x => x.value)
+        bodytypes: options.listitems
+          .filter(x => x.name === 'bodytype')
+          .map(x => x.value)
       });
 
       this.countUpdater = new ResultCountUpdater((names: string[]) => {
@@ -302,7 +377,9 @@
       await Bluebird.delay(10);
 
       // pre-warm cache
-      await Bluebird.mapSeries(results, c => core.cache.profileCache.get(c.character.name));
+      await Bluebird.mapSeries(results, c =>
+        core.cache.profileCache.get(c.character.name)
+      );
 
       this.resultsPending = this.countPendingResults(undefined, results);
 
@@ -313,10 +390,20 @@
     }
 
     getYiffBotCompatibleGender(): Character.Gender {
-      const g = Matcher.getTagValueList(TagId.Gender, core.characters.ownProfile.character);
-      const o = Matcher.getTagValueList(TagId.Orientation, core.characters.ownProfile.character);
+      const g = Matcher.getTagValueList(
+        TagId.Gender,
+        core.characters.ownProfile.character
+      );
+      const o = Matcher.getTagValueList(
+        TagId.Orientation,
+        core.characters.ownProfile.character
+      );
 
-      if (o === Orientation.Straight || o === Orientation.Unsure || _.isNil(o)) {
+      if (
+        o === Orientation.Straight ||
+        o === Orientation.Unsure ||
+        _.isNil(o)
+      ) {
         if (g === Gender.Male) {
           return 'Female';
         }
@@ -361,12 +448,23 @@
       core.connection.onMessage('FKS', async data => {
         const results = data.characters
           .map(x => ({ character: core.characters.get(x), profile: null }))
-          .filter(x => core.state.hiddenUsers.indexOf(x.character.name) === -1 && !x.character.isIgnored)
-          .filter(x => this.isSpeciesMatch(x) && this.isBodyTypeMatch(x) && !this.isSmartFiltered(x))
+          .filter(
+            x =>
+              core.state.hiddenUsers.indexOf(x.character.name) === -1 &&
+              !x.character.isIgnored
+          )
+          .filter(
+            x =>
+              this.isSpeciesMatch(x) &&
+              this.isBodyTypeMatch(x) &&
+              !this.isSmartFiltered(x)
+          )
           .sort(sort);
 
         // pre-warm cache
-        await Bluebird.mapSeries(results, c => core.cache.profileCache.get(c.character.name));
+        await Bluebird.mapSeries(results, c =>
+          core.cache.profileCache.get(c.character.name)
+        );
 
         this.resultsPending = this.countPendingResults(undefined, results);
 
@@ -407,7 +505,11 @@
           // tslint:disable-next-line no-unsafe-any no-any
           event.character &&
           // tslint:disable-next-line no-unsafe-any no-any
-          _.find(this.results, (s: SearchResult) => s.character.name === event.character.character.name)
+          _.find(
+            this.results,
+            (s: SearchResult) =>
+              s.character.name === event.character.character.name
+          )
         ) {
           this.countUpdater?.requestUpdate(event.character.character.name);
         }
@@ -442,7 +544,13 @@
 
     private resort(results = this.results) {
       this.results = (
-        _.filter(results, x => this.isSpeciesMatch(x) && this.isBodyTypeMatch(x) && !this.isSmartFiltered(x)) as SearchResult[]
+        _.filter(
+          results,
+          x =>
+            this.isSpeciesMatch(x) &&
+            this.isBodyTypeMatch(x) &&
+            !this.isSmartFiltered(x)
+        ) as SearchResult[]
       ).sort(sort);
     }
 
@@ -451,7 +559,9 @@
         return true;
       }
 
-      const knownCharacter = core.cache.profileCache.getSync(result.character.name);
+      const knownCharacter = core.cache.profileCache.getSync(
+        result.character.name
+      );
 
       if (!knownCharacter) {
         return true;
@@ -460,8 +570,14 @@
       // optimization
       result.profile = knownCharacter;
 
-      const isSearchingForAnthro = !!_.find(this.data.species, s => s.id === Species.Anthro);
-      const isSearchingForHuman = !!_.find(this.data.species, s => s.id === Species.Human);
+      const isSearchingForAnthro = !!_.find(
+        this.data.species,
+        s => s.id === Species.Anthro
+      );
+      const isSearchingForHuman = !!_.find(
+        this.data.species,
+        s => s.id === Species.Human
+      );
 
       const species = Matcher.species(knownCharacter.character.character);
 
@@ -480,7 +596,9 @@
     isBodyTypeMatch(result: SearchResult) {
       if (this.data.bodytypes.length === 0) return true;
 
-      const knownCharacter = core.cache.profileCache.getSync(result.character.name);
+      const knownCharacter = core.cache.profileCache.getSync(
+        result.character.name
+      );
       if (!knownCharacter) return false;
 
       result.profile = knownCharacter;
@@ -488,7 +606,9 @@
       const bodytypeId = result.profile.character.character.infotags[51]?.list;
       if (bodytypeId === undefined) return false;
 
-      const bodytype = options!.listitems.filter(x => x.name === 'bodytype').find(x => +x.id === bodytypeId);
+      const bodytype = options!.listitems
+        .filter(x => x.name === 'bodytype')
+        .find(x => +x.id === bodytypeId);
       return this.data.bodytypes.indexOf(bodytype!.value) > -1;
     }
 
@@ -501,34 +621,37 @@
     }
 
     getSpeciesOptions(): SearchSpecies[] {
-      const species = _.map(speciesMapping, (keywords: string[], speciesIdStr: Species): SearchSpecies => {
-        // const speciesId: number = Species[speciesName];
-        const keywordsStr = `${keywords.join(', ')}`;
-        const details = `${keywordsStr.substr(0, 24)}...`;
-        const speciesId = parseInt(speciesIdStr as any, 10);
+      const species = _.map(
+        speciesMapping,
+        (keywords: string[], speciesIdStr: Species): SearchSpecies => {
+          // const speciesId: number = Species[speciesName];
+          const keywordsStr = `${keywords.join(', ')}`;
+          const details = `${keywordsStr.substr(0, 24)}...`;
+          const speciesId = parseInt(speciesIdStr as any, 10);
 
-        if (speciesId in speciesNames) {
-          const name = `${speciesNames[speciesId].substr(0, 1).toUpperCase()}${speciesNames[speciesId].substr(1)}`;
+          if (speciesId in speciesNames) {
+            const name = `${speciesNames[speciesId].substr(0, 1).toUpperCase()}${speciesNames[speciesId].substr(1)}`;
+
+            return {
+              details,
+              keywords: `${name}: ${keywordsStr}`,
+              name: `${name} (species)`,
+              shortName: name,
+              id: speciesId
+            };
+          }
+
+          const speciesName = Species[speciesId];
 
           return {
             details,
-            keywords: `${name}: ${keywordsStr}`,
-            name: `${name} (species)`,
-            shortName: name,
+            keywords: `${speciesName}s: ${keywordsStr}`,
+            name: `${speciesName}s (species)`,
+            shortName: `${speciesName}s`,
             id: speciesId
           };
         }
-
-        const speciesName = Species[speciesId];
-
-        return {
-          details,
-          keywords: `${speciesName}s: ${keywordsStr}`,
-          name: `${speciesName}s (species)`,
-          shortName: `${speciesName}s`,
-          id: speciesId
-        };
-      }) as unknown[] as SearchSpecies[];
+      ) as unknown[] as SearchSpecies[];
 
       // console.log('SPECIES', species);
 
@@ -545,8 +668,13 @@
             return accum;
           }
 
-          if (_.isUndefined(names) || _.indexOf(names, result.character.name) >= 0) {
-            result.profile = core.cache.profileCache.getSync(result.character.name);
+          if (
+            _.isUndefined(names) ||
+            _.indexOf(names, result.character.name) >= 0
+          ) {
+            result.profile = core.cache.profileCache.getSync(
+              result.character.name
+            );
           }
 
           return !!result.profile ? accum : accum + 1;
@@ -556,7 +684,8 @@
     }
 
     filterKink(filter: RegExp, kink: SearchKink): boolean {
-      if (this.data.kinks.length >= 5) return this.data.kinks.indexOf(kink) !== -1;
+      if (this.data.kinks.length >= 5)
+        return this.data.kinks.indexOf(kink) !== -1;
       return filter.test(kink.name);
     }
 
@@ -590,7 +719,10 @@
         this.data = _.mapValues(data, (category, categoryName) =>
           _.map(category, selection => {
             const jsonSelection = JSON.stringify(selection);
-            const v = _.find((this.options as any)[categoryName], op => JSON.stringify(op) === jsonSelection);
+            const v = _.find(
+              (this.options as any)[categoryName],
+              op => JSON.stringify(op) === jsonSelection
+            );
 
             return v || selection;
           })
@@ -616,11 +748,17 @@
 
       this.error = '';
 
-      const data: Connection.ClientCommands['FKS'] & { [key: string]: (string | number)[] } = { kinks: [] };
+      const data: Connection.ClientCommands['FKS'] & {
+        [key: string]: (string | number)[];
+      } = { kinks: [] };
 
       for (const key in this.data) {
         const item = this.data[<keyof SearchData>key]; // SearchData is correct
-        if (item.length > 0 && key !== 'bodytypes') data[key] = key === 'kinks' ? (<SearchKink[]>item).map(x => x.id) : <string[]>item;
+        if (item.length > 0 && key !== 'bodytypes')
+          data[key] =
+            key === 'kinks'
+              ? (<SearchKink[]>item).map(x => x.id)
+              : <string[]>item;
       }
 
       core.connection.send('FKS', data);
@@ -638,11 +776,17 @@
       const dataStr = JSON.stringify(data, null, 0);
 
       const filteredHistory = _.map(
-        _.reject(history, (h: SearchData) => JSON.stringify(h, null, 0) === dataStr),
+        _.reject(
+          history,
+          (h: SearchData) => JSON.stringify(h, null, 0) === dataStr
+        ),
         h => _.merge({ species: [], bodytypes: [] }, h)
       ) as ExtendedSearchData[];
 
-      const newHistory: ExtendedSearchData[] = _.take(_.concat([data], filteredHistory), 15);
+      const newHistory: ExtendedSearchData[] = _.take(
+        _.concat([data], filteredHistory),
+        15
+      );
 
       await core.settingsStore.set('searchHistory', newHistory);
     }

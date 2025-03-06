@@ -1,5 +1,10 @@
 <template>
-  <modal :action="l('chat.report')" @submit.prevent="submit()" :disabled="submitting" dialogClass="modal-lg">
+  <modal
+    :action="l('chat.report')"
+    @submit.prevent="submit()"
+    :disabled="submitting"
+    dialogClass="modal-lg"
+  >
     <div class="alert alert-danger" v-show="error">{{ error }}</div>
     <div ref="caption"></div>
     <br />
@@ -37,7 +42,9 @@
 
     @Hook('mounted')
     mounted(): void {
-      (<Element>this.$refs['caption']).appendChild(new BBCodeParser().parseEverything(l('chat.report.description')));
+      (<Element>this.$refs['caption']).appendChild(
+        new BBCodeParser().parseEverything(l('chat.report.description'))
+      );
     }
 
     @Hook('beforeDestroy')
@@ -53,7 +60,12 @@
       this.error = '';
       this.text = '';
       const current = core.conversations.selectedConversation;
-      this.character = character !== undefined ? character : Conversation.isPrivate(current) ? current.character : undefined;
+      this.character =
+        character !== undefined
+          ? character
+          : Conversation.isPrivate(current)
+            ? current.character
+            : undefined;
       this.show();
     }
 
@@ -66,7 +78,10 @@
         : Conversation.isPrivate(conversation)
           ? `Conversation with ${conversation.name}`
           : 'Console';
-      const text = (this.character !== undefined ? `Reporting user: [user]${this.character.name}[/user] | ` : '') + this.text;
+      const text =
+        (this.character !== undefined
+          ? `Reporting user: [user]${this.character.name}[/user] | `
+          : '') + this.text;
       const data = {
         character: core.connection.character,
         reportText: this.text,
@@ -78,10 +93,18 @@
       if (this.character !== undefined) data.reportUser = this.character.name;
       try {
         this.submitting = true;
-        const report = await core.connection.queryApi<{ log_id?: number }>('report-submit.php', data);
+        const report = await core.connection.queryApi<{ log_id?: number }>(
+          'report-submit.php',
+          data
+        );
         //tslint:disable-next-line:strict-boolean-expressions
         if (!report.log_id) return;
-        core.connection.send('SFC', { action: 'report', logid: report.log_id, report: text, tab: conversation.name });
+        core.connection.send('SFC', {
+          action: 'report',
+          logid: report.log_id,
+          report: text,
+          tab: conversation.name
+        });
         this.hide();
       } catch (e) {
         this.error = errorToString(e);

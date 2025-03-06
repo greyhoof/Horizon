@@ -15,7 +15,11 @@ export function queuedJoin(this: void, channels: string[]): void {
   }, 100);
 }
 
-function sortMember(this: void | never, array: SortableMember[], member: SortableMember): void {
+function sortMember(
+  this: void | never,
+  array: SortableMember[],
+  member: SortableMember
+): void {
   let i = 0;
   for (; i < array.length; ++i) {
     const other = array[i];
@@ -25,7 +29,8 @@ function sortMember(this: void | never, array: SortableMember[], member: Sortabl
     if (member.rank > other.rank) break;
     if (!member.character.isFriend) {
       if (other.character.isFriend) continue;
-      if (other.character.isBookmarked && !member.character.isBookmarked) continue;
+      if (other.character.isBookmarked && !member.character.isBookmarked)
+        continue;
       if (member.character.isBookmarked && !other.character.isBookmarked) break;
     } else if (!other.character.isFriend) break;
     if (member.key < other.key) break;
@@ -57,7 +62,8 @@ class Channel implements Interfaces.Channel {
     if (member !== undefined) {
       delete this.members[name];
       this.sortedMembers.splice(this.sortedMembers.indexOf(member), 1);
-      for (const handler of state.handlers) await handler('leave', this, member);
+      for (const handler of state.handlers)
+        await handler('leave', this, member);
     }
   }
 
@@ -110,7 +116,9 @@ class State implements Interfaces.State {
 
   getChannelItem(id: string): ListItem | undefined {
     id = id.toLowerCase();
-    return (id.substr(0, 4) === 'adh-' ? this.openRooms : this.officialChannels)[id];
+    return (
+      id.substr(0, 4) === 'adh-' ? this.openRooms : this.officialChannels
+    )[id];
   }
 
   onEvent(handler: Interfaces.EventHandler): void {
@@ -131,11 +139,16 @@ class State implements Interfaces.State {
 
 let state: State;
 
-export default function (this: void, connection: Connection, characters: Character.State): Interfaces.State {
+export default function (
+  this: void,
+  connection: Connection,
+  characters: Character.State
+): Interfaces.State {
   state = new State(connection);
   let rejoin: string[] | undefined;
   connection.onEvent('connecting', isReconnect => {
-    if (isReconnect && rejoin === undefined) rejoin = Object.keys(state.joinedMap);
+    if (isReconnect && rejoin === undefined)
+      rejoin = Object.keys(state.joinedMap);
     state.joinedChannels = [];
     state.joinedMap = {};
   });
@@ -160,7 +173,11 @@ export default function (this: void, connection: Connection, characters: Charact
     const channels: { [key: string]: ListItem } = {};
     for (const channel of data.channels) {
       const id = channel.name.toLowerCase();
-      const item = new ListItem(id, decodeHTML(channel.title), channel.characters);
+      const item = new ListItem(
+        id,
+        decodeHTML(channel.title),
+        channel.characters
+      );
       if (state.joinedMap[id] !== undefined) item.isJoined = true;
       channels[id] = item;
     }
@@ -171,14 +188,19 @@ export default function (this: void, connection: Connection, characters: Charact
     if (data.character.identity === connection.character) {
       const id = data.channel.toLowerCase();
       if (state.joinedMap[id] !== undefined) return;
-      const channel = (state.joinedMap[id] = new Channel(id, decodeHTML(data.title)));
+      const channel = (state.joinedMap[id] = new Channel(
+        id,
+        decodeHTML(data.title)
+      ));
       state.joinedChannels.push(channel);
       if (item !== undefined) item.isJoined = true;
     } else {
       const channel = state.getChannel(data.channel);
       if (channel === undefined) return state.leave(data.channel);
       if (channel.members[data.character.identity] !== undefined) return;
-      const member = channel.createMember(characters.get(data.character.identity));
+      const member = channel.createMember(
+        characters.get(data.character.identity)
+      );
       await channel.addMember(member);
     }
     if (item !== undefined) item.memberCount++;
@@ -211,7 +233,9 @@ export default function (this: void, connection: Connection, characters: Charact
     if (channel === undefined) return;
     const item = state.getChannelItem(data.channel);
     if (data.character === connection.character) {
-      const conv = core.conversations.channelConversations.find(c => c.channel.id === channel.id);
+      const conv = core.conversations.channelConversations.find(
+        c => c.channel.id === channel.id
+      );
 
       if (conv) {
         conv.adManager.stop();
@@ -269,9 +293,12 @@ export default function (this: void, connection: Connection, characters: Charact
     channel.mode = data.mode;
   });
   connection.onMessage('FLN', async data => {
-    for (const key in state.joinedMap) await state.joinedMap[key]!.removeMember(data.character);
+    for (const key in state.joinedMap)
+      await state.joinedMap[key]!.removeMember(data.character);
   });
-  const globalHandler = (data: Connection.ServerCommands['AOP'] | Connection.ServerCommands['DOP']) => {
+  const globalHandler = (
+    data: Connection.ServerCommands['AOP'] | Connection.ServerCommands['DOP']
+  ) => {
     for (const key in state.joinedMap) {
       const channel = state.joinedMap[key]!;
       const member = channel.members[data.character];
@@ -281,7 +308,13 @@ export default function (this: void, connection: Connection, characters: Charact
   connection.onMessage('AOP', globalHandler);
   connection.onMessage('DOP', globalHandler);
   connection.onMessage('RTB', data => {
-    if (data.type !== 'trackadd' && data.type !== 'trackrem' && data.type !== 'friendadd' && data.type !== 'friendremove') return;
+    if (
+      data.type !== 'trackadd' &&
+      data.type !== 'trackrem' &&
+      data.type !== 'friendadd' &&
+      data.type !== 'friendremove'
+    )
+      return;
     for (const key in state.joinedMap) {
       const channel = state.joinedMap[key]!;
       const member = channel.members[data.name];

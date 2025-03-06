@@ -76,13 +76,20 @@ require('electron-packager')({
           fs.unlinkSync(path.join(distFinal, setupName));
         }
 
-        const nupkgName = path.join(distFinal, `fchat-${pkg.version}-full.nupkg`);
-        const deltaName = path.join(distFinal, `fchat-${pkg.version}-delta.nupkg`);
+        const nupkgName = path.join(
+          distFinal,
+          `fchat-${pkg.version}-full.nupkg`
+        );
+        const deltaName = path.join(
+          distFinal,
+          `fchat-${pkg.version}-delta.nupkg`
+        );
 
         if (fs.existsSync(nupkgName)) fs.unlinkSync(nupkgName);
         if (fs.existsSync(deltaName)) fs.unlinkSync(deltaName);
 
-        if (process.argv.length <= 3) console.warn('Warning: Creating unsigned installer');
+        if (process.argv.length <= 3)
+          console.warn('Warning: Creating unsigned installer');
 
         try {
           await require('electron-winstaller').createWindowsInstaller({
@@ -117,7 +124,8 @@ require('electron-packager')({
           const target = path.join(distDir, `F-Chat Horizon ${arch.name}.dmg`);
           if (fs.existsSync(target)) fs.unlinkSync(target);
           const appPath = path.join(arch.path, 'F-Chat.app');
-          if (process.argv.length <= 2) console.warn('Warning: Creating unsigned DMG');
+          if (process.argv.length <= 2)
+            console.warn('Warning: Creating unsigned DMG');
           require('appdmg')({
             basepath: arch.path,
             target,
@@ -140,13 +148,24 @@ require('electron-packager')({
           const zipName = `F-Chat_Horizon_${arch.name}_${pkg.version}.zip`;
           const zipPath = path.join(distDir, zipName);
           if (fs.existsSync(zipPath)) fs.unlinkSync(zipPath);
-          const child = child_process.spawn('zip', ['-r', '-y', '-9', zipPath, 'F-Chat.app'], { cwd: arch.path });
+          const child = child_process.spawn(
+            'zip',
+            ['-r', '-y', '-9', zipPath, 'F-Chat.app'],
+            { cwd: arch.path }
+          );
           child.stdout.on('data', () => {});
           child.stderr.on('data', data => console.error(data.toString()));
           fs.writeFileSync(
             path.join(distDir, 'updates.json'),
             JSON.stringify({
-              releases: [{ version: pkg.version, updateTo: { url: 'https://client.f-list.net/darwin/' + zipName } }],
+              releases: [
+                {
+                  version: pkg.version,
+                  updateTo: {
+                    url: 'https://client.f-list.net/darwin/' + zipName
+                  }
+                }
+              ],
               currentRelease: pkg.version
             })
           );
@@ -166,7 +185,11 @@ require('electron-packager')({
         fs.writeFileSync(appImagePath, res.data);
         fs.chmodSync(appImagePath, 0o755);
 
-        const result = child_process.spawnSync(appImagePath, ['--appimage-extract'], { cwd: appImageBase });
+        const result = child_process.spawnSync(
+          appImagePath,
+          ['--appimage-extract'],
+          { cwd: appImageBase }
+        );
 
         if (result.status !== 0) {
           console.log('Run failed', 'APPIMAGE EXTRACT', {
@@ -193,8 +216,14 @@ require('electron-packager')({
         const appArchLong = appArch === 'x64' ? 'x86_64' : 'aarch64';
         const buildPath = path.join(__dirname, 'build');
 
-        fs.renameSync(path.join(appPath, 'F-Chat'), path.join(appPath, 'AppRun'));
-        fs.copyFileSync(path.join(buildPath, 'icon.png'), path.join(appPath, 'icon.png'));
+        fs.renameSync(
+          path.join(appPath, 'F-Chat'),
+          path.join(appPath, 'AppRun')
+        );
+        fs.copyFileSync(
+          path.join(buildPath, 'icon.png'),
+          path.join(appPath, 'icon.png')
+        );
 
         const libDir = path.join(appPath, 'usr', 'lib'),
           libSource = path.join(buildPath, 'linux-libs', appArchLong);
@@ -205,7 +234,10 @@ require('electron-packager')({
           fs.copyFileSync(path.join(libSource, file), path.join(libDir, file));
         }
 
-        fs.symlinkSync(path.join(appPath, 'icon.png'), path.join(appPath, '.DirIcon'));
+        fs.symlinkSync(
+          path.join(appPath, 'icon.png'),
+          path.join(appPath, '.DirIcon')
+        );
         fs.writeFileSync(
           path.join(appPath, 'fchat.desktop'),
           '[Desktop Entry]\nName=F-Chat\nExec=AppRun\nIcon=icon\nType=Application\nCategories=GTK;GNOME;Utility;'
@@ -225,13 +257,20 @@ require('electron-packager')({
         }
 
         if (process.argv.length > 3) {
-          args.push('--sign-args', `--no-tty  --pinentry-mode loopback --yes --passphrase=${process.argv[3]}`);
+          args.push(
+            '--sign-args',
+            `--no-tty  --pinentry-mode loopback --yes --passphrase=${process.argv[3]}`
+          );
         }
 
-        const appRunResult = child_process.spawnSync(path.join(appImageBase, 'squashfs-root', 'AppRun'), args, {
-          cwd: appImageBase,
-          env: { ARCH: appArchLong }
-        });
+        const appRunResult = child_process.spawnSync(
+          path.join(appImageBase, 'squashfs-root', 'AppRun'),
+          args,
+          {
+            cwd: appImageBase,
+            env: { ARCH: appArchLong }
+          }
+        );
 
         if (appRunResult.status !== 0) {
           console.log('Run failed', 'APPRUN', appArch, {

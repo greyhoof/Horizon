@@ -2,21 +2,43 @@
   <div class="d-flex w-100 my-2 justify-content-between">
     <div>
       <slot name="previous" v-if="!routed">
-        <a class="btn btn-secondary" :class="{ disabled: !prev }" role="button" @click.prevent="previousPage()">
+        <a
+          class="btn btn-secondary"
+          :class="{ disabled: !prev }"
+          role="button"
+          @click.prevent="previousPage()"
+        >
           <span aria-hidden="true">&larr;</span> {{ prevLabel }}
         </a>
       </slot>
-      <router-link v-else :to="prevRoute" class="btn btn-secondary" :class="{ disabled: !prev }" role="button">
+      <router-link
+        v-else
+        :to="prevRoute"
+        class="btn btn-secondary"
+        :class="{ disabled: !prev }"
+        role="button"
+      >
         <span aria-hidden="true">&larr;</span> {{ prevLabel }}
       </router-link>
     </div>
     <div>
       <slot name="next" v-if="!routed">
-        <a class="btn btn-secondary" :class="{ disabled: !next }" role="button" @click.prevent="nextPage()">
+        <a
+          class="btn btn-secondary"
+          :class="{ disabled: !next }"
+          role="button"
+          @click.prevent="nextPage()"
+        >
           {{ nextLabel }} <span aria-hidden="true">&rarr;</span>
         </a>
       </slot>
-      <router-link v-else :to="nextRoute" class="btn btn-secondary" :class="{ disabled: !next }" role="button">
+      <router-link
+        v-else
+        :to="nextRoute"
+        class="btn btn-secondary"
+        :class="{ disabled: !next }"
+        role="button"
+      >
         {{ nextLabel }} <span aria-hidden="true">&rarr;</span>
       </router-link>
     </div>
@@ -66,7 +88,10 @@
     }
 
     get prevRoute(): RouteParams {
-      if (this.route.params !== undefined && this.route.params[this.paramName] !== undefined) {
+      if (
+        this.route.params !== undefined &&
+        this.route.params[this.paramName] !== undefined
+      ) {
         const newPage = this.route.params[this.paramName]! - 1;
         const clone = cloneDeep(this.route) as RouteParams;
         clone.params![this.paramName] = newPage;
@@ -76,7 +101,10 @@
     }
 
     get nextRoute(): RouteParams {
-      if (this.route.params !== undefined && this.route.params[this.paramName] !== undefined) {
+      if (
+        this.route.params !== undefined &&
+        this.route.params[this.paramName] !== undefined
+      ) {
         const newPage = this.route.params[this.paramName]! + 1;
         const clone = cloneDeep(this.route) as RouteParams;
         clone.params![this.paramName] = newPage;

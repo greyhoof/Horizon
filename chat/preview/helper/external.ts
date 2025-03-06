@@ -106,7 +106,13 @@ export class ExternalImagePreviewHelper extends ImagePreviewHelper {
       void this.urlMutator
         .resolve(url)
         .then(async (finalUrl: string) => {
-          if (this.debug) console.log('ImagePreview: must load', finalUrl, this.url, webview.getURL());
+          if (this.debug)
+            console.log(
+              'ImagePreview: must load',
+              finalUrl,
+              this.url,
+              webview.getURL()
+            );
 
           webview.stop();
 
@@ -129,7 +135,10 @@ export class ExternalImagePreviewHelper extends ImagePreviewHelper {
       return false;
     }
 
-    return ImagePreviewHelper.HTTP_TESTER.test(url) && !(domainName === 'f-list.net' || domainName === 'static.f-list.net');
+    return (
+      ImagePreviewHelper.HTTP_TESTER.test(url) &&
+      !(domainName === 'f-list.net' || domainName === 'static.f-list.net')
+    );
   }
 
   determineScalingRatio(): Record<string, any> {
@@ -167,6 +176,8 @@ export class ExternalImagePreviewHelper extends ImagePreviewHelper {
   }
 
   renderStyle(): Record<string, any> {
-    return this.isVisible() ? _.merge({ display: 'flex' }, this.determineScalingRatio()) : { display: 'none' };
+    return this.isVisible()
+      ? _.merge({ display: 'flex' }, this.determineScalingRatio())
+      : { display: 'none' };
   }
 }

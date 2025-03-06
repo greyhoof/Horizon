@@ -1,5 +1,11 @@
 <template>
-  <modal :action="l('settings.action')" @submit="submit" @open="load()" id="settings" dialogClass="w-100">
+  <modal
+    :action="l('settings.action')"
+    @submit="submit"
+    @open="load()"
+    id="settings"
+    dialogClass="w-100"
+  >
     <tabs
       style="flex-shrink: 0; margin-bottom: 10px"
       v-model="selectedTab"
@@ -14,12 +20,22 @@
     ></tabs>
     <div v-show="selectedTab === '0'">
       <div class="form-group">
-        <label class="control-label" for="disallowedTags">{{ l('settings.disallowedTags') }}</label>
-        <input id="disallowedTags" class="form-control" v-model="disallowedTags" />
+        <label class="control-label" for="disallowedTags">{{
+          l('settings.disallowedTags')
+        }}</label>
+        <input
+          id="disallowedTags"
+          class="form-control"
+          v-model="disallowedTags"
+        />
       </div>
       <div class="form-group">
         <label class="control-label" for="clickOpensMessage">
-          <input type="checkbox" id="clickOpensMessage" v-model="clickOpensMessage" />
+          <input
+            type="checkbox"
+            id="clickOpensMessage"
+            v-model="clickOpensMessage"
+          />
           {{ l('settings.clickOpensMessage') }}
         </label>
       </div>
@@ -48,12 +64,25 @@
         </label>
       </div>
       <div class="form-group">
-        <label class="control-label" for="idleTimer">{{ l('settings.idleTimer') }}</label>
-        <input id="idleTimer" class="form-control" type="number" v-model="idleTimer" min="0" max="1440" />
+        <label class="control-label" for="idleTimer">{{
+          l('settings.idleTimer')
+        }}</label>
+        <input
+          id="idleTimer"
+          class="form-control"
+          type="number"
+          v-model="idleTimer"
+          min="0"
+          max="1440"
+        />
       </div>
       <div class="form-group">
         <label class="control-label" for="messageSeparators">
-          <input type="checkbox" id="messageSeparators" v-model="messageSeparators" />
+          <input
+            type="checkbox"
+            id="messageSeparators"
+            v-model="messageSeparators"
+          />
           {{ l('settings.messageSeparators') }}
         </label>
       </div>
@@ -76,8 +105,17 @@
         </label>
       </div>
       <div class="form-group">
-        <label class="control-label" for="fontSize">{{ l('settings.fontSize') }}</label>
-        <input id="fontSize" type="number" min="10" max="24" class="form-control" v-model="fontSize" />
+        <label class="control-label" for="fontSize">{{
+          l('settings.fontSize')
+        }}</label>
+        <input
+          id="fontSize"
+          type="number"
+          min="10"
+          max="24"
+          class="form-control"
+          v-model="fontSize"
+        />
       </div>
     </div>
     <div v-show="selectedTab === '1'">
@@ -89,7 +127,12 @@
       </div>
       <div class="form-group">
         <label class="control-label" for="alwaysNotify">
-          <input type="checkbox" id="alwaysNotify" v-model="alwaysNotify" :disabled="!playSound" />
+          <input
+            type="checkbox"
+            id="alwaysNotify"
+            v-model="alwaysNotify"
+            :disabled="!playSound"
+          />
           {{ l('settings.alwaysNotify') }}
         </label>
       </div>
@@ -106,8 +149,14 @@
         </label>
       </div>
       <div class="form-group">
-        <label class="control-label" for="highlightWords">{{ l('settings.highlightWords') }}</label>
-        <input id="highlightWords" class="form-control" v-model="highlightWords" />
+        <label class="control-label" for="highlightWords">{{
+          l('settings.highlightWords')
+        }}</label>
+        <input
+          id="highlightWords"
+          class="form-control"
+          v-model="highlightWords"
+        />
       </div>
       <div class="form-group">
         <label class="control-label" for="eventMessages">
@@ -134,20 +183,29 @@
       <div class="form-group">
         <label class="control-label" for="risingAdScore">
           <input type="checkbox" id="risingAdScore" v-model="risingAdScore" />
-          Colorize ads, profiles, and names of compatible and incompatible characters
+          Colorize ads, profiles, and names of compatible and incompatible
+          characters
         </label>
       </div>
 
       <div class="form-group">
         <label class="control-label" for="risingComparisonInUserMenu">
-          <input type="checkbox" id="risingComparisonInUserMenu" v-model="risingComparisonInUserMenu" />
+          <input
+            type="checkbox"
+            id="risingComparisonInUserMenu"
+            v-model="risingComparisonInUserMenu"
+          />
           Show quick match results in the right click character menu
         </label>
       </div>
 
       <div class="form-group">
         <label class="control-label" for="risingComparisonInSearch">
-          <input type="checkbox" id="risingComparisonInSearch" v-model="risingComparisonInSearch" />
+          <input
+            type="checkbox"
+            id="risingComparisonInSearch"
+            v-model="risingComparisonInSearch"
+          />
           Show quick match results in the search results
         </label>
       </div>
@@ -163,14 +221,22 @@
 
       <div class="form-group">
         <label class="control-label" for="risingLinkPreview">
-          <input type="checkbox" id="risingLinkPreview" v-model="risingLinkPreview" />
+          <input
+            type="checkbox"
+            id="risingLinkPreview"
+            v-model="risingLinkPreview"
+          />
           Show a link/image preview when the mouse hovers over a link
         </label>
       </div>
 
       <div class="form-group">
         <label class="control-label" for="risingCharacterPreview">
-          <input type="checkbox" id="risingCharacterPreview" v-model="risingCharacterPreview" />
+          <input
+            type="checkbox"
+            id="risingCharacterPreview"
+            v-model="risingCharacterPreview"
+          />
           Show a character preview when the mouse hovers over a character name
         </label>
       </div>
@@ -179,14 +245,22 @@
 
       <div class="form-group">
         <label class="control-label" for="risingAutoCompareKinks">
-          <input type="checkbox" id="risingAutoCompareKinks" v-model="risingAutoCompareKinks" />
+          <input
+            type="checkbox"
+            id="risingAutoCompareKinks"
+            v-model="risingAutoCompareKinks"
+          />
           Automatically compare kinks when viewing a character profile
         </label>
       </div>
 
       <div class="form-group">
         <label class="control-label" for="risingAutoExpandCustomKinks">
-          <input type="checkbox" id="risingAutoExpandCustomKinks" v-model="risingAutoExpandCustomKinks" />
+          <input
+            type="checkbox"
+            id="risingAutoExpandCustomKinks"
+            v-model="risingAutoExpandCustomKinks"
+          />
           Automatically expand custom kinks
         </label>
       </div>
@@ -195,42 +269,66 @@
 
       <div class="form-group">
         <label class="control-label" for="risingShowUnreadOfflineCount">
-          <input type="checkbox" id="risingShowUnreadOfflineCount" v-model="risingShowUnreadOfflineCount" />
+          <input
+            type="checkbox"
+            id="risingShowUnreadOfflineCount"
+            v-model="risingShowUnreadOfflineCount"
+          />
           Show unread note and offline message counts at the bottom right corner
         </label>
       </div>
 
       <div class="form-group">
         <label class="control-label" for="risingColorblindMode">
-          <input type="checkbox" id="risingColorblindMode" v-model="risingColorblindMode" />
+          <input
+            type="checkbox"
+            id="risingColorblindMode"
+            v-model="risingColorblindMode"
+          />
           Colorblind mode
         </label>
       </div>
 
       <div class="form-group">
         <label class="control-label" for="risingShowPortraitNearInput">
-          <input type="checkbox" id="risingShowPortraitNearInput" v-model="risingShowPortraitNearInput" />
+          <input
+            type="checkbox"
+            id="risingShowPortraitNearInput"
+            v-model="risingShowPortraitNearInput"
+          />
           Show character portrait by text input
         </label>
       </div>
 
       <div class="form-group">
         <label class="control-label" for="risingShowPortraitInMessage">
-          <input type="checkbox" id="risingShowPortraitInMessage" v-model="risingShowPortraitInMessage" />
+          <input
+            type="checkbox"
+            id="risingShowPortraitInMessage"
+            v-model="risingShowPortraitInMessage"
+          />
           Show character portrait with each message
         </label>
       </div>
 
       <div class="form-group">
         <label class="control-label" for="risingShowHighQualityPortraits">
-          <input type="checkbox" id="risingShowHighQualityPortraits" v-model="risingShowHighQualityPortraits" />
+          <input
+            type="checkbox"
+            id="risingShowHighQualityPortraits"
+            v-model="risingShowHighQualityPortraits"
+          />
           Show high-quality portraits
         </label>
       </div>
 
       <div class="form-group">
         <label class="control-label" for="horizonShowCustomCharacterColors">
-          <input type="checkbox" id="horizonShowCustomCharacterColors" v-model="horizonShowCustomCharacterColors" />
+          <input
+            type="checkbox"
+            id="horizonShowCustomCharacterColors"
+            v-model="horizonShowCustomCharacterColors"
+          />
           Show custom character name colors
         </label>
       </div>
@@ -238,10 +336,17 @@
       <div class="form-group">
         <label class="control-label" for="risingCharacterTheme">
           Override UI theme (for this character only)
-          <select id="risingCharacterTheme" class="form-control" v-model="risingCharacterTheme" style="flex: 1; margin-right: 10px">
+          <select
+            id="risingCharacterTheme"
+            class="form-control"
+            v-model="risingCharacterTheme"
+            style="flex: 1; margin-right: 10px"
+          >
             <option value="undefined">(Use default theme)</option>
             <option disabled>---</option>
-            <option v-for="theme in risingAvailableThemes" :value="theme">{{ theme }}</option>
+            <option v-for="theme in risingAvailableThemes" :value="theme">
+              {{ theme }}
+            </option>
           </select>
         </label>
       </div>
@@ -251,65 +356,116 @@
       <div class="warning">
         <h5>Danger Zone!</h5>
         <div>
-          By activating filtering, you may no longer be able to see or receive all messages from F-Chat. Filters do not apply to friends or
+          By activating filtering, you may no longer be able to see or receive
+          all messages from F-Chat. Filters do not apply to friends or
           bookmarked characters.
         </div>
 
-        <div>Beta version. Some of these features and behaviors may be removed or significantly changed in the future.</div>
+        <div>
+          Beta version. Some of these features and behaviors may be removed or
+          significantly changed in the future.
+        </div>
       </div>
 
       <h5>Visibility</h5>
 
       <div class="form-group filters">
         <label class="control-label" for="risingFilter.hideAds">
-          <input type="checkbox" id="risingFilter.hideAds" v-model="risingFilter.hideAds" />
+          <input
+            type="checkbox"
+            id="risingFilter.hideAds"
+            v-model="risingFilter.hideAds"
+          />
           Hide <b>ads</b> from matching characters
         </label>
 
         <label class="control-label" for="risingFilter.hideSearchResults">
-          <input type="checkbox" id="risingFilter.hideSearchResults" v-model="risingFilter.hideSearchResults" />
+          <input
+            type="checkbox"
+            id="risingFilter.hideSearchResults"
+            v-model="risingFilter.hideSearchResults"
+          />
           Hide matching characters from <b>search results</b>
         </label>
 
         <label class="control-label" for="risingFilter.hideChannelMembers">
-          <input type="checkbox" id="risingFilter.hideChannelMembers" v-model="risingFilter.hideChannelMembers" />
+          <input
+            type="checkbox"
+            id="risingFilter.hideChannelMembers"
+            v-model="risingFilter.hideChannelMembers"
+          />
           Hide matching characters from <b>channel members lists</b>
         </label>
 
-        <label class="control-label" for="risingFilter.hidePublicChannelMessages">
-          <input type="checkbox" id="risingFilter.hidePublicChannelMessages" v-model="risingFilter.hidePublicChannelMessages" />
+        <label
+          class="control-label"
+          for="risingFilter.hidePublicChannelMessages"
+        >
+          <input
+            type="checkbox"
+            id="risingFilter.hidePublicChannelMessages"
+            v-model="risingFilter.hidePublicChannelMessages"
+          />
           Hide <b>public channel messages</b> from matching characters
         </label>
 
-        <label class="control-label" for="risingFilter.hidePrivateChannelMessages">
-          <input type="checkbox" id="risingFilter.hidePrivateChannelMessages" v-model="risingFilter.hidePrivateChannelMessages" />
+        <label
+          class="control-label"
+          for="risingFilter.hidePrivateChannelMessages"
+        >
+          <input
+            type="checkbox"
+            id="risingFilter.hidePrivateChannelMessages"
+            v-model="risingFilter.hidePrivateChannelMessages"
+          />
           Hide <b>private channel messages</b> from matching characters
         </label>
 
         <label class="control-label" for="risingFilter.hidePrivateMessages">
-          <input type="checkbox" id="risingFilter.hidePrivateMessages" v-model="risingFilter.hidePrivateMessages" />
+          <input
+            type="checkbox"
+            id="risingFilter.hidePrivateMessages"
+            v-model="risingFilter.hidePrivateMessages"
+          />
           Hide <b>private messages</b> (PMs) from matching characters
         </label>
 
         <label class="control-label" for="risingFilter.showFilterIcon">
-          <input type="checkbox" id="risingFilter.showFilterIcon" v-model="risingFilter.showFilterIcon" />
+          <input
+            type="checkbox"
+            id="risingFilter.showFilterIcon"
+            v-model="risingFilter.showFilterIcon"
+          />
           Show <b>filter icon</b> on matching characters
         </label>
       </div>
 
       <div class="form-group filters">
         <label class="control-label" for="risingFilter.autoReply">
-          <input type="checkbox" id="risingFilter.autoReply" v-model="risingFilter.autoReply" />
-          Send an automatic 'no thank you' response to matching characters if they message you
+          <input
+            type="checkbox"
+            id="risingFilter.autoReply"
+            v-model="risingFilter.autoReply"
+          />
+          Send an automatic 'no thank you' response to matching characters if
+          they message you
         </label>
 
         <label class="control-label" for="risingFilter.penalizeMatches">
-          <input type="checkbox" id="risingFilter.penalizeMatches" v-model="risingFilter.penalizeMatches" />
+          <input
+            type="checkbox"
+            id="risingFilter.penalizeMatches"
+            v-model="risingFilter.penalizeMatches"
+          />
           Penalize <b>match scores</b> for matching characters
         </label>
 
         <label class="control-label" for="risingFilter.rewardNonMatches">
-          <input type="checkbox" id="risingFilter.rewardNonMatches" v-model="risingFilter.rewardNonMatches" />
+          <input
+            type="checkbox"
+            id="risingFilter.rewardNonMatches"
+            v-model="risingFilter.rewardNonMatches"
+          />
           Increase <b>match scores</b> for non-matching characters
         </label>
       </div>
@@ -318,16 +474,36 @@
       <div class="form-group">Leave empty for no limit.</div>
 
       <div class="form-group">
-        <label class="control-label" for="risingFilter.minAge">Characters younger than (years)</label>
-        <input id="risingFilter.minAge" type="number" class="form-control" v-model="risingFilter.minAge" placeholder="Enter age" />
+        <label class="control-label" for="risingFilter.minAge"
+          >Characters younger than (years)</label
+        >
+        <input
+          id="risingFilter.minAge"
+          type="number"
+          class="form-control"
+          v-model="risingFilter.minAge"
+          placeholder="Enter age"
+        />
 
-        <label class="control-label" for="risingFilter.maxAge">Characters older than (years)</label>
-        <input id="risingFilter.maxAge" type="number" class="form-control" v-model="risingFilter.maxAge" placeholder="Enter age" />
+        <label class="control-label" for="risingFilter.maxAge"
+          >Characters older than (years)</label
+        >
+        <input
+          id="risingFilter.maxAge"
+          type="number"
+          class="form-control"
+          v-model="risingFilter.maxAge"
+          placeholder="Enter age"
+        />
       </div>
 
       <h5>Type Match</h5>
       <div class="form-group filters">
-        <label class="control-label" :for="'risingFilter.smartFilters.' + key" v-for="(value, key) in smartFilterTypes">
+        <label
+          class="control-label"
+          :for="'risingFilter.smartFilters.' + key"
+          v-for="(value, key) in smartFilterTypes"
+        >
           <input
             type="checkbox"
             :id="'risingFilter.smartFilters.' + key"
@@ -340,30 +516,53 @@
 
       <h5>Exception List</h5>
       <div class="form-group">
-        Filters are not applied to these character names. Separate names with a linefeed. Friends and bookmarked characters bypass filtering
+        Filters are not applied to these character names. Separate names with a
+        linefeed. Friends and bookmarked characters bypass filtering
         automatically.
       </div>
 
       <div class="form-group">
-        <textarea class="form-control" :value="getExceptionList()" @change="v => setExceptionList(v)" placeholder="Enter names"></textarea>
+        <textarea
+          class="form-control"
+          :value="getExceptionList()"
+          @change="v => setExceptionList(v)"
+          placeholder="Enter names"
+        ></textarea>
       </div>
     </div>
 
     <div v-show="selectedTab === '4'">
       <template v-if="hidden.length">
         <div v-for="(user, i) in hidden">
-          <span class="fa fa-times" style="cursor: pointer" @click.stop="hidden.splice(i, 1)"></span>
+          <span
+            class="fa fa-times"
+            style="cursor: pointer"
+            @click.stop="hidden.splice(i, 1)"
+          ></span>
           {{ user }}
         </div>
       </template>
       <template v-else>{{ l('settings.hideAds.empty') }}</template>
     </div>
     <div v-show="selectedTab === '5'" style="display: flex; padding-top: 10px">
-      <select id="import" class="form-control" v-model="importCharacter" style="flex: 1; margin-right: 10px">
+      <select
+        id="import"
+        class="form-control"
+        v-model="importCharacter"
+        style="flex: 1; margin-right: 10px"
+      >
         <option value="">{{ l('settings.import.selectCharacter') }}</option>
-        <option v-for="character in availableImports" :value="character">{{ character }}</option>
+        <option v-for="character in availableImports" :value="character">
+          {{ character }}
+        </option>
       </select>
-      <button class="btn btn-secondary" @click="doImport" :disabled="!importCharacter">{{ l('settings.import') }}</button>
+      <button
+        class="btn btn-secondary"
+        @click="doImport"
+        :disabled="!importCharacter"
+      >
+        {{ l('settings.import') }}
+      </button>
     </div>
   </modal>
 </template>
@@ -378,7 +577,10 @@
   import core from './core';
   import { Settings as SettingsInterface } from './interfaces';
   import l from './localize';
-  import { SmartFilterSettings, SmartFilterSelection } from '../learn/filter/types';
+  import {
+    SmartFilterSettings,
+    SmartFilterSelection
+  } from '../learn/filter/types';
   import { smartFilterTypes as smartFilterTypesOrigin } from '../learn/filter/types';
   import _ from 'lodash';
   import { matchesSmartFilters } from '../learn/filter/smart-filter';
@@ -428,7 +630,7 @@
     risingShowPortraitNearInput!: boolean;
     risingShowPortraitInMessage!: boolean;
     risingShowHighQualityPortraits!: boolean;
-    horizonShowCustomCharacterColors !: boolean;
+    horizonShowCustomCharacterColors!: boolean;
 
     risingFilter!: SmartFilterSettings = {} as any;
 
@@ -459,7 +661,9 @@
       this.enterSend = settings.enterSend;
       this.colorBookmarks = settings.colorBookmarks;
       this.bbCodeBar = settings.bbCodeBar;
-      this.availableImports = (await core.settingsStore.getAvailableCharacters()).filter(x => x !== core.connection.character);
+      this.availableImports = (
+        await core.settingsStore.getAvailableCharacters()
+      ).filter(x => x !== core.connection.character);
 
       // settings.rising
 
@@ -476,8 +680,10 @@
       this.risingColorblindMode = settings.risingColorblindMode;
       this.risingShowPortraitNearInput = settings.risingShowPortraitNearInput;
       this.risingShowPortraitInMessage = settings.risingShowPortraitInMessage;
-      this.risingShowHighQualityPortraits = settings.risingShowHighQualityPortraits;
-      this.horizonShowCustomCharacterColors = settings.horizonShowCustomCharacterColors
+      this.risingShowHighQualityPortraits =
+        settings.risingShowHighQualityPortraits;
+      this.horizonShowCustomCharacterColors =
+        settings.horizonShowCustomCharacterColors;
 
       this.risingFilter = settings.risingFilter;
 
@@ -489,9 +695,21 @@
     }
 
     async doImport(): Promise<void> {
-      if (!confirm(l('settings.import.confirm', this.importCharacter, core.connection.character))) return;
+      if (
+        !confirm(
+          l(
+            'settings.import.confirm',
+            this.importCharacter,
+            core.connection.character
+          )
+        )
+      )
+        return;
       const importKey = async (key: keyof SettingsInterface.Keys) => {
-        const settings = await core.settingsStore.get(key, this.importCharacter);
+        const settings = await core.settingsStore.get(
+          key,
+          this.importCharacter
+        );
         if (settings !== undefined) await core.settingsStore.set(key, settings);
       };
       await importKey('settings');
@@ -506,7 +724,9 @@
     }
 
     async submit(): Promise<void> {
-      const oldRisingFilter = JSON.parse(JSON.stringify(core.state.settings.risingFilter));
+      const oldRisingFilter = JSON.parse(
+        JSON.stringify(core.state.settings.risingFilter)
+      );
 
       const idleTimer = parseInt(this.idleTimer, 10);
       const fontSize = parseFloat(this.fontSize);
@@ -529,14 +749,26 @@
           .filter(x => x.length),
         showAvatars: this.showAvatars,
         animatedEicons: this.animatedEicons,
-        idleTimer: isNaN(idleTimer) ? 0 : idleTimer < 0 ? 0 : idleTimer > 1440 ? 1440 : idleTimer,
+        idleTimer: isNaN(idleTimer)
+          ? 0
+          : idleTimer < 0
+            ? 0
+            : idleTimer > 1440
+              ? 1440
+              : idleTimer,
         messageSeparators: this.messageSeparators,
         eventMessages: this.eventMessages,
         joinMessages: this.joinMessages,
         alwaysNotify: this.alwaysNotify,
         logMessages: this.logMessages,
         logAds: this.logAds,
-        fontSize: isNaN(fontSize) ? 14 : fontSize < 10 ? 10 : fontSize > 24 ? 24 : fontSize,
+        fontSize: isNaN(fontSize)
+          ? 14
+          : fontSize < 10
+            ? 10
+            : fontSize > 24
+              ? 24
+              : fontSize,
         showNeedsReply: this.showNeedsReply,
         enterSend: this.enterSend,
         colorBookmarks: this.colorBookmarks,
@@ -559,16 +791,27 @@
         risingColorblindMode: this.risingColorblindMode,
         risingFilter: {
           ...this.risingFilter,
-          minAge: minAge !== null && maxAge !== null ? Math.min(minAge, maxAge) : minAge,
-          maxAge: minAge !== null && maxAge !== null ? Math.max(minAge, maxAge) : maxAge
+          minAge:
+            minAge !== null && maxAge !== null
+              ? Math.min(minAge, maxAge)
+              : minAge,
+          maxAge:
+            minAge !== null && maxAge !== null
+              ? Math.max(minAge, maxAge)
+              : maxAge
         },
 
-        risingCharacterTheme: this.risingCharacterTheme != 'undefined' ? this.risingCharacterTheme : undefined
+        risingCharacterTheme:
+          this.risingCharacterTheme != 'undefined'
+            ? this.risingCharacterTheme
+            : undefined
       };
 
       console.log('SETTINGS', minAge, maxAge, core.state.settings);
 
-      const newRisingFilter = JSON.parse(JSON.stringify(core.state.settings.risingFilter));
+      const newRisingFilter = JSON.parse(
+        JSON.stringify(core.state.settings.risingFilter)
+      );
 
       if (!_.isEqual(oldRisingFilter, newRisingFilter)) {
         this.rebuildFilters();
@@ -583,10 +826,17 @@
       core.cache.profileCache.onEachInMemory(c => {
         const oldFiltered = c.match.isFiltered;
 
-        c.match.isFiltered = matchesSmartFilters(c.character.character, core.state.settings.risingFilter);
+        c.match.isFiltered = matchesSmartFilters(
+          c.character.character,
+          core.state.settings.risingFilter
+        );
 
         if (oldFiltered !== c.match.isFiltered) {
-          core.cache.populateAllConversationsWithScore(c.character.character.name, c.match.matchScore, c.match.isFiltered);
+          core.cache.populateAllConversationsWithScore(
+            c.character.character.name,
+            c.match.matchScore,
+            c.match.isFiltered
+          );
         }
       });
     }
@@ -606,7 +856,9 @@
     }
 
     setExceptionList(v: any): void {
-      this.risingFilter.exceptionNames = _.map(_.split(v.target.value), v => _.trim(v));
+      this.risingFilter.exceptionNames = _.map(_.split(v.target.value), v =>
+        _.trim(v)
+      );
     }
 
     getSmartFilter(key: keyof SmartFilterSelection): boolean {

@@ -34,7 +34,8 @@ export let defaultButtons: ReadonlyArray<EditorButton> = [
     key: Keys.KeyI
   },
   {
-    title: 'Underline (Ctrl+U)\n\nMakes text appear with an underline beneath it.',
+    title:
+      'Underline (Ctrl+U)\n\nMakes text appear with an underline beneath it.',
     tag: 'u',
     icon: 'fa-underline',
     key: Keys.KeyU
@@ -55,19 +56,22 @@ export let defaultButtons: ReadonlyArray<EditorButton> = [
     key: Keys.KeyD
   },
   {
-    title: 'Superscript (Ctrl+↑)\n\nLifts text above the text baseline. Makes text slightly smaller. Cannot be nested.',
+    title:
+      'Superscript (Ctrl+↑)\n\nLifts text above the text baseline. Makes text slightly smaller. Cannot be nested.',
     tag: 'sup',
     icon: 'fa-superscript',
     key: Keys.ArrowUp
   },
   {
-    title: 'Subscript (Ctrl+↓)\n\nPushes text below the text baseline. Makes text slightly smaller. Cannot be nested.',
+    title:
+      'Subscript (Ctrl+↓)\n\nPushes text below the text baseline. Makes text slightly smaller. Cannot be nested.',
     tag: 'sub',
     icon: 'fa-subscript',
     key: Keys.ArrowDown
   },
   {
-    title: 'URL (Ctrl+L)\n\nCreates a clickable link to another page of your choosing.',
+    title:
+      'URL (Ctrl+L)\n\nCreates a clickable link to another page of your choosing.',
     tag: 'url',
     startText: '[url=]',
     icon: 'fa-link',
@@ -80,7 +84,8 @@ export let defaultButtons: ReadonlyArray<EditorButton> = [
     key: Keys.KeyR
   },
   {
-    title: "Icon (Ctrl+O)\n\nShows a character's profile image, linking to their profile.",
+    title:
+      "Icon (Ctrl+O)\n\nShows a character's profile image, linking to their profile.",
     tag: 'icon',
     icon: 'fa-user-circle',
     key: Keys.KeyO

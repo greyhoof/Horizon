@@ -22,19 +22,24 @@ export default class BBCodeParser extends CoreBBCodeParser {
     super();
     this.addTag(
       new BBCodeTextTag('user', (parser, parent, param, content) => {
-        if (param.length > 0) parser.warning('Unexpected parameter on user tag.');
+        if (param.length > 0)
+          parser.warning('Unexpected parameter on user tag.');
         const uregex = /^[a-zA-Z0-9_\-\s]+$/;
         if (!uregex.test(content)) return;
         const el = parser.createElement('span');
         parent.appendChild(el);
-        const view = new UserView({ el, propsData: { character: core.characters.get(content) } });
+        const view = new UserView({
+          el,
+          propsData: { character: core.characters.get(content) }
+        });
         this.cleanup.push(view);
         return el;
       })
     );
     this.addTag(
       new BBCodeTextTag('icon', (parser, parent, param, content) => {
-        if (param.length > 0) parser.warning('Unexpected parameter on icon tag.');
+        if (param.length > 0)
+          parser.warning('Unexpected parameter on icon tag.');
         const uregex = /^[a-zA-Z0-9_\-\s]+$/;
         if (!uregex.test(content)) return;
 
@@ -59,10 +64,14 @@ export default class BBCodeParser extends CoreBBCodeParser {
     );
     this.addTag(
       new BBCodeTextTag('eicon', (parser, parent, param, content) => {
-        if (param.length > 0) parser.warning('Unexpected parameter on eicon tag.');
+        if (param.length > 0)
+          parser.warning('Unexpected parameter on eicon tag.');
         const uregex = /^[a-zA-Z0-9_\-\s]+$/;
         if (!uregex.test(content)) return;
-        const extension = core.connection.isOpen && !core.state.settings.animatedEicons ? 'png' : 'gif';
+        const extension =
+          core.connection.isOpen && !core.state.settings.animatedEicons
+            ? 'png'
+            : 'gif';
         const img = parser.createElement('img');
         img.src = `https://static.f-list.net/images/eicon/${content.toLowerCase()}.${extension}`;
         img.title = img.alt = content;
@@ -77,7 +86,10 @@ export default class BBCodeParser extends CoreBBCodeParser {
         const el = parser.createElement('span');
         parent.appendChild(root);
         root.appendChild(el);
-        const view = new ChannelView({ el, propsData: { id: content, text: param } });
+        const view = new ChannelView({
+          el,
+          propsData: { id: content, text: param }
+        });
         this.cleanup.push(view);
         return root;
       })
@@ -88,7 +100,10 @@ export default class BBCodeParser extends CoreBBCodeParser {
         const el = parser.createElement('span');
         parent.appendChild(root);
         root.appendChild(el);
-        const view = new ChannelView({ el, propsData: { id: content, text: content } });
+        const view = new ChannelView({
+          el,
+          propsData: { id: content, text: content }
+        });
         this.cleanup.push(view);
         return root;
       })
@@ -108,7 +123,14 @@ export default class BBCodeParser extends CoreBBCodeParser {
           return;
         }
 
-        const view = new UrlView({ el: root, propsData: { url: tagData.url, text: tagData.textContent, domain: tagData.domain } });
+        const view = new UrlView({
+          el: root,
+          propsData: {
+            url: tagData.url,
+            text: tagData.textContent,
+            domain: tagData.domain
+          }
+        });
         this.cleanup.push(view);
 
         return root;

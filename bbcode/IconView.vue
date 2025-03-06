@@ -8,7 +8,12 @@
     @click.middle.prevent.stop="toggleStickyness()"
     @click.right.passive="dismiss(true)"
     @click.left.passive="dismiss(true)"
-    ><img :src="getAvatarUrl()" class="character-avatar icon" :title="character" :alt="character" v-once
+    ><img
+      :src="getAvatarUrl()"
+      class="character-avatar icon"
+      :title="character"
+      :alt="character"
+      v-once
   /></a>
 </template>
 
@@ -54,7 +59,10 @@
       //   return;
       // }
 
-      EventBus.$emit('imagepreview-dismiss', { url: this.getCharacterUrl(), force });
+      EventBus.$emit('imagepreview-dismiss', {
+        url: this.getCharacterUrl(),
+        force
+      });
     }
 
     show(): void {
@@ -70,7 +78,9 @@
       //   return;
       // }
 
-      EventBus.$emit('imagepreview-toggle-stickyness', { url: this.getCharacterUrl() });
+      EventBus.$emit('imagepreview-toggle-stickyness', {
+        url: this.getCharacterUrl()
+      });
     }
   }
 </script>

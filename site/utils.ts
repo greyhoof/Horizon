@@ -25,11 +25,20 @@ export function characterURL(name: string): string {
 }
 
 //tslint:disable-next-line:no-any
-export function isJSONError(error: any): error is Error & { response: AxiosResponse<{ [key: string]: object | string | number }> } {
-  return (<AxiosError>error).response !== undefined && typeof (<AxiosError>error).response!.data === 'object';
+export function isJSONError(error: any): error is Error & {
+  response: AxiosResponse<{ [key: string]: object | string | number }>;
+} {
+  return (
+    (<AxiosError>error).response !== undefined &&
+    typeof (<AxiosError>error).response!.data === 'object'
+  );
 }
 
-export function ajaxError(error: any, prefix: string, showFlashMessage: boolean = true): void {
+export function ajaxError(
+  error: any,
+  prefix: string,
+  showFlashMessage: boolean = true
+): void {
   //tslint:disable-line:no-any
   let message: string | undefined;
   if (error instanceof Error) {
@@ -38,7 +47,8 @@ export function ajaxError(error: any, prefix: string, showFlashMessage: boolean 
     if (isJSONError(error)) {
       const data = <{ error?: string | string[] }>error.response.data;
       if (typeof data.error === 'string') message = data.error;
-      else if (typeof data.error === 'object' && data.error.length > 0) message = data.error[0];
+      else if (typeof data.error === 'object' && data.error.length > 0)
+        message = data.error[0];
     }
     if (message === undefined)
       message =

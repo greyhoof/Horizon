@@ -11,7 +11,10 @@ export const enum ParamType {
   Enum
 }
 
-const defaultDelimiters: { [key: number]: string | undefined } = { [ParamType.Character]: ',', [ParamType.String]: '' };
+const defaultDelimiters: { [key: number]: string | undefined } = {
+  [ParamType.Character]: ',',
+  [ParamType.String]: ''
+};
 
 export function isAction(this: void, text: string): boolean {
   return /^\/me\b/i.test(text);
@@ -25,13 +28,20 @@ export function isCommand(this: void, text: string): boolean {
   return text.charAt(0) === '/' && !isAction(text) && !isWarn(text);
 }
 
-export function parse(this: void | never, input: string, context: CommandContext): ((this: Conversation) => void) | string {
+export function parse(
+  this: void | never,
+  input: string,
+  context: CommandContext
+): ((this: Conversation) => void) | string {
   const commandEnd = input.indexOf(' ');
-  const name = input.substring(1, commandEnd !== -1 ? commandEnd : undefined).toLowerCase();
+  const name = input
+    .substring(1, commandEnd !== -1 ? commandEnd : undefined)
+    .toLowerCase();
   const command = commands[name];
   if (command === undefined) return l('commands.unknown');
   const args = `${commandEnd !== -1 ? input.substr(commandEnd + 1) : ''}`;
-  if (command.context !== undefined && (command.context & context) === 0) return l('commands.badContext');
+  if (command.context !== undefined && (command.context & context) === 0)
+    return l('commands.badContext');
 
   let index = 0;
   const values: (string | number)[] = [];
@@ -44,10 +54,17 @@ export function parse(this: void | never, input: string, context: CommandContext
         if (param.optional !== undefined) continue;
         return l('commands.tooFewParams');
       }
-      let delimiter = param.delimiter !== undefined ? param.delimiter : defaultDelimiters[param.type];
+      let delimiter =
+        param.delimiter !== undefined
+          ? param.delimiter
+          : defaultDelimiters[param.type];
       if (delimiter === undefined) delimiter = ' ';
-      const endIndex = delimiter.length > 0 ? args.indexOf(delimiter, index) : args.length;
-      const value = args.substring(index, endIndex !== -1 ? endIndex : undefined);
+      const endIndex =
+        delimiter.length > 0 ? args.indexOf(delimiter, index) : args.length;
+      const value = args.substring(
+        index,
+        endIndex !== -1 ? endIndex : undefined
+      );
       if (value.length === 0) {
         if (param.optional !== undefined) continue;
         return l('commands.tooFewParams');
@@ -58,16 +75,24 @@ export function parse(this: void | never, input: string, context: CommandContext
           if (i === command.params.length - 1) values[i] = args.substr(index);
           break;
         case ParamType.Enum:
-          if ((param.options !== undefined ? param.options : []).indexOf(value) === -1)
+          if (
+            (param.options !== undefined ? param.options : []).indexOf(
+              value
+            ) === -1
+          )
             return l('commands.invalidParam', l(`commands.${name}.param${i}`));
           break;
         case ParamType.Number:
           const num = parseInt(value, 10);
-          if (isNaN(num)) return l('commands.invalidParam', l(`commands.${name}.param${i}`));
+          if (isNaN(num))
+            return l('commands.invalidParam', l(`commands.${name}.param${i}`));
           values[i] = num;
           break;
         case ParamType.Character:
-          if (value.charAt(0) === '"' && value.charAt(value.length - 1) === '"') {
+          if (
+            value.charAt(0) === '"' &&
+            value.charAt(value.length - 1) === '"'
+          ) {
             values[i] = value.substring(1, value.length - 1);
             break;
           }
@@ -133,7 +158,8 @@ const commands: { readonly [key: string]: Command | undefined } = {
     context: CommandContext.Private | CommandContext.Channel
   },
   priv: {
-    exec: (_, character: string) => core.conversations.getPrivate(core.characters.get(character)).show(),
+    exec: (_, character: string) =>
+      core.conversations.getPrivate(core.characters.get(character)).show(),
     params: [{ type: ParamType.Character }]
   },
   uptime: {
@@ -143,7 +169,8 @@ const commands: { readonly [key: string]: Command | undefined } = {
     exec: (conv: Conversation) => conv.clear()
   },
   status: {
-    exec: (_, status: Character.Status, statusmsg: string = '') => core.connection.send('STA', { status, statusmsg }),
+    exec: (_, status: Character.Status, statusmsg: string = '') =>
+      core.connection.send('STA', { status, statusmsg }),
     params: [
       { type: ParamType.Enum, options: userStatuses },
       { type: ParamType.String, optional: true }
@@ -152,9 +179,11 @@ const commands: { readonly [key: string]: Command | undefined } = {
   roll: {
     exec: (conv: ChannelConversation | PrivateConversation, dice: string) => {
       if (dice.toLocaleLowerCase() === 'inf') {
-        conv.infoText = 'Inf took many lives during its reign. Thankfully, you have been spared.';
+        conv.infoText =
+          'Inf took many lives during its reign. Thankfully, you have been spared.';
         return;
-      } else if (Conversation.isChannel(conv)) core.connection.send('RLL', { channel: conv.channel.id, dice });
+      } else if (Conversation.isChannel(conv))
+        core.connection.send('RLL', { channel: conv.channel.id, dice });
       else
         core.connection.send('RLL', {
           recipient: conv.character.name,
@@ -216,7 +245,8 @@ const commands: { readonly [key: string]: Command | undefined } = {
     params: [{ type: ParamType.Character }]
   },
   banlist: {
-    exec: (conv: ChannelConversation) => core.connection.send('CBL', { channel: conv.channel.id }),
+    exec: (conv: ChannelConversation) =>
+      core.connection.send('CBL', { channel: conv.channel.id }),
     permission: Permission.RoomOp,
     context: CommandContext.Channel
   },
@@ -250,9 +280,14 @@ const commands: { readonly [key: string]: Command | undefined } = {
     params: [{ type: ParamType.Character }]
   },
   gtimeout: {
-    exec: (_, character: string, time: number, reason: string) => core.connection.send('TMO', { character, time, reason }),
+    exec: (_, character: string, time: number, reason: string) =>
+      core.connection.send('TMO', { character, time, reason }),
     permission: Permission.ChatOp,
-    params: [{ type: ParamType.Character, delimiter: ',' }, { type: ParamType.Number, validator: x => x >= 1 }, { type: ParamType.String }]
+    params: [
+      { type: ParamType.Character, delimiter: ',' },
+      { type: ParamType.Number, validator: x => x >= 1 },
+      { type: ParamType.String }
+    ]
   },
   setowner: {
     exec: (conv: ChannelConversation, character: string) =>
@@ -265,15 +300,21 @@ const commands: { readonly [key: string]: Command | undefined } = {
     params: [{ type: ParamType.Character }]
   },
   ignore: {
-    exec: (_, character: string) => core.connection.send('IGN', { action: 'add', character }),
+    exec: (_, character: string) =>
+      core.connection.send('IGN', { action: 'add', character }),
     params: [{ type: ParamType.Character }]
   },
   unignore: {
-    exec: (_, character: string) => core.connection.send('IGN', { action: 'delete', character }),
+    exec: (_, character: string) =>
+      core.connection.send('IGN', { action: 'delete', character }),
     params: [{ type: ParamType.Character }]
   },
   ignorelist: {
-    exec: (conv: Conversation) => (conv.infoText = l('chat.ignoreList', core.characters.ignoreList.join(', ')))
+    exec: (conv: Conversation) =>
+      (conv.infoText = l(
+        'chat.ignoreList',
+        core.characters.ignoreList.join(', ')
+      ))
   },
   makeroom: {
     exec: (_, channel: string) => core.connection.send('CCR', { channel }),
@@ -310,17 +351,20 @@ const commands: { readonly [key: string]: Command | undefined } = {
     params: [{ type: ParamType.Character }]
   },
   scop: {
-    exec: (_, character: string) => core.connection.send('SCP', { action: 'add', character }),
+    exec: (_, character: string) =>
+      core.connection.send('SCP', { action: 'add', character }),
     permission: Permission.Admin,
     params: [{ type: ParamType.Character }]
   },
   scdeop: {
-    exec: (_, character: string) => core.connection.send('SCP', { action: 'remove', character }),
+    exec: (_, character: string) =>
+      core.connection.send('SCP', { action: 'remove', character }),
     permission: Permission.Admin,
     params: [{ type: ParamType.Character }]
   },
   oplist: {
-    exec: (conv: ChannelConversation) => core.connection.send('COL', { channel: conv.channel.id }),
+    exec: (conv: ChannelConversation) =>
+      core.connection.send('COL', { channel: conv.channel.id }),
     context: CommandContext.Channel
   },
   invite: {
@@ -352,7 +396,8 @@ const commands: { readonly [key: string]: Command | undefined } = {
     context: CommandContext.Channel
   },
   setmode: {
-    exec: (conv: ChannelConversation, mode: 'ads' | 'chat' | 'both') => core.connection.send('RMO', { channel: conv.channel.id, mode }),
+    exec: (conv: ChannelConversation, mode: 'ads' | 'chat' | 'both') =>
+      core.connection.send('RMO', { channel: conv.channel.id, mode }),
     permission: Permission.RoomOwner,
     context: CommandContext.Channel,
     params: [{ type: ParamType.Enum, options: ['ads', 'chat', 'both'] }]
@@ -383,7 +428,8 @@ const commands: { readonly [key: string]: Command | undefined } = {
     context: CommandContext.Channel
   },
   killchannel: {
-    exec: (conv: ChannelConversation) => core.connection.send('KIC', { channel: conv.channel.id }),
+    exec: (conv: ChannelConversation) =>
+      core.connection.send('KIC', { channel: conv.channel.id }),
     permission: Permission.RoomOwner,
     context: CommandContext.Channel
   },
@@ -398,17 +444,23 @@ const commands: { readonly [key: string]: Command | undefined } = {
     params: [{ type: ParamType.String }]
   },
   reloadconfig: {
-    exec: (_, save?: 'save') => core.connection.send('RLD', save !== undefined ? { save } : undefined),
+    exec: (_, save?: 'save') =>
+      core.connection.send('RLD', save !== undefined ? { save } : undefined),
     permission: Permission.Admin,
     params: [{ type: ParamType.Enum, options: ['save'], optional: true }]
   },
   xyzzy: {
-    exec: (_, command: string, arg: string) => core.connection.send('ZZZ', { command, arg }),
+    exec: (_, command: string, arg: string) =>
+      core.connection.send('ZZZ', { command, arg }),
     permission: Permission.Admin,
-    params: [{ type: ParamType.String, delimiter: ' ' }, { type: ParamType.String }]
+    params: [
+      { type: ParamType.String, delimiter: ' ' },
+      { type: ParamType.String }
+    ]
   },
   elf: {
-    exec: (conv: Conversation) => (conv.infoText = elf[Math.floor(Math.random() * elf.length)]),
+    exec: (conv: Conversation) =>
+      (conv.infoText = elf[Math.floor(Math.random() * elf.length)]),
     documented: false
   }
 };

@@ -43,7 +43,9 @@ export class AdCacheRecord {
   }
 }
 
-export class AdCache<RecordType extends AdCacheRecord = AdCacheRecord> extends Cache<RecordType> {
+export class AdCache<
+  RecordType extends AdCacheRecord = AdCacheRecord
+> extends Cache<RecordType> {
   register(ad: AdPosting): void {
     const k = Cache.nameKey(ad.name);
 

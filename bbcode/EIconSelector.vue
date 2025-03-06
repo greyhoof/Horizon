@@ -1,9 +1,21 @@
 <template>
-  <modal action="Select EIcon" ref="dialog" :buttons="false" dialogClass="eicon-selector big">
+  <modal
+    action="Select EIcon"
+    ref="dialog"
+    :buttons="false"
+    dialogClass="eicon-selector big"
+  >
     <div class="eicon-selector-ui">
-      <div v-if="!store || refreshing" class="d-flex align-items-center loading">
+      <div
+        v-if="!store || refreshing"
+        class="d-flex align-items-center loading"
+      >
         <strong>Loading...</strong>
-        <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+        <div
+          class="spinner-border ml-auto"
+          role="status"
+          aria-hidden="true"
+        ></div>
       </div>
       <div v-else>
         <div>
@@ -41,7 +53,13 @@
                 <i class="fas fa-theater-masks"></i>
               </div>
 
-              <div class="btn sexual" @click.prevent.stop="runSearch('category:sexual')" title="Sexual" role="button" tabindex="0">
+              <div
+                class="btn sexual"
+                @click.prevent.stop="runSearch('category:sexual')"
+                title="Sexual"
+                role="button"
+                tabindex="0"
+              >
                 <i class="fas fa-heart"></i>
               </div>
 
@@ -55,25 +73,51 @@
                 <i class="fas fa-comment"></i>
               </div>
 
-              <div class="btn actions" @click.prevent.stop="runSearch('category:symbols')" title="Symbols" role="button" tabindex="0">
+              <div
+                class="btn actions"
+                @click.prevent.stop="runSearch('category:symbols')"
+                title="Symbols"
+                role="button"
+                tabindex="0"
+              >
                 <i class="fas fa-icons"></i>
               </div>
 
-              <div class="btn memes" @click.prevent.stop="runSearch('category:memes')" title="Memes" role="button" tabindex="0">
+              <div
+                class="btn memes"
+                @click.prevent.stop="runSearch('category:memes')"
+                title="Memes"
+                role="button"
+                tabindex="0"
+              >
                 <i class="fas fa-poo"></i>
               </div>
 
-              <div class="btn random" @click.prevent.stop="runSearch('category:random')" title="Random" role="button" tabindex="0">
+              <div
+                class="btn random"
+                @click.prevent.stop="runSearch('category:random')"
+                title="Random"
+                role="button"
+                tabindex="0"
+              >
                 <i class="fas fa-random"></i>
               </div>
 
-              <div class="btn refresh" @click.prevent.stop="refreshIcons()" title="Refresh eicons data" role="button" tabindex="0">
+              <div
+                class="btn refresh"
+                @click.prevent.stop="refreshIcons()"
+                title="Refresh eicons data"
+                role="button"
+                tabindex="0"
+              >
                 <i class="fas fa-sync"></i>
               </div>
             </div>
           </div>
 
-          <div class="courtesy">Courtesy of <a href="https://xariah.net/eicons">xariah.net</a></div>
+          <div class="courtesy">
+            Courtesy of <a href="https://xariah.net/eicons">xariah.net</a>
+          </div>
 
           <div class="upload">
             <a href="https://www.f-list.net/icons.php">Upload eicons</a>
@@ -82,11 +126,19 @@
 
         <div class="carousel slide w-100 results">
           <div class="carousel-inner w-100" role="listbox">
-            <div class="carousel-item" v-for="eicon in results" role="img" :aria-label="eicon" tabindex="0">
+            <div
+              class="carousel-item"
+              v-for="eicon in results"
+              role="img"
+              :aria-label="eicon"
+              tabindex="0"
+            >
               <img
                 class="eicon"
                 :alt="eicon"
-                :src="'https://static.f-list.net/images/eicon/' + eicon + '.gif'"
+                :src="
+                  'https://static.f-list.net/images/eicon/' + eicon + '.gif'
+                "
                 :title="eicon"
                 role="button"
                 :aria-label="eicon"
@@ -98,7 +150,11 @@
                 :class="{ favorited: isFavorite(eicon) }"
                 @click.prevent.stop="toggleFavorite(eicon)"
                 role="button"
-                :aria-label="isFavorite(eicon) ? 'Remove from favorites' : 'Add to favorites'"
+                :aria-label="
+                  isFavorite(eicon)
+                    ? 'Remove from favorites'
+                    : 'Add to favorites'
+                "
               >
                 <i class="fas fa-thumbtack"></i>
               </div>
@@ -134,7 +190,9 @@
 
     refreshing = false;
 
-    searchUpdateDebounce = _.debounce(() => this.runSearch(), 350, { maxWait: 2000 });
+    searchUpdateDebounce = _.debounce(() => this.runSearch(), 350, {
+      maxWait: 2000
+    });
 
     @Hook('mounted')
     async mounted(): Promise<void> {
@@ -171,7 +229,10 @@
         if (s.length === 0) {
           this.results = _.map(this.store?.random(250), e => e.eicon);
         } else {
-          this.results = _.map(_.take(this.store?.search(s), 250), e => e.eicon);
+          this.results = _.map(
+            _.take(this.store?.search(s), 250),
+            e => e.eicon
+          );
         }
       }
     }

@@ -3,10 +3,14 @@
     <div v-show="loading" class="alert alert-info">Loading groups.</div>
     <template v-if="!loading">
       <div class="character-group" v-for="group in groups" :key="group.id">
-        <a :href="groupUrl(group)">{{ group.title }}: {{ group.threadCount }}</a>
+        <a :href="groupUrl(group)"
+          >{{ group.title }}: {{ group.threadCount }}</a
+        >
       </div>
     </template>
-    <div v-if="!loading && !groups.length" class="alert alert-info">No groups.</div>
+    <div v-if="!loading && !groups.length" class="alert alert-info">
+      No groups.
+    </div>
   </div>
 </template>
 
@@ -47,7 +51,9 @@
     }
 
     async resolveGroups(): Promise<CharacterGroup[]> {
-      const c = await core.cache.profileCache.get(this.character.character.name);
+      const c = await core.cache.profileCache.get(
+        this.character.character.name
+      );
 
       if (c && c.meta && c.meta.groups) {
         return c.meta.groups;

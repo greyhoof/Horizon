@@ -4,7 +4,9 @@
     <div class="input-group">
       <slot :cls="{ 'is-invalid': hasErrors, 'is-valid': valid }"></slot>
       <slot name="button"></slot>
-      <small v-if="helptext" class="form-text" :id="helpId">{{ helptext }}</small>
+      <small v-if="helptext" class="form-text" :id="helpId">{{
+        helptext
+      }}</small>
       <div v-if="hasErrors" class="invalid-feedback">
         <ul v-if="errorList.length > 1">
           <li v-for="error in errorList">{{ error }}</li>

@@ -18,10 +18,16 @@ export class PreviewManager {
 
   constructor(parent: ImagePreview, helperInstances: ImagePreviewHelper[]) {
     this.parent = parent;
-    this.helpers = _.map(helperInstances, helper => ({ helper, renderStyle: {} }));
+    this.helpers = _.map(helperInstances, helper => ({
+      helper,
+      renderStyle: {}
+    }));
   }
 
-  match(domain: string | undefined, url: string | undefined): PreviewManagerHelper | undefined {
+  match(
+    domain: string | undefined,
+    url: string | undefined
+  ): PreviewManagerHelper | undefined {
     return _.find(this.helpers, h => h.helper.match(domain, url));
   }
 
@@ -33,10 +39,16 @@ export class PreviewManager {
     _.each(this.helpers, h => {
       h.renderStyle = h.helper.renderStyle();
 
-      this.debugLog('ImagePreview: pm.renderStyles()', h.helper.constructor.name, JSON.parse(JSON.stringify(h.renderStyle)));
+      this.debugLog(
+        'ImagePreview: pm.renderStyles()',
+        h.helper.constructor.name,
+        JSON.parse(JSON.stringify(h.renderStyle))
+      );
     });
 
-    return _.fromPairs(_.map(this.helpers, h => [h.helper.getName(), h.renderStyle]));
+    return _.fromPairs(
+      _.map(this.helpers, h => [h.helper.getName(), h.renderStyle])
+    );
   }
 
   getVisiblePreview(): ImagePreviewHelper | undefined {
@@ -45,7 +57,10 @@ export class PreviewManager {
     return found ? found.helper : undefined;
   }
 
-  show(url: string | undefined, domain: string | undefined): ImagePreviewHelper | undefined {
+  show(
+    url: string | undefined,
+    domain: string | undefined
+  ): ImagePreviewHelper | undefined {
     const matchedHelper = this.match(domain, url);
 
     _.each(
@@ -64,13 +79,22 @@ export class PreviewManager {
 
   hide(): void {
     _.each(this.helpers, h => {
-      this.debugLog('ImagePreview: pm.hide()', h.helper.constructor.name, h.helper.isVisible());
+      this.debugLog(
+        'ImagePreview: pm.hide()',
+        h.helper.constructor.name,
+        h.helper.isVisible()
+      );
       h.helper.hide();
     });
   }
 
   getVisibilityStatus(): Record<string, boolean> {
-    return _.fromPairs(_.map(this.helpers, h => [h.helper.constructor.name, h.helper.isVisible()]));
+    return _.fromPairs(
+      _.map(this.helpers, h => [
+        h.helper.constructor.name,
+        h.helper.isVisible()
+      ])
+    );
   }
 
   setDebug(debugMode: boolean): void {

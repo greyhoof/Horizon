@@ -5,8 +5,13 @@ import Vue from 'vue';
 function formatComponentName(vm: any): string {
   if (vm === undefined) return 'undefined';
   if (vm.$root === vm) return '<root instance>';
-  const name = vm._isVue ? vm.$options.name || vm.$options._componentTag : vm.name;
-  return (name ? `component <${name}>` : 'anonymous component') + (vm._isVue && vm.$options.__file ? ` at ${vm.$options.__file}` : '');
+  const name = vm._isVue
+    ? vm.$options.name || vm.$options._componentTag
+    : vm.name;
+  return (
+    (name ? `component <${name}>` : 'anonymous component') +
+    (vm._isVue && vm.$options.__file ? ` at ${vm.$options.__file}` : '')
+  );
 }
 //tslint:enable
 
@@ -23,7 +28,8 @@ function VueRaven(this: void, raven: Raven.RavenStatic): Raven.RavenStatic {
       }
     });
 
-    if (typeof oldOnError === 'function') oldOnError.call(this, error, vm, info);
+    if (typeof oldOnError === 'function')
+      oldOnError.call(this, error, vm, info);
     else console.log(error);
   };
 
@@ -36,7 +42,8 @@ function VueRaven(this: void, raven: Raven.RavenStatic): Raven.RavenStatic {
       }
     });
     console.warn(`${message}: ${trace}`);
-    if (typeof oldOnWarn === 'function') oldOnWarn.call(this, message, vm, trace);
+    if (typeof oldOnWarn === 'function')
+      oldOnWarn.call(this, message, vm, trace);
   };
 
   return raven;
@@ -47,7 +54,12 @@ export function setupRaven(dsn: string, version: string): void {
   return; //TODO sentry temporarily disabled
   Raven.config(dsn, {
     release: version,
-    dataCallback: (data: { culprit?: string; exception?: { values: { stacktrace: { frames: { filename: string }[] } }[] } }) => {
+    dataCallback: (data: {
+      culprit?: string;
+      exception?: {
+        values: { stacktrace: { frames: { filename: string }[] } }[];
+      };
+    }) => {
       if (data.culprit !== undefined) {
         const end = data.culprit.lastIndexOf('?');
         data.culprit = `~${data.culprit.substring(data.culprit.lastIndexOf('/'), end === -1 ? undefined : end)}`;
@@ -63,7 +75,9 @@ export function setupRaven(dsn: string, version: string): void {
   })
     .addPlugin(VueRaven, Vue)
     .install();
-  (<Window & { onunhandledrejection(e: PromiseRejectionEvent): void }>window).onunhandledrejection = (e: PromiseRejectionEvent) => {
+  (<Window & { onunhandledrejection(e: PromiseRejectionEvent): void }>(
+    window
+  )).onunhandledrejection = (e: PromiseRejectionEvent) => {
     Raven.captureException(<Error>e.reason);
   };
 }

@@ -617,7 +617,15 @@ function gen(s: string): string {
 }
 
 export const speciesMapping: SpeciesMap = {
-  [Species.Anthro]: ['anthro', 'anthropomorphic', 'furry', 'erune', 'vastayan?', 'rakshasa', gen('(beast|anthro|furry)')],
+  [Species.Anthro]: [
+    'anthro',
+    'anthropomorphic',
+    'furry',
+    'erune',
+    'vastayan?',
+    'rakshasa',
+    gen('(beast|anthro|furry)')
+  ],
 
   [Species.Human]: [
     'human',
@@ -1089,7 +1097,14 @@ export const speciesMapping: SpeciesMap = {
     'guilmon'
   ],
 
-  [Species.Amphibian]: ['salamander', 'frog', 'toad', 'newt', 'amphibian', 'axolotl'],
+  [Species.Amphibian]: [
+    'salamander',
+    'frog',
+    'toad',
+    'newt',
+    'amphibian',
+    'axolotl'
+  ],
 
   [Species.Avian]: [
     'bird',
@@ -1193,9 +1208,31 @@ export const speciesMapping: SpeciesMap = {
     gen('(sheep|goat|ram)')
   ],
 
-  [Species.Camielidae]: ['camel', 'llama', 'alpaca', 'guanaco', 'dromedary', 'dromedar', '🦙', '🐪', '🐫'],
+  [Species.Camielidae]: [
+    'camel',
+    'llama',
+    'alpaca',
+    'guanaco',
+    'dromedary',
+    'dromedar',
+    '🦙',
+    '🐪',
+    '🐫'
+  ],
 
-  [Species.Cervine]: ['deer', 'elk', 'moose', 'caribou', 'reindeer', 'doe[ -]?(girl)?', 'fawn', 'cervid', 'cervine', 'stag', gen('deer')],
+  [Species.Cervine]: [
+    'deer',
+    'elk',
+    'moose',
+    'caribou',
+    'reindeer',
+    'doe[ -]?(girl)?',
+    'fawn',
+    'cervid',
+    'cervine',
+    'stag',
+    gen('deer')
+  ],
 
   [Species.Dinosaur]: [
     'raptor',
@@ -1215,7 +1252,13 @@ export const speciesMapping: SpeciesMap = {
   ],
 
   [Species.Erinaceidae]: ['hedgehog', 'gymnure', 'moonrat'],
-  [Species.Elephantidae]: ['elephant', 'mammoth', 'mastodon', 'pachyderm', 'tusker'],
+  [Species.Elephantidae]: [
+    'elephant',
+    'mammoth',
+    'mastodon',
+    'pachyderm',
+    'tusker'
+  ],
 
   [Species.Fish]: [
     'shark',
@@ -1314,7 +1357,13 @@ export const speciesMapping: SpeciesMap = {
     '🐇'
   ],
 
-  [Species.MarineMammal]: ['whale', 'dolphin', 'orca', '🐬', 'killer[ -]?whale'],
+  [Species.MarineMammal]: [
+    'whale',
+    'dolphin',
+    'orca',
+    '🐬',
+    'killer[ -]?whale'
+  ],
 
   [Species.Marsupial]: [
     'kangaroo',
@@ -1362,9 +1411,31 @@ export const speciesMapping: SpeciesMap = {
 
   [Species.Pinniped]: ['seal', 'walrus', 'fur seal', 'sea[ -]?lion'],
 
-  [Species.Primate]: ['gorilla', 'monkey', 'ape', 'chimp', 'lemur', 'bonobo', 'chimpanzee', 'silverback', 'primate', '🐒', '🦍', '🦧'],
+  [Species.Primate]: [
+    'gorilla',
+    'monkey',
+    'ape',
+    'chimp',
+    'lemur',
+    'bonobo',
+    'chimpanzee',
+    'silverback',
+    'primate',
+    '🐒',
+    '🦍',
+    '🦧'
+  ],
 
-  [Species.Procyon]: ['raccoon', 'coatimund', 'longtail', 'procyon', 'tanuki', '🦝', 'racoon', 'ring[ -]?tail(ed)?'],
+  [Species.Procyon]: [
+    'raccoon',
+    'coatimund',
+    'longtail',
+    'procyon',
+    'tanuki',
+    '🦝',
+    'racoon',
+    'ring[ -]?tail(ed)?'
+  ],
 
   [Species.Rhinoceros]: ['rhino', 'rhinoceros', '🦏', '.*rhino'],
 
@@ -1413,10 +1484,29 @@ export const speciesMapping: SpeciesMap = {
     '🐖'
   ],
 
-  [Species.Ursine]: ['bear', 'panda', 'grizzly', 'black[ -]?bear', 'brown[ -]?bear', 'polar[ -]?bear', 'ursine', 'pandaren', 'ursus'],
+  [Species.Ursine]: [
+    'bear',
+    'panda',
+    'grizzly',
+    'black[ -]?bear',
+    'brown[ -]?bear',
+    'polar[ -]?bear',
+    'ursine',
+    'pandaren',
+    'ursus'
+  ],
 
   // pangolin doesn't fit here
-  [Species.Xenarthra]: ['armadillo', 'anteater', 'sloth', 'glyptodont', 'a(rm|mr)ad[iy]ll?o', 'sloth', 'ant[ -]?eater', 'pangoo?lin'],
+  [Species.Xenarthra]: [
+    'armadillo',
+    'anteater',
+    'sloth',
+    'glyptodont',
+    'a(rm|mr)ad[iy]ll?o',
+    'sloth',
+    'ant[ -]?eater',
+    'pangoo?lin'
+  ],
 
   [Species.Demon]: [
     'demon',
@@ -1459,7 +1549,16 @@ export const speciesMapping: SpeciesMap = {
     'cherub(im)?'
   ],
 
-  [Species.Fae]: ['fairy', 'fae', 'imp', 'elemental', 'fey', 'pixie', 'nymph', 'faerie'],
+  [Species.Fae]: [
+    'fairy',
+    'fae',
+    'imp',
+    'elemental',
+    'fey',
+    'pixie',
+    'nymph',
+    'faerie'
+  ],
 
   [Species.Humanoid]: [
     'satyr',
@@ -1482,7 +1581,13 @@ export const speciesMapping: SpeciesMap = {
     'aasimar'
   ],
 
-  [Species.Minotaur]: ['minotaur', 'tauren', 'minotaurus', 'm[iy]n[ao]t(uo|ou|o|u)ru?s?', 'minotaure'],
+  [Species.Minotaur]: [
+    'minotaur',
+    'tauren',
+    'minotaurus',
+    'm[iy]n[ao]t(uo|ou|o|u)ru?s?',
+    'minotaure'
+  ],
 
   [Species.Monster]: [
     'gnoll',
@@ -1531,9 +1636,35 @@ export const speciesMapping: SpeciesMap = {
   ],
 
   [Species.Naga]: ['naga', 'lamia'],
-  [Species.Taur]: ['centaur', 'chakat', 'equitaur', 'felitaur', 'weretaur', 'humantaur', 'cowtaur', '.*taur', 'cervitaur'],
-  [Species.Orc]: ['orc', 'uruk-hai', 'snaga', 'uruk[ -]?hai', 'ork', 'orcess', gen('orc')],
-  [Species.Vampire]: ['vampire', 'nosferatu', 'daywalker', 'd[h]?amp[h]?ir', 'vampyre', 'vampiric', 'vampir'],
+  [Species.Taur]: [
+    'centaur',
+    'chakat',
+    'equitaur',
+    'felitaur',
+    'weretaur',
+    'humantaur',
+    'cowtaur',
+    '.*taur',
+    'cervitaur'
+  ],
+  [Species.Orc]: [
+    'orc',
+    'uruk-hai',
+    'snaga',
+    'uruk[ -]?hai',
+    'ork',
+    'orcess',
+    gen('orc')
+  ],
+  [Species.Vampire]: [
+    'vampire',
+    'nosferatu',
+    'daywalker',
+    'd[h]?amp[h]?ir',
+    'vampyre',
+    'vampiric',
+    'vampir'
+  ],
 
   [Species.Were]: [
     'werewolf',
@@ -1594,7 +1725,16 @@ export const speciesMapping: SpeciesMap = {
     'synthetic'
   ],
 
-  [Species.Hub]: ['hub', 'varies', 'various', 'variable', 'many', 'flexible', 'any', 'partner preference']
+  [Species.Hub]: [
+    'hub',
+    'varies',
+    'various',
+    'variable',
+    'many',
+    'flexible',
+    'any',
+    'partner preference'
+  ]
 };
 
 export interface FchatGenderMap {

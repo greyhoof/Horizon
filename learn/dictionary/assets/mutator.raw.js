@@ -2,8 +2,17 @@ class FChatDefinitionMutator {
   mutateDictionary() {
     document
       .querySelectorAll('html, body')
-      .forEach(e => e.setAttribute('style', 'border: 0 !important; padding: 0 !important; margin: 0 !important;'));
-    document.querySelectorAll('.app-base').forEach(e => e.setAttribute('style', 'padding: 0 !important; margin: 0 !important;'));
+      .forEach(e =>
+        e.setAttribute(
+          'style',
+          'border: 0 !important; padding: 0 !important; margin: 0 !important;'
+        )
+      );
+    document
+      .querySelectorAll('.app-base')
+      .forEach(e =>
+        e.setAttribute('style', 'padding: 0 !important; margin: 0 !important;')
+      );
 
     document
       .querySelectorAll(
@@ -29,8 +38,17 @@ class FChatDefinitionMutator {
   mutateThesaurus() {
     document
       .querySelectorAll('html, body')
-      .forEach(e => e.setAttribute('style', 'border: 0 !important; padding: 0 !important; margin: 0 !important;'));
-    document.querySelectorAll('.app-base').forEach(e => e.setAttribute('style', 'padding: 0 !important; margin: 0 !important;'));
+      .forEach(e =>
+        e.setAttribute(
+          'style',
+          'border: 0 !important; padding: 0 !important; margin: 0 !important;'
+        )
+      );
+    document
+      .querySelectorAll('.app-base')
+      .forEach(e =>
+        e.setAttribute('style', 'padding: 0 !important; margin: 0 !important;')
+      );
 
     document
       .querySelectorAll(
@@ -40,13 +58,19 @@ class FChatDefinitionMutator {
   }
 
   mutateWikipedia() {
-    document.querySelectorAll('header').forEach(e => e.setAttribute('style', 'display: none !important'));
+    document
+      .querySelectorAll('header')
+      .forEach(e => e.setAttribute('style', 'display: none !important'));
   }
 
   mutateUrbanDictionary() {
-    document.querySelectorAll('.column, .columns').forEach(e => e.setAttribute('style', 'padding: 0 !important'));
+    document
+      .querySelectorAll('.column, .columns')
+      .forEach(e => e.setAttribute('style', 'padding: 0 !important'));
 
-    document.querySelectorAll('.row').forEach(e => e.setAttribute('style', 'max-width: 100% !important'));
+    document
+      .querySelectorAll('.row')
+      .forEach(e => e.setAttribute('style', 'max-width: 100% !important'));
 
     document
       .querySelectorAll(

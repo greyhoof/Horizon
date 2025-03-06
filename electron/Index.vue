@@ -8,12 +8,30 @@
     @click.middle="unpinUrlPreview"
   >
     <div v-html="styling"></div>
-    <div v-if="!characters" style="display: flex; align-items: center; justify-content: center; height: 100%">
+    <div
+      v-if="!characters"
+      style="
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+      "
+    >
       <div class="card bg-light" style="width: 400px">
-        <div class="initializer" :class="{ visible: !hasCompletedUpgrades, complete: hasCompletedUpgrades, shouldShow: shouldShowSpinner }">
+        <div
+          class="initializer"
+          :class="{
+            visible: !hasCompletedUpgrades,
+            complete: hasCompletedUpgrades,
+            shouldShow: shouldShowSpinner
+          }"
+        >
           <div class="title">
             Getting ready, please wait...
-            <small>You should only experience this delay once per software update</small>
+            <small
+              >You should only experience this delay once per software
+              update</small
+            >
           </div>
           <i class="fas fa-circle-notch fa-spin search-spinner"></i>
         </div>
@@ -23,8 +41,14 @@
         <h3 class="card-header" style="margin-top: 0; display: flex">
           {{ l('title') }}
 
-          <a href="#" @click.prevent="showLogs()" class="btn" style="flex: 1; text-align: right">
-            <span class="fa fa-file-alt"></span> <span class="btn-text">{{ l('logs.title') }}</span>
+          <a
+            href="#"
+            @click.prevent="showLogs()"
+            class="btn"
+            style="flex: 1; text-align: right"
+          >
+            <span class="fa fa-file-alt"></span>
+            <span class="btn-text">{{ l('logs.title') }}</span>
           </a>
         </h3>
         <div class="card-body">
@@ -32,81 +56,185 @@
             {{ error }}
           </div>
           <div class="form-group">
-            <label class="control-label" for="account">{{ l('login.account') }}</label>
-            <input class="form-control" id="account" v-model="settings.account" @keypress.enter="login()" :disabled="loggingIn" />
+            <label class="control-label" for="account">{{
+              l('login.account')
+            }}</label>
+            <input
+              class="form-control"
+              id="account"
+              v-model="settings.account"
+              @keypress.enter="login()"
+              :disabled="loggingIn"
+            />
           </div>
           <div class="form-group">
-            <label class="control-label" for="password">{{ l('login.password') }}</label>
-            <input class="form-control" type="password" id="password" v-model="password" @keypress.enter="login()" :disabled="loggingIn" />
+            <label class="control-label" for="password">{{
+              l('login.password')
+            }}</label>
+            <input
+              class="form-control"
+              type="password"
+              id="password"
+              v-model="password"
+              @keypress.enter="login()"
+              :disabled="loggingIn"
+            />
           </div>
           <div class="form-group" v-show="showAdvanced">
-            <label class="control-label" for="host">{{ l('login.host') }}</label>
+            <label class="control-label" for="host">{{
+              l('login.host')
+            }}</label>
             <div class="input-group">
-              <input class="form-control" id="host" v-model="settings.host" @keypress.enter="login()" :disabled="loggingIn" />
+              <input
+                class="form-control"
+                id="host"
+                v-model="settings.host"
+                @keypress.enter="login()"
+                :disabled="loggingIn"
+              />
               <div class="input-group-append">
-                <button class="btn btn-outline-secondary" @click="resetHost()"><span class="fas fa-undo-alt"></span></button>
+                <button class="btn btn-outline-secondary" @click="resetHost()">
+                  <span class="fas fa-undo-alt"></span>
+                </button>
               </div>
             </div>
           </div>
           <div class="form-group">
-            <label for="advanced"><input type="checkbox" id="advanced" v-model="showAdvanced" /> {{ l('login.advanced') }}</label>
+            <label for="advanced"
+              ><input type="checkbox" id="advanced" v-model="showAdvanced" />
+              {{ l('login.advanced') }}</label
+            >
           </div>
           <div class="form-group">
-            <label for="save"><input type="checkbox" id="save" v-model="saveLogin" /> {{ l('login.save') }}</label>
+            <label for="save"
+              ><input type="checkbox" id="save" v-model="saveLogin" />
+              {{ l('login.save') }}</label
+            >
           </div>
           <div class="form-group" style="margin: 0; text-align: right">
-            <button class="btn btn-primary" @click="login" :disabled="loggingIn">
+            <button
+              class="btn btn-primary"
+              @click="login"
+              :disabled="loggingIn"
+            >
               {{ l(loggingIn ? 'login.working' : 'login.submit') }}
             </button>
           </div>
         </div>
       </div>
     </div>
-    <chat v-else :ownCharacters="characters" :defaultCharacter="defaultCharacter" ref="chat"></chat>
+    <chat
+      v-else
+      :ownCharacters="characters"
+      :defaultCharacter="defaultCharacter"
+      ref="chat"
+    ></chat>
     <div ref="linkPreview" class="link-preview"></div>
     <modal :action="l('importer.importing')" ref="importModal" :buttons="false">
-      <span style="white-space: pre-wrap">{{ l('importer.importingNote') }}</span>
+      <span style="white-space: pre-wrap">{{
+        l('importer.importingNote')
+      }}</span>
       <div class="progress" style="margin-top: 5px">
-        <div class="progress-bar" :style="{ width: importProgress * 100 + '%' }"></div>
+        <div
+          class="progress-bar"
+          :style="{ width: importProgress * 100 + '%' }"
+        ></div>
       </div>
     </modal>
     <modal :buttons="false" ref="profileViewer" dialogClass="profile-viewer">
-      <character-page :authenticated="true" :oldApi="true" :name="profileName" :image-preview="true" ref="characterPage"></character-page>
+      <character-page
+        :authenticated="true"
+        :oldApi="true"
+        :name="profileName"
+        :image-preview="true"
+        ref="characterPage"
+      ></character-page>
       <template slot="title">
         {{ profileName }}
-        <a class="btn" @click="openProfileInBrowser"><i class="fa fa-external-link-alt" /></a>
-        <a class="btn" @click="openConversation"><i class="fa fa-comment"></i></a>
+        <a class="btn" @click="openProfileInBrowser"
+          ><i class="fa fa-external-link-alt"
+        /></a>
+        <a class="btn" @click="openConversation"
+          ><i class="fa fa-comment"></i
+        ></a>
         <a class="btn" @click="reloadCharacter"><i class="fa fa-sync" /></a>
 
-        <i class="fas fa-circle-notch fa-spin profileRefreshSpinner" v-show="isRefreshingProfile()"></i>
+        <i
+          class="fas fa-circle-notch fa-spin profileRefreshSpinner"
+          v-show="isRefreshingProfile()"
+        ></i>
 
-        <bbcode :text="profileStatus" v-show="!!profileStatus" class="status-text"></bbcode>
+        <bbcode
+          :text="profileStatus"
+          v-show="!!profileStatus"
+          class="status-text"
+        ></bbcode>
 
         <div class="profile-title-right">
-          <button class="btn" @click="prevProfile" :disabled="!prevProfileAvailable()"><i class="fas fa-arrow-left"></i></button>
-          <button class="btn" @click="nextProfile" :disabled="!nextProfileAvailable()"><i class="fas fa-arrow-right"></i></button>
+          <button
+            class="btn"
+            @click="prevProfile"
+            :disabled="!prevProfileAvailable()"
+          >
+            <i class="fas fa-arrow-left"></i>
+          </button>
+          <button
+            class="btn"
+            @click="nextProfile"
+            :disabled="!nextProfileAvailable()"
+          >
+            <i class="fas fa-arrow-right"></i>
+          </button>
         </div>
       </template>
     </modal>
-    <modal :action="l('fixLogs.action')" ref="fixLogsModal" @submit="fixLogs" buttonClass="btn-danger">
+    <modal
+      :action="l('fixLogs.action')"
+      ref="fixLogsModal"
+      @submit="fixLogs"
+      buttonClass="btn-danger"
+    >
       <span style="white-space: pre-wrap">{{ l('fixLogs.text') }}</span>
       <div class="form-group">
         <label class="control-label">{{ l('fixLogs.character') }}</label>
         <select id="import" class="form-control" v-model="fixCharacter">
-          <option v-for="character in fixCharacters" :value="character">{{ character }}</option>
+          <option v-for="character in fixCharacters" :value="character">
+            {{ character }}
+          </option>
         </select>
       </div>
     </modal>
-    <modal :buttons="false" ref="wordDefinitionViewer" dialogClass="word-definition-viewer">
-      <word-definition :expression="wordDefinitionLookup" ref="wordDefinitionLookup"></word-definition>
+    <modal
+      :buttons="false"
+      ref="wordDefinitionViewer"
+      dialogClass="word-definition-viewer"
+    >
+      <word-definition
+        :expression="wordDefinitionLookup"
+        ref="wordDefinitionLookup"
+      ></word-definition>
       <template slot="title">
         {{ wordDefinitionLookup }}
-        <a class="btn wordDefBtn dictionary" @click="openDefinitionWithDictionary"><i>D</i></a>
-        <a class="btn wordDefBtn thesaurus" @click="openDefinitionWithThesaurus"><i>T</i></a>
-        <a class="btn wordDefBtn urbandictionary" @click="openDefinitionWithUrbanDictionary"><i>UD</i></a>
-        <a class="btn wordDefBtn wikipedia" @click="openDefinitionWithWikipedia"><i>W</i></a>
+        <a
+          class="btn wordDefBtn dictionary"
+          @click="openDefinitionWithDictionary"
+          ><i>D</i></a
+        >
+        <a class="btn wordDefBtn thesaurus" @click="openDefinitionWithThesaurus"
+          ><i>T</i></a
+        >
+        <a
+          class="btn wordDefBtn urbandictionary"
+          @click="openDefinitionWithUrbanDictionary"
+          ><i>UD</i></a
+        >
+        <a class="btn wordDefBtn wikipedia" @click="openDefinitionWithWikipedia"
+          ><i>W</i></a
+        >
 
-        <a class="btn" @click="openWordDefinitionInBrowser"><i class="fa fa-external-link-alt" /></a>
+        <a class="btn" @click="openWordDefinitionInBrowser"
+          ><i class="fa fa-external-link-alt"
+        /></a>
       </template>
     </modal>
 
@@ -278,7 +406,10 @@
     onProfileNameChange(newName: string): void {
       if (this.profileNameHistory[this.profilePointer] !== newName) {
         this.profileNameHistory = _.takeRight(
-          _.filter(_.take(this.profileNameHistory, this.profilePointer + 1), n => n !== newName),
+          _.filter(
+            _.take(this.profileNameHistory, this.profilePointer + 1),
+            n => n !== newName
+          ),
           30
         );
 
@@ -307,39 +438,53 @@
 
       if (this.settings.account.length > 0) this.saveLogin = true;
 
-      this.password = (await keyStore.getPassword('f-list.net', this.settings.account)) || '';
+      this.password =
+        (await keyStore.getPassword('f-list.net', this.settings.account)) || '';
 
       log.debug('init.chat.keystore.get.done');
 
       Vue.set(core.state, 'generalSettings', this.settings);
 
-      electron.ipcRenderer.on('settings', (_e: Electron.IpcRendererEvent, settings: GeneralSettings) => {
-        log.debug('settings.update.index');
-        core.state.generalSettings = this.settings = settings;
-      });
+      electron.ipcRenderer.on(
+        'settings',
+        (_e: Electron.IpcRendererEvent, settings: GeneralSettings) => {
+          log.debug('settings.update.index');
+          core.state.generalSettings = this.settings = settings;
+        }
+      );
 
-      electron.ipcRenderer.on('open-profile', (_e: Electron.IpcRendererEvent, name: string) => {
-        const profileViewer = <Modal>this.$refs['profileViewer'];
-
-        this.openProfile(name);
-
-        profileViewer.show();
-      });
-
-      electron.ipcRenderer.on('reopen-profile', (_e: Electron.IpcRendererEvent) => {
-        if (this.profileNameHistory.length > 0 && this.profilePointer < this.profileNameHistory.length && this.profilePointer >= 0) {
-          const name = this.profileNameHistory[this.profilePointer];
+      electron.ipcRenderer.on(
+        'open-profile',
+        (_e: Electron.IpcRendererEvent, name: string) => {
           const profileViewer = <Modal>this.$refs['profileViewer'];
 
-          if (this.profileName === name && profileViewer.isShown) {
-            profileViewer.hide();
-            return;
-          }
-
           this.openProfile(name);
+
           profileViewer.show();
         }
-      });
+      );
+
+      electron.ipcRenderer.on(
+        'reopen-profile',
+        (_e: Electron.IpcRendererEvent) => {
+          if (
+            this.profileNameHistory.length > 0 &&
+            this.profilePointer < this.profileNameHistory.length &&
+            this.profilePointer >= 0
+          ) {
+            const name = this.profileNameHistory[this.profilePointer];
+            const profileViewer = <Modal>this.$refs['profileViewer'];
+
+            if (this.profileName === name && profileViewer.isShown) {
+              profileViewer.hide();
+              return;
+            }
+
+            this.openProfile(name);
+            profileViewer.show();
+          }
+        }
+      );
 
       electron.ipcRenderer.on('fix-logs', async () => {
         this.fixCharacters = await core.settingsStore.getAvailableCharacters();
@@ -364,11 +509,22 @@
         const key = getKey(e);
 
         if (key === Keys.Tab && e.ctrlKey && !e.altKey) {
-          parent.send(`${e.shiftKey ? 'previous' : 'switch'}-tab`, this.character);
+          parent.send(
+            `${e.shiftKey ? 'previous' : 'switch'}-tab`,
+            this.character
+          );
         }
 
-        if ((key === Keys.PageDown || key === Keys.PageUp) && e.ctrlKey && !e.altKey && !e.shiftKey) {
-          parent.send(`${key === Keys.PageUp ? 'previous' : 'switch'}-tab`, this.character);
+        if (
+          (key === Keys.PageDown || key === Keys.PageUp) &&
+          e.ctrlKey &&
+          !e.altKey &&
+          !e.shiftKey
+        ) {
+          parent.send(
+            `${key === Keys.PageUp ? 'previous' : 'switch'}-tab`,
+            this.character
+          );
         }
       });
 
@@ -391,7 +547,14 @@
 
         core.siteSession.setCredentials(this.settings.account, this.password);
 
-        const data = <{ ticket?: string; error: string; characters: { [key: string]: number }; default_character: number }>(
+        const data = <
+          {
+            ticket?: string;
+            error: string;
+            characters: { [key: string]: number };
+            default_character: number;
+          }
+        >(
           await Axios.post(
             'https://www.f-list.net/json/getApiTicket.php',
             qs.stringify({
@@ -408,22 +571,43 @@
           return;
         }
         if (this.saveLogin) {
-          electron.ipcRenderer.send('save-login', this.settings.account, this.settings.host);
-          await keyStore.setPassword('f-list.net', this.settings.account, this.password);
+          electron.ipcRenderer.send(
+            'save-login',
+            this.settings.account,
+            this.settings.host
+          );
+          await keyStore.setPassword(
+            'f-list.net',
+            this.settings.account,
+            this.password
+          );
         }
         Socket.host = this.settings.host;
 
         core.connection.onEvent('connecting', async () => {
-          if (!electron.ipcRenderer.sendSync('connect', core.connection.character) && process.env.NODE_ENV === 'production') {
+          if (
+            !electron.ipcRenderer.sendSync(
+              'connect',
+              core.connection.character
+            ) &&
+            process.env.NODE_ENV === 'production'
+          ) {
             alert(l('login.alreadyLoggedIn'));
             return core.connection.close();
           }
           parent.send('connect', webContents.id, core.connection.character);
           this.character = core.connection.character;
-          if ((await core.settingsStore.get('settings')) === undefined && SlimcatImporter.canImportCharacter(core.connection.character)) {
-            if (!confirm(l('importer.importGeneral'))) return core.settingsStore.set('settings', new Settings());
+          if (
+            (await core.settingsStore.get('settings')) === undefined &&
+            SlimcatImporter.canImportCharacter(core.connection.character)
+          ) {
+            if (!confirm(l('importer.importGeneral')))
+              return core.settingsStore.set('settings', new Settings());
             (<Modal>this.$refs['importModal']).show(true);
-            await SlimcatImporter.importCharacter(core.connection.character, progress => (this.importProgress = progress));
+            await SlimcatImporter.importCharacter(
+              core.connection.character,
+              progress => (this.importProgress = progress)
+            );
             (<Modal>this.$refs['importModal']).hide();
           }
         });
@@ -456,7 +640,8 @@
     }
 
     fixLogs(): void {
-      if (!electron.ipcRenderer.sendSync('connect', this.fixCharacter)) return alert(l('login.alreadyLoggedIn'));
+      if (!electron.ipcRenderer.sendSync('connect', this.fixCharacter))
+        return alert(l('login.alreadyLoggedIn'));
       try {
         fixLogs(this.fixCharacter);
         alert(l('fixLogs.success'));
@@ -478,7 +663,12 @@
         const target = <HTMLAnchorElement>e.target;
         if (target.hostname !== '') {
           //tslint:disable-next-line:prefer-template
-          preview.className = 'link-preview ' + (e.clientX < window.innerWidth / 2 && e.clientY > window.innerHeight - 150 ? ' right' : '');
+          preview.className =
+            'link-preview ' +
+            (e.clientX < window.innerWidth / 2 &&
+            e.clientY > window.innerHeight - 150
+              ? ' right'
+              : '');
           preview.textContent = target.href;
           preview.style.display = 'block';
           return;
@@ -489,7 +679,10 @@
     }
 
     async openProfileInBrowser(): Promise<void> {
-      electron.ipcRenderer.send('open-url-externally', `https://www.f-list.net/c/${this.profileName}`);
+      electron.ipcRenderer.send(
+        'open-url-externally',
+        `https://www.f-list.net/c/${this.profileName}`
+      );
       //await remote.shell.openExternal(`https://www.f-list.net/c/${this.profileName}`);
 
       // tslint:disable-next-line: no-any no-unsafe-any
@@ -526,16 +719,23 @@
         // Hack!
         if (process.platform === 'win32') {
           if (core.state.generalSettings?.risingDisableWindowsHighContrast) {
-            document.querySelector('html')?.classList.add('disableWindowsHighContrast');
+            document
+              .querySelector('html')
+              ?.classList.add('disableWindowsHighContrast');
           } else {
-            document.querySelector('html')?.classList.remove('disableWindowsHighContrast');
+            document
+              .querySelector('html')
+              ?.classList.remove('disableWindowsHighContrast');
           }
         }
 
         return {
-          [`theme-${core.state.settings.risingCharacterTheme || this.settings.theme}`]: true,
+          [`theme-${core.state.settings.risingCharacterTheme || this.settings.theme}`]:
+            true,
           colorblindMode: core.state.settings.risingColorblindMode,
-          disableWindowsHighContrast: core.state.generalSettings?.risingDisableWindowsHighContrast || false
+          disableWindowsHighContrast:
+            core.state.generalSettings?.risingDisableWindowsHighContrast ||
+            false
         };
       } catch (err) {
         return { [`theme-${this.settings.theme}`]: true };
@@ -582,7 +782,10 @@
       try {
         return `<style id="themeStyle">${fs.readFileSync(path.join(__dirname, `themes/${(this.character != undefined && core.state.settings.risingCharacterTheme) || this.settings.theme}.css`), 'utf8').toString()}</style>`;
       } catch (e) {
-        if ((<Error & { code: string }>e).code === 'ENOENT' && this.settings.theme !== 'default') {
+        if (
+          (<Error & { code: string }>e).code === 'ENOENT' &&
+          this.settings.theme !== 'default'
+        ) {
           this.settings.theme = 'default';
           return this.styling;
         }
@@ -611,7 +814,10 @@
     }
 
     async openWordDefinitionInBrowser(): Promise<void> {
-      electron.ipcRenderer.send('open-url-externally', (this.$refs.wordDefinitionLookup as any).getWebUrl());
+      electron.ipcRenderer.send(
+        'open-url-externally',
+        (this.$refs.wordDefinitionLookup as any).getWebUrl()
+      );
       //await remote.shell.openExternal((this.$refs.wordDefinitionLookup as any).getWebUrl());
 
       // tslint:disable-next-line: no-any no-unsafe-any
@@ -619,7 +825,9 @@
     }
 
     unpinUrlPreview(e: Event): void {
-      const imagePreview = (this.$refs['chat'] as Chat)?.getChatView()?.getImagePreview();
+      const imagePreview = (this.$refs['chat'] as Chat)
+        ?.getChatView()
+        ?.getImagePreview();
 
       // const imagePreview = this.$refs['imagePreview'] as ImagePreview;
 

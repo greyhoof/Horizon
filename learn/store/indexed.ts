@@ -1,7 +1,11 @@
 import log from 'electron-log'; //tslint:disable-line:match-default-export-name
 import * as _ from 'lodash';
 
-import { Character as ComplexCharacter, CharacterGroup, Guestbook } from '../../site/character_page/interfaces';
+import {
+  Character as ComplexCharacter,
+  CharacterGroup,
+  Guestbook
+} from '../../site/character_page/interfaces';
 import { CharacterAnalysis } from '../matcher';
 import { PermanentIndexedStore, ProfileRecord } from './types';
 import { CharacterImage, SimpleCharacter } from '../../interfaces';
@@ -25,7 +29,9 @@ export class IndexedStore implements PermanentIndexedStore {
     this.db = db;
   }
 
-  static async open(dbName: string = 'flist-ascending-profiles'): Promise<IndexedStore> {
+  static async open(
+    dbName: string = 'flist-ascending-profiles'
+  ): Promise<IndexedStore> {
     const request = indexedDB.open(dbName, 3);
 
     request.onupgradeneeded = async event => {
@@ -52,7 +58,10 @@ export class IndexedStore implements PermanentIndexedStore {
       }
     };
 
-    return new IndexedStore(await promisifyRequest<IDBDatabase>(request), dbName);
+    return new IndexedStore(
+      await promisifyRequest<IDBDatabase>(request),
+      dbName
+    );
   }
 
   // tslint:disable-next-line prefer-function-over-method
@@ -92,13 +101,22 @@ export class IndexedStore implements PermanentIndexedStore {
     return data as ProfileRecord;
   }
 
-  private async prepareProfileData(c: ComplexCharacter): Promise<ProfileRecord> {
+  private async prepareProfileData(
+    c: ComplexCharacter
+  ): Promise<ProfileRecord> {
     const existing = await this.getProfile(c.character.name);
     const ca = new CharacterAnalysis(c.character);
 
     // fix to clean out extra customs that somehow sometimes appear:
-    if (_.isArray(c.character.customs) || !_.isPlainObject(c.character.customs)) {
-      log.debug('character.customs.strange.indexed.prepareProfileData', { name: c.character.name, c, customs: c.character.customs });
+    if (
+      _.isArray(c.character.customs) ||
+      !_.isPlainObject(c.character.customs)
+    ) {
+      log.debug('character.customs.strange.indexed.prepareProfileData', {
+        name: c.character.name,
+        c,
+        customs: c.character.customs
+      });
       c.character.customs = {};
     }
 
@@ -129,7 +147,18 @@ export class IndexedStore implements PermanentIndexedStore {
     };
 
     return existing
-      ? _.merge(existing, data, _.pick(existing, ['firstSeen', 'lastMetaFetched', 'guestbook', 'images', 'friends', 'groups']))
+      ? _.merge(
+          existing,
+          data,
+          _.pick(existing, [
+            'firstSeen',
+            'lastMetaFetched',
+            'guestbook',
+            'images',
+            'friends',
+            'groups'
+          ])
+        )
       : data;
   }
 
@@ -224,11 +253,18 @@ export class IndexedStore implements PermanentIndexedStore {
 
     const totalRecords = await promisifyRequest<number>(store.count());
 
-    const expirationTime = Math.round(Date.now() / 1000) - daysToExpire * 24 * 60 * 60;
-    const getAllKeysRequest = idx.getAllKeys(IDBKeyRange.upperBound(expirationTime));
+    const expirationTime =
+      Math.round(Date.now() / 1000) - daysToExpire * 24 * 60 * 60;
+    const getAllKeysRequest = idx.getAllKeys(
+      IDBKeyRange.upperBound(expirationTime)
+    );
     const result = await promisifyRequest<IDBValidKey[]>(getAllKeysRequest);
 
-    log.info('character.cache.expire', { daysToExpire, totalRecords, removableRecords: result.length });
+    log.info('character.cache.expire', {
+      daysToExpire,
+      totalRecords,
+      removableRecords: result.length
+    });
 
     return new Promise((resolve, reject) => {
       const gen = (index: number): void => {

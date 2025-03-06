@@ -1,7 +1,11 @@
 import * as _ from 'lodash';
 
 import core from '../chat/core';
-import { Character as ComplexCharacter, CharacterGroup, Guestbook } from '../site/character_page/interfaces';
+import {
+  Character as ComplexCharacter,
+  CharacterGroup,
+  Guestbook
+} from '../site/character_page/interfaces';
 import { AsyncCache } from './async-cache';
 import { Matcher, MatchReport } from './matcher';
 import { PermanentIndexedStore } from './store/types';
@@ -68,7 +72,11 @@ export class ProfileCache extends AsyncCache<CharacterCacheRecord> {
     return null;
   }
 
-  async get(name: string, skipStore: boolean = false, _fromChannel?: string): Promise<CharacterCacheRecord | null> {
+  async get(
+    name: string,
+    skipStore: boolean = false,
+    _fromChannel?: string
+  ): Promise<CharacterCacheRecord | null> {
     const key = AsyncCache.nameKey(name);
 
     if (key in this.cache) {
@@ -96,7 +104,9 @@ export class ProfileCache extends AsyncCache<CharacterCacheRecord> {
     cacheRecord.added = new Date(pd.firstSeen * 1000);
 
     cacheRecord.meta = {
-      lastMetaFetched: pd.lastMetaFetched ? new Date(pd.lastMetaFetched * 1000) : null,
+      lastMetaFetched: pd.lastMetaFetched
+        ? new Date(pd.lastMetaFetched * 1000)
+        : null,
       groups: pd.groups,
       friends: pd.friends,
       images: pd.images,
@@ -139,7 +149,13 @@ export class ProfileCache extends AsyncCache<CharacterCacheRecord> {
     record.meta = meta;
 
     if (this.store) {
-      await this.store.updateProfileMeta(name, meta.images, meta.guestbook, meta.friends, meta.groups);
+      await this.store.updateProfileMeta(
+        name,
+        meta.images,
+        meta.guestbook,
+        meta.friends,
+        meta.groups
+      );
     }
   }
 
@@ -172,7 +188,11 @@ export class ProfileCache extends AsyncCache<CharacterCacheRecord> {
   }
 
   static isValidCharacterNameColor(color: string): boolean {
-    if (color.match(/^(red|blue|white|yellow|pink|gray|green|orange|purple|black|brown|cyan)$/)) {
+    if (
+      color.match(
+        /^(red|blue|white|yellow|pink|gray|green|orange|purple|black|brown|cyan)$/
+      )
+    ) {
       return true;
     }
     return false;
@@ -187,7 +207,9 @@ export class ProfileCache extends AsyncCache<CharacterCacheRecord> {
     //  [url=https://some.domain.ext/path/to/image.png]Rising Portrait[/url]
     //  [url=https://some.domain.ext/path/to/image.png]Rising Portrait[/url]
     // * Despite our name change, we should REMAIN COMPATABLE!
-    const match = description.match(/\[url=(.*?)]\s*?(Rising|Horizon)\s*?Portrait\s*?\[\/url]/i);
+    const match = description.match(
+      /\[url=(.*?)]\s*?(Rising|Horizon)\s*?Portrait\s*?\[\/url]/i
+    );
 
     if (match && match[1]) {
       return match[1].trim();
@@ -201,7 +223,9 @@ export class ProfileCache extends AsyncCache<CharacterCacheRecord> {
       return null;
     }
 
-    const match = description.match(/\[color=(.*?)]\s*?Horizon\s*?Color\s*?\[\/color]/i);
+    const match = description.match(
+      /\[color=(.*?)]\s*?Horizon\s*?Color\s*?\[\/color]/i
+    );
 
     if (match && match[1]) {
       return match[1].trim().toLowerCase();
@@ -211,9 +235,13 @@ export class ProfileCache extends AsyncCache<CharacterCacheRecord> {
   }
 
   updateOverrides(c: ComplexCharacter): void {
-    const avatarUrl = ProfileCache.extractHighQualityPortraitURL(c.character.description);
+    const avatarUrl = ProfileCache.extractHighQualityPortraitURL(
+      c.character.description
+    );
 
-    const characterColor = ProfileCache.extractCharacterNameColor(c.character.description);
+    const characterColor = ProfileCache.extractCharacterNameColor(
+      c.character.description
+    );
 
     if (avatarUrl) {
       if (!ProfileCache.isSafeRisingPortraitURL(avatarUrl)) {
@@ -233,7 +261,10 @@ export class ProfileCache extends AsyncCache<CharacterCacheRecord> {
 
     if (characterColor) {
       if (!ProfileCache.isValidCharacterNameColor(characterColor)) {
-        log.info('character.custom.color.invalid', { name: c.character.name, color: characterColor });
+        log.info('character.custom.color.invalid', {
+          name: c.character.name,
+          color: characterColor
+        });
         return;
       }
 
@@ -242,12 +273,22 @@ export class ProfileCache extends AsyncCache<CharacterCacheRecord> {
         parent.send('update-character-color', c.character.name, characterColor);
       }
 
-      log.info('character.custom.color.applied', { name: c.character.name, color: characterColor });
-      core.characters.setOverride(c.character.name, 'characterColor', characterColor);
+      log.info('character.custom.color.applied', {
+        name: c.character.name,
+        color: characterColor
+      });
+      core.characters.setOverride(
+        c.character.name,
+        'characterColor',
+        characterColor
+      );
     }
   }
 
-  async register(c: ComplexCharacter, skipStore: boolean = false): Promise<CharacterCacheRecord> {
+  async register(
+    c: ComplexCharacter,
+    skipStore: boolean = false
+  ): Promise<CharacterCacheRecord> {
     const k = AsyncCache.nameKey(c.character.name);
     const match = ProfileCache.match(c);
     let score = !match || match.score === null ? Scoring.NEUTRAL : match.score;
@@ -264,13 +305,20 @@ export class ProfileCache extends AsyncCache<CharacterCacheRecord> {
     const risingFilter = core.state.settings.risingFilter;
     const isFiltered = matchesSmartFilters(c.character, risingFilter);
 
-    const penalty = isFiltered && risingFilter.penalizeMatches ? -5 : !isFiltered && risingFilter.rewardNonMatches ? 2 : 0;
+    const penalty =
+      isFiltered && risingFilter.penalizeMatches
+        ? -5
+        : !isFiltered && risingFilter.rewardNonMatches
+          ? 2
+          : 0;
 
     if (isFiltered && risingFilter.penalizeMatches) {
       score = Scoring.MISMATCH;
     }
 
-    const searchScore = match ? Matcher.calculateSearchScoreForMatch(score, match, penalty) : 0;
+    const searchScore = match
+      ? Matcher.calculateSearchScoreForMatch(score, match, penalty)
+      : 0;
 
     const matchDetails = { matchScore: score, searchScore, isFiltered };
 

@@ -29,7 +29,9 @@ export default abstract class ContextMenu extends Vue {
       const win = (window as unknown as any)[`inner${direction}`] as number;
       // (<Window & {[key: string]: number}>window)[`inner${direction}`];
 
-      const menu = (<HTMLElement & { [key: string]: number }>this.$refs['menu'])[`offset${direction}`];
+      const menu = (<HTMLElement & { [key: string]: number }>(
+        this.$refs['menu']
+      ))[`offset${direction}`];
       let position = input;
 
       if (input + menu > win) position = win - menu - 5;
@@ -51,14 +53,21 @@ export default abstract class ContextMenu extends Vue {
     // Provide an opt-out
     if (event.ctrlKey) return;
     if (event.type === 'touchend') window.clearTimeout(this.touchTimer);
-    const targetingEvent = event instanceof TouchEvent ? event.touches[0] : event;
+    const targetingEvent =
+      event instanceof TouchEvent ? event.touches[0] : event;
     const findTarget = (): HTMLElement | undefined => {
       let element = <HTMLElement>targetingEvent.target;
       while (element !== document.body) {
-        if (typeof element.dataset[this.propName] !== 'undefined' || element.parentElement === null) break;
+        if (
+          typeof element.dataset[this.propName] !== 'undefined' ||
+          element.parentElement === null
+        )
+          break;
         element = element.parentElement;
       }
-      return typeof element.dataset[this.propName] === 'undefined' ? undefined : element;
+      return typeof element.dataset[this.propName] === 'undefined'
+        ? undefined
+        : element;
     };
     const target = findTarget();
     if (target === undefined) {
@@ -71,7 +80,10 @@ export default abstract class ContextMenu extends Vue {
         this.openMenu(targetingEvent, target);
         break;
       case 'touchstart':
-        this.touchTimer = window.setTimeout(() => this.openMenu(targetingEvent, target), 500);
+        this.touchTimer = window.setTimeout(
+          () => this.openMenu(targetingEvent, target),
+          500
+        );
     }
     event.preventDefault();
   }

@@ -1,6 +1,11 @@
 <template>
   <div class="infotags row">
-    <div class="infotag-group col-sm-3" v-for="group in groups" :key="group.id" style="margin-top: 5px">
+    <div
+      class="infotag-group col-sm-3"
+      v-for="group in groups"
+      :key="group.id"
+      style="margin-top: 5px"
+    >
       <div class="infotag-title">{{ group.name }}</div>
       <hr />
       <infotag
@@ -39,7 +44,11 @@
     getInfotags(group: number): Infotag[] {
       return Object.keys(Store.shared.infotags)
         .map(x => Store.shared.infotags[x])
-        .filter(x => x.infotag_group === group && this.character.character.infotags[x.id] !== undefined);
+        .filter(
+          x =>
+            x.infotag_group === group &&
+            this.character.character.infotags[x.id] !== undefined
+        );
     }
   }
 </script>

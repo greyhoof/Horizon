@@ -3,7 +3,11 @@
 import core from './core';
 import { Conversation, Notifications as Interface } from './interfaces';
 
-const codecs: { [key: string]: string } = { mpeg: 'mp3', wav: 'wav', ogg: 'ogg' };
+const codecs: { [key: string]: string } = {
+  mpeg: 'mp3',
+  wav: 'wav',
+  ogg: 'ogg'
+};
 
 export default class Notifications implements Interface {
   isInBackground = false;
@@ -11,11 +15,19 @@ export default class Notifications implements Interface {
   protected shouldNotify(conversation: Conversation): boolean {
     return (
       core.characters.ownCharacter.status !== 'dnd' &&
-      (this.isInBackground || conversation !== core.conversations.selectedConversation || core.state.settings.alwaysNotify)
+      (this.isInBackground ||
+        conversation !== core.conversations.selectedConversation ||
+        core.state.settings.alwaysNotify)
     );
   }
 
-  async notify(conversation: Conversation, title: string, body: string, icon: string, sound: string): Promise<void> {
+  async notify(
+    conversation: Conversation,
+    title: string,
+    body: string,
+    icon: string,
+    sound: string
+  ): Promise<void> {
     if (!this.shouldNotify(conversation)) return;
     this.playSound(sound);
     if (
@@ -23,13 +35,17 @@ export default class Notifications implements Interface {
       (<{ Notification?: object }>window).Notification !== undefined &&
       Notification.permission === 'granted'
     ) {
-      const notification = new Notification(title, this.getOptions(conversation, body, icon));
+      const notification = new Notification(
+        title,
+        this.getOptions(conversation, body, icon)
+      );
       notification.onclick = () => {
         conversation.show();
         window.focus();
         if ('close' in notification) notification.close();
       };
-      if ('close' in notification) window.setTimeout(() => notification.close(), 5000);
+      if ('close' in notification)
+        window.setTimeout(() => notification.close(), 5000);
     }
   }
 
@@ -37,7 +53,11 @@ export default class Notifications implements Interface {
     conversation: Conversation,
     body: string,
     icon: string
-  ): NotificationOptions & { badge: string; silent: boolean; renotify: boolean } {
+  ): NotificationOptions & {
+    badge: string;
+    silent: boolean;
+    renotify: boolean;
+  } {
     //tslint:disable-next-line:no-require-imports no-unsafe-any
     const badge = <string>require(`./assets/ic_notification.png`).default;
 
@@ -54,7 +74,9 @@ export default class Notifications implements Interface {
 
   playSound(sound: string): void {
     if (!core.state.settings.playSound) return;
-    const audio = <HTMLAudioElement>document.getElementById(`soundplayer-${sound}`);
+    const audio = <HTMLAudioElement>(
+      document.getElementById(`soundplayer-${sound}`)
+    );
     audio.volume = 1;
     audio.muted = false;
     const promise = audio.play();
@@ -80,12 +102,14 @@ export default class Notifications implements Interface {
       audio.muted = true;
 
       const promise = audio.play();
-      if (promise instanceof Promise) promises.push(promise.catch(e => console.error(e)));
+      if (promise instanceof Promise)
+        promises.push(promise.catch(e => console.error(e)));
     }
     return <any>Promise.all(promises); //tslint:disable-line:no-any
   }
 
   async requestPermission(): Promise<void> {
-    if ((<{ Notification?: object }>window).Notification !== undefined) await Notification.requestPermission();
+    if ((<{ Notification?: object }>window).Notification !== undefined)
+      await Notification.requestPermission();
   }
 }

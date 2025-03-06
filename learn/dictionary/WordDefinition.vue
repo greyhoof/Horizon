@@ -32,7 +32,8 @@
 
   @Component({})
   export default class WordDefinition extends Vue {
-    mode: 'dictionary' | 'thesaurus' | 'urbandictionary' | 'wikipedia' = 'dictionary';
+    mode: 'dictionary' | 'thesaurus' | 'urbandictionary' | 'wikipedia' =
+      'dictionary';
 
     @Prop
     readonly expression?: string;
@@ -53,7 +54,9 @@
       // await remote.webContents.fromId(webview.getWebContentsId()).session.clearStorageData({storages: ['cookies', 'indexdb']});
     }
 
-    setMode(mode: 'dictionary' | 'thesaurus' | 'urbandictionary' | 'wikipedia'): void {
+    setMode(
+      mode: 'dictionary' | 'thesaurus' | 'urbandictionary' | 'wikipedia'
+    ): void {
       this.mode = mode;
     }
 
@@ -89,7 +92,10 @@
       return this.$refs.definitionPreview as Electron.WebviewTag;
     }
 
-    protected async executeJavaScript(js: string | undefined, logDetails?: any): Promise<any> {
+    protected async executeJavaScript(
+      js: string | undefined,
+      logDetails?: any
+    ): Promise<any> {
       const webview = this.getWebview();
 
       if (!js) {
@@ -98,7 +104,9 @@
       }
 
       try {
-        const result = await (webview.executeJavaScript(js) as unknown as Promise<any>);
+        const result = await (webview.executeJavaScript(
+          js
+        ) as unknown as Promise<any>);
 
         log.debug('word-definition.execute-js.result', result);
 

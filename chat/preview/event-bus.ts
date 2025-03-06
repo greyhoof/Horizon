@@ -67,7 +67,10 @@ class EventBusManager {
       return;
     }
 
-    this.eventCallbacks[eventName] = _.filter(this.eventCallbacks[eventName], cb => cb !== callback);
+    this.eventCallbacks[eventName] = _.filter(
+      this.eventCallbacks[eventName],
+      cb => cb !== callback
+    );
   }
 
   $emit(eventName: string, eventData: EventBusEvent): void {

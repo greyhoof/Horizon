@@ -1,6 +1,6 @@
 // ALERT: YIFFBOT FUNCTIONALITY IS ON THE CHOPPING BLOCK!
 // **     Yiffbot was banned from F-List, and as such, most
-//        of it's functionality no longer remains. Given that,  
+//        of it's functionality no longer remains. Given that,
 //        features related to it are SUBJECT FOR DELETION!
 //        Sowwwy...
 

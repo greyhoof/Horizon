@@ -3,10 +3,17 @@
     <div v-show="loading" class="alert alert-info">Loading friends.</div>
     <template v-if="!loading">
       <div class="character-friend" v-for="friend in friends" :key="friend.id">
-        <a :href="characterUrl(friend.name)"><img class="character-avatar" :src="avatarUrl(friend.name)" :title="friend.name" /></a>
+        <a :href="characterUrl(friend.name)"
+          ><img
+            class="character-avatar"
+            :src="avatarUrl(friend.name)"
+            :title="friend.name"
+        /></a>
       </div>
     </template>
-    <div v-if="!loading && !friends.length" class="alert alert-info">No friends to display.</div>
+    <div v-if="!loading && !friends.length" class="alert alert-info">
+      No friends to display.
+    </div>
   </div>
 </template>
 
@@ -47,7 +54,9 @@
     }
 
     async resolveFriends(): Promise<SimpleCharacter[]> {
-      const c = await core.cache.profileCache.get(this.character.character.name);
+      const c = await core.cache.profileCache.get(
+        this.character.character.name
+      );
 
       if (c && c.meta && c.meta.friends) {
         return c.meta.friends;

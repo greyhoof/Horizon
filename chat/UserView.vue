@@ -11,9 +11,16 @@
     @click.middle.prevent.stop="toggleStickyness()"
     @click.right.passive="dismiss(true)"
     @click.left.passive="dismiss(true)"
-    ><img v-if="!!avatar" :src="avatarUrl" class="user-avatar" /><span v-if="!!statusClass" :class="statusClass"></span
-    ><span v-if="!!rankIcon" :class="rankIcon"></span><span v-if="!!smartFilterIcon" :class="smartFilterIcon"></span>{{ character.name
-    }}<span v-if="!!matchClass" :class="matchClass">{{ getMatchScoreTitle(matchScore) }}</span></span
+    ><img v-if="!!avatar" :src="avatarUrl" class="user-avatar" /><span
+      v-if="!!statusClass"
+      :class="statusClass"
+    ></span
+    ><span v-if="!!rankIcon" :class="rankIcon"></span
+    ><span v-if="!!smartFilterIcon" :class="smartFilterIcon"></span
+    >{{ character.name
+    }}<span v-if="!!matchClass" :class="matchClass">{{
+      getMatchScoreTitle(matchScore)
+    }}</span></span
   >
 </template>
 
@@ -84,10 +91,12 @@
             : null;
     }
 
-    if (showStatus || character.status === 'crown') statusClass = `fa-fw ${getStatusIcon(character.status)}`;
+    if (showStatus || character.status === 'crown')
+      statusClass = `fa-fw ${getStatusIcon(character.status)}`;
 
     const cache =
-      (showMatch && core.state.settings.risingAdScore) || core.state.settings.risingFilter.showFilterIcon
+      (showMatch && core.state.settings.risingAdScore) ||
+      core.state.settings.risingFilter.showFilterIcon
         ? core.cache.profileCache.getSync(character.name)
         : undefined;
 
@@ -98,7 +107,10 @@
     }
 
     if (core.state.settings.risingAdScore && showMatch && cache) {
-      if (cache.match.searchScore >= kinkMatchWeights.unicornThreshold && cache.match.matchScore === Scoring.MATCH) {
+      if (
+        cache.match.searchScore >= kinkMatchWeights.unicornThreshold &&
+        cache.match.matchScore === Scoring.MATCH
+      ) {
         matchClass = 'match-found unicorn';
         matchScore = 'unicorn';
       } else {
@@ -107,7 +119,10 @@
       }
     }
 
-    if (core.state.settings.risingFilter.showFilterIcon && cache?.match.isFiltered) {
+    if (
+      core.state.settings.risingFilter.showFilterIcon &&
+      cache?.match.isFiltered
+    ) {
       smartFilterIcon = 'user-filter fas fa-filter';
     }
 
@@ -115,14 +130,19 @@
     const gender = baseGender !== undefined ? baseGender.toLowerCase() : 'none';
 
     const isBookmark =
-      showBookmark && core.connection.isOpen && core.state.settings.colorBookmarks && (character.isFriend || character.isBookmarked);
+      showBookmark &&
+      core.connection.isOpen &&
+      core.state.settings.colorBookmarks &&
+      (character.isFriend || character.isBookmarked);
 
-    const userClass = 
-        `user-view` +
-        ` gender-${gender}` +
-        (isBookmark ? ' user-bookmark' : '') +
-        (character.overrides.characterColor ? ` ${character.overrides.characterColor}NameText` : '');
-// `user-view gender-${gender}${isBookmark ? ' user-bookmark' : ''}`;
+    const userClass =
+      `user-view` +
+      ` gender-${gender}` +
+      (isBookmark ? ' user-bookmark' : '') +
+      (character.overrides.characterColor
+        ? ` ${character.overrides.characterColor}NameText`
+        : '');
+    // `user-view gender-${gender}${isBookmark ? ' user-bookmark' : ''}`;
 
     return {
       rankIcon: rankIcon ? `user-rank ${rankIcon}` : null,
@@ -131,7 +151,7 @@
       matchScore,
       userClass,
       smartFilterIcon,
-      isBookmark,
+      isBookmark
     };
   }
 
@@ -169,7 +189,6 @@
     matchScore: number | string | null = null;
     avatarUrl: string | null = null;
 
-
     // tslint:disable-next-line no-any
     scoreWatcher: ((event: any) => void) | null = null;
 
@@ -187,7 +206,10 @@
           // console.log('scoreWatcher', event);
 
           // tslint:disable-next-line no-unsafe-any no-any
-          if (event.character && event.character.character.name === this.character.name) {
+          if (
+            event.character &&
+            event.character.character.name === this.character.name
+          ) {
             this.update();
 
             if (this.scoreWatcher) {
@@ -204,7 +226,8 @@
 
     @Hook('beforeDestroy')
     onBeforeDestroy(): void {
-      if (this.scoreWatcher) EventBus.$off('character-score', this.scoreWatcher);
+      if (this.scoreWatcher)
+        EventBus.$off('character-score', this.scoreWatcher);
 
       this.dismiss();
     }
@@ -228,7 +251,7 @@
     onAvatarUrlUpdate(): void {
       this.update();
     }
-    
+
     @Watch('character.overrides.characterColor')
     onCharacterColorUpdate(): void {
       this.update();
@@ -237,7 +260,13 @@
     update(): void {
       // console.log('user.view.update', this.character.name);
 
-      const res = getStatusClasses(this.character, this.channel, !!this.showStatus, !!this.bookmark, !!this.match);
+      const res = getStatusClasses(
+        this.character,
+        this.channel,
+        !!this.showStatus,
+        !!this.bookmark,
+        !!this.match
+      );
 
       this.rankIcon = res.rankIcon;
       this.smartFilterIcon = res.smartFilterIcon;
@@ -245,7 +274,9 @@
       this.matchClass = res.matchClass;
       this.matchScore = res.matchScore;
       this.userClass = res.userClass;
-      this.avatarUrl = this.character.overrides.avatarUrl || characterImage(this.character.name);
+      this.avatarUrl =
+        this.character.overrides.avatarUrl ||
+        characterImage(this.character.name);
     }
 
     getMatchScoreTitle(score: number | string | null): string {
@@ -278,7 +309,10 @@
         return;
       }
 
-      EventBus.$emit('imagepreview-dismiss', { url: this.getCharacterUrl(), force });
+      EventBus.$emit('imagepreview-dismiss', {
+        url: this.getCharacterUrl(),
+        force
+      });
     }
 
     show(): void {
@@ -294,7 +328,9 @@
         return;
       }
 
-      EventBus.$emit('imagepreview-toggle-stickyness', { url: this.getCharacterUrl() });
+      EventBus.$emit('imagepreview-toggle-stickyness', {
+        url: this.getCharacterUrl()
+      });
     }
   }
 </script>

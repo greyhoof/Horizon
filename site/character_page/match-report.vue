@@ -5,14 +5,21 @@
     v-if="haveScores(characterMatch.you) || haveScores(characterMatch.them)"
   >
     <a class="minimize-btn" @click.prevent="toggleMinimize()"
-      ><i :class="{ fa: true, 'fa-plus': isMinimized, 'fa-minus': !isMinimized }"></i
+      ><i
+        :class="{ fa: true, 'fa-plus': isMinimized, 'fa-minus': !isMinimized }"
+      ></i
     ></a>
 
     <div class="scores you">
       <h3>
-        <img :src="getAvatarUrl(characterMatch.you.you.name)" class="thumbnail" />
+        <img
+          :src="getAvatarUrl(characterMatch.you.you.name)"
+          class="thumbnail"
+        />
         {{ characterMatch.you.you.name }}
-        <small v-if="characterMatch.youMultiSpecies" class="species">as {{ getSpeciesStr(characterMatch.you) }}</small>
+        <small v-if="characterMatch.youMultiSpecies" class="species"
+          >as {{ getSpeciesStr(characterMatch.you) }}</small
+        >
       </h3>
 
       <ul>
@@ -29,9 +36,14 @@
 
     <div class="scores them">
       <h3>
-        <img :src="getAvatarUrl(characterMatch.them.you.name)" class="thumbnail" />
+        <img
+          :src="getAvatarUrl(characterMatch.them.you.name)"
+          class="thumbnail"
+        />
         {{ characterMatch.them.you.name }}
-        <small v-if="characterMatch.themMultiSpecies" class="species">as {{ getSpeciesStr(characterMatch.them) }}</small>
+        <small v-if="characterMatch.themMultiSpecies" class="species"
+          >as {{ getSpeciesStr(characterMatch.them) }}</small
+        >
       </h3>
 
       <ul>
@@ -51,7 +63,12 @@
   import * as _ from 'lodash';
   import Vue from 'vue';
   import * as Utils from '../utils';
-  import { Matcher, MatchReport, MatchResult, Score } from '../../learn/matcher';
+  import {
+    Matcher,
+    MatchReport,
+    MatchResult,
+    Score
+  } from '../../learn/matcher';
   import core from '../../chat/core';
   import { Scoring, TagId } from '../../learn/matcher-types';
 
@@ -71,7 +88,9 @@
 
     @Hook('beforeMount')
     async beforeMount(): Promise<void> {
-      this.isMinimized = !!(await core.settingsStore.get('hideProfileComparisonSummary'));
+      this.isMinimized = !!(await core.settingsStore.get(
+        'hideProfileComparisonSummary'
+      ));
     }
 
     // @Watch('minimized')
@@ -119,7 +138,10 @@
     async toggleMinimize(): Promise<void> {
       this.isMinimized = !this.isMinimized;
 
-      await core.settingsStore.set('hideProfileComparisonSummary', this.isMinimized);
+      await core.settingsStore.set(
+        'hideProfileComparisonSummary',
+        this.isMinimized
+      );
     }
   }
 </script>

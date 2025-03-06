@@ -1,4 +1,11 @@
-export type ProfileStoreCommand = 'flush' | 'start' | 'stop' | 'update-meta' | 'store' | 'get' | 'init';
+export type ProfileStoreCommand =
+  | 'flush'
+  | 'start'
+  | 'stop'
+  | 'update-meta'
+  | 'store'
+  | 'get'
+  | 'init';
 
 export interface IndexedRequest {
   cmd: ProfileStoreCommand;

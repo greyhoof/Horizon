@@ -60,25 +60,44 @@ export class AdCenter {
   }
 
   getMatchingAds(tags: string[]): Ad[] {
-    return _.filter(this.ads, ad => !ad.disabled && _.intersection(ad.tags, tags).length > 0);
+    return _.filter(
+      this.ads,
+      ad => !ad.disabled && _.intersection(ad.tags, tags).length > 0
+    );
   }
 
-  schedule(tags: string[], channelIds: string[], order: 'random' | 'ad-center', timeoutMinutes: number): void {
+  schedule(
+    tags: string[],
+    channelIds: string[],
+    order: 'random' | 'ad-center',
+    timeoutMinutes: number
+  ): void {
     const ads = this.getMatchingAds(tags);
 
-    _.each(channelIds, channelId => this.scheduleForChannel(channelId, ads, order, timeoutMinutes));
+    _.each(channelIds, channelId =>
+      this.scheduleForChannel(channelId, ads, order, timeoutMinutes)
+    );
   }
 
   adsAreRunning(): boolean {
-    return !_.every(core.conversations.channelConversations, conv => !conv.isSendingAutomatedAds());
+    return !_.every(
+      core.conversations.channelConversations,
+      conv => !conv.isSendingAutomatedAds()
+    );
   }
 
   stopAllAds(): void {
-    _.each(core.conversations.channelConversations, conv => conv.adManager.stop());
+    _.each(core.conversations.channelConversations, conv =>
+      conv.adManager.stop()
+    );
   }
 
-  protected getConversation(channelId: string): Conversation.ChannelConversation | undefined {
-    return core.conversations.channelConversations.find(c => c.channel.id === channelId);
+  protected getConversation(
+    channelId: string
+  ): Conversation.ChannelConversation | undefined {
+    return core.conversations.channelConversations.find(
+      c => c.channel.id === channelId
+    );
   }
 
   isMissingFromAdCenter(adContentToTest: string): boolean {
@@ -94,11 +113,19 @@ export class AdCenter {
       return true;
     }
 
-    return _.every(conv.settings.adSettings.ads, adContent => !this.isMissingFromAdCenter(adContent));
+    return _.every(
+      conv.settings.adSettings.ads,
+      adContent => !this.isMissingFromAdCenter(adContent)
+    );
   }
 
   // tslint:disable-next-line:prefer-function-over-method
-  protected scheduleForChannel(channelId: string, ads: Ad[], order: 'random' | 'ad-center', timeoutMinutes: number): void {
+  protected scheduleForChannel(
+    channelId: string,
+    ads: Ad[],
+    order: 'random' | 'ad-center',
+    timeoutMinutes: number
+  ): void {
     const conv = this.getConversation(channelId);
 
     if (!conv) {

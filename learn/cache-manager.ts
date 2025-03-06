@@ -1,6 +1,12 @@
 import * as _ from 'lodash';
 import core from '../chat/core';
-import { ChannelAdEvent, ChannelMessageEvent, CharacterDataEvent, EventBus, SelectConversationEvent } from '../chat/preview/event-bus';
+import {
+  ChannelAdEvent,
+  ChannelMessageEvent,
+  CharacterDataEvent,
+  EventBus,
+  SelectConversationEvent
+} from '../chat/preview/event-bus';
 import { Channel, Conversation } from '../chat/interfaces';
 import { methods } from '../site/character_page/data_store';
 import { Character as ComplexCharacter } from '../site/character_page/interfaces';
@@ -44,7 +50,8 @@ export class CacheManager {
 
   adCache: AdCache = new AdCache();
   profileCache: ProfileCache = new ProfileCache();
-  channelConversationCache: ChannelConversationCache = new ChannelConversationCache();
+  channelConversationCache: ChannelConversationCache =
+    new ChannelConversationCache();
 
   protected queue: ProfileCacheQueueEntry[] = [];
 
@@ -66,7 +73,9 @@ export class CacheManager {
     this.isActiveTab = isActive;
 
     if (this.isActiveTab) {
-      void this.onSelectConversation({ conversation: core.conversations.selectedConversation });
+      void this.onSelectConversation({
+        conversation: core.conversations.selectedConversation
+      });
     } else {
       void this.onSelectConversation({ conversation: null! });
     }
@@ -80,25 +89,39 @@ export class CacheManager {
     return this.lastPost;
   }
 
-  async queueForFetching(name: string, skipCacheCheck: boolean = false, channelId?: string): Promise<void> {
+  async queueForFetching(
+    name: string,
+    skipCacheCheck: boolean = false,
+    channelId?: string
+  ): Promise<void> {
     if (!core.state.settings.risingAdScore) {
       return;
     }
 
-    log.debug('profile.cache.queue', { name, skipCacheCheck, channelId, from: core.characters.ownCharacter.name });
+    log.debug('profile.cache.queue', {
+      name,
+      skipCacheCheck,
+      channelId,
+      from: core.characters.ownCharacter.name
+    });
 
     if (!skipCacheCheck) {
       const c = await this.profileCache.get(name);
 
       if (c) {
-        this.updateAdScoringForProfile(c.character, c.match.matchScore, c.match.isFiltered);
+        this.updateAdScoringForProfile(
+          c.character,
+          c.match.matchScore,
+          c.match.isFiltered
+        );
         return;
       }
     }
 
     const key = ProfileCache.nameKey(name);
 
-    if (!!_.find(this.queue, (q: ProfileCacheQueueEntry) => q.key === key)) return;
+    if (!!_.find(this.queue, (q: ProfileCacheQueueEntry) => q.key === key))
+      return;
 
     const entry: ProfileCacheQueueEntry = {
       name,
@@ -132,7 +155,11 @@ export class CacheManager {
     }
   }
 
-  updateAdScoringForProfile(c: ComplexCharacter, score: number, isFiltered: boolean): void {
+  updateAdScoringForProfile(
+    c: ComplexCharacter,
+    score: number,
+    isFiltered: boolean
+  ): void {
     EventBus.$emit('character-score', {
       character: c,
       score,
@@ -150,10 +177,20 @@ export class CacheManager {
     if (char && char.status !== 'offline') {
       const conv = core.conversations.getPrivate(char, true);
 
-      if (conv && conv.messages.length > 0 && Date.now() - _.last(conv.messages)!.time.getTime() < 5 * 60 * 1000) {
-        const sessionMessages = _.filter(conv.messages, m => m.time.getTime() >= this.startTime.getTime());
+      if (
+        conv &&
+        conv.messages.length > 0 &&
+        Date.now() - _.last(conv.messages)!.time.getTime() < 5 * 60 * 1000
+      ) {
+        const sessionMessages = _.filter(
+          conv.messages,
+          m => m.time.getTime() >= this.startTime.getTime()
+        );
 
-        const allMessagesFromThem = _.every(sessionMessages, m => 'sender' in m && m.sender.name === conv.character.name);
+        const allMessagesFromThem = _.every(
+          sessionMessages,
+          m => 'sender' in m && m.sender.name === conv.character.name
+        );
 
         if (sessionMessages.length > 0 && allMessagesFromThem) {
           await testSmartFilterForPrivateMessage(char);
@@ -192,7 +229,10 @@ export class CacheManager {
     }
 
     // re-score
-    _.each(this.queue, (e: ProfileCacheQueueEntry) => (e.score = this.calculateScore(e)));
+    _.each(
+      this.queue,
+      (e: ProfileCacheQueueEntry) => (e.score = this.calculateScore(e))
+    );
 
     this.queue = _.sortBy(this.queue, 'score');
 
@@ -211,13 +251,17 @@ export class CacheManager {
   }
 
   calculateScore(e: ProfileCacheQueueEntry): number {
-    return this.characterProfiler ? this.characterProfiler.calculateInterestScoreForQueueEntry(e) : 0;
+    return this.characterProfiler
+      ? this.characterProfiler.calculateInterestScoreForQueueEntry(e)
+      : 0;
   }
 
   async start(settings: GeneralSettings, skipFlush: boolean): Promise<void> {
     await this.stop();
 
-    this.profileStore = await WorkerStore.open(path.join(/*electron.remote.app.getAppPath(),*/ 'storeWorkerEndpoint.js')); // await IndexedStore.open();
+    this.profileStore = await WorkerStore.open(
+      path.join(/*electron.remote.app.getAppPath(),*/ 'storeWorkerEndpoint.js')
+    ); // await IndexedStore.open();
 
     this.profileCache.setStore(this.profileStore);
 
@@ -243,17 +287,23 @@ export class CacheManager {
       this.onChannelAd(data);
     });
 
-    EventBus.$on('select-conversation', async (data: SelectConversationEvent) => {
-      // this promise is intentionally NOT chained
-      // tslint:disable-next-line: no-floating-promises
-      this.onSelectConversation(data);
-    });
+    EventBus.$on(
+      'select-conversation',
+      async (data: SelectConversationEvent) => {
+        // this promise is intentionally NOT chained
+        // tslint:disable-next-line: no-floating-promises
+        this.onSelectConversation(data);
+      }
+    );
 
-    EventBus.$on('conversation-load-more', async (data: SelectConversationEvent) => {
-      // this promise is intentionally NOT chained
-      // tslint:disable-next-line: no-floating-promises
-      this.onLoadMoreConversation(data);
-    });
+    EventBus.$on(
+      'conversation-load-more',
+      async (data: SelectConversationEvent) => {
+        // this promise is intentionally NOT chained
+        // tslint:disable-next-line: no-floating-promises
+        this.onLoadMoreConversation(data);
+      }
+    );
 
     // EventBus.$on(
     //     'private-message',
@@ -271,13 +321,19 @@ export class CacheManager {
           try {
             let skipFetch = false;
 
-            if (next.name in this.ongoingLog || (next.name in this.fetchLog && Date.now() - this.fetchLog[next.name] < 120000)) {
+            if (
+              next.name in this.ongoingLog ||
+              (next.name in this.fetchLog &&
+                Date.now() - this.fetchLog[next.name] < 120000)
+            ) {
               skipFetch = true;
             }
 
             // tslint:disable-next-line: binary-expression-operand-order
             if (false && next) {
-              console.log(`Fetch '${next!.name}' for channel '${next!.channelId}', gap: ${Date.now() - this.lastFetch}ms`);
+              console.log(
+                `Fetch '${next!.name}' for channel '${next!.channelId}', gap: ${Date.now() - this.lastFetch}ms`
+              );
               this.lastFetch = Date.now();
             }
 
@@ -343,8 +399,16 @@ export class CacheManager {
       message: message.text
     });
 
-    if (!data.profile && core.conversations.selectedConversation === data.channel && this.isActiveTab) {
-      await this.queueForFetching(message.sender.name, true, data.channel.channel.id);
+    if (
+      !data.profile &&
+      core.conversations.selectedConversation === data.channel &&
+      this.isActiveTab
+    ) {
+      await this.queueForFetching(
+        message.sender.name,
+        true,
+        data.channel.channel.id
+      );
     }
 
     // this.addProfile(message.sender.name);
@@ -357,11 +421,16 @@ export class CacheManager {
   async onSelectConversation(data: SelectConversationEvent): Promise<void> {
     const conversation = data.conversation;
 
-    const channel = _.get(conversation, 'channel') as Channel.Channel | undefined;
+    const channel = _.get(conversation, 'channel') as
+      | Channel.Channel
+      | undefined;
     const channelId = _.get(channel, 'id', '<missing>');
 
     // Remove unfinished fetches related to other channels
-    this.queue = _.reject(this.queue, q => !!q.channelId && q.channelId !== channelId);
+    this.queue = _.reject(
+      this.queue,
+      q => !!q.channelId && q.channelId !== channelId
+    );
 
     if (channel) {
       const checkedNames: Record<string, boolean> = {};
@@ -389,10 +458,20 @@ export class CacheManager {
             return;
           }
 
-          const p = await this.resolvePScore(false, chatMessage.sender, conversation as ChannelConversation, chatMessage, true);
+          const p = await this.resolvePScore(
+            false,
+            chatMessage.sender,
+            conversation as ChannelConversation,
+            chatMessage,
+            true
+          );
 
           if (!p) {
-            await this.queueForFetching(chatMessage.sender.name, true, channel.id);
+            await this.queueForFetching(
+              chatMessage.sender.name,
+              true,
+              channel.id
+            );
           }
         }
       );
@@ -413,7 +492,12 @@ export class CacheManager {
     // this is done here so that the message will be rendered correctly when cache is hit
     let p: CharacterCacheRecord | undefined;
 
-    p = (await core.cache.profileCache.get(char.name, skipStore, conv.channel.name)) || undefined;
+    p =
+      (await core.cache.profileCache.get(
+        char.name,
+        skipStore,
+        conv.channel.name
+      )) || undefined;
 
     if (p && msg) {
       // if (p.matchScore === 0) {
@@ -430,7 +514,11 @@ export class CacheManager {
       msg.filterMatch = p.match.isFiltered;
 
       if (populateAll) {
-        this.populateAllConversationsWithScore(char.name, p.match.matchScore, p.match.isFiltered);
+        this.populateAllConversationsWithScore(
+          char.name,
+          p.match.matchScore,
+          p.match.isFiltered
+        );
       }
     }
 
@@ -438,17 +526,28 @@ export class CacheManager {
   }
 
   // tslint:disable-next-line: prefer-function-over-method
-  public populateAllConversationsWithScore(characterName: string, score: number, isFiltered: boolean): void {
-    _.each(core.conversations.channelConversations, (ch: ChannelConversation) => {
-      _.each(ch.messages, (m: Conversation.Message) => {
-        if (m.type === Message.Type.Ad && m.sender && m.sender.name === characterName) {
-          // console.log('Update score', score, ch.name, m.sender.name, m.text, m.id);
+  public populateAllConversationsWithScore(
+    characterName: string,
+    score: number,
+    isFiltered: boolean
+  ): void {
+    _.each(
+      core.conversations.channelConversations,
+      (ch: ChannelConversation) => {
+        _.each(ch.messages, (m: Conversation.Message) => {
+          if (
+            m.type === Message.Type.Ad &&
+            m.sender &&
+            m.sender.name === characterName
+          ) {
+            // console.log('Update score', score, ch.name, m.sender.name, m.text, m.id);
 
-          m.score = score;
-          m.filterMatch = isFiltered;
-        }
-      });
-    });
+            m.score = score;
+            m.filterMatch = isFiltered;
+          }
+        });
+      }
+    );
   }
 
   async stop(): Promise<void> {

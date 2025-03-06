@@ -15,7 +15,12 @@
       <i :class="iconClass" v-if="!!iconClass"></i>
       <slot name="title">{{ title }}</slot>
     </a>
-    <div class="dropdown-menu" ref="menu" @mousedown.prevent.stop @click.prevent.stop="menuClick()">
+    <div
+      class="dropdown-menu"
+      ref="menu"
+      @mousedown.prevent.stop
+      @click.prevent.stop="menuClick()"
+    >
       <slot></slot>
     </div>
   </div>
@@ -51,9 +56,14 @@
       menu.style.display = 'block';
       const offset = menu.getBoundingClientRect();
       menu.style.position = 'fixed';
-      menu.style.left = offset.right < window.innerWidth ? `${offset.left}px` : `${window.innerWidth - offset.width}px`;
+      menu.style.left =
+        offset.right < window.innerWidth
+          ? `${offset.left}px`
+          : `${window.innerWidth - offset.width}px`;
       menu.style.top =
-        offset.bottom < window.innerHeight ? `${offset.top}px` : `${offset.top - offset.height - (<HTMLElement>this.$el).offsetHeight}px`;
+        offset.bottom < window.innerHeight
+          ? `${offset.top}px`
+          : `${offset.top - offset.height - (<HTMLElement>this.$el).offsetHeight}px`;
     }
 
     blur(event: FocusEvent): void {

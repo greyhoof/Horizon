@@ -1,37 +1,91 @@
 <template>
-  <div style="display: flex; flex-direction: column; height: 100%" :class="getThemeClass()" @auxclick.prevent>
+  <div
+    style="display: flex; flex-direction: column; height: 100%"
+    :class="getThemeClass()"
+    @auxclick.prevent
+  >
     <div v-html="styling"></div>
-    <div style="display: flex; align-items: stretch; border-bottom-width: 1px" class="border-bottom" id="window-tabs">
+    <div
+      style="display: flex; align-items: stretch; border-bottom-width: 1px"
+      class="border-bottom"
+      id="window-tabs"
+    >
       <h4 style="padding: 2px 0">F-Chat</h4>
-      <div class="btn" :class="'btn-' + (hasUpdate ? 'warning' : 'light')" @click="openMenu" id="settings">
+      <div
+        class="btn"
+        :class="'btn-' + (hasUpdate ? 'warning' : 'light')"
+        @click="openMenu"
+        id="settings"
+      >
         <i class="fa fa-cog"></i>
       </div>
-      <ul class="nav nav-tabs" style="border-bottom: 0; margin-bottom: -1px; margin-top: 1px" ref="tabs">
-        <li v-for="(tab, index) in tabs" :key="'tab-' + index" class="nav-item" @click.middle="remove(tab)">
+      <ul
+        class="nav nav-tabs"
+        style="border-bottom: 0; margin-bottom: -1px; margin-top: 1px"
+        ref="tabs"
+      >
+        <li
+          v-for="(tab, index) in tabs"
+          :key="'tab-' + index"
+          class="nav-item"
+          @click.middle="remove(tab)"
+        >
           <a
             href="#"
             @click.prevent="show(tab)"
             class="nav-link tab"
-            :class="{ active: tab === activeTab, hasNew: tab.hasNew && tab !== activeTab }"
+            :class="{
+              active: tab === activeTab,
+              hasNew: tab.hasNew && tab !== activeTab
+            }"
           >
             <img v-if="tab.user || tab.avatarUrl" :src="getAvatarImage(tab)" />
-            <span class="d-sm-inline d-none">{{ tab.user || l('window.newTab') }}</span>
+            <span class="d-sm-inline d-none">{{
+              tab.user || l('window.newTab')
+            }}</span>
             <a
               href="#"
               :aria-label="l('action.close')"
-              style="margin-left: 10px; padding: 0; color: inherit; text-decoration: none"
+              style="
+                margin-left: 10px;
+                padding: 0;
+                color: inherit;
+                text-decoration: none;
+              "
               @click.stop="remove(tab)"
               ><i class="fa fa-times"></i>
             </a>
           </a>
         </li>
-        <li v-show="canOpenTab && hasCompletedUpgrades" class="addTab nav-item" id="addTab">
-          <a href="#" @click.prevent="addTab()" class="nav-link"><i class="fa fa-plus"></i></a>
+        <li
+          v-show="canOpenTab && hasCompletedUpgrades"
+          class="addTab nav-item"
+          id="addTab"
+        >
+          <a href="#" @click.prevent="addTab()" class="nav-link"
+            ><i class="fa fa-plus"></i
+          ></a>
         </li>
       </ul>
-      <div style="flex: 1; display: flex; justify-content: flex-end; -webkit-app-region: drag" class="btn-group" id="windowButtons">
-        <i class="far fa-window-minimize btn btn-light" @click.stop="minimize()"></i>
-        <i class="far btn btn-light" :class="'fa-window-' + (isMaximized ? 'restore' : 'maximize')" @click="maximize()"></i>
+      <div
+        style="
+          flex: 1;
+          display: flex;
+          justify-content: flex-end;
+          -webkit-app-region: drag;
+        "
+        class="btn-group"
+        id="windowButtons"
+      >
+        <i
+          class="far fa-window-minimize btn btn-light"
+          @click.stop="minimize()"
+        ></i>
+        <i
+          class="far btn btn-light"
+          :class="'fa-window-' + (isMaximized ? 'restore' : 'maximize')"
+          @click="maximize()"
+        ></i>
         <span class="btn btn-light" @click.stop="close()">
           <i class="fa fa-times fa-lg"></i>
         </span>
@@ -64,11 +118,17 @@
   function getWindowBounds(): Electron.Rectangle {
     const bounds = browserWindow.getContentBounds();
     const height = document.body.offsetHeight;
-    return { x: 0, y: height, width: bounds.width, height: bounds.height - height };
+    return {
+      x: 0,
+      y: height,
+      width: bounds.width,
+      height: bounds.height - height
+    };
   }
 
   function destroyTab(tab: Tab): void {
-    if (tab.user !== undefined) electron.ipcRenderer.send('disconnect', tab.user);
+    if (tab.user !== undefined)
+      electron.ipcRenderer.send('disconnect', tab.user);
     tab.tray.destroy();
 
     tab.view.webContents.stop();
@@ -121,7 +181,10 @@
   // console.log(require('./build/tray.png').default);
 
   //tslint:disable-next-line:no-require-imports no-unsafe-any
-  const trayIcon = path.join(__dirname, <string>require('./build/tray.png').default);
+  const trayIcon = path.join(
+    __dirname,
+    <string>require('./build/tray.png').default
+  );
   //path.join(__dirname, <string>require('./build/tray.png').default);
 
   @Component
@@ -148,103 +211,154 @@
         browserWindow.webContents.openDevTools({ mode: 'detach' });
       }
 
-      updateSupportedLanguages(browserWindow.webContents.session.availableSpellCheckerLanguages);
+      updateSupportedLanguages(
+        browserWindow.webContents.session.availableSpellCheckerLanguages
+      );
 
       log.debug('init.window.languages.supported');
       // console.log('MOUNT DICTIONARIES', getSafeLanguages(this.settings.spellcheckLang), this.settings.spellcheckLang);
 
-      browserWindow.webContents.session.setSpellCheckerLanguages(getSafeLanguages(this.settings.spellcheckLang));
+      browserWindow.webContents.session.setSpellCheckerLanguages(
+        getSafeLanguages(this.settings.spellcheckLang)
+      );
 
       log.debug('init.window.languages');
 
-      electron.ipcRenderer.on('settings', (_e: Electron.IpcRendererEvent, settings: GeneralSettings) => {
-        log.debug('settings.update.window');
+      electron.ipcRenderer.on(
+        'settings',
+        (_e: Electron.IpcRendererEvent, settings: GeneralSettings) => {
+          log.debug('settings.update.window');
 
-        this.settings = settings;
+          this.settings = settings;
 
-        log.transports.file.level = settings.risingSystemLogLevel;
-        log.transports.console.level = settings.risingSystemLogLevel;
-      });
+          log.transports.file.level = settings.risingSystemLogLevel;
+          log.transports.console.level = settings.risingSystemLogLevel;
+        }
+      );
 
       electron.ipcRenderer.on('rising-upgrade-complete', () => {
         // console.log('RISING COMPLETE RECV');
         this.hasCompletedUpgrades = true;
       });
-      electron.ipcRenderer.on('allow-new-tabs', (_e: Electron.IpcRendererEvent, allow: boolean) => (this.canOpenTab = allow));
+      electron.ipcRenderer.on(
+        'allow-new-tabs',
+        (_e: Electron.IpcRendererEvent, allow: boolean) =>
+          (this.canOpenTab = allow)
+      );
       electron.ipcRenderer.on('open-tab', () => this.addTab());
-      electron.ipcRenderer.on('update-available', (_e: Electron.IpcRendererEvent, available: boolean) => (this.hasUpdate = available));
-      electron.ipcRenderer.on('fix-logs', () => this.activeTab!.view.webContents.send('fix-logs'));
+      electron.ipcRenderer.on(
+        'update-available',
+        (_e: Electron.IpcRendererEvent, available: boolean) =>
+          (this.hasUpdate = available)
+      );
+      electron.ipcRenderer.on('fix-logs', () =>
+        this.activeTab!.view.webContents.send('fix-logs')
+      );
       electron.ipcRenderer.on('quit', () => this.destroyAllTabs());
-      electron.ipcRenderer.on('reopen-profile', () => this.activeTab!.view.webContents.send('reopen-profile'));
-      electron.ipcRenderer.on('update-dictionaries', (_e: Electron.IpcRendererEvent, langs: string[]) => {
-        // console.log('UPDATE DICTIONARIES', langs);
+      electron.ipcRenderer.on('reopen-profile', () =>
+        this.activeTab!.view.webContents.send('reopen-profile')
+      );
+      electron.ipcRenderer.on(
+        'update-dictionaries',
+        (_e: Electron.IpcRendererEvent, langs: string[]) => {
+          // console.log('UPDATE DICTIONARIES', langs);
 
-        browserWindow.webContents.session.setSpellCheckerLanguages(langs);
+          browserWindow.webContents.session.setSpellCheckerLanguages(langs);
 
-        for (const t of this.tabs) {
-          t.view.webContents.session.setSpellCheckerLanguages(langs);
+          for (const t of this.tabs) {
+            t.view.webContents.session.setSpellCheckerLanguages(langs);
+          }
         }
-      });
+      );
 
       // electron.ipcRenderer.on('update-zoom', (_e: Event, zoomLevel: number) => {
       //   // log.info('WINDOWVUE ZOOM UPDATE', zoomLevel);
       //   // browserWindow.webContents.setZoomLevel(zoomLevel);
       // });
 
-      electron.ipcRenderer.on('connect', (_e: Electron.IpcRendererEvent, id: number, name: string) => {
-        const tab = this.tabMap[id];
-        tab.user = name;
-        tab.tray.setToolTip(`${l('title')} - ${tab.user}`);
-        const menu = this.createTrayMenu(tab);
-        menu.unshift({ label: tab.user, enabled: false }, { type: 'separator' });
-        tab.tray.setContextMenu(remote.Menu.buildFromTemplate(menu));
-      });
-      electron.ipcRenderer.on('update-avatar-url', (_e: Electron.IpcRendererEvent, characterName: string, url: string) => {
-        const tab = this.tabs.find(tab => tab.user === characterName);
-
-        if (!tab) {
-          return;
+      electron.ipcRenderer.on(
+        'connect',
+        (_e: Electron.IpcRendererEvent, id: number, name: string) => {
+          const tab = this.tabMap[id];
+          tab.user = name;
+          tab.tray.setToolTip(`${l('title')} - ${tab.user}`);
+          const menu = this.createTrayMenu(tab);
+          menu.unshift(
+            { label: tab.user, enabled: false },
+            { type: 'separator' }
+          );
+          tab.tray.setContextMenu(remote.Menu.buildFromTemplate(menu));
         }
+      );
+      electron.ipcRenderer.on(
+        'update-avatar-url',
+        (_e: Electron.IpcRendererEvent, characterName: string, url: string) => {
+          const tab = this.tabs.find(tab => tab.user === characterName);
 
-        Vue.set(tab, 'avatarUrl', url);
-        // tab.avatarUrl = url;
-      });
-      electron.ipcRenderer.on('disconnect', (_e: Electron.IpcRendererEvent, id: number) => {
-        const tab = this.tabMap[id];
-        if (tab.hasNew) {
-          tab.hasNew = false;
+          if (!tab) {
+            return;
+          }
+
+          Vue.set(tab, 'avatarUrl', url);
+          // tab.avatarUrl = url;
+        }
+      );
+      electron.ipcRenderer.on(
+        'disconnect',
+        (_e: Electron.IpcRendererEvent, id: number) => {
+          const tab = this.tabMap[id];
+          if (tab.hasNew) {
+            tab.hasNew = false;
+            electron.ipcRenderer.send(
+              'has-new',
+              this.tabs.reduce((cur, t) => cur || t.hasNew, false)
+            );
+          }
+          tab.user = undefined;
+          tab.tray.setToolTip(l('title'));
+          tab.tray.setContextMenu(
+            remote.Menu.buildFromTemplate(this.createTrayMenu(tab))
+          );
+        }
+      );
+      electron.ipcRenderer.on(
+        'has-new',
+        (_e: Electron.IpcRendererEvent, id: number, hasNew: boolean) => {
+          const tab = this.tabMap[id];
+          tab.hasNew = hasNew;
           electron.ipcRenderer.send(
             'has-new',
             this.tabs.reduce((cur, t) => cur || t.hasNew, false)
           );
         }
-        tab.user = undefined;
-        tab.tray.setToolTip(l('title'));
-        tab.tray.setContextMenu(remote.Menu.buildFromTemplate(this.createTrayMenu(tab)));
-      });
-      electron.ipcRenderer.on('has-new', (_e: Electron.IpcRendererEvent, id: number, hasNew: boolean) => {
-        const tab = this.tabMap[id];
-        tab.hasNew = hasNew;
-        electron.ipcRenderer.send(
-          'has-new',
-          this.tabs.reduce((cur, t) => cur || t.hasNew, false)
-        );
-      });
+      );
       browserWindow.on('maximize', () => (this.isMaximized = true));
       browserWindow.on('unmaximize', () => (this.isMaximized = false));
       electron.ipcRenderer.on('switch-tab', (_e: Electron.IpcRendererEvent) => {
         const index = this.tabs.indexOf(this.activeTab!);
         this.show(this.tabs[index + 1 === this.tabs.length ? 0 : index + 1]);
       });
-      electron.ipcRenderer.on('previous-tab', (_e: Electron.IpcRendererEvent) => {
-        const index = this.tabs.indexOf(this.activeTab!);
-        this.show(this.tabs[index - 1 < 0 ? this.tabs.length - 1 : index - 1]);
-      });
-      electron.ipcRenderer.on('show-tab', (_e: Electron.IpcRendererEvent, id: number) => {
-        this.show(this.tabMap[id]);
-      });
-      document.addEventListener('click', () => this.activeTab!.view.webContents.focus());
-      window.addEventListener('focus', () => this.activeTab!.view.webContents.focus());
+      electron.ipcRenderer.on(
+        'previous-tab',
+        (_e: Electron.IpcRendererEvent) => {
+          const index = this.tabs.indexOf(this.activeTab!);
+          this.show(
+            this.tabs[index - 1 < 0 ? this.tabs.length - 1 : index - 1]
+          );
+        }
+      );
+      electron.ipcRenderer.on(
+        'show-tab',
+        (_e: Electron.IpcRendererEvent, id: number) => {
+          this.show(this.tabMap[id]);
+        }
+      );
+      document.addEventListener('click', () =>
+        this.activeTab!.view.webContents.focus()
+      );
+      window.addEventListener('focus', () =>
+        this.activeTab!.view.webContents.focus()
+      );
 
       log.debug('init.window.listeners');
 
@@ -272,7 +386,10 @@
       });
 
       window.onbeforeunload = () => {
-        const isConnected = this.tabs.reduce((cur, tab) => cur || tab.user !== undefined, false);
+        const isConnected = this.tabs.reduce(
+          (cur, tab) => cur || tab.user !== undefined,
+          false
+        );
         if (process.env.NODE_ENV !== 'production' || !isConnected) {
           this.destroyAllTabs();
           return;
@@ -297,7 +414,11 @@
         return tab.avatarUrl;
       }
 
-      return 'https://static.f-list.net/images/avatar/' + (tab.user || '').toLowerCase() + '.png';
+      return (
+        'https://static.f-list.net/images/avatar/' +
+        (tab.user || '').toLowerCase() +
+        '.png'
+      );
     }
 
     destroyAllTabs(): void {
@@ -310,7 +431,10 @@
       try {
         return `<style>${fs.readFileSync(path.join(__dirname, `themes/${this.settings.theme}.css`), 'utf8').toString()}</style>`;
       } catch (e) {
-        if ((<Error & { code: string }>e).code === 'ENOENT' && this.settings.theme !== 'default') {
+        if (
+          (<Error & { code: string }>e).code === 'ENOENT' &&
+          this.settings.theme !== 'default'
+        ) {
           this.settings.theme = 'default';
           return this.styling;
         }
@@ -369,7 +493,9 @@
       log.debug('init.window.tab.add.devtools');
 
       // console.log('ADD TAB LANGUAGES', getSafeLanguages(this.settings.spellcheckLang), this.settings.spellcheckLang);
-      view.webContents.session.setSpellCheckerLanguages(getSafeLanguages(this.settings.spellcheckLang));
+      view.webContents.session.setSpellCheckerLanguages(
+        getSafeLanguages(this.settings.spellcheckLang)
+      );
 
       log.debug('init.window.tab.add.spellcheck');
 
@@ -379,7 +505,9 @@
       log.debug('init.window.tab.add.notify');
 
       const tab = { active: false, view, user: undefined, hasNew: false, tray };
-      tray.setContextMenu(remote.Menu.buildFromTemplate(this.createTrayMenu(tab)));
+      tray.setContextMenu(
+        remote.Menu.buildFromTemplate(this.createTrayMenu(tab))
+      );
       this.tabs.push(tab);
       this.tabMap[view.webContents.id] = tab;
 
@@ -394,7 +522,10 @@
         pathname: path.join(__dirname, 'index.html'),
         protocol: 'file:',
         slashes: true,
-        query: { settings: JSON.stringify(this.settings), hasCompletedUpgrades: JSON.stringify(this.hasCompletedUpgrades) }
+        query: {
+          settings: JSON.stringify(this.settings),
+          hasCompletedUpgrades: JSON.stringify(this.hasCompletedUpgrades)
+        }
       });
 
       log.debug('init.window.tab.add.load-index.start', indexUrl);
@@ -417,13 +548,21 @@
       tab.view.webContents.focus();
 
       // tab.view.webContents.send('active-tab', { webContentsId: tab.view.webContents.id });
-      _.each(this.tabs, t => t.view.webContents.send(t === tab ? 'active-tab' : 'inactive-tab'));
+      _.each(this.tabs, t =>
+        t.view.webContents.send(t === tab ? 'active-tab' : 'inactive-tab')
+      );
 
       // electron.ipcRenderer.send('active-tab', { webContentsId: tab.view.webContents.id });
     }
 
     remove(tab: Tab, shouldConfirm: boolean = true): void {
-      if (this.lockTab || (shouldConfirm && tab.user !== undefined && !confirm(l('chat.confirmLeave')))) return;
+      if (
+        this.lockTab ||
+        (shouldConfirm &&
+          tab.user !== undefined &&
+          !confirm(l('chat.confirmLeave')))
+      )
+        return;
       this.tabs.splice(this.tabs.indexOf(tab), 1);
       electron.ipcRenderer.send(
         'has-new',
@@ -461,15 +600,20 @@
         // Hack!
         if (process.platform === 'win32') {
           if (this.settings?.risingDisableWindowsHighContrast) {
-            document.querySelector('html')?.classList.add('disableWindowsHighContrast');
+            document
+              .querySelector('html')
+              ?.classList.add('disableWindowsHighContrast');
           } else {
-            document.querySelector('html')?.classList.remove('disableWindowsHighContrast');
+            document
+              .querySelector('html')
+              ?.classList.remove('disableWindowsHighContrast');
           }
         }
 
         return {
           ['platform-' + this.platform]: true,
-          disableWindowsHighContrast: this.settings?.risingDisableWindowsHighContrast || false
+          disableWindowsHighContrast:
+            this.settings?.risingDisableWindowsHighContrast || false
         };
       } catch (err) {
         return {

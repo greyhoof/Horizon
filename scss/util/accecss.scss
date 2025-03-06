@@ -80,7 +80,12 @@ $path-to-filter: '../../../chat/assets';
 ///
 /// @group helpers
 
-@mixin accecss($element: false, $zones: false, $grayscale: false, $cbFilter: false) {
+@mixin accecss(
+  $element: false,
+  $zones: false,
+  $grayscale: false,
+  $cbFilter: false
+) {
   @if $grayscale == true and $cbFilter == false {
     @if $element != false {
       #{$element} {
@@ -98,7 +103,8 @@ $path-to-filter: '../../../chat/assets';
       }
     } @else {
       html body {
-        filter: url('#{$path-to-filter}/filters.svg##{$cbFilter}') grayscale(0) !important;
+        filter: url('#{$path-to-filter}/filters.svg##{$cbFilter}')
+          grayscale(0) !important;
       }
     }
   } @else if $grayscale == false and $cbFilter != false {
@@ -108,7 +114,8 @@ $path-to-filter: '../../../chat/assets';
       }
     } @else {
       html body {
-        filter: url('#{$path-to-filter}/filters.svg##{$cbFilter}') grayscale(0) !important;
+        filter: url('#{$path-to-filter}/filters.svg##{$cbFilter}')
+          grayscale(0) !important;
       }
     }
   } @else if $cbFilter != false and $element != false {
@@ -118,7 +125,8 @@ $path-to-filter: '../../../chat/assets';
       }
     } @else {
       html body {
-        filter: url('#{$path-to-filter}/filters.svg##{$cbFilter}') grayscale(0) !important;
+        filter: url('#{$path-to-filter}/filters.svg##{$cbFilter}')
+          grayscale(0) !important;
       }
     }
   }

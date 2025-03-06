@@ -16,7 +16,10 @@
 
         <template v-for="message in ads">
           <h3>
-            #{{ message.channelName }} <span class="message-time">{{ formatTime(message.datePosted) }}</span>
+            #{{ message.channelName }}
+            <span class="message-time">{{
+              formatTime(message.datePosted)
+            }}</span>
           </h3>
           <div class="border-bottom">
             <bbcode :text="message.message"></bbcode>
@@ -26,7 +29,9 @@
     </div>
 
     <div class="row" v-if="ads.length === 0 && conversation.length === 0">
-      <div class="col-sm-10" style="margin-top: 5px">You have not seen any ads or messages from this character.</div>
+      <div class="col-sm-10" style="margin-top: 5px">
+        You have not seen any ads or messages from this character.
+      </div>
     </div>
   </div>
 </template>
@@ -72,7 +77,9 @@
     async loadAds(): Promise<void> {
       const cache = core.cache.adCache.get(this.character.character.name);
 
-      this.ads = _.uniq(cache ? _.takeRight(cache.posts, 5).reverse() : []) as AdCachedPosting[];
+      this.ads = _.uniq(
+        cache ? _.takeRight(cache.posts, 5).reverse() : []
+      ) as AdCachedPosting[];
     }
 
     async loadConversation(): Promise<void> {
@@ -84,7 +91,11 @@
         return;
       }
 
-      const messages = await core.logs.getLogs(ownName, logKey, _.last(logDates) as Date);
+      const messages = await core.logs.getLogs(
+        ownName,
+        logKey,
+        _.last(logDates) as Date
+      );
       const matcher = /\[AUTOMATED MESSAGE]/;
 
       this.conversation = _.takeRight(

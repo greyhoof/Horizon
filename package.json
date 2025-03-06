@@ -71,7 +71,9 @@
     "@cliqz/adblocker-electron": "1.26.16",
     "@cliqz/adblocker-electron-preload": "1.26.16",
     "@cliqz/adblocker-extended-selectors": "1.26.16",
+    "husky": "^9.1.7",
     "jquery": "^3.7.1",
+    "lint-staged": "^15.4.3",
     "node-fetch": "^2.7.0"
   },
   "optionalDependencies": {
@@ -96,7 +98,9 @@
   "scripts": {
     "__removed__postinstall": "electron-rebuild --prebuild-tag-prefix=ignoreprebuilds -f -o keytar",
     "watch": "cd electron && pnpm watch",
-    "start": "cd electron && pnpm start"
+    "start": "cd electron && pnpm start",
+    "lint": "pnpm prettier --write .",
+    "prepare": "husky"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
@@ -111,5 +115,10 @@
       "macos-alias"
     ]
   },
-  "packageManager": "pnpm@10.4.1+sha512.c753b6c3ad7afa13af388fa6d808035a008e30ea9993f58c6663e2bc5ff21679aa834db094987129aa4d488b86df57f7b634981b2f827cdcacc698cc0cfb88af"
+  "packageManager": "pnpm@10.4.1+sha512.c753b6c3ad7afa13af388fa6d808035a008e30ea9993f58c6663e2bc5ff21679aa834db094987129aa4d488b86df57f7b634981b2f827cdcacc698cc0cfb88af",
+  "lint-staged": {
+    "*.{js,ts,vue}": [
+      "prettier --write"
+    ]
+  }
 }

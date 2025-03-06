@@ -6,21 +6,37 @@ export class SecureStore {
   ) {}
 
   private getKey(domain: string, account: string): string {
-    return `${this.storeName}__${domain}__${account}`.replace(/[^a-zA-Z0-9_]/g, '__');
+    return `${this.storeName}__${domain}__${account}`.replace(
+      /[^a-zA-Z0-9_]/g,
+      '__'
+    );
   }
 
-  async setPassword(domain: string, account: string, password: string): Promise<void> {
-    if ((this.electronRemote as any).safeStorage.isEncryptionAvailable() === false) {
+  async setPassword(
+    domain: string,
+    account: string,
+    password: string
+  ): Promise<void> {
+    if (
+      (this.electronRemote as any).safeStorage.isEncryptionAvailable() === false
+    ) {
       return;
     }
 
-    const buffer = (this.electronRemote as any).safeStorage.encryptString(password);
+    const buffer = (this.electronRemote as any).safeStorage.encryptString(
+      password
+    );
 
-    await this.settings.set(this.getKey(domain, account), buffer.toString('binary'));
+    await this.settings.set(
+      this.getKey(domain, account),
+      buffer.toString('binary')
+    );
   }
 
   async deletePassword(domain: string, account: string): Promise<void> {
-    if ((this.electronRemote as any).safeStorage.isEncryptionAvailable() === false) {
+    if (
+      (this.electronRemote as any).safeStorage.isEncryptionAvailable() === false
+    ) {
       return;
     }
 
@@ -28,7 +44,9 @@ export class SecureStore {
   }
 
   async getPassword(domain: string, account: string): Promise<string | null> {
-    if ((this.electronRemote as any).safeStorage.isEncryptionAvailable() === false) {
+    if (
+      (this.electronRemote as any).safeStorage.isEncryptionAvailable() === false
+    ) {
       return null;
     }
 
@@ -39,7 +57,9 @@ export class SecureStore {
     }
 
     const buffer = Buffer.from(pw.toString(), 'binary');
-    const decrypted = (this.electronRemote as any).safeStorage.decryptString(buffer);
+    const decrypted = (this.electronRemote as any).safeStorage.decryptString(
+      buffer
+    );
 
     return decrypted;
   }

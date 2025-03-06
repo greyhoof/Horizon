@@ -2,9 +2,18 @@
 // import * as path from 'path';
 // import core from '../../chat/core';
 
-import { Character as ComplexCharacter, CharacterGroup, Guestbook } from '../../site/character_page/interfaces';
+import {
+  Character as ComplexCharacter,
+  CharacterGroup,
+  Guestbook
+} from '../../site/character_page/interfaces';
 import { CharacterImage, SimpleCharacter } from '../../interfaces';
-import { FurryPreference, Gender, Orientation, Species } from '../matcher-types';
+import {
+  FurryPreference,
+  Gender,
+  Orientation,
+  Species
+} from '../matcher-types';
 
 // This design should be refactored; it's bad
 export interface ProfileRecord {

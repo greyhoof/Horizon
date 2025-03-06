@@ -5,8 +5,18 @@ import { Channel, Character } from '../fchat/interfaces';
 import { AdManager } from './ads/ad-manager';
 import { SmartFilterSettings } from '../learn/filter/types';
 export { Connection, Channel, Character } from '../fchat/interfaces';
-export const userStatuses: ReadonlyArray<Character.Status> = ['online', 'looking', 'away', 'busy', 'dnd'];
-export const channelModes: ReadonlyArray<Channel.Mode> = ['chat', 'ads', 'both'];
+export const userStatuses: ReadonlyArray<Character.Status> = [
+  'online',
+  'looking',
+  'away',
+  'busy',
+  'dnd'
+];
+export const channelModes: ReadonlyArray<Channel.Mode> = [
+  'chat',
+  'ads',
+  'both'
+];
 import { Ad } from './ads/ad-center';
 
 export namespace Conversation {
@@ -52,7 +62,10 @@ export namespace Conversation {
     }
   }
 
-  export type RecentChannelConversation = { readonly channel: string; readonly name: string };
+  export type RecentChannelConversation = {
+    readonly channel: string;
+    readonly name: string;
+  };
   export type RecentPrivateConversation = { readonly character: string };
 
   export type TypingStatus = 'typing' | 'paused' | 'clear';
@@ -84,11 +97,15 @@ export namespace Conversation {
     sendAd(text: string): Promise<void>;
   }
 
-  export function isPrivate(conversation: Conversation): conversation is PrivateConversation {
+  export function isPrivate(
+    conversation: Conversation
+  ): conversation is PrivateConversation {
     return (<Partial<PrivateConversation>>conversation).character !== undefined;
   }
 
-  export function isChannel(conversation: Conversation): conversation is ChannelConversation {
+  export function isChannel(
+    conversation: Conversation
+  ): conversation is ChannelConversation {
     return (<Partial<ChannelConversation>>conversation).channel !== undefined;
   }
 
@@ -103,7 +120,10 @@ export namespace Conversation {
     byKey(key: string): Conversation | undefined;
 
     getPrivate(character: Character): PrivateConversation;
-    getPrivate(character: Character, noCreate: boolean): PrivateConversation | undefined;
+    getPrivate(
+      character: Character,
+      noCreate: boolean
+    ): PrivateConversation | undefined;
   }
 
   export enum Setting {
@@ -160,17 +180,34 @@ export namespace Logs {
 }
 
 export interface Logs {
-  logMessage(conversation: Conversation, message: Conversation.Message): Promise<void> | void;
-  getBacklog(conversation: Conversation): Promise<ReadonlyArray<Conversation.Message>>;
-  getConversations(character: string): Promise<ReadonlyArray<Logs.Conversation>>;
-  getLogs(character: string, key: string, date: Date): Promise<ReadonlyArray<Conversation.Message>>;
+  logMessage(
+    conversation: Conversation,
+    message: Conversation.Message
+  ): Promise<void> | void;
+  getBacklog(
+    conversation: Conversation
+  ): Promise<ReadonlyArray<Conversation.Message>>;
+  getConversations(
+    character: string
+  ): Promise<ReadonlyArray<Logs.Conversation>>;
+  getLogs(
+    character: string,
+    key: string,
+    date: Date
+  ): Promise<ReadonlyArray<Conversation.Message>>;
   getLogDates(character: string, key: string): Promise<ReadonlyArray<Date>>;
   getAvailableCharacters(): Promise<ReadonlyArray<string>>;
   canZip: boolean;
 }
 
 export type SearchKink = { id: number; name: string; description: string };
-export type SearchSpecies = { id: number; name: string; shortName: string; details: string; keywords: string };
+export type SearchSpecies = {
+  id: number;
+  name: string;
+  shortName: string;
+  details: string;
+  keywords: string;
+};
 
 export interface SearchData {
   kinks: SearchKink[];
@@ -205,7 +242,10 @@ export namespace Settings {
   };
 
   export interface Store {
-    get<K extends keyof Keys>(key: K, character?: string): Promise<Keys[K] | undefined>;
+    get<K extends keyof Keys>(
+      key: K,
+      character?: string
+    ): Promise<Keys[K] | undefined>;
     getAvailableCharacters(): Promise<ReadonlyArray<string>>;
     set<K extends keyof Keys>(key: K, value: Keys[K]): Promise<void>;
   }
@@ -258,7 +298,13 @@ export type Settings = Settings.Settings;
 
 export interface Notifications {
   isInBackground: boolean;
-  notify(conversation: Conversation, title: string, body: string, icon: string, sound: string): Promise<void>;
+  notify(
+    conversation: Conversation,
+    title: string,
+    body: string,
+    icon: string,
+    sound: string
+  ): Promise<void>;
   playSound(sound: string): void;
   requestPermission(): Promise<void>;
   initSounds(sounds: ReadonlyArray<string>): Promise<void>;

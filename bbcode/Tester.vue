@@ -22,7 +22,8 @@
     }
   })
   export default class BBCodeTester extends Vue {
-    code = '[center][heading][collapse=Testing Collapse][url=https://google.com/]This is a link [/url][/collapse][/heading][/center]';
+    code =
+      '[center][heading][collapse=Testing Collapse][url=https://google.com/]This is a link [/url][/collapse][/heading][/center]';
   }
 </script>
 

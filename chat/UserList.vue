@@ -1,43 +1,88 @@
 <template>
-  <sidebar id="user-list" :label="l('users.title')" icon="fa-users" :right="true" :open="expanded">
+  <sidebar
+    id="user-list"
+    :label="l('users.title')"
+    icon="fa-users"
+    :right="true"
+    :open="expanded"
+  >
     <tabs
       style="flex-shrink: 0"
-      :tabs="channel ? { friends: l('users.friends'), members: l('users.members') } : { profile: 'Profile', friends: l('users.friends') }"
+      :tabs="
+        channel
+          ? { friends: l('users.friends'), members: l('users.members') }
+          : { profile: 'Profile', friends: l('users.friends') }
+      "
       v-model="tab"
     ></tabs>
     <div class="users" style="padding-left: 10px" v-show="tab === 'friends'">
       <h4>{{ l('users.friends') }}</h4>
       <div v-for="character in friends" :key="character.name">
-        <user :character="character" :showStatus="true" :bookmark="false"></user>
+        <user
+          :character="character"
+          :showStatus="true"
+          :bookmark="false"
+        ></user>
       </div>
       <h4>{{ l('users.bookmarks') }}</h4>
       <div v-for="character in bookmarks" :key="character.name">
-        <user :character="character" :showStatus="true" :bookmark="false"></user>
+        <user
+          :character="character"
+          :showStatus="true"
+          :bookmark="false"
+        ></user>
       </div>
     </div>
-    <div v-if="channel" style="padding-left: 5px; flex: 1; display: flex; flex-direction: column" v-show="tab === 'members'">
+    <div
+      v-if="channel"
+      style="padding-left: 5px; flex: 1; display: flex; flex-direction: column"
+      v-show="tab === 'members'"
+    >
       <div class="users" style="flex: 1; padding-left: 5px">
         <h4>
-          {{ l('users.memberCount', channel.sortedMembers.length) }} <a class="btn sort" @click="switchSort"><i class="fa fa-sort"></i></a>
+          {{ l('users.memberCount', channel.sortedMembers.length) }}
+          <a class="btn sort" @click="switchSort"><i class="fa fa-sort"></i></a>
         </h4>
         <div v-for="member in filteredMembers" :key="member.character.name">
-          <user :character="member.character" :channel="channel" :showStatus="true"></user>
+          <user
+            :character="member.character"
+            :channel="channel"
+            :showStatus="true"
+          ></user>
         </div>
       </div>
       <div class="input-group" style="margin-top: 5px; flex-shrink: 0">
         <div class="input-group-prepend">
-          <div class="input-group-text"><span class="fas fa-search"></span></div>
+          <div class="input-group-text">
+            <span class="fas fa-search"></span>
+          </div>
         </div>
-        <input class="form-control" v-model="filter" :placeholder="l('filter')" type="text" />
+        <input
+          class="form-control"
+          v-model="filter"
+          :placeholder="l('filter')"
+          type="text"
+        />
       </div>
     </div>
-    <div v-if="!channel" style="flex: 1; display: flex; flex-direction: column" class="profile" v-show="tab === 'profile'">
+    <div
+      v-if="!channel"
+      style="flex: 1; display: flex; flex-direction: column"
+      class="profile"
+      v-show="tab === 'profile'"
+    >
       <a :href="profileUrl" target="_blank" class="btn profile-button">
         <span class="fa fa-fw fa-user"></span>
         Full Profile
       </a>
 
-      <character-page :authenticated="true" :oldApi="true" :name="profileName" :image-preview="true" ref="characterPage"></character-page>
+      <character-page
+        :authenticated="true"
+        :oldApi="true"
+        :name="profileName"
+        :image-preview="true"
+        ref="characterPage"
+      ></character-page>
     </div>
   </sidebar>
 </template>
@@ -95,7 +140,8 @@
     expanded = window.innerWidth >= 992;
     filter = '';
     l = l;
-    sorter = (x: Character, y: Character) => (x.name < y.name ? -1 : x.name > y.name ? 1 : 0);
+    sorter = (x: Character, y: Character) =>
+      x.name < y.name ? -1 : x.name > y.name ? 1 : 0;
 
     sortType: (typeof availableSorts)[number] = 'normal';
 
@@ -111,11 +157,15 @@
     }
 
     get channel(): Channel {
-      return (<Conversation.ChannelConversation>core.conversations.selectedConversation).channel;
+      return (<Conversation.ChannelConversation>(
+        core.conversations.selectedConversation
+      )).channel;
     }
 
     get profileName(): string | undefined {
-      return this.channel ? undefined : core.conversations.selectedConversation.name;
+      return this.channel
+        ? undefined
+        : core.conversations.selectedConversation.name;
     }
 
     get profileUrl(): string | undefined {
@@ -414,7 +464,8 @@
                     max-width: 95%;
                     margin-right: auto;
                     padding-bottom: 0.5rem;
-                    border-bottom: 1px var(--characterKinkCustomBorderColor) solid;
+                    border-bottom: 1px var(--characterKinkCustomBorderColor)
+                      solid;
                   }
 
                   .popover {

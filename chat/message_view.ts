@@ -1,5 +1,10 @@
 import { Component, Hook, Prop } from '@f-list/vue-ts';
-import { CreateElement, default as Vue, VNode, VNodeChildrenArrayContents } from 'vue';
+import {
+  CreateElement,
+  default as Vue,
+  VNode,
+  VNodeChildrenArrayContents
+} from 'vue';
 import { Channel } from '../fchat';
 import { Score } from '../learn/matcher';
 import { BBCodeView } from '../bbcode/view';
@@ -26,25 +31,49 @@ const userPostfix: { [key: number]: string | undefined } = {
     //     5000
     // );
 
-    const children: VNodeChildrenArrayContents = [createElement('span', { staticClass: 'message-time' }, `${formatTime(message.time)}`)];
-    const separators = core.connection.isOpen ? core.state.settings.messageSeparators : false;
+    const children: VNodeChildrenArrayContents = [
+      createElement(
+        'span',
+        { staticClass: 'message-time' },
+        `${formatTime(message.time)}`
+      )
+    ];
+    const separators = core.connection.isOpen
+      ? core.state.settings.messageSeparators
+      : false;
     /*tslint:disable-next-line:prefer-template*/ //unreasonable here
     let classes =
       `message message-${Conversation.Message.Type[message.type].toLowerCase()}` +
       (separators ? ' message-block' : '') +
-      (message.type !== Conversation.Message.Type.Event && message.sender.name === core.connection.character ? ' message-own' : '') +
+      (message.type !== Conversation.Message.Type.Event &&
+      message.sender.name === core.connection.character
+        ? ' message-own'
+        : '') +
       (this.classes !== undefined ? ` ${this.classes}` : '') +
       ` ${this.scoreClasses}` +
       ` ${this.filterClasses}`;
     if (message.type !== Conversation.Message.Type.Event) {
       children.push(
-        message.type === Conversation.Message.Type.Action ? createElement('i', { class: 'message-pre fas fa-star-of-life' }) : '',
+        message.type === Conversation.Message.Type.Action
+          ? createElement('i', { class: 'message-pre fas fa-star-of-life' })
+          : '',
         createElement(UserView, {
-          props: { avatar: core.state.settings.risingShowPortraitInMessage, character: message.sender, channel: this.channel }
+          props: {
+            avatar: core.state.settings.risingShowPortraitInMessage,
+            character: message.sender,
+            channel: this.channel
+          }
         }),
-        userPostfix[message.type] !== undefined ? createElement('span', { class: 'message-post' }, userPostfix[message.type]) : ' '
+        userPostfix[message.type] !== undefined
+          ? createElement(
+              'span',
+              { class: 'message-post' },
+              userPostfix[message.type]
+            )
+          : ' '
       );
-      if ('isHighlight' in message && message.isHighlight) classes += ' message-highlight';
+      if ('isHighlight' in message && message.isHighlight)
+        classes += ' message-highlight';
     }
     const isAd = message.type === Conversation.Message.Type.Ad && !this.logs;
     children.push(
@@ -88,7 +117,8 @@ export default class MessageView extends Vue {
   filterClasses = this.getMessageFilterClasses(this.message);
 
   scoreWatcher: (() => void) | null =
-    this.message.type === Conversation.Message.Type.Ad && this.message.score === 0
+    this.message.type === Conversation.Message.Type.Ad &&
+    this.message.score === 0
       ? this.$watch('message.score', () => this.scoreUpdate())
       : null;
 
@@ -112,7 +142,10 @@ export default class MessageView extends Vue {
     this.scoreClasses = this.getMessageScoreClasses(this.message);
     this.filterClasses = this.getMessageFilterClasses(this.message);
 
-    if (this.scoreClasses !== oldScoreClasses || this.filterClasses !== oldFilterClasses) {
+    if (
+      this.scoreClasses !== oldScoreClasses ||
+      this.filterClasses !== oldFilterClasses
+    ) {
       this.$forceUpdate();
     }
 
@@ -125,7 +158,10 @@ export default class MessageView extends Vue {
   }
 
   getMessageScoreClasses(message: Conversation.Message): string {
-    if (!core.state.settings.risingAdScore || message.type !== Conversation.Message.Type.Ad) {
+    if (
+      !core.state.settings.risingAdScore ||
+      message.type !== Conversation.Message.Type.Ad
+    ) {
       return '';
     }
 

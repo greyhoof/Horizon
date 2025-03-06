@@ -9,35 +9,71 @@
         </div>
         <div style="flex: 1; margin-left: 10px">
           <span v-show="post.private" class="post-private">*</span>
-          <span v-show="!post.approved" class="post-unapproved"> (unapproved)</span>
+          <span v-show="!post.approved" class="post-unapproved">
+            (unapproved)</span
+          >
 
           <span class="guestbook-timestamp">
-            <character-link :character="post.character"></character-link> posted <date-display :time="post.postedAt"></date-display>
+            <character-link :character="post.character"></character-link> posted
+            <date-display :time="post.postedAt"></date-display>
           </span>
-          <button class="btn btn-secondary" v-show="canEdit" @click="approve" :disabled="approving" style="margin-left: 10px">
+          <button
+            class="btn btn-secondary"
+            v-show="canEdit"
+            @click="approve"
+            :disabled="approving"
+            style="margin-left: 10px"
+          >
             {{ post.approved ? 'Unapprove' : 'Approve' }}
           </button>
         </div>
         <!-- TODO proper permission handling -->
-        <button class="btn btn-danger" v-show="!post.deleted && canEdit" @click="deletePost" :disabled="deleting">Delete</button>
+        <button
+          class="btn btn-danger"
+          v-show="!post.deleted && canEdit"
+          @click="deletePost"
+          :disabled="deleting"
+        >
+          Delete
+        </button>
       </div>
       <div class="row">
         <div class="col-12">
-          <bbcode class="bbcode guestbook-message" :text="post.message"></bbcode>
+          <bbcode
+            class="bbcode guestbook-message"
+            :text="post.message"
+          ></bbcode>
           <div v-if="post.reply && !replyBox" class="guestbook-reply">
-            <date-display v-if="post.repliedAt" :time="post.repliedAt"></date-display>
+            <date-display
+              v-if="post.repliedAt"
+              :time="post.repliedAt"
+            ></date-display>
             <bbcode class="reply-message" :text="post.reply"></bbcode>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-12">
-          <a v-show="canEdit && !replyBox" class="reply-link" @click="replyBox = !replyBox">
+          <a
+            v-show="canEdit && !replyBox"
+            class="reply-link"
+            @click="replyBox = !replyBox"
+          >
             {{ post.reply ? 'Edit Reply' : 'Reply' }}
           </a>
           <template v-if="replyBox">
-            <bbcode-editor v-model="replyMessage" :maxlength="5000" classes="form-control"></bbcode-editor>
-            <button class="btn btn-success" @click="postReply" :disabled="replying">Reply</button>
+            <bbcode-editor
+              v-model="replyMessage"
+              :maxlength="5000"
+              classes="form-control"
+            ></bbcode-editor>
+            <button
+              class="btn btn-success"
+              @click="postReply"
+              :disabled="replying"
+            >
+              Reply
+            </button>
           </template>
         </div>
       </div>
@@ -79,7 +115,10 @@
     async deletePost(): Promise<void> {
       try {
         this.deleting = true;
-        await methods.guestbookPostDelete(this.character.character.id, this.post.id);
+        await methods.guestbookPostDelete(
+          this.character.character.id,
+          this.post.id
+        );
         Vue.set(this.post, 'deleted', true);
         this.$emit('reload');
       } catch (e) {
@@ -92,7 +131,11 @@
     async approve(): Promise<void> {
       try {
         this.approving = true;
-        await methods.guestbookPostApprove(this.character.character.id, this.post.id, !this.post.approved);
+        await methods.guestbookPostApprove(
+          this.character.character.id,
+          this.post.id,
+          !this.post.approved
+        );
         this.post.approved = !this.post.approved;
       } catch (e) {
         Utils.ajaxError(e, 'Unable to change post approval.');
@@ -104,7 +147,11 @@
     async postReply(): Promise<void> {
       try {
         this.replying = true;
-        await methods.guestbookPostReply(this.character.character.id, this.post.id, this.replyMessage);
+        await methods.guestbookPostReply(
+          this.character.character.id,
+          this.post.id,
+          this.replyMessage
+        );
         this.post.reply = this.replyMessage;
         this.post.repliedAt = Date.now() / 1000;
         this.replyBox = false;

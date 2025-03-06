@@ -6,13 +6,17 @@ export let Store: SharedStore = {
   authenticated: false
 };
 
-export const registeredComponents: { [key: string]: Component | undefined } = {};
+export const registeredComponents: { [key: string]: Component | undefined } =
+  {};
 
 export function registerComponent(name: string, component: Component): void {
   registeredComponents[name] = component;
 }
 
-export function registerMethod<K extends keyof StoreMethods>(name: K, func: StoreMethods[K]): void {
+export function registerMethod<K extends keyof StoreMethods>(
+  name: K,
+  func: StoreMethods[K]
+): void {
   methods[name] = func;
 }
 
