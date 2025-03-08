@@ -216,6 +216,15 @@ const mainConfig = {
               .replace(/\\/g, '/'),
             to: path.join('assets'),
             context: path.resolve(__dirname, '..', 'assets')
+          },
+          {
+            from: path.join(__dirname, 'package.json'),
+            to: 'package.json',
+            transform(content) {
+              const json = JSON.parse(content.toString());
+              delete json.build; // Remove the "build" field
+              return JSON.stringify(json, null, 2);
+            },
           }
         ]
       })

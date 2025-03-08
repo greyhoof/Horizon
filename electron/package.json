@@ -3,16 +3,135 @@
   "version": "1.29.1",
   "author": "The F-List Team and Mister Stallion (Esq.)",
   "description": "F-List.net Chat Client",
+  "homepage": "https://horizn.moe",
   "main": "main.js",
-  "id": "fchat",
   "license": "MIT",
+  "build": {
+    "electronVersion": "26.6.10",
+    "appId": "net.flist.fchat",
+    "productName": "F-Chat Horizon",
+    "artifactName": "${productName}-${version}-${os}-${arch}.${ext}",
+    "directories": {
+      "app": "app"
+    },
+    "files": [
+      "**/*"
+    ],
+    "asarUnpack": [
+      "themes/**/*"
+    ],
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32",
+            "arm64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "F-Chat Horizon"
+    },
+    "mac": {
+      "icon": "build/icon.icns",
+      "category": "public.app-category.social-networking",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        "zip"
+      ],
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false
+    },
+    "dmg": {
+      "icon": "build/icon.icns",
+      "background": "build/dmg.png",
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ],
+      "window": {
+        "width": 540,
+        "height": 380
+      }
+    },
+    "linux": {
+      "icon": "build/icon.png",
+      "category": "Network",
+      "maintainer": "The F-List Team",
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "deb",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "pacman",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "tar.gz",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ]
+    }
+  },
   "scripts": {
     "build": "node ../webpack development",
-    "build:dist": "node ../webpack production",
+    "build:dist": "node ../webpack production && electron-builder",
     "watch": "node ../webpack watch",
-    "start": "../node_modules/.bin/electron app",
-    "startDebugMain": "export ELECTRON_ENABLE_LOGGING=1 && ../node_modules/.bin/electron  --serve --inspect-brk=9229 app",
-    "startDebugRender": "export ELECTRON_ENABLE_LOGGING=1 && ../node_modules/.bin/electron --remote-debugging-port=9229 app",
-    "pack": "node ./pack"
+    "start": "electron .",
+    "startDebugMain": "ELECTRON_ENABLE_LOGGING=1 electron --serve --inspect-brk=9229 .",
+    "startDebugRender": "ELECTRON_ENABLE_LOGGING=1 electron --remote-debugging-port=9229 .",
+    "build:win": "node ../webpack production && electron-builder --win",
+    "build:mac": "node ../webpack production && electron-builder --mac",
+    "build:linux": "node ../webpack production && electron-builder --linux"
+  },
+  "devDependencies": {
+    "electron": "26.6.10",
+    "electron-builder": "^25.1.8"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "electron"
+    ]
   }
 }
