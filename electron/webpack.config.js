@@ -224,7 +224,7 @@ const mainConfig = {
               const json = JSON.parse(content.toString());
               delete json.build; // Remove the "build" field
               return JSON.stringify(json, null, 2);
-            },
+            }
           }
         ]
       })
