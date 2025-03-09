@@ -121,9 +121,7 @@
     "build:mac": "node ../webpack production && electron-builder --mac",
     "build:linux": "node ../webpack production && electron-builder --linux deb tar.gz AppImage",
     "build:linux:arch": "node ../webpack production && electron-builder --linux pacman"
-
   },
-
   "devDependencies": {
     "electron": "26.6.10",
     "electron-builder": "^25.1.8"
