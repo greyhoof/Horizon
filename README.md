@@ -123,7 +123,6 @@ Select the correct package for your distribution and architecture:
 >
 > You need to have pacman available on your system to build the arch builds. Duh.
 
-
 1. Download the `.pacman` file for your architecture.
    - [Linux x64 .pacman](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat.Horizon-linux-x64.pacman)
    - [Linux arm64 .pacman](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat.Horizon-linux-arm64.pacman)
