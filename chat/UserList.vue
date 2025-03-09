@@ -168,7 +168,7 @@
       )).channel;
     }
 
-    get isConsoleTab(): boolean{
+    get isConsoleTab(): boolean {
       return (
         core.conversations.selectedConversation ===
         core.conversations.consoleTab
