@@ -7,7 +7,6 @@
   "main": "main.js",
   "license": "MIT",
   "build": {
-    "electronVersion": "26.6.10",
     "appId": "net.flist.fchat",
     "productName": "F-Chat Horizon",
     "artifactName": "${productName}-${os}-${arch}.${ext}",
