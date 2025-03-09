@@ -35,16 +35,11 @@ rm -rf "$DIST_PATH"
 # & Build the project
 cd electron
 rm -rf app dist
-pnpm build:dist
-node pack.js
+pnpm install
+pnpm build:mac
 
 # & Prepare release directory
 mkdir -p "$RELEASE_PATH"
 
 # & Copy artifacts
-cp "$DIST_PATH/F-Chat Horizon Intel.dmg" "$RELEASE_PATH/F-Chat-Horizon-macos-intel.dmg"
-cp "$DIST_PATH/F-Chat Horizon M1.dmg" "$RELEASE_PATH/F-Chat-Horizon-macos-m1.dmg"
-
-# & Zip for release
-zip -j "$RELEASE_PATH/F-Chat-Horizon-macos-intel.zip" "$RELEASE_PATH/F-Chat-Horizon-macos-intel.dmg"
-zip -j "$RELEASE_PATH/F-Chat-Horizon-macos-m1.zip" "$RELEASE_PATH/F-Chat-Horizon-macos-m1.dmg"
+cp "$DIST_PATH"/*.dmg "$RELEASE_PATH"/ 2>/dev/null || true

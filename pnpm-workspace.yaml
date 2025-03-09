@@ -1,3 +1,0 @@
-packages:
-  - . # Root package
-  - electron # Electron subpackage
