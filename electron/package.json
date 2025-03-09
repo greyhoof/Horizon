@@ -1,6 +1,6 @@
 {
   "name": "horizon-electron",
-  "version": "1.29.1",
+  "version": "1.30.0-dev.0",
   "author": "The F-List Team and Mister Stallion (Esq.)",
   "description": "F-List.net Chat Client",
   "homepage": "https://horizn.moe",
@@ -48,12 +48,8 @@
       "target": [
         {
           "target": "dmg",
-          "arch": [
-            "x64",
-            "arm64"
-          ]
-        },
-        "zip"
+          "arch": "universal"
+        }
       ],
       "hardenedRuntime": true,
       "gatekeeperAssess": false

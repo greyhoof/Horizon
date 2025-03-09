@@ -1,0 +1,10 @@
+{
+  "mode": "pre",
+  "tag": "dev",
+  "initialVersions": {
+    "fchat-horizon": "1.29.1"
+  },
+  "changesets": [
+    "many-flowers-win"
+  ]
+}
