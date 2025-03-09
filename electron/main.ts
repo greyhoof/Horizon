@@ -34,6 +34,9 @@
 // // @ts-ignore
 // const dl = new DebugLogger('main');
 
+import { createAboutWindow } from "./about";
+
+
 import * as electron from 'electron';
 import * as remoteMain from '@electron/remote/main';
 
@@ -592,6 +595,11 @@ function onReady(): void {
       {
         label: `&${l('title')}`,
         submenu: [
+          {
+            label: l('action.about'),
+            click: createAboutWindow
+          },
+          { type: 'separator' },
           {
             label: l('action.newWindow'),
             click: () => {
