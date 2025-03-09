@@ -1,6 +1,6 @@
 {
   "name": "horizon-electron",
-  "version": "1.30.0-dev.1",
+  "version": "1.30.0-dev.2",
   "author": "The F-List Team and Mister Stallion (Esq.)",
   "description": "F-List.net Chat Client",
   "homepage": "https://horizn.moe",
@@ -123,7 +123,7 @@
     "build:linux:arch": "node ../webpack production && electron-builder --linux pacman"
   },
   "devDependencies": {
-    "electron": "26.6.10",
+    "electron": "35.0.0",
     "electron-builder": "^25.1.8"
   },
   "pnpm": {
