@@ -174,7 +174,7 @@ The (currently work in progress and non-existing at this current moment) wiki ha
 
 # Development
 
-Please read [CONTRIBUTING](./CONTRIBUTING)
+Please read [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 # Credits
 
