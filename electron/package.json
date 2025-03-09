@@ -123,7 +123,7 @@
     "build:linux:arch": "node ../webpack production && electron-builder --linux pacman"
   },
   "devDependencies": {
-    "electron": "26.6.10",
+    "electron": "35.0.0",
     "electron-builder": "^25.1.8"
   },
   "pnpm": {

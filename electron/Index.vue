@@ -305,7 +305,7 @@
   /* tslint:disable:no-unsafe-any no-any no-unnecessary-type-assertion */
   session!.defaultSession!.webRequest!.onBeforeSendHeaders(
     {
-      urls: ['https://(api|i).imgur.com/.*', 'http://(api|i).imgur.com/.*']
+      urls: ['*://api.imgur.com/*', '*://i.imgur.com/*']
     },
     (details: any, callback: any) => {
       details.requestHeaders['Origin'] = null;
@@ -314,7 +314,6 @@
       callback({ requestHeaders: details.requestHeaders });
     }
   );
-
   // log.info('init.chat.keytar.load.start');
   //
   /* tslint:disable: no-any no-unsafe-any */ //because this is hacky
