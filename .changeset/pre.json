@@ -4,7 +4,5 @@
   "initialVersions": {
     "fchat-horizon": "1.29.1"
   },
-  "changesets": [
-    "many-flowers-win"
-  ]
+  "changesets": ["many-flowers-win"]
 }
