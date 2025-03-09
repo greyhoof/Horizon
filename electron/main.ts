@@ -34,8 +34,7 @@
 // // @ts-ignore
 // const dl = new DebugLogger('main');
 
-import { createAboutWindow } from "./about";
-
+import { createAboutWindow } from './about';
 
 import * as electron from 'electron';
 import * as remoteMain from '@electron/remote/main';
