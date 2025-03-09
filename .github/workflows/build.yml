@@ -109,13 +109,25 @@ jobs:
           path: release_artifacts
           # * Downloads all artifacts from the build job
 
+      - name: Generate SHA256 Checksums
+        run: |
+          mkdir -p final_release
+
+          cp -r release_artifacts/*-artifacts/* final_release/
+
+          cd final_release
+
+          find . -type f -not -name "SHASUMS256.txt" -exec sha256sum {} \; | sort > SHASUMS256.txt
+
+          cat SHASUMS256.txt
+
       - name: Create Draft Release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref_name }}
           name: Release ${{ github.ref_name }}
           draft: true
-          files: release_artifacts/**/*
-          # ^ Creates a draft release with uploaded artifacts
+          files: final_release/**/*
+          # ^ Creates a draft release with uploaded artifacts including the SHASUMS256.txt file
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
