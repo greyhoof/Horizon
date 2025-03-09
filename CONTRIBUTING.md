@@ -46,7 +46,6 @@ Run the following commands,
 
 **For development:**
 
-
 ```
 cd electron
 pnpm build
@@ -114,18 +113,20 @@ We follow a [semantic versioning](https://semver.org) format:
 
 We use [Prettier](https://prettier.io/) to enforce a consistent coding style. Please follow these guidelines:
 
-1. **Formatting**  
+1. **Formatting**
+
    - Run `prettier --write .` (or use the lint-staged integration) before committing. This ensures all code is consistent with [.prettierrc](../.prettierrc).
    - Use 2 spaces for indentation.
    - Keep a maximum line length of 80 characters.
    - Declare strings with single quotes (') instead of double quotes (").
 
-2. **Structure & Syntax**  
+2. **Structure & Syntax**
+
    - Always include semicolons.
    - Use trailing commas sparingly (only where allowed by Prettier).
    - For arrow functions with one parameter, avoid parentheses (e.g., `param => ...`).
 
-3. **Vue Components**  
+3. **Vue Components**
    - Ensure `<script>` and `<style>` in `.vue` files are properly indented.
    - Use the recommended Vue style guide for component names and ordering.
 
