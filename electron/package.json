@@ -10,7 +10,7 @@
     "electronVersion": "26.6.10",
     "appId": "net.flist.fchat",
     "productName": "F-Chat Horizon",
-    "artifactName": "${productName}-${version}-${os}-${arch}.${ext}",
+    "artifactName": "${productName}-${os}-${arch}.${ext}",
     "directories": {
       "app": "app"
     },
