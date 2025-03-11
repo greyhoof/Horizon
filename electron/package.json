@@ -1,18 +1,89 @@
 {
   "name": "horizon-electron",
-  "version": "1.29.1",
+  "version": "1.30.0-beta.2",
   "author": "The F-List Team and Mister Stallion (Esq.)",
   "description": "F-List.net Chat Client",
+  "homepage": "https://horizn.moe",
   "main": "main.js",
-  "id": "fchat",
   "license": "MIT",
+  "build": {
+    "appId": "net.flist.fchat",
+    "productName": "F-Chat Horizon",
+    "artifactName": "${productName}-${os}-${arch}.${ext}",
+    "directories": {
+      "app": "app"
+    },
+    "files": [
+      "**/*"
+    ],
+    "asarUnpack": [
+      "themes/**/*"
+    ],
+    "win": {
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "F-Chat Horizon"
+    },
+    "mac": {
+      "icon": "build/icon.icns",
+      "category": "public.app-category.social-networking",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false
+    },
+    "dmg": {
+      "icon": "build/icon.icns",
+      "background": "build/dmg.png",
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ],
+      "window": {
+        "width": 540,
+        "height": 380
+      }
+    },
+    "linux": {
+      "icon": "build/icon.png",
+      "category": "Network",
+      "maintainer": "The F-List Team"
+    }
+  },
   "scripts": {
-    "build": "node ../webpack development",
-    "build:dist": "node ../webpack production",
+    "webpack:dev": "node ../webpack development",
+    "webpack:prod": "node ../webpack production",
+    "build": "pnpm run webpack:dev",
+    "build:dist": "pnpm run webpack:prod",
     "watch": "node ../webpack watch",
     "start": "../node_modules/.bin/electron app",
-    "startDebugMain": "export ELECTRON_ENABLE_LOGGING=1 && ../node_modules/.bin/electron  --serve --inspect-brk=9229 app",
-    "startDebugRender": "export ELECTRON_ENABLE_LOGGING=1 && ../node_modules/.bin/electron --remote-debugging-port=9229 app",
-    "pack": "node ./pack"
+    "startDebugMain": "ELECTRON_ENABLE_LOGGING=1 electron --serve --inspect-brk=9229 .",
+    "startDebugRender": "ELECTRON_ENABLE_LOGGING=1 electron --remote-debugging-port=9229 .",
+    "build:win": "node ../webpack production && electron-builder --win nsis --arm64 --x64 ",
+    "build:mac": "node ../webpack production && electron-builder --mac dmg --universal",
+    "build:linux": "node ../webpack production && electron-builder --linux deb tar.gz AppImage --arm64 --x64"
+  },
+  "devDependencies": {
+    "commander": "^13.1.0",
+    "electron": "35.0.0",
+    "electron-builder": "^25.1.8"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "electron"
+    ]
   }
 }

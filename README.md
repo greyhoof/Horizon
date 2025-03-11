@@ -8,6 +8,10 @@
   - [Windows](#windows)
   - [MacOS](#macos)
   - [Linux](#linux)
+    - [Debian/Ubuntu (deb)](#debianubuntu-deb)
+    - [AppImage](#appimage)
+    - [Tarball (tar.gz)](#tarball-targz)
+    - [Arch-based (pacman)](#arch-based-pacman)
 - [Usage](#usage)
   - [Getting started](#getting-started)
   - [Wiki](#wiki)
@@ -17,12 +21,11 @@
 
 # Download
 
-[Windows x64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat-Rising-win-x64.exe) |
-[Windows arm64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat-Rising-win-arm64.exe) |
-[MacOS M1](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat-Rising-macos-m1.dmg) |
-[MacOS Intel](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat-Rising-macos-intel.dmg) |
-[Linux x64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat-Rising-linux-x64.AppImage) |
-[Linux arm64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat-Rising-linux-arm64.AppImage)
+[Windows x64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat%20Horizon-win-x64.exe) |
+[Windows arm64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat%20Horizon-win-arm64.exe) |
+[MacOS (Universal)](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat%20Horizon-mac-universal.dmg) |
+[Linux x64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat%20Horizon-linux-x64.AppImage) |
+[Linux arm64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat%20Horizon-linux-arm64.AppImage)
 
 # F-Chat Horizon
 
@@ -56,19 +59,23 @@ F-chat Rising can be installed on all _major_ operating systems (Minus BSDs.)
 
 ## Windows
 
+> [!NOTE]
+> I, the developer of this project, do not use windows, _and thus cannot test these._ While I have no reason to believe they won't work, please [contact me](https://horizn.moe/contact.html) with any bugs.
+
 1. Download the installer for your architecture:
-   - [Windows x64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat-Rising-win-x64.exe)
-   - [Windows arm64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat-Rising-win-arm64.exe)
+   - [Windows x64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat.Horizon-win-x64.exe)
+   - [Windows arm64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat.Horizon-win-arm64.exe)
 2. Run the downloaded installer and follow the on-screen instructions.
 
 (Maybe one day we'll support winget~)
 
 ## MacOS
+> [!WARNING]
+> Due to that nature of Mac, MacOS builds are **experimental**. Please [contact me](https://horizn.moe/contact.html) if you have any issues.
+
 Since we currently don't have a paid developer license (and MacOS by default blocks unsigned apps downloaded from the internet), you may need to manually allow the app in your command line.
-1. Download the installer for your architecture:
-   - [MacOS M1](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat-Rising-macos-m1.dmg)
-   - [MacOS Intel](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat-Rising-macos-intel.dmg)
-2. Open the downloaded .dmg file and drag the application to your Applications folder.
+1. Download the installer. This _should_ work for both M1 / Intel based systems
+   - [MacOS (Universal)](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat%20Horizon-mac-universal.dmg)
 
 If you get a warning saying ``"F-Chat" is damaged and can't be opened. You should move it to the Bin.`` while attempting to open F-Chat, continue past step 2:
 
@@ -81,16 +88,55 @@ xattr -d com.apple.quarantine /Applications/F-Chat.app
 
 ## Linux
 
-1. Download the AppImage for your architecture:
-   - [Linux x64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat-Rising-linux-x64.AppImage)
-   - [Linux arm64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat-Rising-linux-arm64.AppImage)
-2. Make the AppImage executable:
+Select the correct package for your distribution and architecture:
+
+### Debian/Ubuntu (deb)
+
+1. Download the `.deb` file for your architecture.
+   - [Linux x64 .deb](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat.Horizon-linux-x64.deb)
+   - [Linux arm64 .deb](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat.Horizon-linux-arm64.deb)
+2. Install:
    ```bash
-   chmod +x F-Chat-Rising-linux-x64.AppImage
+   sudo dpkg -i F-Chat.Horizon-linux-<arch>.deb
    ```
-3. Run the AppImage:
+
+### AppImage
+
+1. Download the AppImage for your architecture:
+   - [Linux x64 .AppImage](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat.Horizon-linux-x64.AppImage)
+   - [Linux arm64 .AppImage](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat.Horizon-linux-arm64.AppImage)
+2. Make it executable, then run:
    ```bash
-   ./F-Chat-Rising-linux-x64.AppImage
+   chmod +x F-Chat.Horizon-linux-<arch>.AppImage
+   ./F-Chat.Horizon-linux-<arch>.AppImage
+   ```
+
+### Tarball (tar.gz)
+
+1. Download the `.tar.gz` for your architecture:
+   - [Linux x64 .tar.gz](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat.Horizon-linux-x64.tar.gz)
+   - [Linux arm64 .tar.gz](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat.Horizon-linux-arm64.tar.gz)
+2. Extract and run:
+   ```bash
+   tar -xzf F-Chat.Horizon-linux-<arch>.tar.gz
+   cd F-Chat.Horizon-linux-<arch>
+   ./F-Chat.Horizon
+   ```
+
+### Arch-based (pacman)
+
+> [!NOTE]
+> There is currently no offical support for arch.
+> You will have you build the .pacman file yourself. `cd electron` and run `pnpm build:linux:arch`
+>
+> You need to have pacman available on your system to build the arch builds. Duh.
+
+1. Download the `.pacman` file for your architecture.
+   - [Linux x64 .pacman](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat.Horizon-linux-x64.pacman)
+   - [Linux arm64 .pacman](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat.Horizon-linux-arm64.pacman)
+2. Install:
+   ```bash
+   sudo pacman -U F-Chat.Horizon-linux-<arch>.pacman
    ```
 
 # Usage
