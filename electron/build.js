@@ -4,7 +4,6 @@ import { build, Platform } from 'electron-builder'; // Move Platform import here
 import path from 'path';
 import fs from 'fs';
 
-
 // ** Specify our options
 //    - Required: OS
 //    - Optional: format, arch, version, output
@@ -31,15 +30,16 @@ program
     'Specify the output directory for build artifacts'
   )
   .helpOption('-h, --help', 'Display help for command')
-  .addHelpText('after', `
+  .addHelpText(
+    'after',
+    `
 Examples:
   $ node electron/build.js --os windows --format nsis --arch x64
   $ node electron/build.js --os macos --format dmg --arch universal
-  $ node electron/build.js --os linux --format AppImage --arch x64 --output ./my-builds`);
+  $ node electron/build.js --os linux --format AppImage --arch x64 --output ./my-builds`
+  );
 
 program.parse(process.argv);
-
-
 
 const options = program.opts();
 
