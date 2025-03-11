@@ -64,11 +64,20 @@ F-chat Rising can be installed on all _major_ operating systems (Minus BSDs.)
 (Maybe one day we'll support winget~)
 
 ## MacOS
-
+Since we currently don't have a paid developer license (and MacOS by default blocks unsigned apps downloaded from the internet), you may need to manually allow the app in your command line.
 1. Download the installer for your architecture:
    - [MacOS M1](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat-Rising-macos-m1.dmg)
    - [MacOS Intel](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat-Rising-macos-intel.dmg)
 2. Open the downloaded .dmg file and drag the application to your Applications folder.
+
+If you get a warning saying ``"F-Chat" is damaged and can't be opened. You should move it to the Bin.`` while attempting to open F-Chat, continue past step 2:
+
+3. Open your Terminal app
+4. Type the following command and press Enter:
+```bash
+xattr -d com.apple.quarantine /Applications/F-Chat.app
+```
+5. Now the app should open as expected.
 
 ## Linux
 
