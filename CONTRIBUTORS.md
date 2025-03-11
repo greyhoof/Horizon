@@ -3,6 +3,7 @@
 **Horizon** received contributions from these people:
 
 - **CodingWithAnxiety**, As the project maintainer
+- [freenutsxd](https://github.com/freenutsxd)
 
 As well, **Rising** received contributions from the following:
 
