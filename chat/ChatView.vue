@@ -356,17 +356,25 @@
       window.addEventListener('keydown', this.keydownListener);
       this.setFontSize(core.state.settings.fontSize);
 
-      this.$watch('conversations.channelConversations', (newVal) => {
-        if (newVal?.length) {
-          this.channelCanGlow = false;
-        }
-      }, { deep: true });
+      this.$watch(
+        'conversations.channelConversations',
+        newVal => {
+          if (newVal?.length) {
+            this.channelCanGlow = false;
+          }
+        },
+        { deep: true }
+      );
 
-      this.$watch('conversations.privateConversations', (newVal) => {
-        if (newVal?.length) {
-          this.privateCanGlow = false;
-        }
-      }, { deep: true });
+      this.$watch(
+        'conversations.privateConversations',
+        newVal => {
+          if (newVal?.length) {
+            this.privateCanGlow = false;
+          }
+        },
+        { deep: true }
+      );
 
       Sortable.create(<HTMLElement>this.$refs['privateConversations'], {
         animation: 50,
