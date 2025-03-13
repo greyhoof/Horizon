@@ -274,7 +274,7 @@
 </template>
 
 <script lang="ts">
-  import { Component, Watch } from '@f-list/vue-ts';
+  import { Component } from '@f-list/vue-ts';
 
   import Sortable from 'sortablejs';
 
