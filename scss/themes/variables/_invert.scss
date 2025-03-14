@@ -1,29 +1,22 @@
-@use "sass:color";
-@use "sass:map";
-@use "sass:math";
-
+@use 'sass:color';
+@use 'sass:map';
+@use 'sass:math';
 
 // Theme color interval
 $theme-color-interval: 8%;
 
 @function lighten($color, $amount) {
-  @if type-of($color) == "string" {
+  @if type-of($color) == 'string' {
     @return $color;
   }
-  @return color.adjust(
-    $color,
-    $lightness: -$amount
-  );
+  @return color.adjust($color, $lightness: -$amount);
 }
 
 @function darken($color, $amount) {
-  @if type-of($color) == "string" {
+  @if type-of($color) == 'string' {
     @return $color;
   }
-  @return color.adjust(
-    $color,
-    $lightness: $amount
-  );
+  @return color.adjust($color, $lightness: $amount);
 }
 
 @function theme-color-level($color-name: 'primary', $level: 0) {
@@ -31,7 +24,7 @@ $theme-color-interval: 8%;
   $color-base: if($level < 0, #000, #fff);
   $level: abs($level);
 
-  @if type-of($color) == "string" {
+  @if type-of($color) == 'string' {
     @return $color;
   }
   @return mix($color-base, $color, $level * $theme-color-interval);

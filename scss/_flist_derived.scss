@@ -26,7 +26,10 @@ $quick-compare-no-bg: theme-color-level('danger', -6) !default;
 
 // character page badges
 $character-badge-bg: color.scale($card-bg, $lightness: -10%) !default;
-$character-badge-border: color.scale($card-border-color, $lightness: -10%) !default;
+$character-badge-border: color.scale(
+  $card-border-color,
+  $lightness: -10%
+) !default;
 $character-badge-subscriber-bg: theme-color-bg('info') !default;
 $character-badge-subscriber-border: theme-color-border('info') !default;
 

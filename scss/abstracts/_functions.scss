@@ -22,8 +22,11 @@
 
 // Color contrast function
 @function color-contrast($color, $dark: $dark-color, $light: $light-color) {
-  $color-brightness: (red($color) * 299 + green($color) * 587 + blue($color) * 114) / 1000;
-  
+  $color-brightness: (
+      red($color) * 299 + green($color) * 587 + blue($color) * 114
+    ) /
+    1000;
+
   @if $color-brightness > 128 {
     @return $dark;
   } @else {
@@ -36,7 +39,7 @@
   @if map-has-key($colors, $key) {
     @return map-get($colors, $key);
   }
-  
+
   @warn "Unknown `#{$key}` in $colors.";
   @return null;
-} 
+}

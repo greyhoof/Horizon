@@ -1,5 +1,5 @@
-@use "sass:color";
-@use "sass:math";
+@use 'sass:color';
+@use 'sass:math';
 
 // Compatibility functions to fix Sass deprecation warnings
 @function lighten($color, $amount) {
@@ -26,4 +26,4 @@
 // Map merge compatibility
 @function map-merge($map1, $map2) {
   @return map.merge($map1, $map2);
-} 
+}

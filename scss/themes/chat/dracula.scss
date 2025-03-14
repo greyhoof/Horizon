@@ -52,7 +52,11 @@ $genders: (
   'none': $dracula-comment,
   'female': $dracula-pink,
   'male': $dracula-cyan,
-  'male-herm': color.scale($dracula-cyan, $saturation: 0.45%, $lightness: 36.86%),
+  'male-herm': color.scale(
+      $dracula-cyan,
+      $saturation: 0.45%,
+      $lightness: 36.86%
+    ),
   'transgender': $dracula-orange,
   'cunt-boy': $dracula-green
 );
