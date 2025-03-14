@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 $scoreUnicornMatchBg: #0093d2;
 $scoreUnicornMatchFg: #0093d2;
 $scoreMatchBg: #006cb7;
@@ -35,6 +37,6 @@ $genders: (
   }
 
   .message-event .gender-#{$gender} {
-    color: lighten($color, 5%);
+    color: color.scale($color, $lightness: 5%);
   }
 }

@@ -1,3 +1,4 @@
+@use 'sass:color';
 @import '~bootstrap/scss/functions';
 @import '../../functions';
 @import '../variables/dracula_variables';
@@ -47,11 +48,11 @@ $orange-color: $dracula-orange;
 
 $genders: (
   'shemale': $dracula-purple,
-  'herm': lighten(saturate($dracula-purple, 0.36), 10.78),
+  'herm': color.scale($dracula-purple, $saturation: 0.36%, $lightness: 10.78%),
   'none': $dracula-comment,
   'female': $dracula-pink,
   'male': $dracula-cyan,
-  'male-herm': lighten(saturate($dracula-cyan, 0.45), 36.86),
+  'male-herm': color.scale($dracula-cyan, $saturation: 0.45%, $lightness: 36.86%),
   'transgender': $dracula-orange,
   'cunt-boy': $dracula-green
 );
@@ -68,7 +69,7 @@ $genders: (
   }
 
   .message-event .gender-#{$gender} {
-    color: lighten($color, 5%);
+    color: color.scale($color, $lightness: 5%);
   }
 }
 

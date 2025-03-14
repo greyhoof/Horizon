@@ -1,3 +1,8 @@
+// Forward variables, functions, and mixins for use in this file
+@forward "abstracts/variables";
+@forward "abstracts/functions";
+@forward "abstracts/mixins";
+
 .flash-messages-fixed {
   top: 0px;
   left: auto;

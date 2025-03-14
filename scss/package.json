@@ -6,14 +6,12 @@
   "license": "MIT",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.1",
-    "bootstrap": "^4.6.2",
-    "node-sass": "^7.0.2",
-    "@snyk/protect": "latest"
+    "sass-embedded": "^1.85.1"
   },
   "scripts": {
-    "build": "node-sass --importer=./importer --output css",
-    "prepare": "pnpm run snyk-protect",
-    "snyk-protect": "snyk-protect"
+    "build": "sass --load-path=. --style=compressed --source-map --importer=./importer.js --update ."
   },
-  "snyk": true
+  "devDependencies": {
+    "bootstrap": "^4.6.2"
+  }
 }
