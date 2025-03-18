@@ -546,7 +546,7 @@ function onReady(): void {
         click: (_m: electron.MenuItem, w: electron.BrowserWindow) => {
           // log.info('MENU ZOOM-');
           zoomLevel = Math.max(
-            0,
+            -3,
             zoomLevel - w.webContents.getZoomFactor() / 2
           );
 
