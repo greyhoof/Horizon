@@ -538,7 +538,7 @@ function onReady(): void {
           for (const win of windows)
             win.webContents.send('update-zoom', zoomLevel);
         },
-        accelerator: 'CmdOrCtrl+Plus'
+        accelerator: 'CmdOrCtrl+='
       },
       {
         // role: 'zoomIn',
