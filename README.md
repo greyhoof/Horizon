@@ -21,11 +21,11 @@
 
 # Download
 
-[Windows x64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat%20Horizon-win-x64.exe) |
-[Windows arm64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat%20Horizon-win-arm64.exe) |
-[MacOS (Universal)](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat%20Horizon-mac-universal.dmg) |
-[Linux x64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat%20Horizon-linux-x64.AppImage) |
-[Linux arm64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat%20Horizon-linux-arm64.AppImage)
+[Windows x64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat.Horizon-win-x64.exe) |
+[Windows arm64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat.Horizon-win-arm64.exe) |
+[MacOS (Universal)](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat.Horizon-mac-universal.dmg) |
+[Linux x64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat.Horizon-linux-x64.AppImage) |
+[Linux arm64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat.Horizon-linux-arm64.AppImage)
 
 # F-Chat Horizon
 
@@ -75,7 +75,7 @@ F-chat Rising can be installed on all _major_ operating systems (Minus BSDs.)
 > Due to that nature of Mac, MacOS builds are **experimental**. Please [contact me](https://horizn.moe/contact.html) if you have any issues.
 
 1. Download the installer. This _should_ work for M1 / Intel based systems
-   - [MacOS (Universal)](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat%20Horizon-mac-universal.dmg)
+   - [MacOS (Universal)](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat.Horizon-mac-universal.dmg)
 2. Open the downloaded .dmg file and drag the application to your Applications folder.
 
 ## Linux
