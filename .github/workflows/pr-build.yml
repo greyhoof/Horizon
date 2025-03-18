@@ -97,7 +97,7 @@ jobs:
         with:
           name: PR-${{ github.event.pull_request.number }}-${{ matrix.os }}-build
           path: release_artifacts/**
-          retention-days: 14  # Keep PR builds for 14 days instead of the default 90 days
+          retention-days: 14 # Keep PR builds for 14 days instead of the default 90 days
 
   notify:
     name: Comment on PR
@@ -110,7 +110,7 @@ jobs:
           script: |
             const buildVersion = '${{ needs.set-version.outputs.version }}';
             const prNumber = context.issue.number;
-            
+
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -126,4 +126,4 @@ jobs:
               
               The build artifacts are available as workflow artifacts in the Actions tab.
               `
-            }); 
+            });
