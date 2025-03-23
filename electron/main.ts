@@ -514,7 +514,7 @@ function onReady(): void {
   //     logger: require('electron-log')
   //   }
   // );
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'production') {
     setTimeout(
       () => checkForGitRelease(`v${app.getVersion()}`, releasesUrl),
       updateCheckFirstDelay
