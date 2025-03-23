@@ -86,7 +86,7 @@ const baseDir = app.getPath('userData');
 fs.mkdirSync(baseDir, { recursive: true });
 let shouldImportSettings = false;
 const releasesUrl =
-  'https://api.github.com/repos/Fchat-Horizon/Horizon/releases/latest';
+  'https://api.github.com/repos/Fchat-Horizon/Horizon/releases';
 type ReleaseInfo = {
   html_url: string;
   tag_name: string;
@@ -200,10 +200,17 @@ async function checkForGitRelease(
   releaseUrl: string
 ): Promise<void> {
   try {
-    let release: ReleaseInfo = (await Axios.get<ReleaseInfo>(`${releaseUrl}`))
-      .data;
-
-    if (release && release.tag_name !== semVer) {
+    let releases: ReleaseInfo[] = (
+      await Axios.get<ReleaseInfo[]>(`${releaseUrl}`)
+    ).data;
+    //The releases we get from the GitHub API are in in descending order from their release date.
+    for (const release of releases) {
+      //We don't care about pre-releases if we're not using the beta, but we still want to try the others.
+      if (release.prerelease && !settings.beta) break;
+      if (release.tag_name == semVer) {
+        log.info(`F-Chat Rising up to date: ${semVer}`);
+        return;
+      }
       log.info(
         `Update available: You're using ${semVer} instead of ${release.tag_name}`
       );
@@ -236,8 +243,7 @@ async function checkForGitRelease(
         );
       electron.Menu.setApplicationMenu(menu);
       for (const w of windows) w.webContents.send('update-available', true);
-    } else {
-      log.info(`F-Chat Rising up to date: ${semVer}`);
+      return;
     }
   } catch (e) {
     log.error(`Error checking for update: ${e}`);
@@ -506,7 +512,7 @@ function onReady(): void {
   //     logger: require('electron-log')
   //   }
   // );
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === 'development') {
     setTimeout(
       () => checkForGitRelease(`v${app.getVersion()}`, releasesUrl),
       updateCheckFirstDelay
@@ -692,15 +698,16 @@ function onReady(): void {
             }
           },
 
-          // {
-          //     label: l('settings.beta'), type: 'checkbox', checked: settings.beta,
-          //     click: async(item: electron.MenuItem) => {
-          //         settings.beta = item.checked;
-          //         setGeneralSettings(settings);
-          //         // electron.autoUpdater.setFeedURL({url: updaterUrl+(item.checked ? '?channel=beta' : ''), serverType: 'json'});
-          //         // return electron.autoUpdater.checkForUpdates();
-          //     }
-          // },
+          {
+            label: l('settings.beta'),
+            type: 'checkbox',
+            checked: settings.beta,
+            click: async (item: electron.MenuItem) => {
+              settings.beta = item.checked;
+              setGeneralSettings(settings);
+              checkForGitRelease(`v${app.getVersion()}`, releasesUrl);
+            }
+          },
           {
             label: l('fixLogs.action'),
             click: (_m, window: electron.BrowserWindow) =>
