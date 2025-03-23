@@ -604,7 +604,7 @@
     openUpdatePage(): void {
       electron.ipcRenderer.send(
         'open-url-externally',
-        'https://github.com/F-chat-Horizon/Horizon/releases'
+        'https://github.com/Fchat-Horizon/Horizon/releases'
       );
     }
 
