@@ -272,10 +272,9 @@
     </modal>
   </div>
 </template>
-/me
 
 <script lang="ts">
-  import { Component, Hook, Watch } from '@f-list/vue-ts';
+  import { Component } from '@f-list/vue-ts';
 
   import Sortable from 'sortablejs';
 
@@ -352,25 +351,31 @@
     privateCanGlow = !this.channelConversations?.length;
     channelCanGlow = !this.privateConversations?.length;
 
-    @Watch('conversations.channelConversations')
-    channelConversationsChange() {
-      if (this.conversations.channelConversations?.length) {
-        this.channelCanGlow = false;
-      }
-    }
-
-    @Watch('conversations.privateConversations')
-    privateConversationsChange() {
-      if (this.conversations.privateConversations?.length) {
-        this.privateCanGlow = false;
-      }
-    }
-
-    @Hook('mounted')
     mounted(): void {
       this.keydownListener = (e: KeyboardEvent) => this.onKeyDown(e);
       window.addEventListener('keydown', this.keydownListener);
       this.setFontSize(core.state.settings.fontSize);
+
+      this.$watch(
+        'conversations.channelConversations',
+        newVal => {
+          if (newVal?.length) {
+            this.channelCanGlow = false;
+          }
+        },
+        { deep: true }
+      );
+
+      this.$watch(
+        'conversations.privateConversations',
+        newVal => {
+          if (newVal?.length) {
+            this.privateCanGlow = false;
+          }
+        },
+        { deep: true }
+      );
+
       Sortable.create(<HTMLElement>this.$refs['privateConversations'], {
         animation: 50,
         fallbackTolerance: 5,
@@ -459,7 +464,6 @@
       void core.adCenter.load();
     }
 
-    @Hook('destroyed')
     destroyed(): void {
       window.removeEventListener('keydown', this.keydownListener);
       window.removeEventListener('focus', this.focusListener);

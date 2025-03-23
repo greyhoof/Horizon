@@ -56,8 +56,8 @@ Remove-Item -Recurse -Force $DistPath -ErrorAction SilentlyContinue
 Set-Location electron
 # ! Removing 'app' and 'dist' directories to ensure a clean build
 Remove-Item -Recurse -Force app, dist -ErrorAction SilentlyContinue
-pnpm build:dist
-node pack.js
+pnpm install
+pnpm build:win
 
 # Prepare release directory
 # * Create release directory if it doesn't exist
@@ -65,7 +65,6 @@ New-Item -ItemType Directory -Path $ReleasePath -Force | Out-Null
 
 # Copy artifacts
 # * Copy built executables to the release directory
-Copy-Item "$DistPath\arm64\F-Chat-Horizon-Setup-win-arm64.exe" -Destination "$ReleasePath\F-Chat-Horizon-win-arm64.exe"
-Copy-Item "$DistPath\x64\F-Chat-Horizon-Setup-win-x64.exe" -Destination "$ReleasePath\F-Chat-Horizon-win-x64.exe"
+Copy-Item "$DistPath\*.exe" -Destination "$ReleasePath\" -ErrorAction SilentlyContinue
 
 # TODO: Allow specifying the branch to build from

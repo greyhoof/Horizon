@@ -12,6 +12,7 @@ const strings: { [key: string]: string | undefined } = {
   'action.open': 'Show',
   'action.close': 'Close',
   'action.quit': 'Quit',
+  'action.about': 'About F-Chat Horizon',
   'action.newWindow': 'Open new window',
   'action.newTab': 'Open new tab',
   'action.updateAvailable': 'UPDATE AVAILABLE',

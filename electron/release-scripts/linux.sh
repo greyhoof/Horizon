@@ -16,7 +16,7 @@ fi
 
 # & Sets our paths
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-DIST_PATH="$REPO_ROOT/electron/dist/downloaded"
+DIST_PATH="$REPO_ROOT/electron/dist/"
 
 # & Ensure we're at the root of the repo
 cd "$REPO_ROOT"
@@ -35,14 +35,14 @@ rm -rf "$DIST_PATH"
 # & Build the project
 cd electron
 rm -rf app dist
-pnpm build:dist
-node pack.js
+pnpm install
+pnpm build:linux
 
 # & Prepare release directory
 mkdir -p "$RELEASE_PATH"
 
 # & Copy artifacts for release
-cp "$DIST_PATH/fchat.arm64.AppImage" "$RELEASE_PATH/F-Chat-Horizon-linux-arm64.AppImage"
-cp "$DIST_PATH/fchat.arm64.AppImage.zsync" "$RELEASE_PATH/F-Chat-Horizon-linux-arm64.AppImage.zsync"
-cp "$DIST_PATH/fchat.x64.AppImage" "$RELEASE_PATH/F-Chat-Horizon-linux-x64.AppImage"
-cp "$DIST_PATH/fchat.x64.AppImage.zsync" "$RELEASE_PATH/F-Chat-Horizon-linux-x64.AppImage.zsync"
+cp "$DIST_PATH"/*.tar.gz "$RELEASE_PATH"/ 2>/dev/null || true
+cp "$DIST_PATH"/*.pacman "$RELEASE_PATH"/ 2>/dev/null || true
+cp "$DIST_PATH"/*.deb "$RELEASE_PATH"/ 2>/dev/null || true
+cp "$DIST_PATH"/*.AppImage "$RELEASE_PATH"/ 2>/dev/null || true

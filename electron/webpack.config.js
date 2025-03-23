@@ -78,6 +78,11 @@ const mainConfig = {
         path.join(__dirname, 'browser_option.ts'),
         path.join(__dirname, 'browser_option.html'),
         path.join(__dirname, 'build', 'tray@2x.png')
+      ],
+      about: [
+        path.join(__dirname, 'about.ts'),
+        path.join(__dirname, 'about.html'),
+        path.join(__dirname, 'build', 'tray@2x.png')
       ]
     },
     output: {
@@ -216,6 +221,15 @@ const mainConfig = {
               .replace(/\\/g, '/'),
             to: path.join('assets'),
             context: path.resolve(__dirname, '..', 'assets')
+          },
+          {
+            from: path.join(__dirname, 'package.json'),
+            to: 'package.json',
+            transform(content) {
+              const json = JSON.parse(content.toString());
+              delete json.build; // Remove the "build" field
+              return JSON.stringify(json, null, 2);
+            }
           }
         ]
       })

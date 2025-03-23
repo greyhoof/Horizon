@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 .bg-solid-text {
   background: $text-background-color;
 }
@@ -273,7 +275,7 @@ $genders: (
   }
 
   .message-event .gender-#{$gender} {
-    color: lighten($color, 5%);
+    color: color.scale($color, $lightness: 5%);
   }
 }
 
