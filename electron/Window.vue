@@ -375,7 +375,7 @@
         },
         onEnd: e => {
           if (e.oldIndex === e.newIndex) return;
-          let elem = this.tabs[e.oldIndex!];
+          const elem = this.tabs[e.oldIndex!];
           this.tabs.splice(e.oldIndex!, 1);
           this.tabs.splice(e.newIndex!, 0, elem);
           sortable.sort(tabsorder, false);
