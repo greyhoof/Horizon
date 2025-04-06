@@ -94,36 +94,38 @@
     if (showStatus || character.status === 'crown')
       statusClass = `fa-fw ${getStatusIcon(character.status)}`;
 
-    const cache =
-      (showMatch && core.state.settings.risingAdScore) ||
-      core.state.settings.risingFilter.showFilterIcon
-        ? core.cache.profileCache.getSync(character.name)
-        : undefined;
+    if (core.connection.character) {
+      const cache =
+        (showMatch && core.state.settings.risingAdScore) ||
+        core.state.settings.risingFilter.showFilterIcon
+          ? core.cache.profileCache.getSync(character.name)
+          : undefined;
 
-    // undefined == not interested
-    // null == no cache hit
-    if (cache === null && showMatch) {
-      void core.cache.addProfile(character.name);
-    }
-
-    if (core.state.settings.risingAdScore && showMatch && cache) {
-      if (
-        cache.match.searchScore >= kinkMatchWeights.unicornThreshold &&
-        cache.match.matchScore === Scoring.MATCH
-      ) {
-        matchClass = 'match-found unicorn';
-        matchScore = 'unicorn';
-      } else {
-        matchClass = `match-found ${Score.getClasses(cache.match.matchScore)}`;
-        matchScore = cache.match.matchScore;
+      // undefined == not interested
+      // null == no cache hit
+      if (cache === null && showMatch) {
+        void core.cache.addProfile(character.name);
       }
-    }
 
-    if (
-      core.state.settings.risingFilter.showFilterIcon &&
-      cache?.match.isFiltered
-    ) {
-      smartFilterIcon = 'user-filter fas fa-filter';
+      if (core.state.settings.risingAdScore && showMatch && cache) {
+        if (
+          cache.match.searchScore >= kinkMatchWeights.unicornThreshold &&
+          cache.match.matchScore === Scoring.MATCH
+        ) {
+          matchClass = 'match-found unicorn';
+          matchScore = 'unicorn';
+        } else {
+          matchClass = `match-found ${Score.getClasses(cache.match.matchScore)}`;
+          matchScore = cache.match.matchScore;
+        }
+      }
+
+      if (
+        core.state.settings.risingFilter.showFilterIcon &&
+        cache?.match.isFiltered
+      ) {
+        smartFilterIcon = 'user-filter fas fa-filter';
+      }
     }
 
     const baseGender = character.overrides.gender || character.gender;
