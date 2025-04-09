@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Suggest an idea or feature for this Horizon
+about: Suggest an idea or feature for Horizon
 title: ''
 labels: feature
 assignees: ''
