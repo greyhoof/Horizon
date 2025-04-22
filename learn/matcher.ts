@@ -835,17 +835,23 @@ export class Matcher {
     const yourAge = this.yourAnalysis.age;
     const theirAge = this.theirAnalysis.age;
 
-    if (theirAge === null)
-      return new Score(Scoring.NEUTRAL);
+    if (theirAge === null) return new Score(Scoring.NEUTRAL);
 
     if (theirAge < 18) {
       const ageplayScore = Matcher.getKinkPreference(you, Kink.Ageplay);
-
       // Matches: You're adult with AP kink
-      if (yourAge >= 18 && theirAge < 16 && ageplayScore !== null)
+      if (
+        yourAge !== null &&
+        yourAge >= 18 &&
+        theirAge < 16 &&
+        ageplayScore !== null
+      )
         return Matcher.formatKinkScore(ageplayScore, 'very young characters');
 
-      const underageScore = Matcher.getKinkPreference(you, Kink.UnderageCharacters);
+      const underageScore = Matcher.getKinkPreference(
+        you,
+        Kink.UnderageCharacters
+      );
 
       // Matches: you're anyone with UA kink
       if (underageScore !== null)
@@ -859,16 +865,36 @@ export class Matcher {
       yourAge <= 80 &&
       theirAge <= 80
     ) {
-      const olderCharactersScore = Matcher.getKinkPreference(you, Kink.OlderCharacters);
-      const youngerCharactersScore = Matcher.getKinkPreference(you, Kink.YoungerCharacters);
+      const olderCharactersScore = Matcher.getKinkPreference(
+        you,
+        Kink.OlderCharacters
+      );
+      const youngerCharactersScore = Matcher.getKinkPreference(
+        you,
+        Kink.YoungerCharacters
+      );
       const ageDifference = Math.abs(yourAge - theirAge);
 
       // Matches: Any age with age difference kinks:
-      if (yourAge < theirAge && olderCharactersScore !== null && ageDifference >= 8)
-        return Matcher.formatKinkScore(olderCharactersScore, 'older characters');
+      if (
+        yourAge < theirAge &&
+        olderCharactersScore !== null &&
+        ageDifference >= 8
+      )
+        return Matcher.formatKinkScore(
+          olderCharactersScore,
+          'older characters'
+        );
 
-      if (yourAge > theirAge && youngerCharactersScore !== null && ageDifference >= 8)
-        return Matcher.formatKinkScore(youngerCharactersScore, 'younger characters');
+      if (
+        yourAge > theirAge &&
+        youngerCharactersScore !== null &&
+        ageDifference >= 8
+      )
+        return Matcher.formatKinkScore(
+          youngerCharactersScore,
+          'younger characters'
+        );
 
       // Matches: You're UA in age proximity (they can still MISMATCH you if they're 18/19!)
       if (yourAge < 18 && ageDifference <= 2)

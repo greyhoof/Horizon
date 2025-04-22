@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 .note-folder {
   display: flex;
   width: 100%;
@@ -17,12 +19,12 @@
 .conversation-from-me,
 .conversation-from-them {
   margin-bottom: 5px;
-  max-width: percentage((($grid-columns - 4) / $grid-columns));
+  max-width: percentage(math.div($grid-columns - 4, $grid-columns));
   word-wrap: break-word;
 }
 
 .conversation-from-me {
-  margin-right: percentage((4 / $grid-columns));
+  margin-right: percentage(math.div(4, $grid-columns));
   background-color: $note-conversation-you-bg;
   color: $note-conversation-you-text;
   border-color: $note-conversation-you-border;
@@ -30,9 +32,27 @@
 }
 
 .conversation-from-them {
-  margin-left: percentage((4 / $grid-columns));
+  margin-left: percentage(math.div(4, $grid-columns));
   background-color: $note-conversation-them-bg;
   color: $note-conversation-them-text;
   border-color: $note-conversation-them-border;
+  //text-align: right;
+}
+
+.note-conversation-you {
+  max-width: percentage(math.div($grid-columns - 4, $grid-columns));
+  margin-left: 0;
+  margin-right: auto;
+  margin-bottom: 10px;
+  margin-right: percentage(math.div(4, $grid-columns));
+  //text-align: left;
+}
+
+.note-conversation-them {
+  max-width: 66.66%;
+  margin-left: auto;
+  margin-right: 0;
+  margin-bottom: 10px;
+  margin-left: percentage(math.div(4, $grid-columns));
   //text-align: right;
 }

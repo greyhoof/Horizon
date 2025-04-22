@@ -21,11 +21,11 @@
 
 # Download
 
-[Windows x64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat%20Horizon-win-x64.exe) |
-[Windows arm64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat%20Horizon-win-arm64.exe) |
-[MacOS (Universal)](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat%20Horizon-mac-universal.dmg) |
-[Linux x64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat%20Horizon-linux-x64.AppImage) |
-[Linux arm64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat%20Horizon-linux-arm64.AppImage)
+[Windows x64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat.Horizon-win-x64.exe) |
+[Windows arm64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat.Horizon-win-arm64.exe) |
+[MacOS (Universal)](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat.Horizon-mac-universal.dmg) |
+[Linux x64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat.Horizon-linux-x64.AppImage) |
+[Linux arm64](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat.Horizon-linux-arm64.AppImage)
 
 # F-Chat Horizon
 
@@ -74,10 +74,10 @@ F-chat Rising can be installed on all _major_ operating systems (Minus BSDs.)
 > [!WARNING]
 > Due to that nature of Mac, MacOS builds are **experimental**. Please [contact me](https://horizn.moe/contact.html) if you have any issues.
 
-Since we currently don't have a paid developer license (and MacOS by default blocks unsigned apps downloaded from the internet), you may need to manually allow the app in your command line.
+Since we currently don't have a paid developer license (and MacOS by default blocks unsigned apps downloaded from the internet), you may need to manually allow the app in your command line or System Settings.
 
-1. Download the installer. This _should_ work for both M1 / Intel based systems
-   - [MacOS (Universal)](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat%20Horizon-mac-universal.dmg)
+1. Download the installer. This _should_ work for M1 / Intel based systems
+   - [MacOS (Universal)](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat.Horizon-mac-universal.dmg)
 2. Open the downloaded .dmg file and drag the application to your Applications folder.
    If you get a warning saying `"F-Chat" is damaged and can't be opened. You should move it to the Bin.` while attempting to open F-Chat, continue past step 2:
 3. Open your Terminal app
@@ -201,3 +201,4 @@ Please read [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 - _CodingWithAnxiety_, Project Maintainer
 - _kawinski_, Assigned Project Nerd (Aka, helps with project direction.)
+- _FatCatClient_, (Temporary) co-owner.
