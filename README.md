@@ -115,20 +115,20 @@ Select the correct package for your distribution and architecture:
    ./F-Chat.Horizon
    ```
 
-### Arch-based (pacman)
+### Arch-based (AUR)
 
 > [!NOTE]
-> There is currently no offical support for arch.
-> You will have you build the .pacman file yourself. `cd electron` and run `pnpm build:linux:arch`
->
-> You need to have pacman available on your system to build the arch builds. Duh.
+> The AUR package currently doesn't support ARM.
 
-1. Download the `.pacman` file for your architecture.
-   - [Linux x64 .pacman](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat.Horizon-linux-x64.pacman)
-   - [Linux arm64 .pacman](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat.Horizon-linux-arm64.pacman)
-2. Install:
+- With an AUR helper:
    ```bash
-   sudo pacman -U F-Chat.Horizon-linux-<arch>.pacman
+   yay|paru|etc -S fchat-horizon-bin
+   ```
+- Manually:
+   ```bash
+   git clone https://aur.archlinux.org/fchat-horizon-bin.git
+   cd fchat-horizon-bin
+   makepkg -si
    ```
 
 # Usage
