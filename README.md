@@ -74,9 +74,30 @@ F-chat Rising can be installed on all _major_ operating systems (Minus BSDs.)
 > [!WARNING]
 > Due to that nature of Mac, MacOS builds are **experimental**. Please [contact me](https://horizn.moe/contact.html) if you have any issues.
 
+Since we currently don't have a paid developer license (and MacOS by default blocks unsigned apps downloaded from the internet), you may need to manually allow the app in your command line or System Settings.
+
 1. Download the installer. This _should_ work for M1 / Intel based systems
    - [MacOS (Universal)](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat.Horizon-mac-universal.dmg)
 2. Open the downloaded .dmg file and drag the application to your Applications folder.
+   If you get a warning saying `"F-Chat" is damaged and can't be opened. You should move it to the Bin.` while attempting to open F-Chat, continue past step 2:
+3. Open your Terminal app
+4. Type the following command and press Enter:
+
+```bash
+xattr -d com.apple.quarantine /Applications/F-Chat\ Horizon.app
+```
+
+Or if you don't like using the Terminal
+
+3. Open the Applications folder in your finder, and hold the Ctrl key while clicking the F-Chat Horizon icon, and select "Open".
+4. The warning should appear like normal, but if you then go to System Settings > Privacy and Security, F-Chat Horizon should appear as a blocked app. Clicking "Open Anyway" should add it to the whitelist and let you use it as normal.
+
+![MacOS Ctrl-Open](https://raw.githubusercontent.com/Fchat-Horizon/Horizon/refs/heads/main/docs/imgages/macos-whitelist-ctrl-open.png)
+![MacOS System Settings Whitelist](https://raw.githubusercontent.com/Fchat-Horizon/Horizon/refs/heads/main/docs/imgages/macos-whitelist-settings.png)
+
+5. Now the app should open as expected.
+
+This is unfortunately unresolvable unless we either get a paid developer license from Apple, or if users disable the Gatekeeper whitelist from their system altogether– which we do not recommend you do.
 
 ## Linux
 
