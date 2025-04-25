@@ -42,19 +42,19 @@
       "background": "build/dmg.png",
       "contents": [
         {
-          "x": 130,
-          "y": 220
+          "x": 554,
+          "y": 110
         },
         {
-          "x": 410,
-          "y": 220,
+          "x": 554,
+          "y": 344,
           "type": "link",
           "path": "/Applications"
         }
       ],
       "window": {
-        "width": 540,
-        "height": 380
+        "width": 658,
+        "height": 498
       }
     },
     "linux": {
