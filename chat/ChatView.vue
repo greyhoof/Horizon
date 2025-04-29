@@ -569,11 +569,11 @@
         crown: { color: 'online', icon: ['fas', 'fa-crown'] },
         online: { color: 'online', icon: ['fas', 'fa-circle'] },
         looking: { color: 'online', icon: ['fa', 'fa-eye'] },
-        offline: { color: 'offline', icon: ['fas', 'fa-circle'] },
-        busy: { color: 'away', icon: ['fas', 'fa-circle'] },
-        idle: { color: 'away', icon: ['fas', 'fa-circle'] },
-        dnd: { color: 'away', icon: ['fas', 'fa-circle'] },
-        away: { color: 'away', icon: ['fas', 'fa-circle'] }
+        offline: { color: 'offline', icon: ['fa', 'fa-ban'] },
+        busy: { color: 'away', icon: ['fa', 'fa-cog'] },
+        idle: { color: 'away', icon: ['far', 'fa-clock'] },
+        dnd: { color: 'dnd', icon: ['fa', 'fa-minus-circle'] },
+        away: { color: 'away', icon: ['far', 'fa-circle'] }
       };
 
       const cls = { [styling[status].color]: true };
@@ -737,6 +737,9 @@
 
         .away {
           color: #c7894f;
+        }
+        .dnd {
+          color: #ce2d4f;
         }
 
         .fa-comment,
