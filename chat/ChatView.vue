@@ -456,6 +456,7 @@
       void core.adCenter.load();
     }
 
+    @Hook('destroyed')
     destroyed(): void {
       window.removeEventListener('keydown', this.keydownListener);
       window.removeEventListener('focus', this.focusListener);
