@@ -98,7 +98,7 @@
                 </button>
               </div>
             </div>
-            <div style="height: 8px;"></div>
+            <div style="height: 8px"></div>
             <label class="control-label" for="proxy">{{
               l('login.proxy')
             }}</label>
@@ -565,7 +565,7 @@
           await currentWindow.webContents.session.setProxy({
             proxyRules: this.settings.proxy, // Update dynamically if needed,
             proxyBypassRules: 'localhost,127.0.0.1',
-            mode: 'fixed_servers',
+            mode: 'fixed_servers'
           });
         } catch (e) {
           this.error = l('login.error.proxy');
@@ -577,12 +577,11 @@
         try {
           const currentWindow = remote.getCurrentWindow();
           await currentWindow.webContents.session.setProxy({
-            mode: 'direct',
+            mode: 'direct'
           });
         } catch (_) {
           // Ignore error
         }
-
       }
 
       try {
