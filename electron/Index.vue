@@ -564,7 +564,7 @@
           const currentWindow = remote.getCurrentWindow();
           await currentWindow.webContents.session.setProxy({
             proxyRules: this.settings.proxy, // Update dynamically if needed,
-            proxyBypassRules: 'localhost,127.0.0.1'
+            proxyBypassRules: 'localhost,127.0.0.1',
             mode: 'fixed_servers',
           });
         } catch (e) {
@@ -579,7 +579,7 @@
           await currentWindow.webContents.session.setProxy({
             mode: 'direct',
           });
-        } case (_) {
+        } catch (_) {
           // Ignore error
         }
 
@@ -619,8 +619,7 @@
           electron.ipcRenderer.send(
             'save-login',
             this.settings.account,
-            this.settings.host,
-            this.settings.proxy
+            this.settings.host
           );
           await keyStore.setPassword(
             'f-list.net',
