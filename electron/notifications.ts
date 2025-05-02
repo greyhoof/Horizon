@@ -28,6 +28,7 @@ export default class Notifications extends BaseNotifications {
           remote.getCurrentWebContents().id
         );
         conversation.show();
+        browserWindow.restore();
         browserWindow.focus();
         notification.close();
       };
