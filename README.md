@@ -11,7 +11,7 @@
     - [Debian/Ubuntu (deb)](#debianubuntu-deb)
     - [AppImage](#appimage)
     - [Tarball (tar.gz)](#tarball-targz)
-    - [Arch-based (pacman)](#arch-based-pacman)
+    - [Arch-based (AUR)](#arch-based-aur)
 - [Usage](#usage)
   - [Getting started](#getting-started)
   - [Wiki](#wiki)
