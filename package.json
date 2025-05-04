@@ -100,6 +100,7 @@
     "watch": "cd electron && pnpm watch",
     "start": "cd electron && pnpm start",
     "lint": "pnpm prettier --write .",
+    "check": "pnpm prettier --check .",
     "prepare": "husky"
   },
   "pnpm": {
