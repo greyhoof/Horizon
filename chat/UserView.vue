@@ -109,6 +109,8 @@
     let matchScore = null;
     let smartFilterIcon: string | null = null;
     let genderClass = null;
+    let gender = 'none';
+    let useOfflineColor = false;
 
     if (character.isChatOp) {
       rankIcon = 'far fa-gem';
@@ -158,20 +160,19 @@
       ) {
         smartFilterIcon = 'user-filter fas fa-filter';
       }
-    }
+      useOfflineColor =
+        core.state.settings.horizonChangeOfflineColor &&
+        character.status == 'offline';
 
-    const useOfflineColor =
-      core.state.settings.horizonChangeOfflineColor &&
-      character.status == 'offline';
+      const baseGender = character.overrides.gender || character.gender;
+      gender =
+        baseGender !== undefined && !useOfflineColor
+          ? baseGender.toLowerCase()
+          : 'none';
 
-    const baseGender = character.overrides.gender || character.gender;
-    const gender =
-      baseGender !== undefined && !useOfflineColor
-        ? baseGender.toLowerCase()
-        : 'none';
-
-    if (character.gender) {
-      genderClass = `fa ${getGenderIcon(character.gender, character.status)}`;
+      if (character.gender) {
+        genderClass = `fa ${getGenderIcon(character.gender, character.status)}`;
+      }
     }
 
     const isBookmark =

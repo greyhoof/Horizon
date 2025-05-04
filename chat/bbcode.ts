@@ -32,7 +32,9 @@ export default class BBCodeParser extends CoreBBCodeParser {
           el,
           propsData: {
             character: core.characters.get(content),
-            isMarkerShown: core.state.settings.horizonShowGenderMarker
+            isMarkerShown: core.connection.character
+              ? core.state.settings.horizonShowGenderMarker
+              : false
           }
         });
         this.cleanup.push(view);

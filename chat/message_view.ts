@@ -64,7 +64,9 @@ const userPostfix: { [key: number]: string | undefined } = {
               : false,
             character: message.sender,
             channel: this.channel,
-            isMarkerShown: core.state.settings.horizonShowGenderMarker
+            isMarkerShown: core.connection.character
+              ? core.state.settings.horizonShowGenderMarker
+              : false
           }
         }),
         userPostfix[message.type] !== undefined
