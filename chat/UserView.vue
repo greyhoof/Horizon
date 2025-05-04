@@ -12,9 +12,11 @@
     @click.right.passive="dismiss(true)"
     @click.left.passive="dismiss(true)"
     ><img v-if="!!avatar" :src="avatarUrl" class="user-avatar" /><span
-      v-if="!!statusClass"
-      :class="statusClass"
+      v-if="isMarkerShown"
+      :class="genderClass"
+      style="width: 15px; text-align: center"
     ></span
+    ><span v-if="!!statusClass" :class="statusClass"></span
     ><span v-if="!!rankIcon" :class="rankIcon"></span
     ><span v-if="!!smartFilterIcon" :class="smartFilterIcon"></span
     >{{ character.name
@@ -55,9 +57,38 @@
     }
   }
 
+  export function getGenderIcon(
+    gender: Character.Gender,
+    status: Character.Status
+  ): string {
+    if (status !== 'offline') {
+      switch (gender) {
+        case 'None':
+          return 'fa fa-genderless';
+        case 'Male':
+          return 'fa fa-mars';
+        case 'Female':
+          return 'fa fa-venus';
+        case 'Shemale':
+          return 'fa fa-transgender';
+        case 'Herm':
+          return 'fa fa-mercury';
+        case 'Male-Herm':
+          return 'fa fa-mars-stroke-v';
+        case 'Cunt-boy':
+          return 'fa fa-mars-stroke-h';
+        case 'Transgender':
+          return 'fa fa-transgender-alt';
+      }
+    }
+
+    return 'fa fa-times';
+  }
+
   export interface StatusClasses {
     rankIcon: string | null;
     smartFilterIcon: string | null;
+    genderClass: string | null;
     statusClass: string | null;
     matchClass: string | null;
     matchScore: number | string | null;
@@ -77,6 +108,9 @@
     let matchClass = null;
     let matchScore = null;
     let smartFilterIcon: string | null = null;
+    let genderClass = null;
+    let gender = 'none';
+    let useOfflineColor = false;
 
     if (character.isChatOp) {
       rankIcon = 'far fa-gem';
@@ -94,40 +128,52 @@
     if (showStatus || character.status === 'crown')
       statusClass = `fa-fw ${getStatusIcon(character.status)}`;
 
-    const cache =
-      (showMatch && core.state.settings.risingAdScore) ||
-      core.state.settings.risingFilter.showFilterIcon
-        ? core.cache.profileCache.getSync(character.name)
-        : undefined;
+    if (core.connection.character) {
+      const cache =
+        (showMatch && core.state.settings.risingAdScore) ||
+        core.state.settings.risingFilter.showFilterIcon
+          ? core.cache.profileCache.getSync(character.name)
+          : undefined;
 
-    // undefined == not interested
-    // null == no cache hit
-    if (cache === null && showMatch) {
-      void core.cache.addProfile(character.name);
-    }
+      // undefined == not interested
+      // null == no cache hit
+      if (cache === null && showMatch) {
+        void core.cache.addProfile(character.name);
+      }
 
-    if (core.state.settings.risingAdScore && showMatch && cache) {
+      if (core.state.settings.risingAdScore && showMatch && cache) {
+        if (
+          cache.match.searchScore >= kinkMatchWeights.unicornThreshold &&
+          cache.match.matchScore === Scoring.MATCH
+        ) {
+          matchClass = 'match-found unicorn';
+          matchScore = 'unicorn';
+        } else {
+          matchClass = `match-found ${Score.getClasses(cache.match.matchScore)}`;
+          matchScore = cache.match.matchScore;
+        }
+      }
+
       if (
-        cache.match.searchScore >= kinkMatchWeights.unicornThreshold &&
-        cache.match.matchScore === Scoring.MATCH
+        core.state.settings.risingFilter.showFilterIcon &&
+        cache?.match.isFiltered
       ) {
-        matchClass = 'match-found unicorn';
-        matchScore = 'unicorn';
-      } else {
-        matchClass = `match-found ${Score.getClasses(cache.match.matchScore)}`;
-        matchScore = cache.match.matchScore;
+        smartFilterIcon = 'user-filter fas fa-filter';
+      }
+      useOfflineColor =
+        core.state.settings.horizonChangeOfflineColor &&
+        character.status == 'offline';
+
+      const baseGender = character.overrides.gender || character.gender;
+      gender =
+        baseGender !== undefined && !useOfflineColor
+          ? baseGender.toLowerCase()
+          : 'none';
+
+      if (character.gender) {
+        genderClass = `fa ${getGenderIcon(character.gender, character.status)}`;
       }
     }
-
-    if (
-      core.state.settings.risingFilter.showFilterIcon &&
-      cache?.match.isFiltered
-    ) {
-      smartFilterIcon = 'user-filter fas fa-filter';
-    }
-
-    const baseGender = character.overrides.gender || character.gender;
-    const gender = baseGender !== undefined ? baseGender.toLowerCase() : 'none';
 
     const isBookmark =
       showBookmark &&
@@ -137,14 +183,14 @@
 
     const userClass =
       `user-view` +
-      ` gender-${gender}` +
       (isBookmark ? ' user-bookmark' : '') +
-      (character.overrides.characterColor
+      (character.overrides.characterColor && !useOfflineColor
         ? ` ${character.overrides.characterColor}NameText`
-        : '');
+        : ` gender-${gender}`);
     // `user-view gender-${gender}${isBookmark ? ' user-bookmark' : ''}`;
 
     return {
+      genderClass: genderClass ? `user-gender ${genderClass}` : null,
       rankIcon: rankIcon ? `user-rank ${rankIcon}` : null,
       statusClass: statusClass ? `user-status ${statusClass}` : null,
       matchClass,
@@ -180,10 +226,14 @@
     @Prop({ default: false })
     readonly avatar: boolean = false;
 
+    @Prop({ default: false })
+    readonly isMarkerShown: boolean = false;
+
     userClass = '';
 
     rankIcon: string | null = null;
     smartFilterIcon: string | null = null;
+    genderClass: string | null = null;
     statusClass: string | null = null;
     matchClass: string | null = null;
     matchScore: number | string | null = null;
@@ -270,6 +320,7 @@
 
       this.rankIcon = res.rankIcon;
       this.smartFilterIcon = res.smartFilterIcon;
+      this.genderClass = res.genderClass;
       this.statusClass = res.statusClass;
       this.matchClass = res.matchClass;
       this.matchScore = res.matchScore;
