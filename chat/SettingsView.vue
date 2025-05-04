@@ -547,10 +547,7 @@
           they message you
         </label>
 
-        <label
-          class="control-label"
-          for="risingFilter.autoReplyCustom"
-        >
+        <label class="control-label" for="risingFilter.autoReplyCustom">
           <input
             type="checkbox"
             id="risingFilter.autoReplyCustom"
