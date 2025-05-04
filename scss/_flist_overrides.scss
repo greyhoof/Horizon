@@ -45,10 +45,9 @@ input:checked {
   //The url is checked from the theme file, so we have to use this absolutely bonkers relative path.
   src: url('../../../assets/fonts/OpenMoji-color-glyf_colr_0.woff2')
     format('woff2');
-  unicode-range:
-    U+23, U+2A, U+2D, U+30-39, U+A9, U+AE, U+200D, U+203C, U+2049, U+20E3,
-    U+2117, U+2120, U+2122, U+2139, U+2194-2199, U+21A9, U+21AA, U+229C, U+231A,
-    U+231B, U+2328, U+23CF, U+23E9-23F3, U+23F8-23FE, U+24C2, U+25A1,
+  unicode-range: U+23, U+2A, U+2D, U+30-39, U+A9, U+AE, U+200D, U+203C, U+2049,
+    U+20E3, U+2117, U+2120, U+2122, U+2139, U+2194-2199, U+21A9, U+21AA, U+229C,
+    U+231A, U+231B, U+2328, U+23CF, U+23E9-23F3, U+23F8-23FE, U+24C2, U+25A1,
     U+25AA-25AE, U+25B6, U+25C0, U+25C9, U+25D0, U+25D1, U+25E7-25EA, U+25ED,
     U+25EE, U+25FB-25FE, U+2600-2605, U+260E, U+2611, U+2614, U+2615, U+2618,
     U+261D, U+2620, U+2622, U+2623, U+2626, U+262A, U+262E, U+262F, U+2638-263A,
