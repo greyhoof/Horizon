@@ -59,7 +59,9 @@ const userPostfix: { [key: number]: string | undefined } = {
           : '',
         createElement(UserView, {
           props: {
-            avatar: core.state.settings.risingShowPortraitInMessage,
+            avatar: core.connection.character
+              ? core.state.settings.risingShowPortraitInMessage
+              : false,
             character: message.sender,
             channel: this.channel,
             isMarkerShown: core.state.settings.horizonShowGenderMarker
@@ -159,6 +161,7 @@ export default class MessageView extends Vue {
   }
 
   getMessageScoreClasses(message: Conversation.Message): string {
+    if (!core.connection.character) return '';
     if (
       !core.state.settings.risingAdScore ||
       message.type !== Conversation.Message.Type.Ad
