@@ -354,6 +354,21 @@
       </div>
 
       <div class="form-group">
+        <label class="control-label" for="horizonGenderMarkerOrigColor">
+          <input
+            type="checkbox"
+            id="horizonGenderMarkerOrigColor"
+            v-model="horizonGenderMarkerOrigColor"
+            :disabled="
+              !horizonShowGenderMarker || !horizonShowCustomCharacterColors
+            "
+          />
+          Make gender icon use the original gender color instead of the custom
+          name color
+        </label>
+      </div>
+
+      <div class="form-group">
         <label class="control-label" for="horizonChangeOfflineColor">
           <input
             type="checkbox"
@@ -695,6 +710,7 @@
     risingShowHighQualityPortraits!: boolean;
     horizonShowCustomCharacterColors!: boolean;
     horizonShowGenderMarker!: boolean;
+    horizonGenderMarkerOrigColor!: boolean;
     horizonChangeOfflineColor!: boolean;
     horizonNotifyFriendSignIn!: boolean;
 
@@ -751,6 +767,7 @@
       this.horizonShowCustomCharacterColors =
         settings.horizonShowCustomCharacterColors;
       this.horizonShowGenderMarker = settings.horizonShowGenderMarker;
+      this.horizonGenderMarkerOrigColor = settings.horizonGenderMarkerOrigColor;
       this.horizonChangeOfflineColor = settings.horizonChangeOfflineColor;
 
       this.horizonNotifyFriendSignIn = settings.horizonNotifyFriendSignIn;
@@ -857,6 +874,7 @@
         risingShowHighQualityPortraits: this.risingShowHighQualityPortraits,
         horizonShowCustomCharacterColors: this.horizonShowCustomCharacterColors,
         horizonShowGenderMarker: this.horizonShowGenderMarker,
+        horizonGenderMarkerOrigColor: this.horizonGenderMarkerOrigColor,
         horizonChangeOfflineColor: this.horizonChangeOfflineColor,
         horizonNotifyFriendSignIn: this.horizonNotifyFriendSignIn,
 

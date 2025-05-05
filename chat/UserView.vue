@@ -171,7 +171,13 @@
           : 'none';
 
       if (character.gender) {
-        genderClass = `fa ${getGenderIcon(character.gender, character.status)}`;
+        if (!core.state.settings.horizonGenderMarkerOrigColor) {
+          genderClass = `fa ${getGenderIcon(character.gender, character.status)}`;
+        } else {
+          genderClass =
+            `fa ${getGenderIcon(character.gender, character.status)}` +
+            ` gender-${gender}`;
+        }
       }
     }
 
@@ -183,7 +189,7 @@
 
     const userClass =
       `user-view` +
-      (isBookmark ? ' user-bookmark' : '') +
+      (isBookmark && !useOfflineColor ? ' user-bookmark' : '') +
       (character.overrides.characterColor && !useOfflineColor
         ? ` ${character.overrides.characterColor}NameText`
         : ` gender-${gender}`);
