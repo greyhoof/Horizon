@@ -208,12 +208,16 @@ async function checkForGitRelease(
     //The releases we get from the GitHub API are in in descending order from their release date.
     for (const release of releases) {
       //We don't care about pre-releases if we're not using the beta, but we still want to try the others.
-      if (release.prerelease && !settings.beta) break;
+      log.debug('updateCheck.release', release.tag_name);
+      if (release.prerelease && !settings.beta) {
+        continue;
+      }
       if (release.tag_name == semVer) {
-        log.info(`F-Chat Rising up to date: ${semVer}`);
+        log.info('updateCheck.state.upToDate', `Horizon up to date: ${semVer}`);
         return;
       }
       log.info(
+        'updateCheck.state.new',
         `Update available: You're using ${semVer} instead of ${release.tag_name}`
       );
       const menu = electron.Menu.getApplicationMenu()!;
