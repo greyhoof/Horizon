@@ -33,7 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The 'Smart Filter' automated reply message can now be customized. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/3edab4956b0121cd711c1e67abb4d279bdfcd69d)
   - This also shuffles the related settings around, and hopefully explains the system a bit better.
 - A new setting to display gender symbols next to character names. [\[Commit\]](https://github.com/Fchat-Horizon/Horizon/commit/1ae7b9cd2c634b481e83aaee5823627a06decb8c)
-  - These symbols will also retain the original gendered name colour if the character in question is using a custom colour for their name.
+  - These symbols can (optionally) retain the original gendered name colour for characters using a custom colour.
 - Automated update checks. The settings button on top-- or on Mac, a new one only visible when there's an update, will glow when a new version of Horizon is available for download. [\[Commit\]](https://github.com/Fchat-Horizon/Horizon/commit/b9189fe9f123dcd2d7a6d6c939e48d744401504b)
   - This also brings back and repurposes the old 3.0 beta channel setting, for checking if pre-release versions are available.
 
