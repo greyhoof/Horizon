@@ -538,7 +538,7 @@ function onReady(): void {
           for (const win of windows)
             win.webContents.send('update-zoom', zoomLevel);
         },
-        accelerator: 'CmdOrCtrl+Plus'
+        accelerator: 'CmdOrCtrl+='
       },
       {
         // role: 'zoomIn',
@@ -546,7 +546,7 @@ function onReady(): void {
         click: (_m: electron.MenuItem, w: electron.BrowserWindow) => {
           // log.info('MENU ZOOM-');
           zoomLevel = Math.max(
-            0,
+            -3,
             zoomLevel - w.webContents.getZoomFactor() / 2
           );
 
@@ -886,15 +886,15 @@ function onReady(): void {
   );
 
   electron.ipcMain.on('has-new', (e: IpcMainEvent, hasNew: boolean) => {
-    if (process.platform === 'darwin') app.dock.setBadge(hasNew ? '!' : '');
-    const window = electron.BrowserWindow.fromWebContents(e.sender) as
-      | electron.BrowserWindow
-      | undefined;
-    if (window !== undefined)
+    if (process.platform === 'darwin' && app.dock !== undefined)
+      app.dock.setBadge(hasNew ? '!' : '');
+    const window = electron.BrowserWindow.fromWebContents(e.sender);
+    if (window !== undefined && window !== null) {
       window.setOverlayIcon(
         hasNew ? badge : emptyBadge,
         hasNew ? 'New messages' : ''
       );
+    }
   });
 
   electron.ipcMain.on('rising-upgrade-complete', () => {
