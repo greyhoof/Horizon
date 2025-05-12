@@ -19,6 +19,14 @@
       >
         <i class="fa fa-cog"></i>
       </div>
+      <div
+        class="btn btn-outline-success"
+        :class="'btn-snowflake-' + (hasUpdate ? 'ready' : 'unavailable')"
+        id="update-darwin"
+        @click="openUpdatePage"
+      >
+        <i class="fa fa-arrow-down"></i>
+      </div>
       <ul
         class="nav nav-tabs"
         style="border-bottom: 0; margin-bottom: -1px; margin-top: 1px"
@@ -28,6 +36,7 @@
           v-for="(tab, index) in tabs"
           :key="'tab-' + index"
           class="nav-item"
+          :data-id="index"
           @click.middle="remove(tab)"
         >
           <a
@@ -315,6 +324,7 @@
             );
           }
           tab.user = undefined;
+          Vue.set(tab, 'avatarUrl', undefined);
           tab.tray.setToolTip(l('title'));
           tab.tray.setContextMenu(
             remote.Menu.buildFromTemplate(this.createTrayMenu(tab))
@@ -332,8 +342,16 @@
           );
         }
       );
-      browserWindow.on('maximize', () => (this.isMaximized = true));
-      browserWindow.on('unmaximize', () => (this.isMaximized = false));
+      browserWindow.on('maximize', () => {
+        this.isMaximized = true;
+        if (this.activeTab !== undefined)
+          this.activeTab.view.setBounds(getWindowBounds());
+      });
+      browserWindow.on('unmaximize', () => {
+        this.isMaximized = false;
+        if (this.activeTab !== undefined)
+          this.activeTab.view.setBounds(getWindowBounds());
+      });
       electron.ipcRenderer.on('switch-tab', (_e: Electron.IpcRendererEvent) => {
         const index = this.tabs.indexOf(this.activeTab!);
         this.show(this.tabs[index + 1 === this.tabs.length ? 0 : index + 1]);
@@ -366,20 +384,18 @@
 
       log.debug('init.window.tab');
 
-      // console.log('SORTABLE', Sortable);
-
-      Sortable.create(<HTMLElement>this.$refs['tabs'], {
+      let tabsorder: string[];
+      const sortable = Sortable.create(<HTMLElement>this.$refs['tabs'], {
         animation: 50,
+        onStart: () => {
+          tabsorder = sortable.toArray();
+        },
         onEnd: e => {
-          // log.debug('ONEND', e);
           if (e.oldIndex === e.newIndex) return;
-
-          // log.debug('PRE', this.tabs);
-          //
-          // const tab = this.tabs.splice(e.oldIndex!, 1)[0];
-          // this.tabs.splice(e.newIndex!, 0, tab);
-          //
-          // log.debug('POST', this.tabs);
+          const elem = this.tabs[e.oldIndex!];
+          this.tabs.splice(e.oldIndex!, 1);
+          this.tabs.splice(e.newIndex!, 0, elem);
+          sortable.sort(tabsorder, false);
         },
         onMove: (e: { related: HTMLElement }) => e.related.id !== 'addTab',
         filter: '.addTab'
@@ -593,6 +609,13 @@
       remote.Menu.getApplicationMenu()!.popup({});
     }
 
+    openUpdatePage(): void {
+      electron.ipcRenderer.send(
+        'open-url-externally',
+        'https://github.com/Fchat-Horizon/Horizon/releases'
+      );
+    }
+
     getThemeClass() {
       // console.log('getThemeClassWindow', this.settings?.risingDisableWindowsHighContrast);
 
@@ -679,10 +702,19 @@
     font-size: 14px;
   }
 
+  #window-tabs .btn-snowflake-ready,
+  #window-tabs .btn-snowflake-unavailable {
+    display: none;
+  }
+
   .platform-darwin {
     #windowButtons .btn,
     #settings {
       display: none;
+    }
+
+    #window-tabs .btn-snowflake-ready {
+      display: flex;
     }
 
     #window-tabs {
