@@ -287,6 +287,10 @@ export namespace Settings {
     readonly risingShowPortraitInMessage: boolean;
     readonly risingShowHighQualityPortraits: boolean;
     readonly horizonShowCustomCharacterColors: boolean;
+    readonly horizonShowGenderMarker: boolean;
+    readonly horizonGenderMarkerOrigColor: boolean;
+    readonly horizonChangeOfflineColor: boolean;
+    readonly horizonNotifyFriendSignIn: boolean;
 
     readonly risingFilter: SmartFilterSettings;
 

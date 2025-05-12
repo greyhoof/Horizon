@@ -274,10 +274,9 @@
 </template>
 
 <script lang="ts">
-  import { Component } from '@f-list/vue-ts';
-
   import Sortable from 'sortablejs';
 
+  import { Component, Hook } from '@f-list/vue-ts';
   import Vue from 'vue';
   import { Keys } from '../keys';
   import ChannelList from './ChannelList.vue';
@@ -351,30 +350,23 @@
     privateCanGlow = !this.channelConversations?.length;
     channelCanGlow = !this.privateConversations?.length;
 
-    mounted(): void {
+    @Hook('mounted')
+    onMounted(): void {
       this.keydownListener = (e: KeyboardEvent) => this.onKeyDown(e);
       window.addEventListener('keydown', this.keydownListener);
       this.setFontSize(core.state.settings.fontSize);
 
-      this.$watch(
-        'conversations.channelConversations',
-        newVal => {
-          if (newVal?.length) {
-            this.channelCanGlow = false;
-          }
-        },
-        { deep: true }
-      );
+      this.$watch('conversations.channelConversations', newVal => {
+        if (newVal?.length) {
+          this.channelCanGlow = false;
+        }
+      });
 
-      this.$watch(
-        'conversations.privateConversations',
-        newVal => {
-          if (newVal?.length) {
-            this.privateCanGlow = false;
-          }
-        },
-        { deep: true }
-      );
+      this.$watch('conversations.privateConversations', newVal => {
+        if (newVal?.length) {
+          this.privateCanGlow = false;
+        }
+      });
 
       Sortable.create(<HTMLElement>this.$refs['privateConversations'], {
         animation: 50,
@@ -464,6 +456,7 @@
       void core.adCenter.load();
     }
 
+    @Hook('destroyed')
     destroyed(): void {
       window.removeEventListener('keydown', this.keydownListener);
       window.removeEventListener('focus', this.focusListener);
@@ -577,11 +570,11 @@
         crown: { color: 'online', icon: ['fas', 'fa-crown'] },
         online: { color: 'online', icon: ['fas', 'fa-circle'] },
         looking: { color: 'online', icon: ['fa', 'fa-eye'] },
-        offline: { color: 'offline', icon: ['fas', 'fa-circle'] },
-        busy: { color: 'away', icon: ['fas', 'fa-circle'] },
-        idle: { color: 'away', icon: ['fas', 'fa-circle'] },
-        dnd: { color: 'away', icon: ['fas', 'fa-circle'] },
-        away: { color: 'away', icon: ['fas', 'fa-circle'] }
+        offline: { color: 'offline', icon: ['fa', 'fa-ban'] },
+        busy: { color: 'away', icon: ['fa', 'fa-cog'] },
+        idle: { color: 'away', icon: ['far', 'fa-clock'] },
+        dnd: { color: 'dnd', icon: ['fa', 'fa-minus-circle'] },
+        away: { color: 'away', icon: ['far', 'fa-circle'] }
       };
 
       const cls = { [styling[status].color]: true };
@@ -745,6 +738,9 @@
 
         .away {
           color: #c7894f;
+        }
+        .dnd {
+          color: #ce2d4f;
         }
 
         .fa-comment,

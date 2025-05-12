@@ -59,9 +59,7 @@ import DownloadItem = electron.DownloadItem;
 import { AdCoordinatorHost } from '../chat/ads/ad-coordinator-host';
 import { IpcMainEvent } from 'electron';
 import { BlockerIntegration } from './blocker/blocker';
-
-//tslint:disable-next-line:no-require-imports
-const pck = require('./package.json');
+import Axios from 'axios';
 
 // Module to control application life.
 const app = electron.app;
@@ -89,6 +87,15 @@ let tabCount = 0;
 const baseDir = app.getPath('userData');
 fs.mkdirSync(baseDir, { recursive: true });
 let shouldImportSettings = false;
+const releasesUrl =
+  'https://api.github.com/repos/Fchat-Horizon/Horizon/releases';
+type ReleaseInfo = {
+  html_url: string;
+  tag_name: string;
+  prerelease: boolean | undefined;
+};
+const updateCheckFirstDelay = 10000;
+const updateCheckInterval = 3600000;
 
 const settingsDir = path.join(baseDir, 'data');
 fs.mkdirSync(settingsDir, { recursive: true });
@@ -190,6 +197,64 @@ async function addSpellcheckerItems(menu: electron.Menu): Promise<void> {
     );
 }
 
+async function checkForGitRelease(
+  semVer: string,
+  releaseUrl: string
+): Promise<void> {
+  try {
+    let releases: ReleaseInfo[] = (
+      await Axios.get<ReleaseInfo[]>(`${releaseUrl}`)
+    ).data;
+    //The releases we get from the GitHub API are in in descending order from their release date.
+    for (const release of releases) {
+      //We don't care about pre-releases if we're not using the beta, but we still want to try the others.
+      log.debug('updateCheck.release', release.tag_name);
+      if (release.prerelease && !settings.beta) {
+        continue;
+      }
+      if (release.tag_name == semVer) {
+        log.info('updateCheck.state.upToDate', `Horizon up to date: ${semVer}`);
+        return;
+      }
+      log.info(
+        'updateCheck.state.new',
+        `Update available: You're using ${semVer} instead of ${release.tag_name}`
+      );
+      const menu = electron.Menu.getApplicationMenu()!;
+
+      const item = menu.getMenuItemById('update') as MenuItem | null;
+
+      if (item !== null) item.visible = true;
+      else
+        menu.append(
+          new electron.MenuItem({
+            label: l('action.updateAvailable'),
+            submenu: electron.Menu.buildFromTemplate([
+              {
+                label: l('action.update'),
+                click: () => {
+                  for (const w of windows) w.webContents.send('quit');
+                  openURLExternally(
+                    'https://github.com/Fchat-Horizon/Horizon/releases'
+                  );
+                }
+              },
+              {
+                label: l('help.changelog'),
+                click: showPatchNotes
+              }
+            ]),
+            id: 'update'
+          })
+        );
+      electron.Menu.setApplicationMenu(menu);
+      for (const w of windows) w.webContents.send('update-available', true);
+      return;
+    }
+  } catch (e) {
+    log.error(`Error checking for update: ${e}`);
+  }
+}
 function openURLExternally(linkUrl: string): void {
   // check if user set a path and whether it exists
   const pathIsValid =
@@ -444,7 +509,7 @@ function onReady(): void {
 
   log.info('Starting application.');
 
-  app.setAppUserModelId('com.squirrel.fchat.F-Chat');
+  app.setAppUserModelId('net.flist.fchat');
   app.on('open-file', createWindow);
 
   if (settings.version !== app.getVersion()) {
@@ -462,55 +527,16 @@ function onReady(): void {
   //     logger: require('electron-log')
   //   }
   // );
-
-  //tslint:disable-next-line: no-unsafe-any
-  const updaterUrl = `https://update.electronjs.org/Fchat-Horizon/Horizon/${process.platform}-${process.arch}/${pck.version}`;
-  if (process.env.NODE_ENV === 'production' && process.platform !== 'darwin') {
-    electron.autoUpdater.setFeedURL({
-      url: updaterUrl + (settings.beta ? '?channel=beta' : ''),
-      serverType: 'json'
-    });
-    setTimeout(() => electron.autoUpdater.checkForUpdates(), 10000);
-    const updateTimer = setInterval(
-      () => electron.autoUpdater.checkForUpdates(),
-      3600000
+  if (process.env.NODE_ENV === 'production') {
+    setTimeout(
+      () => checkForGitRelease(`v${app.getVersion()}`, releasesUrl),
+      updateCheckFirstDelay
     );
-    electron.autoUpdater.on('update-downloaded', () => {
-      clearInterval(updateTimer);
-      const menu = electron.Menu.getApplicationMenu()!;
-      const item = menu.getMenuItemById('update') as MenuItem | null;
-      if (item !== null) item.visible = true;
-      else
-        menu.append(
-          new electron.MenuItem({
-            label: l('action.updateAvailable'),
-            submenu: electron.Menu.buildFromTemplate([
-              {
-                label: l('action.update'),
-                click: () => {
-                  for (const w of windows) w.webContents.send('quit');
-                  electron.autoUpdater.quitAndInstall();
-                }
-              },
-              {
-                label: l('help.changelog'),
-                click: showPatchNotes
-              }
-            ]),
-            id: 'update'
-          })
-        );
-      electron.Menu.setApplicationMenu(menu);
-      for (const w of windows) w.webContents.send('update-available', true);
-    });
-    electron.autoUpdater.on('update-not-available', () => {
-      for (const w of windows) w.webContents.send('update-available', false);
-      const item = electron.Menu.getApplicationMenu()!.getMenuItemById(
-        'update'
-      ) as MenuItem | null;
-      if (item !== null) item.visible = false;
-    });
-    electron.autoUpdater.on('error', e => log.error(e));
+
+    setInterval(
+      () => checkForGitRelease(`v${app.getVersion()}`, releasesUrl),
+      updateCheckInterval
+    );
   }
 
   const viewItem = {
@@ -692,15 +718,16 @@ function onReady(): void {
             }
           },
 
-          // {
-          //     label: l('settings.beta'), type: 'checkbox', checked: settings.beta,
-          //     click: async(item: electron.MenuItem) => {
-          //         settings.beta = item.checked;
-          //         setGeneralSettings(settings);
-          //         // electron.autoUpdater.setFeedURL({url: updaterUrl+(item.checked ? '?channel=beta' : ''), serverType: 'json'});
-          //         // return electron.autoUpdater.checkForUpdates();
-          //     }
-          // },
+          {
+            label: l('settings.beta'),
+            type: 'checkbox',
+            checked: settings.beta,
+            click: async (item: electron.MenuItem) => {
+              settings.beta = item.checked;
+              setGeneralSettings(settings);
+              checkForGitRelease(`v${app.getVersion()}`, releasesUrl);
+            }
+          },
           {
             label: l('fixLogs.action'),
             click: (_m, window: electron.BrowserWindow) =>
@@ -898,15 +925,15 @@ function onReady(): void {
   );
 
   electron.ipcMain.on('has-new', (e: IpcMainEvent, hasNew: boolean) => {
-    if (process.platform === 'darwin') app.dock.setBadge(hasNew ? '!' : '');
-    const window = electron.BrowserWindow.fromWebContents(e.sender) as
-      | electron.BrowserWindow
-      | undefined;
-    if (window !== undefined)
+    if (process.platform === 'darwin' && app.dock !== undefined)
+      app.dock.setBadge(hasNew ? '!' : '');
+    const window = electron.BrowserWindow.fromWebContents(e.sender);
+    if (window !== undefined && window !== null) {
       window.setOverlayIcon(
         hasNew ? badge : emptyBadge,
         hasNew ? 'New messages' : ''
       );
+    }
   });
 
   electron.ipcMain.on('rising-upgrade-complete', () => {
