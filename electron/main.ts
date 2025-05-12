@@ -380,7 +380,9 @@ function showPatchNotes(): void {
 function showCurrentPatchNotes(): void {
   //tslint:disable-next-line: no-floating-promises
   openURLExternally(
-    'https://github.com/Fchat-Horizon/Horizon/blob/v' + settings.version + '/CHANGELOG.md'
+    'https://github.com/Fchat-Horizon/Horizon/blob/v' +
+      settings.version +
+      '/CHANGELOG.md'
   );
 }
 
@@ -816,7 +818,10 @@ function onReady(): void {
                 'https://wiki.f-list.net/How_to_Report_a_User#In_chat'
               )
           },
-          { label: l('version', app.getVersion()), click: showCurrentPatchNotes }
+          {
+            label: l('version', app.getVersion()),
+            click: showCurrentPatchNotes
+          }
         ]
       }
     ])
