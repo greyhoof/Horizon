@@ -103,7 +103,7 @@ We follow a [semantic versioning](https://semver.org) format:
 - **vX.Y.Z**  
   Represents a production-ready release. For example: `v1.0.0`
 - **vX.Y.Z-DEV-X.Y**  
-  Early, often unstable releases. Also known as _Canary_ in **Rising**. Doesn't leave the development branch/
+  Early, often unstable releases. Also known as _Canary_ in **Rising**. Doesn't leave the development branch.
 - **vX.Y.Z-BETA-X.Y**  
   A pre-release version that's intended for testing before the final release.
 - **vX.Y.Z-rc-X.Y**  
