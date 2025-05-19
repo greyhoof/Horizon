@@ -914,7 +914,7 @@ export class Matcher {
     }
 
     //Now we check if there is a specific preference listed.
-    const genderName = `${Gender[theirGender].toLowerCase()}s`;
+    const genderName = `${theirGender !== Gender.None ? Gender[theirGender].toLowerCase() : 'genderless'} characters`;
     const genderKinkScore = Matcher.getKinkGenderPreference(you, theirGender);
 
     if (genderKinkScore !== null) {
