@@ -62,7 +62,6 @@ export interface MatchResultCharacterInfo {
 
 export interface MatchResultScores {
   [key: number]: Score;
-  [TagId.Orientation]: Score;
   [TagId.Gender]: Score;
   [TagId.Age]: Score;
   [TagId.FurryPreference]: Score;
@@ -495,7 +494,6 @@ export class Matcher {
       total: 0,
 
       scores: {
-        [TagId.Orientation]: this.resolveOrientationScore(),
         [TagId.Gender]: this.resolveGenderScore(),
         [TagId.Age]: this.resolveAgeScore(),
         [TagId.FurryPreference]: this.resolveFurryPairingsScore(),
@@ -523,29 +521,17 @@ export class Matcher {
     return data;
   }
 
-  private resolveOrientationScore(): Score {
-    // Question: If someone identifies themselves as 'straight cuntboy', how should they be matched? like a straight female?
-
-    return Matcher.scoreOrientationByGender(
-      this.yourAnalysis.gender,
-      this.yourAnalysis.orientation,
-      this.theirAnalysis.gender
-    );
-  }
-
   static scoreOrientationByGender(
     yourGender: Gender | null,
     yourOrientation: Orientation | null,
     theirGender: Gender | null
   ): Score {
-    if (
-      yourGender === null ||
-      theirGender === null ||
-      yourOrientation === null ||
-      yourGender === Gender.None ||
-      theirGender === Gender.None
-    )
-      return new Score(Scoring.NEUTRAL);
+    //Pansexual characters are assumed to love all equally unless otherwise specified.
+    if (yourOrientation === Orientation.Pansexual) {
+      return new Score(Scoring.MATCH, 'Loves <span>all genders</span>');
+    }
+    if (yourGender === null || theirGender === null || yourOrientation === null)
+      return new Score(Scoring.WEAK_MISMATCH, 'Cannot infer preference.');
 
     // CIS
     // tslint:disable-next-line curly
@@ -558,7 +544,6 @@ export class Matcher {
         if (
           yourOrientation === Orientation.Gay ||
           yourOrientation === Orientation.Bisexual ||
-          yourOrientation === Orientation.Pansexual ||
           (yourOrientation === Orientation.BiFemalePreference &&
             theirGender === Gender.Female) ||
           (yourOrientation === Orientation.BiMalePreference &&
@@ -583,7 +568,6 @@ export class Matcher {
           yourOrientation === Orientation.Straight ||
           yourOrientation === Orientation.Bisexual ||
           yourOrientation === Orientation.BiCurious ||
-          yourOrientation === Orientation.Pansexual ||
           (yourOrientation === Orientation.BiFemalePreference &&
             theirGender === Gender.Female) ||
           (yourOrientation === Orientation.BiMalePreference &&
@@ -604,7 +588,10 @@ export class Matcher {
       }
     }
 
-    return new Score(Scoring.NEUTRAL);
+    return this.formatKinkScore(
+      KinkPreference.Maybe,
+      Gender[theirGender].toLowerCase() + 's'
+    );
   }
 
   static formatKinkScore(score: KinkPreference, description: string): Score {
@@ -919,48 +906,29 @@ export class Matcher {
 
     const yourGender = this.yourAnalysis.gender;
     const yourOrientation = this.yourAnalysis.orientation;
-    const theirGender = this.theirAnalysis.gender;
-
+    let theirGender = this.theirAnalysis.gender;
+    //Some people leave this field blank to imply their character is genderless too.
+    //Should we keep this, or automatically assume that the person in question forgot to fill this in?
     if (theirGender === null) {
-      return new Score(Scoring.NEUTRAL);
+      theirGender = Gender.None;
     }
 
+    //Now we check if there is a specific preference listed.
     const genderName = `${Gender[theirGender].toLowerCase()}s`;
     const genderKinkScore = Matcher.getKinkGenderPreference(you, theirGender);
 
-    if (genderKinkScore !== null)
+    if (genderKinkScore !== null) {
+      //If there is, we return it.
       return Matcher.formatKinkScore(genderKinkScore, genderName);
-
-    if (yourGender && yourOrientation) {
-      if (
-        Matcher.isCisGender(yourGender) &&
-        !Matcher.isCisGender(theirGender)
-      ) {
-        if (
-          [
-            Orientation.Straight,
-            Orientation.Gay,
-            Orientation.Bisexual,
-            Orientation.BiCurious,
-            Orientation.BiFemalePreference,
-            Orientation.BiMalePreference
-          ].includes(yourOrientation)
-        ) {
-          const nonBinaryPref = Matcher.getKinkPreference(you, Kink.Nonbinary);
-
-          if (nonBinaryPref) {
-            return Matcher.formatKinkScore(nonBinaryPref, 'non-binary genders');
-          }
-
-          return new Score(
-            Scoring.MISMATCH,
-            'No <span>non-binary</span> genders'
-          );
-        }
-      }
     }
 
-    return new Score(Scoring.NEUTRAL);
+    //No preference listed? Then we return based on assumed preference from the orientation.
+    let score = Matcher.scoreOrientationByGender(
+      yourGender,
+      yourOrientation,
+      theirGender
+    );
+    return score;
   }
 
   private resolveBodyTypeScore(): Score {
@@ -1426,11 +1394,19 @@ export class Matcher {
     c: Character,
     gender: Gender
   ): KinkPreference | null {
-    if (!(gender in genderKinkMapping)) {
-      return null;
-    }
+    const pref = Matcher.getKinkPreference(c, genderKinkMapping[gender]);
+    if (pref) return pref;
 
-    return Matcher.getKinkPreference(c, genderKinkMapping[gender]);
+    //If we can't find the gender preference *and* the gender is a nonbinary one? We check
+    //if the character in question has the nonbinary kink listed as a catch-all.
+    if (!this.isCisGender(gender)) {
+      return (
+        Matcher.getKinkPreference(c, Kink.Nonbinary) || KinkPreference.Maybe
+      );
+    }
+    //If we *really* can't find it, we return null, rather than a maybe value.
+    //This function is strictly for checking if somebody has a kink listed. *Not* for the final match score.
+    return null;
   }
 
   static getKinkSpeciesPreference(
