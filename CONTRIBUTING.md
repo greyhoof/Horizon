@@ -115,7 +115,7 @@ We use [Prettier](https://prettier.io/) to enforce a consistent coding style. Pl
 
 1. **Formatting**
 
-   - Run `prettier --write .` (or use the lint-staged integration) before committing. This ensures all code is consistent with [.prettierrc](../.prettierrc).
+   - Run `prettier --write .` (or use the lint-staged integration) before committing. This ensures all code is consistent with [.prettierrc](./.prettierrc).
    - Use 2 spaces for indentation.
    - Keep a maximum line length of 80 characters.
    - Declare strings with single quotes (') instead of double quotes (").
@@ -128,6 +128,6 @@ We use [Prettier](https://prettier.io/) to enforce a consistent coding style. Pl
 
 3. **Vue Components**
    - Ensure `<script>` and `<style>` in `.vue` files are properly indented.
-   - Use the recommended Vue style guide for component names and ordering.
+   - Follow the [Vue style guide](https://v2.vuejs.org/v2/style-guide) to the best of your ability.
 
 A important part of Horizon is a strict code quality standard. Prettier should do most of the work for you.
