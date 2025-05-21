@@ -3,7 +3,6 @@
     action="Open Conversation"
     ref="dialog"
     @submit="submit"
-    style="width: 98%"
     dialogClass="ads-dialog"
     buttonText="Open"
   >
