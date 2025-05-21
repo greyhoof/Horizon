@@ -78,9 +78,15 @@ export function parse(
           // For status command, do case-insensitive matching
           if (name === 'status' && i === 0) {
             const options = param.options !== undefined ? param.options : [];
-            const matchedOption = options.find(opt => opt.toLowerCase() === value.toLowerCase());
+            const matchedOption = options.find(
+              opt => opt.toLowerCase() === value.toLowerCase()
+            );
             if (matchedOption) values[i] = matchedOption;
-            else return l('commands.invalidParam', l(`commands.${name}.param${i}`));
+            else
+              return l(
+                'commands.invalidParam',
+                l(`commands.${name}.param${i}`)
+              );
           } else if (
             (param.options !== undefined ? param.options : []).indexOf(
               value
@@ -179,7 +185,9 @@ const commands: { readonly [key: string]: Command | undefined } = {
     exec: (_, status: Character.Status, statusmsg: string = '') => {
       // Convert status to proper case by finding the matching option
       if (typeof status === 'string') {
-        const matchedStatus = userStatuses.find(s => s.toLowerCase() === status.toLowerCase());
+        const matchedStatus = userStatuses.find(
+          s => s.toLowerCase() === status.toLowerCase()
+        );
         if (matchedStatus) status = matchedStatus as Character.Status;
       }
       core.connection.send('STA', { status, statusmsg });
