@@ -75,7 +75,13 @@ export function parse(
           if (i === command.params.length - 1) values[i] = args.substr(index);
           break;
         case ParamType.Enum:
-          if (
+          // For status command, do case-insensitive matching
+          if (name === 'status' && i === 0) {
+            const options = param.options !== undefined ? param.options : [];
+            const matchedOption = options.find(opt => opt.toLowerCase() === value.toLowerCase());
+            if (matchedOption) values[i] = matchedOption;
+            else return l('commands.invalidParam', l(`commands.${name}.param${i}`));
+          } else if (
             (param.options !== undefined ? param.options : []).indexOf(
               value
             ) === -1
@@ -170,8 +176,14 @@ const commands: { readonly [key: string]: Command | undefined } = {
     exec: (conv: Conversation) => conv.clear()
   },
   status: {
-    exec: (_, status: Character.Status, statusmsg: string = '') =>
-      core.connection.send('STA', { status, statusmsg }),
+    exec: (_, status: Character.Status, statusmsg: string = '') => {
+      // Convert status to proper case by finding the matching option
+      if (typeof status === 'string') {
+        const matchedStatus = userStatuses.find(s => s.toLowerCase() === status.toLowerCase());
+        if (matchedStatus) status = matchedStatus as Character.Status;
+      }
+      core.connection.send('STA', { status, statusmsg });
+    },
     params: [
       { type: ParamType.Enum, options: userStatuses },
       { type: ParamType.String, optional: true }
