@@ -41,37 +41,37 @@
       </div>
       <div style="clear: both">
         <a href="#" @click.prevent="showSearch()" class="btn"
-          ><span class="fas fa-search"></span>
+          ><span class="fas fa-fw fa-search"></span>
           {{ l('characterSearch.open') }}</a
         >
       </div>
       <div>
         <a href="#" @click.prevent="showSettings()" class="btn"
-          ><span class="fas fa-cog"></span> {{ l('settings.open') }}</a
+          ><span class="fas fa-fw fa-cog"></span> {{ l('settings.open') }}</a
         >
       </div>
       <div>
         <a href="#" @click.prevent="showRecent()" class="btn"
-          ><span class="fas fa-history"></span>
+          ><span class="fas fa-fw fa-history"></span>
           {{ l('chat.recentConversations') }}</a
         >
       </div>
 
       <div>
         <a href="#" @click.prevent="showAdCenter()" class="btn"
-          ><span class="fas fa-ad"></span> Ad Editor</a
+          ><span class="fas fa-fw fa-ad"></span> Ad Editor</a
         >
       </div>
 
       <div>
         <a href="#" @click.prevent="showAdLauncher()" class="btn"
-          ><span class="fas fa-play"></span> Post Ads</a
+          ><span class="fas fa-fw fa-play"></span> Post Ads</a
         >
 
         <span v-show="adsAreRunning()" class="adControls">
           <span
             aria-label="Stop All Ads"
-            class="fas fa-stop"
+            class="fas fa-fw fa-stop"
             @click.prevent="stopAllAds()"
           ></span>
         </span>
@@ -79,7 +79,7 @@
 
       <div>
         <a href="#" @click.prevent="showProfileAnalyzer()" class="btn"
-          ><span class="fas fa-user-md"></span> Profile Helper</a
+          ><span class="fas fa-fw fa-user-md"></span> Profile Helper</a
         >
       </div>
 
