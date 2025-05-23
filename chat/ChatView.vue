@@ -935,6 +935,8 @@
       font-size: 90%;
       margin-left: 0.2em;
       margin-top: 0.25em;
+      -webkit-user-drag: none;
+      -webkit-app-region: no-drag;
     }
 
     .glowing {
