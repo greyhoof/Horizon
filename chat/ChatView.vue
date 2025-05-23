@@ -343,6 +343,7 @@
     keydownListener!: (e: KeyboardEvent) => void;
     focusListener!: () => void;
     blurListener!: () => void;
+    readonly isMac = process.platform === 'darwin';
 
     channelConversations = core.conversations.channelConversations;
     privateConversations = core.conversations.privateConversations;
@@ -482,55 +483,129 @@
       const pms = this.conversations.privateConversations;
       const channels = this.conversations.channelConversations;
       const console = this.conversations.consoleTab;
-      if (
-        getKey(e) === Keys.ArrowUp &&
-        e.altKey &&
-        !e.ctrlKey &&
-        !e.shiftKey &&
-        !e.metaKey
-      )
-        if (selected === console) {
-          //tslint:disable-line:curly
-          if (channels.length > 0) channels[channels.length - 1].show();
-          else if (pms.length > 0) pms[pms.length - 1].show();
-        } else if (Conversation.isPrivate(selected)) {
-          const index = pms.indexOf(selected);
-          if (index === 0) console.show();
-          else pms[index - 1].show();
-        } else {
-          const index = channels.indexOf(
-            <Conversation.ChannelConversation>selected
+      if (getKey(e) === Keys.ArrowUp) {
+        if (e.altKey && !e.shiftKey && !e.ctrlKey && !e.metaKey) {
+          this.navigateChannelUpward(selected, console, channels, pms);
+        } else if (e.altKey && e.shiftKey && !e.ctrlKey && !e.metaKey) {
+          this.navigateChannelUpward(
+            selected,
+            console,
+            channels.filter(
+              channel =>
+                channel.unread != Conversation.UnreadState.None ||
+                channel === selected
+            ),
+            pms.filter(
+              pm =>
+                pm.unread != Conversation.UnreadState.None || pm === selected
+            )
           );
-          if (index === 0)
-            if (pms.length > 0) pms[pms.length - 1].show();
-            else console.show();
-          else channels[index - 1].show();
-        }
-      else if (
-        getKey(e) === Keys.ArrowDown &&
-        e.altKey &&
-        !e.ctrlKey &&
-        !e.shiftKey &&
-        !e.metaKey
-      )
-        if (selected === console) {
-          //tslint:disable-line:curly - false positive
-          if (pms.length > 0) pms[0].show();
-          else if (channels.length > 0) channels[0].show();
-        } else if (Conversation.isPrivate(selected)) {
-          const index = pms.indexOf(selected);
-          if (index === pms.length - 1) {
-            if (channels.length > 0) channels[0].show();
-          } else pms[index + 1].show();
-        } else {
-          const index = channels.indexOf(
-            <Conversation.ChannelConversation>selected
+        } else if (e.altKey && e.shiftKey && this.isControlOrCommand(e)) {
+          this.navigateChannelUpward(
+            selected,
+            console,
+            channels.filter(
+              channel =>
+                channel.unread === Conversation.UnreadState.Mention ||
+                channel === selected
+            ),
+            pms.filter(
+              pm =>
+                pm.unread === Conversation.UnreadState.Mention ||
+                pm === selected
+            )
           );
-          if (index < channels.length - 1) channels[index + 1].show();
-          else console.show();
         }
+      } else if (getKey(e) === Keys.ArrowDown) {
+        if (e.altKey && !e.shiftKey && !e.ctrlKey && !e.metaKey) {
+          this.navigateChannelDownward(selected, console, channels, pms);
+        } else if (e.altKey && e.shiftKey && !e.ctrlKey && !e.metaKey) {
+          this.navigateChannelDownward(
+            selected,
+            console,
+            channels.filter(
+              channel =>
+                channel.unread != Conversation.UnreadState.None ||
+                channel === selected
+            ),
+            pms.filter(
+              pm =>
+                pm.unread != Conversation.UnreadState.None || pm === selected
+            )
+          );
+        } else if (e.altKey && e.shiftKey && this.isControlOrCommand(e)) {
+          this.navigateChannelDownward(
+            selected,
+            console,
+            channels.filter(
+              channel =>
+                channel.unread === Conversation.UnreadState.Mention ||
+                channel === selected
+            ),
+            pms.filter(
+              pm =>
+                pm.unread === Conversation.UnreadState.Mention ||
+                pm === selected
+            )
+          );
+        }
+      }
     }
 
+    navigateChannelUpward(
+      selected: Conversation,
+      console: Conversation,
+      channels: readonly Conversation.ChannelConversation[],
+      pms: readonly Conversation.PrivateConversation[]
+    ): void {
+      if (selected === console) {
+        //tslint:disable-line:curly
+        if (channels.length > 0) channels[channels.length - 1].show();
+        else if (pms.length > 0) pms[pms.length - 1].show();
+      } else if (Conversation.isPrivate(selected)) {
+        const index = pms.indexOf(selected);
+        if (index === 0) console.show();
+        else pms[index - 1].show();
+      } else {
+        const index = channels.indexOf(
+          <Conversation.ChannelConversation>selected
+        );
+        if (index === 0)
+          if (pms.length > 0) pms[pms.length - 1].show();
+          else console.show();
+        else channels[index - 1].show();
+      }
+    }
+
+    navigateChannelDownward(
+      selected: Conversation,
+      console: Conversation,
+      channels: readonly Conversation.ChannelConversation[],
+      pms: readonly Conversation.PrivateConversation[]
+    ): void {
+      if (selected === console) {
+        //tslint:disable-line:curly - false positive
+        if (pms.length > 0) pms[0].show();
+        else if (channels.length > 0) channels[0].show();
+      } else if (Conversation.isPrivate(selected)) {
+        const index = pms.indexOf(selected);
+        if (index === pms.length - 1) {
+          if (channels.length > 0) channels[0].show();
+        } else pms[index + 1].show();
+      } else {
+        const index = channels.indexOf(
+          <Conversation.ChannelConversation>selected
+        );
+        if (index < channels.length - 1) channels[index + 1].show();
+        else console.show();
+      }
+    }
+
+    //Should this be a generic helper function that other components can use too?
+    //Right now they indiscriminately use the Ctrl or Meta key, even though it should ideally only be one.
+    isControlOrCommand(e: KeyboardEvent): boolean {
+      return this.isMac ? e.metaKey : e.ctrlKey;
+    }
     setFontSize(fontSize: number): void {
       let overrideEl = <HTMLStyleElement | null>(
         document.getElementById('overrideFontSize')
