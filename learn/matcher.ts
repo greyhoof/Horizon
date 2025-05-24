@@ -526,72 +526,67 @@ export class Matcher {
     yourOrientation: Orientation | null,
     theirGender: Gender | null
   ): Score {
-    //Pansexual characters are assumed to love all equally unless otherwise specified.
-    if (yourOrientation === Orientation.Pansexual) {
+    //Pansexual and Bisexual characters are assumed to love all equally unless otherwise specified.
+    if (
+      yourOrientation === Orientation.Pansexual ||
+      yourOrientation === Orientation.Bisexual
+    ) {
       return new Score(Scoring.MATCH, 'Loves <span>all genders</span>');
     }
     if (yourGender === null || theirGender === null || yourOrientation === null)
       return new Score(Scoring.WEAK_MISMATCH, 'Cannot infer preference.');
 
+    // Handle Bi preference cases first
+    if (yourOrientation === Orientation.BiFemalePreference) {
+      if (theirGender === Gender.Female) {
+        return new Score(
+          Scoring.MATCH,
+          'Strongly prefers <span>female partners</span>'
+        );
+      }
+      return new Score(Scoring.WEAK_MATCH, 'Likes <span>all genders</span>');
+    }
+    if (yourOrientation === Orientation.BiMalePreference) {
+      if (theirGender === Gender.Male) {
+        return new Score(
+          Scoring.MATCH,
+          'Strongly prefers <span>male partners</span>'
+        );
+      }
+      return new Score(Scoring.WEAK_MATCH, 'Likes <span>all genders</span>');
+    }
+
     // CIS
-    // tslint:disable-next-line curly
     if (Matcher.isCisGender(yourGender)) {
       if (yourGender === theirGender) {
         // same sex CIS
-        if (yourOrientation === Orientation.Straight)
-          return new Score(Scoring.MISMATCH, 'No <span>same sex</span>');
-
         if (
-          yourOrientation === Orientation.Gay ||
-          yourOrientation === Orientation.Bisexual ||
-          (yourOrientation === Orientation.BiFemalePreference &&
-            theirGender === Gender.Female) ||
-          (yourOrientation === Orientation.BiMalePreference &&
-            theirGender === Gender.Male)
+          yourOrientation === Orientation.Straight ||
+          yourOrientation === Orientation.BiCurious
         )
+          return new Score(
+            yourOrientation === Orientation.BiCurious
+              ? Scoring.WEAK_MISMATCH
+              : Scoring.MISMATCH,
+            yourOrientation === Orientation.BiCurious
+              ? 'Hesitant about <span>same sex</span>'
+              : 'No <span>same sex</span>'
+          );
+
+        if (yourOrientation === Orientation.Gay)
           return new Score(Scoring.MATCH, 'Loves <span>same sex</span>');
-
-        if (
-          yourOrientation === Orientation.BiCurious ||
-          (yourOrientation === Orientation.BiFemalePreference &&
-            theirGender === Gender.Male) ||
-          (yourOrientation === Orientation.BiMalePreference &&
-            theirGender === Gender.Female)
-        )
-          return new Score(Scoring.WEAK_MATCH, 'Likes <span>same sex</span>');
       } else if (Matcher.isCisGender(theirGender)) {
         // straight CIS
         if (yourOrientation === Orientation.Gay)
           return new Score(Scoring.MISMATCH, 'No <span>opposite sex</span>');
 
-        if (
-          yourOrientation === Orientation.Straight ||
-          yourOrientation === Orientation.Bisexual ||
-          yourOrientation === Orientation.BiCurious ||
-          (yourOrientation === Orientation.BiFemalePreference &&
-            theirGender === Gender.Female) ||
-          (yourOrientation === Orientation.BiMalePreference &&
-            theirGender === Gender.Male)
-        )
+        if (yourOrientation === Orientation.Straight)
           return new Score(Scoring.MATCH, 'Loves <span>opposite sex</span>');
-
-        if (
-          (yourOrientation === Orientation.BiFemalePreference &&
-            theirGender === Gender.Male) ||
-          (yourOrientation === Orientation.BiMalePreference &&
-            theirGender === Gender.Female)
-        )
-          return new Score(
-            Scoring.WEAK_MATCH,
-            'Likes <span>opposite sex</span>'
-          );
       }
     }
 
-    return this.formatKinkScore(
-      KinkPreference.Maybe,
-      Gender[theirGender].toLowerCase() + 's'
-    );
+    //Should this be "Neutral" or "Weak Mismatch"?
+    return new Score(Scoring.NEUTRAL, 'No preference specified');
   }
 
   static formatKinkScore(score: KinkPreference, description: string): Score {
@@ -1400,9 +1395,7 @@ export class Matcher {
     //If we can't find the gender preference *and* the gender is a nonbinary one? We check
     //if the character in question has the nonbinary kink listed as a catch-all.
     if (!this.isCisGender(gender)) {
-      return (
-        Matcher.getKinkPreference(c, Kink.Nonbinary) || KinkPreference.Maybe
-      );
+      return Matcher.getKinkPreference(c, Kink.Nonbinary);
     }
     //If we *really* can't find it, we return null, rather than a maybe value.
     //This function is strictly for checking if somebody has a kink listed. *Not* for the final match score.
