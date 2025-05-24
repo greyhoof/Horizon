@@ -1,7 +1,7 @@
 <template>
   <Modal
     :action="'Memo for ' + name"
-    buttonText="Save and Close"
+    :buttonText="this.editing ? 'Save and Close' : 'Close'"
     @close="onClose"
     @submit="save"
     dialog-class="modal-lg modal-dialog-centered"
@@ -46,9 +46,9 @@
     readonly character!: { id: number; name: string };
     @Prop
     readonly memo?: Memo;
-    message = '';
-    editing = false;
-    saving = false;
+    message: string | null = null;
+    editing: boolean = false;
+    saving: boolean = false;
 
     get name(): string {
       return this.character.name;
@@ -69,8 +69,13 @@
     }
 
     async save(): Promise<void> {
+      if (!this.editing) return;
       try {
         this.saving = true;
+
+        if (this.message === '') {
+          this.message = null;
+        }
 
         const memoManager = new MemoManager(this.character.name);
         await memoManager.set(this.message);
