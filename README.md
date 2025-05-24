@@ -45,13 +45,28 @@ In a non-exhaustive list, F-Chat Horizon has these features!
 
 F-Chat Horizon aims to be an opinionated fork of F-Chat Rising. Instead of aiming solely to be a more customized fork of the original client, we aim to:
 
-- Set a sound foundation for further forks, with different goals.
-- Enforce code-quality standards
-- Aim to be progressive in functionality.
-  - Additional functionality should be optional.
-- Maintain the _core_ functionality from **Rising**.
+- **Maintain Cross-Platform Compatibility**  
+  Ensure full functionality across Linux, Windows, and macOS without bias toward any specific platform.
 
-While more features will be added, we aim to not deviate _too_ heavily from the original client as to avoid feature-creep.
+- **Show Function Over Form**  
+  Prioritize features, usability, and reliability over appearance. Adopt modern feature sets and evolving standards.
+
+- **Be Community-Driven**  
+  Foster an open, collaborative development environment guided by the community. See [CONTRIBUTING.md](./CONTRIBUTING.md) for details.
+
+- **Have Safe and High-Quality Code**  
+  Enforce strict code quality standards, specifically in readability, maintainability, and safety.
+
+- **Be Simple by Default, Powerful When Needed**  
+  All additional features should be optional, and when possible, disabled by default.
+
+- **Have a Fork-Friendly Foundation**  
+  Establish a solid base that can be easily adapted for future forks with different objectives.
+
+- **Retain Core Features**  
+  Maintain _all core_ functionality from the original _Rising_ project.
+
+It should be known that this project aligns closely with the ideaology of [KDE](https://manifesto.kde.org)
 
 # Installing
 
