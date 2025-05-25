@@ -61,7 +61,9 @@
           :title="button.title"
           @click.prevent.stop="apply(button)"
         >
-          <i :class="(button.class ? button.class : 'fa ') + button.icon"></i>
+          <i
+            :class="(button.class ? button.class : 'fa fa-fw ') + button.icon"
+          ></i>
         </div>
         <div
           @click="previewBBCode"

@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@fortawesome/fontawesome-free':
-        specifier: ^5.15.1
-        version: 5.15.4
+        specifier: ^6.7.2
+        version: 6.7.2
       sass-embedded:
         specifier: ^1.85.0
         version: 1.85.1
@@ -24,8 +24,8 @@ packages:
   '@bufbuild/protobuf@2.2.3':
     resolution: {integrity: sha512-tFQoXHJdkEOSwj5tRIZSPNUuXK3RaR7T1nUrPgbYX1pUbvqqaaZAsfo+NXBPsz5rZMSKVFrgK1WL8Q/MSLvprg==}
 
-  '@fortawesome/fontawesome-free@5.15.4':
-    resolution: {integrity: sha512-eYm8vijH/hpzr/6/1CJ/V/Eb1xQFW2nnUKArb3z+yUWv7HTwj6M7SP957oMjfZjAHU6qpoNc2wQvIxBLWYa/Jg==}
+  '@fortawesome/fontawesome-free@6.7.2':
+    resolution: {integrity: sha512-JUOtgFW6k9u4Y+xeIaEiLr3+cjoUPiAuLXoyKOJSia6Duzb7pq+A76P9ZdPDoAoxHdHzq6gE9/jKBGXlZT8FbA==}
     engines: {node: '>=6'}
 
   bootstrap@4.6.2:
@@ -204,7 +204,7 @@ snapshots:
 
   '@bufbuild/protobuf@2.2.3': {}
 
-  '@fortawesome/fontawesome-free@5.15.4': {}
+  '@fortawesome/fontawesome-free@6.7.2': {}
 
   bootstrap@4.6.2(jquery@3.7.1)(popper.js@1.16.1):
     dependencies:
