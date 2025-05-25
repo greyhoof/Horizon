@@ -102,7 +102,7 @@
         class="list-group-item list-group-item-action"
         :class="{ disabled: !hasAdLogs() }"
       >
-        <span class="far fa-fw fa-ad"></span>Show ad log
+        <span class="fa fa-fw fa-ad"></span>Show ad log
       </a>
       <a
         tabindex="-1"

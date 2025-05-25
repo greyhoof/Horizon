@@ -45,17 +45,32 @@ In a non-exhaustive list, F-Chat Horizon has these features!
 
 F-Chat Horizon aims to be an opinionated fork of F-Chat Rising. Instead of aiming solely to be a more customized fork of the original client, we aim to:
 
-- Set a sound foundation for further forks, with different goals.
-- Enforce code-quality standards
-- Aim to be progressive in functionality.
-  - Additional functionality should be optional.
-- Maintain the _core_ functionality from **Rising**.
+- **Maintain Cross-Platform Compatibility**  
+  Ensure full functionality across Linux, Windows, and macOS without bias toward any specific platform.
 
-While more features will be added, we aim to not deviate _too_ heavily from the original client as to avoid feature-creep.
+- **Show Function Over Form**  
+  Prioritize features, usability, and reliability over appearance. Adopt modern feature sets and evolving standards.
+
+- **Be Community-Driven**  
+  Foster an open, collaborative development environment guided by the community. See [CONTRIBUTING.md](./CONTRIBUTING.md) for details.
+
+- **Have Safe and High-Quality Code**  
+  Enforce strict code quality standards, specifically in readability, maintainability, and safety.
+
+- **Be Simple by Default, Powerful When Needed**  
+  All additional features should be optional, and when possible, disabled by default.
+
+- **Have a Fork-Friendly Foundation**  
+  Establish a solid base that can be easily adapted for future forks with different objectives.
+
+- **Retain Core Features**  
+  Maintain _all core_ functionality from the original _Rising_ project.
+
+It should be known that this project aligns closely with the ideaology of [KDE](https://manifesto.kde.org)
 
 # Installing
 
-F-chat Rising can be installed on all _major_ operating systems (Minus BSDs.)
+F-Chat Horizon can be installed on all _major_ operating systems (Minus BSDs.)
 
 ## Windows
 
@@ -185,7 +200,7 @@ The (currently work in progress and non-existing at this current moment) wiki ha
    - Similarly if you want to match with non-binary genders -- independent of your characters' gender -- add your preferred non-binary types into your kink list.
 1. 'Older characters' and 'younger characters' kink preferences are interpreted as age difference of 8+ years.
 1. Comparison results will get faster over time, as more and more character data is cached.
-1. If you have a species-fluid character (e.g. you play both your character as both a human and an anthro), you can indicate this by setting your **species** in your character profile in the following ways. F-List Rising will then score you against the best fitting type.
+1. If you have a species-fluid character (e.g. you play both your character as both a human and an anthro), you can indicate this by setting your **species** in your character profile in the following ways. F-List Horizon will then score you against the best fitting type.
    - Human or tiger
    - Human, tiger, or dragon
    - Anthro (Horse or Tiger)
