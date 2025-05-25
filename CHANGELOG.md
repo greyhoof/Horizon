@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - When clicking the version info within Settings > Help, the current patch notes will now be shown according to the currently installed version. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/eae87e9ba6a62119634048804cbca52e0d88de9a)
+- BBCode editor buttons are now all the same width. You can rest easy now knowing that the Help button isn't 6 pixels thinner than some of the others. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/2d09cb944b1868dbdd5276bc4c970e09277d5d0b)
 
 ### Documentation and Non-user facing changes (for developers)
 
