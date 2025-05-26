@@ -61,7 +61,11 @@
             {{ character.block_reason }}
           </div>
           <div
-            v-if="character.memo"
+            v-if="
+              character.memo &&
+              character.memo.memo !== null &&
+              character.memo.memo !== ''
+            "
             id="headerCharacterMemo"
             class="alert alert-info"
           >
@@ -449,7 +453,7 @@
       });
     }
 
-    memo(memo: { id: number; memo: string }): void {
+    memo(memo: { id: number; memo: string | null }): void {
       Vue.set(this.character!, 'memo', memo);
 
       void core.cache.profileCache.register(this.character!);

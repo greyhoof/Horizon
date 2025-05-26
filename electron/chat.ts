@@ -167,9 +167,19 @@ webContents.on('context-menu', (_, props) => {
     );
   else if (
     props.linkURL.length > 0 &&
-    props.mediaType === 'none' &&
     props.linkURL.substr(0, props.pageURL.length) !== props.pageURL
   ) {
+    if (props.mediaType === 'none') {
+      menuTemplate.push({
+        id: 'toggleStickyness',
+        label: 'Toggle Sticky Preview',
+        click(): void {
+          EventBus.$emit('imagepreview-toggle-stickyness', {
+            url: props.linkURL
+          });
+        }
+      });
+    }
     menuTemplate.push({
       id: 'copyLink',
       label: l('action.copyLink'),
@@ -179,15 +189,7 @@ webContents.on('context-menu', (_, props) => {
         else electron.clipboard.writeText(props.linkURL);
       }
     });
-    menuTemplate.push({
-      id: 'toggleStickyness',
-      label: 'Toggle Sticky Preview',
-      click(): void {
-        EventBus.$emit('imagepreview-toggle-stickyness', {
-          url: props.linkURL
-        });
-      }
-    });
+
     if (process.platform === 'win32')
       menuTemplate.push({
         id: 'incognito',

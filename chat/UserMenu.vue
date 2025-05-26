@@ -90,7 +90,13 @@
         @click.prevent="setBookmarked()"
         class="list-group-item list-group-item-action"
       >
-        <span class="far fa-fw fa-bookmark"></span
+        <span
+          :class="
+            character.isBookmarked
+              ? 'fa fa-fw fa-bookmark'
+              : 'far fa-fw fa-bookmark'
+          "
+        ></span
         >{{
           l('user.' + (character.isBookmarked ? 'unbookmark' : 'bookmark'))
         }}</a
@@ -102,7 +108,7 @@
         class="list-group-item list-group-item-action"
         :class="{ disabled: !hasAdLogs() }"
       >
-        <span class="far fa-fw fa-ad"></span>Show ad log
+        <span class="fa fa-fw fa-ad"></span>Show ad log
       </a>
       <a
         tabindex="-1"

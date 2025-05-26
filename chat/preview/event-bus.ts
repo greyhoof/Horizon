@@ -69,7 +69,7 @@ class EventBusManager {
 
     this.eventCallbacks[eventName] = _.filter(
       this.eventCallbacks[eventName],
-      cb => cb.toString() !== callback.toString()
+      cb => cb !== callback
     );
   }
 

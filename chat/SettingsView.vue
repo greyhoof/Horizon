@@ -343,6 +343,43 @@
       </div>
 
       <div class="form-group">
+        <label class="control-label" for="horizonShowGenderMarker">
+          <input
+            type="checkbox"
+            id="horizonShowGenderMarker"
+            v-model="horizonShowGenderMarker"
+          />
+          Show a gender icon on everyone
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label" for="horizonGenderMarkerOrigColor">
+          <input
+            type="checkbox"
+            id="horizonGenderMarkerOrigColor"
+            v-model="horizonGenderMarkerOrigColor"
+            :disabled="
+              !horizonShowGenderMarker || !horizonShowCustomCharacterColors
+            "
+          />
+          Make gender icon use the original gender color instead of the custom
+          name color
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label" for="horizonChangeOfflineColor">
+          <input
+            type="checkbox"
+            id="horizonChangeOfflineColor"
+            v-model="horizonChangeOfflineColor"
+          />
+          Make color in chat change to grey when a user goes offline
+        </label>
+      </div>
+
+      <div class="form-group">
         <label class="control-label" for="risingCharacterTheme">
           Override UI theme (for this character only)
           <select
@@ -450,16 +487,6 @@
       </div>
 
       <div class="form-group filters">
-        <label class="control-label" for="risingFilter.autoReply">
-          <input
-            type="checkbox"
-            id="risingFilter.autoReply"
-            v-model="risingFilter.autoReply"
-          />
-          Send an automatic 'no thank you' response to matching characters if
-          they message you
-        </label>
-
         <label class="control-label" for="risingFilter.penalizeMatches">
           <input
             type="checkbox"
@@ -523,11 +550,52 @@
         </label>
       </div>
 
+      <h5>Automatic Replies</h5>
+      <div class="form-group filters">
+        <label class="control-label" for="risingFilter.autoReply">
+          <input
+            type="checkbox"
+            id="risingFilter.autoReply"
+            v-model="risingFilter.autoReply"
+          />
+          Send an automatic 'no thank you' response to matching characters if
+          they message you
+        </label>
+
+        <label class="control-label" for="risingFilter.autoReplyCustom">
+          <input
+            type="checkbox"
+            id="risingFilter.autoReplyCustom"
+            v-model="risingFilter.autoReplyCustom"
+            :disabled="!risingFilter.autoReply"
+          />
+          Use a custom message defined below instead of the default message
+        </label>
+
+        <editor
+          v-model="risingFilter.autoReplyCustomMessage"
+          :hasToolbar="true"
+          class="form-control"
+          rows="5"
+          :disabled="!risingFilter.autoReplyCustom || !risingFilter.autoReply"
+          placeholder="Put your custom message for automatic replies here"
+          maxlength="10000"
+        >
+        </editor>
+
+        <div class="form-group">
+          You will still see messages unless you have the "Hide private channel
+          messages" option above selected. Even then, if they send a second
+          message it will bypass the restriction and show you their message.
+          These messages are limited to 10000 characters.
+        </div>
+      </div>
+
       <h5>Exception List</h5>
       <div class="form-group">
-        Filters are not applied to these character names. Separate names with a
-        linefeed. Friends and bookmarked characters bypass filtering
-        automatically.
+        Filters and automatic replies are not applied to these character names.
+        Separate names with a linefeed. Friends and bookmarked characters bypass
+        filtering automatically.
       </div>
 
       <div class="form-group">
@@ -582,6 +650,7 @@
   import { Component } from '@f-list/vue-ts';
   import CustomDialog from '../components/custom_dialog';
   import Modal from '../components/Modal.vue';
+  import { Editor } from './bbcode';
   import Tabs from '../components/tabs';
   import core from './core';
   import { Settings as SettingsInterface } from './interfaces';
@@ -596,7 +665,7 @@
   import { EventBus } from './preview/event-bus';
 
   @Component({
-    components: { modal: Modal, tabs: Tabs }
+    components: { modal: Modal, editor: Editor, tabs: Tabs }
   })
   export default class SettingsView extends CustomDialog {
     l = l;
@@ -640,6 +709,9 @@
     risingShowPortraitInMessage!: boolean;
     risingShowHighQualityPortraits!: boolean;
     horizonShowCustomCharacterColors!: boolean;
+    horizonShowGenderMarker!: boolean;
+    horizonGenderMarkerOrigColor!: boolean;
+    horizonChangeOfflineColor!: boolean;
     horizonNotifyFriendSignIn!: boolean;
 
     risingFilter!: SmartFilterSettings = {} as any;
@@ -694,6 +766,9 @@
         settings.risingShowHighQualityPortraits;
       this.horizonShowCustomCharacterColors =
         settings.horizonShowCustomCharacterColors;
+      this.horizonShowGenderMarker = settings.horizonShowGenderMarker;
+      this.horizonGenderMarkerOrigColor = settings.horizonGenderMarkerOrigColor;
+      this.horizonChangeOfflineColor = settings.horizonChangeOfflineColor;
 
       this.horizonNotifyFriendSignIn = settings.horizonNotifyFriendSignIn;
       this.risingFilter = settings.risingFilter;
@@ -798,6 +873,9 @@
         risingShowPortraitInMessage: this.risingShowPortraitInMessage,
         risingShowHighQualityPortraits: this.risingShowHighQualityPortraits,
         horizonShowCustomCharacterColors: this.horizonShowCustomCharacterColors,
+        horizonShowGenderMarker: this.horizonShowGenderMarker,
+        horizonGenderMarkerOrigColor: this.horizonGenderMarkerOrigColor,
+        horizonChangeOfflineColor: this.horizonChangeOfflineColor,
         horizonNotifyFriendSignIn: this.horizonNotifyFriendSignIn,
 
         risingColorblindMode: this.risingColorblindMode,
@@ -904,6 +982,28 @@
 
     div {
       margin-top: 10px;
+    }
+  }
+
+  #settings .bbcode-preview {
+    margin-top: 0;
+    border: 1px solid;
+    padding: 5px;
+    border-radius: 0 5px 5px 5px;
+    background: var(--input-bg);
+    border-color: var(--secondary);
+  }
+
+  #settings .bbcode-editor {
+    border: none;
+    background: none;
+    height: auto;
+
+    textarea {
+      width: 100%;
+      color: var(--input-color);
+      background-color: var(--input-bg);
+      border-radius: 0 5px 5px 5px;
     }
   }
 

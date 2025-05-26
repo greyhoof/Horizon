@@ -1,6 +1,6 @@
 {
   "name": "fchat-horizon",
-  "version": "1.31.0",
+  "version": "1.31.1",
   "author": "The F-List Team and Horizon Contributors",
   "description": "A heavily modded FChat 3.0 client for F-List, continued from Rising",
   "license": "MIT",
@@ -9,7 +9,7 @@
     "@electron/remote": "^2.1.2",
     "@f-list/fork-ts-checker-webpack-plugin": "^3.1.1",
     "@f-list/vue-ts": "^1.0.3",
-    "@fortawesome/fontawesome-free": "^5.15.4",
+    "@fortawesome/fontawesome-free": "^6.7.2",
     "@types/bluebird": "3.5.32",
     "@types/file-loader": "^5.0.4",
     "@types/lodash": "4.14.162",
@@ -100,6 +100,7 @@
     "watch": "cd electron && pnpm watch",
     "start": "cd electron && pnpm start",
     "lint": "pnpm prettier --write .",
+    "check": "pnpm prettier --check .",
     "prepare": "husky"
   },
   "pnpm": {
