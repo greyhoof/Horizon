@@ -7,7 +7,7 @@
   >
     <div class="eicon-selector-ui">
       <div
-        v-if="!store || refreshing"
+        v-if="!storeLoaded || refreshing"
         class="d-flex align-items-center loading"
       >
         <strong>Loading...</strong>
@@ -176,6 +176,8 @@
   import modal from '../components/Modal.vue';
   import CustomDialog from '../components/custom_dialog';
 
+  let store: EIconStore | undefined;
+
   @Component({
     components: { modal }
   })
@@ -183,7 +185,8 @@
     @Prop
     readonly onSelect?: (eicon: string, shift: boolean) => void;
 
-    store: EIconStore | undefined;
+    storeLoaded: boolean = false;
+
     results: string[] = [];
 
     search: string = '';
@@ -197,7 +200,8 @@
     @Hook('mounted')
     async mounted(): Promise<void> {
       try {
-        this.store = await EIconStore.getSharedStore();
+        store = await EIconStore.getSharedStore();
+        this.storeLoaded = true;
         this.runSearch('');
       } catch (err) {
         // don't break the client in case service is down
@@ -221,18 +225,15 @@
         const category = s.substring(9).trim();
 
         if (category === 'random') {
-          this.results = _.map(this.store?.random(250), e => e.eicon);
+          this.results = (store?.random(250) || []).map(e => e.eicon);
         } else {
           this.results = this.getCategoryResults(category);
         }
       } else {
         if (s.length === 0) {
-          this.results = _.map(this.store?.random(250), e => e.eicon);
+          this.results = (store?.random(250) || []).map(e => e.eicon);
         } else {
-          this.results = _.map(
-            _.take(this.store?.search(s), 250),
-            e => e.eicon
-          );
+          this.results = _.take(store?.search(s), 250).map(e => e.eicon);
         }
       }
     }
@@ -591,7 +592,7 @@
     async refreshIcons(): Promise<void> {
       this.refreshing = true;
 
-      await this.store?.update();
+      await store?.update();
       await this.runSearch();
 
       this.refreshing = false;
