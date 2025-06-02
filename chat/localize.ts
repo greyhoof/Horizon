@@ -45,6 +45,7 @@ const strings: { [key: string]: string | undefined } = {
   title: 'F-Chat',
   'title.connected': 'F-Chat ({0})',
   version: 'Version {0}',
+  developmentVersion: 'Development build [{0}]',
   filter: 'Type to filter...',
   confirmYes: 'Yes',
   confirmNo: 'No',

@@ -861,7 +861,12 @@ function onReady(): void {
               )
           },
           {
-            label: l('version', app.getVersion()),
+            label: l(
+              process.env.NODE_ENV !== 'development'
+                ? 'version'
+                : 'developmentVersion',
+              process.env.APP_VERSION || app.getVersion()
+            ),
             click: showCurrentPatchNotes
           }
         ]
