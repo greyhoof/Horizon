@@ -54,7 +54,7 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
     env:
       PR_VERSION: ${{ needs.set-version.outputs.version }}
-      APP_VERSION: 'Pr #$PR_VERSION'
+      APP_VERSION: Pr #${{ needs.set-version.outputs.version }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
