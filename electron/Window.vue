@@ -376,7 +376,7 @@
       );
       window.addEventListener('focus', () => {
         if (!browserWindow.isMinimized())
-          this.activeTab!.view.webContents.focus()
+          this.activeTab!.view.webContents.focus();
       });
 
       log.debug('init.window.listeners');
