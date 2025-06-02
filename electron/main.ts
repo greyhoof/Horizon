@@ -161,6 +161,7 @@ async function toggleDictionary(lang: string): Promise<void> {
 }
 
 function setGeneralSettings(value: GeneralSettings): void {
+  log.debug('settings.save', value);
   fs.writeFileSync(path.join(settingsDir, 'settings'), JSON.stringify(value));
   for (const w of electron.webContents.getAllWebContents())
     w.send('settings', settings);
@@ -201,6 +202,9 @@ async function checkForGitRelease(
   semVer: string,
   releaseUrl: string
 ): Promise<void> {
+  if (!settings.updateCheck) {
+    return;
+  }
   try {
     let releases: ReleaseInfo[] = (
       await Axios.get<ReleaseInfo[]>(`${releaseUrl}`)
@@ -446,8 +450,8 @@ function showCurrentPatchNotes(): void {
   //tslint:disable-next-line: no-floating-promises
   openURLExternally(
     'https://github.com/Fchat-Horizon/Horizon/blob/v' +
-    settings.version +
-    '/CHANGELOG.md'
+      settings.version +
+      '/CHANGELOG.md'
   );
 }
 
@@ -720,7 +724,15 @@ function onReady(): void {
               setGeneralSettings(settings);
             }
           },
-
+          {
+            label: l('settings.updateCheck'),
+            type: 'checkbox',
+            checked: settings.updateCheck,
+            click: async (item: electron.MenuItem) => {
+              settings.updateCheck = item.checked;
+              setGeneralSettings(settings);
+            }
+          },
           {
             label: l('settings.beta'),
             type: 'checkbox',
