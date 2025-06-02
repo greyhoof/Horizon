@@ -446,8 +446,8 @@ function showCurrentPatchNotes(): void {
   //tslint:disable-next-line: no-floating-promises
   openURLExternally(
     'https://github.com/Fchat-Horizon/Horizon/blob/v' +
-      settings.version +
-      '/CHANGELOG.md'
+    settings.version +
+    '/CHANGELOG.md'
   );
 }
 
@@ -512,8 +512,11 @@ function onReady(): void {
   app.setAppUserModelId('net.flist.fchat');
   app.on('open-file', createWindow);
 
-  if (settings.version !== app.getVersion()) {
-    showPatchNotes();
+  if (
+    settings.version !== app.getVersion() &&
+    process.env.NODE_ENV !== 'development'
+  ) {
+    showCurrentPatchNotes();
     if (settings.host === 'wss://chat.f-list.net:9799')
       settings.host = defaultHost;
     settings.version = app.getVersion();
