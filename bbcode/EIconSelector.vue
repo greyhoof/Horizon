@@ -28,6 +28,7 @@
               v-model="search"
               ref="search"
               placeholder="Search eicons..."
+              @input="searchUpdateDebounce()"
               tabindex="0"
               @click.prevent.stop="setFocus()"
               @mousedown.prevent.stop
@@ -36,7 +37,7 @@
             <div class="btn-group search-buttons">
               <div
                 class="btn expressions"
-                @click.prevent.stop="runSearch('category:favorites')"
+                @click.prevent.stop="searchWithString('category:favorites')"
                 title="Favorites"
                 role="button"
                 tabindex="0"
@@ -46,7 +47,7 @@
 
               <div
                 class="btn expressions"
-                @click.prevent.stop="runSearch('category:expressions')"
+                @click.prevent.stop="searchWithString('category:expressions')"
                 title="Expressions"
                 role="button"
                 tabindex="0"
@@ -56,7 +57,7 @@
 
               <div
                 class="btn sexual"
-                @click.prevent.stop="runSearch('category:sexual')"
+                @click.prevent.stop="searchWithString('category:sexual')"
                 title="Sexual"
                 role="button"
                 tabindex="0"
@@ -66,7 +67,7 @@
 
               <div
                 class="btn bubbles"
-                @click.prevent.stop="runSearch('category:bubbles')"
+                @click.prevent.stop="searchWithString('category:bubbles')"
                 title="Speech bubbles"
                 role="button"
                 tabindex="0"
@@ -76,7 +77,7 @@
 
               <div
                 class="btn actions"
-                @click.prevent.stop="runSearch('category:symbols')"
+                @click.prevent.stop="searchWithString('category:symbols')"
                 title="Symbols"
                 role="button"
                 tabindex="0"
@@ -86,7 +87,7 @@
 
               <div
                 class="btn memes"
-                @click.prevent.stop="runSearch('category:memes')"
+                @click.prevent.stop="searchWithString('category:memes')"
                 title="Memes"
                 role="button"
                 tabindex="0"
@@ -96,7 +97,7 @@
 
               <div
                 class="btn random"
-                @click.prevent.stop="runSearch('category:random')"
+                @click.prevent.stop="searchWithString('category:random')"
                 title="Random"
                 role="button"
                 tabindex="0"
@@ -169,7 +170,7 @@
 
 <script lang="ts">
   import _ from 'lodash';
-  import { Component, Hook, Prop, Watch } from '@f-list/vue-ts';
+  import { Component, Hook, Prop } from '@f-list/vue-ts';
   // import Vue from 'vue';
   import log from 'electron-log'; //tslint:disable-line:match-default-export-name
   import { EIconStore } from '../learn/eicon/store';
@@ -204,23 +205,20 @@
         store = await EIconStore.getSharedStore();
 
         this.storeLoaded = true;
-        this.runSearch('');
+
+        this.searchWithString('category:favorites');
       } catch (err) {
         // don't break the client in case service is down
         log.error('eiconSelector.load.error', { err });
       }
     }
 
-    @Watch('search')
-    searchUpdate() {
-      this.searchUpdateDebounce();
+    searchWithString(s: string) {
+      this.search = s;
+      this.runSearch();
     }
 
-    runSearch(search?: string) {
-      if (search) {
-        this.search = search;
-      }
-
+    runSearch() {
       const s = this.search.toLowerCase().trim();
 
       if (s.substring(0, 9) === 'category:') {
