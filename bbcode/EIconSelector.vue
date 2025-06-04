@@ -3,6 +3,7 @@
     action="Select EIcon"
     ref="dialog"
     :buttons="false"
+    @close="close"
     dialogClass="eicon-selector big"
   >
     <div class="eicon-selector-ui">
@@ -201,6 +202,7 @@
     async mounted(): Promise<void> {
       try {
         store = await EIconStore.getSharedStore();
+
         this.storeLoaded = true;
         this.runSearch('');
       } catch (err) {
@@ -225,15 +227,15 @@
         const category = s.substring(9).trim();
 
         if (category === 'random') {
-          this.results = (store?.random(250) || []).map(e => e.eicon);
+          this.results = store?.nextPage() || [];
         } else {
           this.results = this.getCategoryResults(category);
         }
       } else {
         if (s.length === 0) {
-          this.results = (store?.random(250) || []).map(e => e.eicon);
+          this.results = store?.nextPage() || [];
         } else {
-          this.results = _.take(store?.search(s), 250).map(e => e.eicon);
+          this.results = _.take(store?.search(s), 301).map(e => e.eicon);
         }
       }
     }
@@ -617,6 +619,10 @@
       void core.settingsStore.set('favoriteEIcons', core.state.favoriteEIcons);
 
       this.$forceUpdate();
+    }
+
+    close(): void {
+      store?.shuffle();
     }
   }
 </script>
