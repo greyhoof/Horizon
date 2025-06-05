@@ -169,14 +169,25 @@
 </template>
 
 <script lang="ts">
-  import _ from 'lodash';
   import { Component, Hook, Prop } from '@f-list/vue-ts';
   // import Vue from 'vue';
-  import log from 'electron-log'; //tslint:disable-line:match-default-export-name
   import { EIconStore } from '../learn/eicon/store';
   import core from '../chat/core';
   import modal from '../components/Modal.vue';
   import CustomDialog from '../components/custom_dialog';
+
+  function debounce<T>(
+    func: (this: T, ...args: any) => void,
+    wait: number = 330
+  ): () => void {
+    let timer: ReturnType<typeof setTimeout>;
+    return function (this: T, ...args: any) {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        func.apply(this, args);
+      }, wait);
+    };
+  }
 
   let store: EIconStore | undefined;
 
@@ -195,22 +206,14 @@
 
     refreshing = false;
 
-    searchUpdateDebounce = _.debounce(() => this.runSearch(), 350, {
-      maxWait: 2000
-    });
+    searchUpdateDebounce = debounce(() => this.runSearch(), 350);
 
     @Hook('mounted')
     async mounted(): Promise<void> {
-      try {
-        store = await EIconStore.getSharedStore();
+      store = await EIconStore.getSharedStore();
+      this.storeLoaded = true;
 
-        this.storeLoaded = true;
-
-        this.searchWithString('category:favorites');
-      } catch (err) {
-        // don't break the client in case service is down
-        log.error('eiconSelector.load.error', { err });
-      }
+      this.searchWithString('category:favorites');
     }
 
     searchWithString(s: string) {
@@ -221,7 +224,7 @@
     runSearch() {
       const s = this.search.toLowerCase().trim();
 
-      if (s.substring(0, 9) === 'category:') {
+      if (s.startsWith('category:')) {
         const category = s.substring(9).trim();
 
         if (category === 'random') {
@@ -575,7 +578,7 @@
           ];
 
         case 'favorites':
-          return _.keys(core.state.favoriteEIcons);
+          return Object.keys(core.state.favoriteEIcons);
       }
 
       return [];
@@ -593,7 +596,7 @@
       this.refreshing = true;
 
       await store?.update();
-      await this.runSearch();
+      this.runSearch();
 
       this.refreshing = false;
     }
@@ -637,9 +640,6 @@
     }
 
     .eicon-selector-ui {
-      .loading {
-      }
-
       .search-bar {
         display: flex;
 
@@ -659,9 +659,6 @@
           .expressions {
             border-top-left-radius: 0;
             border-top-right-radius: 0;
-          }
-
-          .refresh {
           }
         }
       }
