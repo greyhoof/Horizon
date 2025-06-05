@@ -233,7 +233,7 @@
         if (s.length === 0) {
           this.results = store?.nextPage() || [];
         } else {
-          this.results = _.take(store?.search(s), 301).map(e => e.eicon);
+          this.results = store?.search(s).slice(0, 301) || [];
         }
       }
     }
