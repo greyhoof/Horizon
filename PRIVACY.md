@@ -47,11 +47,11 @@ If you are concerned about your security or privacy, consider disabling the high
 Horizon stores data on your computer. This data contains conversation logs, settings, cache, and other
 information such as custom dictionary words. By default, the data is stored in:
 
-| **Operating System** | **Data Path**                                     |
-| :------------------- | :------------------------------------             |
-| Windows              | `%AppData%\horizon-electron`                      |
-| MacOS                | `~/Library/Application Support/horizon-electron`  |
-| Linux                | `~/.config/horizon-electron`                      |
+| **Operating System** | **Data Path**                                    |
+| :------------------- | :----------------------------------------------- |
+| Windows              | `%AppData%\horizon-electron`                     |
+| MacOS                | `~/Library/Application Support/horizon-electron` |
+| Linux                | `~/.config/horizon-electron`                     |
 
 F-List account usernames and passwords are stored in a secure datastore provided by your operating system.
 For more information, see [electron safeStorage](https://www.electronjs.org/docs/latest/api/safe-storage).
