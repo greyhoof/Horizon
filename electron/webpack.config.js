@@ -6,10 +6,9 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const vueTransformer = require('@f-list/vue-ts/transform').default;
 const CopyPlugin = require('copy-webpack-plugin');
-const webpack = require('webpack');
 const packageJson = require('./package.json');
 const { DefinePlugin } = require('webpack');
-const APP_VERSION = process.env.APP_VERSION || 'Version Unknown';
+const APP_VERSION = process.env.APP_VERSION || packageJson.version;
 
 const mainConfig = {
     entry: [
