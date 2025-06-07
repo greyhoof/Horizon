@@ -6,6 +6,10 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const vueTransformer = require('@f-list/vue-ts/transform').default;
 const CopyPlugin = require('copy-webpack-plugin');
+const webpack = require('webpack');
+const packageJson = require('./package.json');
+const { DefinePlugin } = require('webpack');
+const APP_VERSION = process.env.APP_VERSION || 'Version Unknown';
 
 const mainConfig = {
     entry: [
@@ -52,6 +56,9 @@ const mainConfig = {
         tslint: path.join(__dirname, '../tslint.json'),
         tsconfig: './tsconfig-main.json',
         ignoreLintWarnings: true
+      }),
+      new DefinePlugin({
+        'process.env.APP_VERSION': JSON.stringify(APP_VERSION)
       })
     ],
     resolve: {
@@ -158,6 +165,9 @@ const mainConfig = {
         tsconfig: './tsconfig-renderer.json',
         vue: true,
         ignoreLintWarnings: true
+      }),
+      new DefinePlugin({
+        'process.env.APP_VERSION': JSON.stringify(APP_VERSION)
       }),
       new VueLoaderPlugin(),
       new CopyPlugin({
@@ -296,6 +306,9 @@ const storeWorkerEndpointConfig = _.assign(_.cloneDeep(mainConfig), {
       tsconfig: './tsconfig-renderer.json',
       vue: true,
       ignoreLintWarnings: true
+    }),
+    new DefinePlugin({
+      'process.env.APP_VERSION': JSON.stringify(APP_VERSION)
     })
   ]
 });
