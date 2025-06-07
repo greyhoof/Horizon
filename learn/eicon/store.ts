@@ -8,6 +8,8 @@ import { EIconUpdater } from './updater';
 // The eicon modal displays 7x7 at a time, so this is one page.
 const EICON_PAGE_RESULTS_COUNT = 7 * 7;
 
+const CURRENT_STORE_VERSION = 2.0;
+
 // These funtions are so generic they could be moved to a utils file.
 
 function Rotate<T>(arr: T[], amount: number): T[] {
@@ -42,6 +44,7 @@ export class EIconStore {
     fs.writeFileSync(
       this.getStoreFilename(),
       JSON.stringify({
+        version: CURRENT_STORE_VERSION,
         asOfTimestamp: this.asOfTimestamp,
         records: this.lookup
       })
@@ -57,18 +60,37 @@ export class EIconStore {
     try {
       const data = JSON.parse(fs.readFileSync(fn, 'utf-8'));
 
-      /** Handling the old format is a must. */
+      /** Handling old formats is a must.
+       *
+       * Rising: Object = {
+       *    asOfTimestamp: number,
+       *    records: [
+       *      { eicon: string,
+       *        timestamp: number }
+       *    ]
+       * };
+       * v2: Object = {
+       *    version: number,
+       *    asOfTimestamp: number,
+       *    records: [
+       *      eicon: string
+       *    ]
+       * }
+       *
+       * If you need to add a new version, check FIRST for version number,
+       * but leave structure-based detection as a backup and for the original.
+       */
       if (
+        (data?.version && data.version === 2) ||
+        (Array.isArray(data?.records) && typeof data?.records[0] === 'string')
+      ) {
+        this.lookup = data?.records;
+      } else if (
         Array.isArray(data?.records) &&
         typeof data?.records[0] === 'object'
       ) {
         this.lookup = data?.records.map((i: { eicon: string }) => i.eicon);
-      } else if (
-        Array.isArray(data?.records) &&
-        typeof data?.records[0] === 'string'
-      )
-        this.lookup = data?.records;
-      else this.lookup = [];
+      } else this.lookup = [];
 
       this.asOfTimestamp = data?.asOfTimestamp || 0;
 
