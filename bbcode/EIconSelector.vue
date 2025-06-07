@@ -595,7 +595,7 @@
     async refreshIcons(): Promise<void> {
       this.refreshing = true;
 
-      await store?.update();
+      await store?.checkForUpdates();
       this.runSearch();
 
       this.refreshing = false;

@@ -107,7 +107,7 @@ export class EIconStore {
         asOfTimestamp: this.asOfTimestamp
       });
 
-      await this.update();
+      await this.checkForUpdates();
 
       log.verbose('eicons.loaded.update.remote', {
         records: this.lookup.length,
@@ -146,7 +146,12 @@ export class EIconStore {
     this.shuffle();
   }
 
-  async update(): Promise<void> {
+  async checkForUpdates(): Promise<void> {
+    if (this.asOfTimestamp === 0) await this.downloadAll();
+    else await this.update();
+  }
+
+  protected async update(): Promise<void> {
     log.verbose('eicons.update', { asOf: this.asOfTimestamp });
 
     const changes = await this.updater.fetchUpdates(this.asOfTimestamp);
@@ -217,7 +222,10 @@ export class EIconStore {
 
       await EIconStore.sharedStore.load();
 
-      setInterval(() => EIconStore.sharedStore!.update(), 60 * 60 * 1000);
+      setInterval(
+        () => EIconStore.sharedStore!.checkForUpdates(),
+        60 * 60 * 1000
+      );
     }
 
     return EIconStore.sharedStore;
