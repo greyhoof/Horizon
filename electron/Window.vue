@@ -192,7 +192,13 @@
   //tslint:disable-next-line:no-require-imports no-unsafe-any
   const trayIcon = path.join(
     __dirname,
-    <string>require('./build/tray.png').default
+    <string>(
+      require(
+        process.platform !== 'darwin'
+          ? './build/tray.png'
+          : './build/trayTemplate.png'
+      ).default
+    )
   );
   //path.join(__dirname, <string>require('./build/tray.png').default);
 
