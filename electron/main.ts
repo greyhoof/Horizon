@@ -301,10 +301,6 @@ function showCurrentPatchNotes(): void {
 
 let zoomLevel = 0;
 
-function createWindow() {
-  browserWindows.createMainWindow(settings, shouldImportSettings, baseDir);
-}
-
 function onReady(): void {
   let hasCompletedUpgrades = false;
 
@@ -317,7 +313,9 @@ function onReady(): void {
   log.info('Starting application.');
 
   app.setAppUserModelId('net.flist.fchat');
-  app.on('open-file', createWindow);
+  app.on('open-file', () => {
+    browserWindows.createMainWindow(settings, shouldImportSettings, baseDir);
+  });
 
   if (
     settings.version !== app.getVersion() &&
@@ -829,5 +827,7 @@ if (
 )
   app.quit();
 else app.on('ready', onReady);
-app.on('second-instance', createWindow);
+app.on('second-instance', () => {
+  browserWindows.createMainWindow(settings, shouldImportSettings, baseDir);
+});
 app.on('window-all-closed', () => app.quit());
