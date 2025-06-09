@@ -416,19 +416,6 @@ function onReady(): void {
 
   //tslint:disable-next-line:no-floating-promises
   addSpellcheckerItems(spellcheckerMenu);
-  const themes = fs
-    .readdirSync(path.join(__dirname, 'themes'))
-    .filter(x => x.substr(-4) === '.css')
-    .map(x => x.slice(0, -4));
-  const setTheme = (theme: string) => {
-    settings.theme = theme;
-    setGeneralSettings(settings);
-  };
-
-  const setSystemLogLevel = (logLevell: log.LevelOption) => {
-    settings.risingSystemLogLevel = logLevell;
-    setGeneralSettings(settings);
-  };
 
   electron.Menu.setApplicationMenu(
     electron.Menu.buildFromTemplate([
@@ -462,6 +449,17 @@ function onReady(): void {
             accelerator: 'CmdOrCtrl+t'
           },
           {
+            label: l('action.preferences'),
+            click: (_m, window: electron.BrowserWindow) => {
+              browserWindows.createBrowserSettings(
+                settings,
+                shouldImportSettings,
+                window
+              );
+            }
+          },
+
+          {
             label: l('settings.logDir'),
             click: (_m, window: electron.BrowserWindow) => {
               const dir = electron.dialog.showOpenDialogSync({
@@ -492,62 +490,7 @@ function onReady(): void {
               }
             }
           },
-          {
-            label: l('settings.closeToTray'),
-            type: 'checkbox',
-            checked: settings.closeToTray,
-            click: (item: electron.MenuItem) => {
-              settings.closeToTray = item.checked;
-              setGeneralSettings(settings);
-            }
-          },
-          {
-            label: l('settings.profileViewer'),
-            type: 'checkbox',
-            checked: settings.profileViewer,
-            click: (item: electron.MenuItem) => {
-              settings.profileViewer = item.checked;
-              setGeneralSettings(settings);
-            }
-          },
           { label: l('settings.spellcheck'), submenu: spellcheckerMenu },
-          {
-            label: l('settings.theme'),
-            submenu: themes.map(x => ({
-              checked: settings.theme === x,
-              click: () => setTheme(x),
-              label: x,
-              type: <'radio'>'radio'
-            }))
-          },
-          {
-            label: l('settings.hwAcceleration'),
-            type: 'checkbox',
-            checked: settings.hwAcceleration,
-            click: (item: electron.MenuItem) => {
-              settings.hwAcceleration = item.checked;
-              setGeneralSettings(settings);
-            }
-          },
-          {
-            label: l('settings.updateCheck'),
-            type: 'checkbox',
-            checked: settings.updateCheck,
-            click: async (item: electron.MenuItem) => {
-              settings.updateCheck = item.checked;
-              setGeneralSettings(settings);
-            }
-          },
-          {
-            label: l('settings.beta'),
-            type: 'checkbox',
-            checked: settings.beta,
-            click: async (item: electron.MenuItem) => {
-              settings.beta = item.checked;
-              setGeneralSettings(settings);
-              checkForGitRelease(`v${app.getVersion()}`, releasesUrl);
-            }
-          },
           {
             label: l('fixLogs.action'),
             click: (_m, window: electron.BrowserWindow) =>
@@ -555,47 +498,6 @@ function onReady(): void {
           },
 
           { type: 'separator' },
-          {
-            label: 'Horizon',
-            submenu: [
-              {
-                label: 'System log level',
-                submenu: [
-                  'error',
-                  'warn',
-                  'info',
-                  'verbose',
-                  'debug',
-                  'silly'
-                ].map((level: string) => ({
-                  checked: settings.risingSystemLogLevel === level,
-                  label: `${level.substr(0, 1).toUpperCase()}${level.substr(1)}`,
-                  click: () => setSystemLogLevel(level as log.LevelOption),
-                  type: <'radio'>'radio'
-                }))
-              },
-              {
-                visible: process.platform === 'win32',
-                label: 'Disable Windows high-contrast mode',
-                type: 'checkbox',
-                checked: settings.risingDisableWindowsHighContrast,
-                click: (item: electron.MenuItem) => {
-                  settings.risingDisableWindowsHighContrast = item.checked;
-                  setGeneralSettings(settings);
-                }
-              },
-              {
-                label: l('settings.browserOption'),
-                click: (_m, window: electron.BrowserWindow) => {
-                  browserWindows.createBrowserSettings(
-                    settings,
-                    shouldImportSettings,
-                    window
-                  );
-                }
-              }
-            ]
-          },
           {
             label: 'Show/hide current profile',
             click: (_m: electron.MenuItem, w: electron.BrowserWindow) => {
@@ -807,6 +709,18 @@ function onReady(): void {
       settings.browserPath = _path;
       settings.browserArgs = _args;
       setGeneralSettings(settings);
+    }
+  );
+
+  electron.ipcMain.on(
+    'general-settings-update',
+    (_e, _options: GeneralSettings) => {
+      log.info('main.settings.update.message', _options);
+      if (_options) {
+        Object.assign(settings, _options);
+        //Now we save it to a file
+        setGeneralSettings(_options);
+      }
     }
   );
 
