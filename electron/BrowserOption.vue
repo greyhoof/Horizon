@@ -33,8 +33,8 @@
       </div>
 </div>-->
     <div class="window-modal modal" :class="getThemeClass()" tabindex="-1">
-      <div class="modal-dialog modal-xl">
-        <div class="modal-content">
+      <div class="modal-dialog modal-xl" style="height: 100vh;">
+        <div class="modal-content" style="height: 100vh;">
           <div class="modal-header" style="-webkit-app-region: drag">
             <h5 class="modal-title">{{ l('settings.action') }}</h5>
           </div>
@@ -54,7 +54,7 @@
             <!--General -->
             <div
               v-show="selectedTab === '0'"
-              class="card-body"
+              class="card-body settings-content"
               style="height: 100%; width: 100%"
             >
               <div class="form-group">
@@ -77,7 +77,7 @@
             <!--Appearance-->
             <div
               v-show="selectedTab === '1'"
-              class="card-body"
+              class="card-body settings-content"
               style="height: 100%; width: 100%"
             >
               <div class="form-group">
@@ -99,7 +99,7 @@
             <!--Notifications-->
             <div
               v-show="selectedTab === '2'"
-              class="card-body"
+              class="card-body settings-content"
               style="height: 100%; width: 100%"
             >
               notifications
@@ -107,7 +107,7 @@
             <!--Behavior-->
             <div
               v-show="selectedTab === '3'"
-              class="card-body"
+              class="card-body settings-content"
               style="height: 100%; width: 100%"
             >
               <div class="form-group">
@@ -134,7 +134,7 @@
             <!--Accessibility-->
             <div
               v-show="selectedTab === '4'"
-              class="card-body"
+              class="card-body settings-content"
               style="height: 100%; width: 100%"
             >
               <div class="form-group" v-if="isWindows">
@@ -154,7 +154,7 @@
             <!-- Advanced -->
             <div
               v-show="selectedTab === '5'"
-              class="card-body"
+              class="card-body settings-content"
               style="height: 100%; width: 100%"
             >
               <div class="form-group">
@@ -427,6 +427,11 @@
     margin: 0px;
     max-width: 100%;
   }
+  
+  .modal-body {
+    overflow: auto;
+  }
+
   .card-full {
     height: 100%;
     left: 0;

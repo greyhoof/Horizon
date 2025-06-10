@@ -191,7 +191,7 @@ export function createBrowserSettings(
   parentWindow: electron.BrowserWindow
 ): electron.BrowserWindow | undefined {
   let desiredHeight = 570;
-  let desiredWidth = 800;
+  let desiredWidth = 805;
 
   const windowProperties: electron.BrowserWindowConstructorOptions = {
     center: true,
@@ -199,9 +199,9 @@ export function createBrowserSettings(
     icon: process.platform === 'win32' ? winIcon : pngIcon,
     frame: false,
     width: desiredWidth,
+    minWidth: desiredWidth,
     height: desiredHeight,
     minHeight: desiredHeight,
-    maxHeight: desiredHeight,
     resizable: true,
     modal: true,
     parent: parentWindow,
