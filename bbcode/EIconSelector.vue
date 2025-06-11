@@ -232,12 +232,10 @@
         } else {
           this.results = this.getCategoryResults(category);
         }
+      } else if (s.length === 0) {
+        this.results = store?.nextPage() || [];
       } else {
-        if (s.length === 0) {
-          this.results = store?.nextPage() || [];
-        } else {
-          this.results = store?.search(s).slice(0, 301) || [];
-        }
+        this.results = store?.search(s).slice(0, 301) || [];
       }
     }
 

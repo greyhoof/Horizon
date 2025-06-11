@@ -1,5 +1,4 @@
 import Axios from 'axios';
-import _ from 'lodash';
 
 export interface EIconRecordUpdate {
   eicon: string;
@@ -20,15 +19,13 @@ export class EIconUpdater {
 
     if (!result) return { asOfTimestamp: 0, eicons: [] };
 
-    const lines = _.split(result.data, '\n');
+    const lines = (result.data as string).split('\n');
 
     const eicons = lines
       .filter(line => line.trim() !== '' && !line.trim().startsWith('#'))
       .map(line => line.split('\t', 2)[0].toLowerCase());
 
-    const asOfLine = _.first(
-      _.filter(lines, (line: string) => line.substring(0, 9) === '# As Of: ')
-    );
+    const asOfLine = lines.find(line => line.startsWith('# As Of: '));
     const asOfTimestamp = asOfLine ? parseInt(asOfLine.substring(9), 10) : 0;
 
     return { eicons, asOfTimestamp };
@@ -43,7 +40,7 @@ export class EIconUpdater {
 
     if (!result) return { asOfTimestamp: 0, recordUpdates: [] };
 
-    const lines = _.split(result.data, '\n');
+    const lines = (result.data as string).split('\n');
 
     const recordUpdates = lines
       .filter(line => line.trim() !== '' && !line.trim().startsWith('#'))
@@ -52,9 +49,7 @@ export class EIconUpdater {
         return { action: action as '+' | '-', eicon: eicon.toLowerCase() };
       });
 
-    const asOfLine = _.first(
-      _.filter(lines, (line: string) => line.substring(0, 9) === '# As Of: ')
-    );
+    const asOfLine = lines.find(line => line.startsWith('# As Of: '));
     const asOfTimestamp = asOfLine ? parseInt(asOfLine.substring(9), 10) : 0;
 
     return { recordUpdates, asOfTimestamp };

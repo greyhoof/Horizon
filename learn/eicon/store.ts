@@ -191,9 +191,7 @@ export class EIconStore {
   }
 
   protected addIcons(additions: string[]): void {
-    additions.forEach(e => {
-      if (!this.lookup.includes(e)) this.lookup.push(e);
-    });
+    this.lookup.push(...additions.filter(e => !this.lookup.includes(e)));
   }
 
   protected removeIcons(removals: string[]): void {
@@ -202,7 +200,7 @@ export class EIconStore {
 
   search(searchString: string): string[] {
     const query = searchString.toLowerCase();
-    const found = this.lookup.filter(e => e.indexOf(query) >= 0);
+    const found = this.lookup.filter(e => e.includes(query));
 
     return found.sort((a, b) => {
       if (a.startsWith(query) && !b.startsWith(query)) return -1;
