@@ -14,7 +14,12 @@ export class EIconUpdater {
     'https://xariah.net/eicons/Home/EiconsDataDeltaSince';
 
   async fetchAll(): Promise<{ eicons: string[]; asOfTimestamp: number }> {
-    const result = await Axios.get(EIconUpdater.FULL_DATA_URL);
+    const result = await Axios.get(EIconUpdater.FULL_DATA_URL).catch(
+      () => undefined
+    );
+
+    if (!result) return { asOfTimestamp: 0, eicons: [] };
+
     const lines = _.split(result.data, '\n');
 
     const eicons = lines
@@ -34,7 +39,10 @@ export class EIconUpdater {
   ): Promise<{ recordUpdates: EIconRecordUpdate[]; asOfTimestamp: number }> {
     const result = await Axios.get(
       `${EIconUpdater.DATA_UPDATE_URL}/${fromTimestampInSecs}`
-    );
+    ).catch(() => undefined);
+
+    if (!result) return { asOfTimestamp: 0, recordUpdates: [] };
+
     const lines = _.split(result.data, '\n');
 
     const recordUpdates = lines
