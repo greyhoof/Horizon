@@ -222,7 +222,7 @@
     }
 
     runSearch() {
-      const s = this.search.toLowerCase().trim();
+      const s = this.search.toLowerCase();
 
       if (s.startsWith('category:')) {
         const category = s.substring(9).trim();

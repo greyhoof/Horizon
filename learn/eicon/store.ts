@@ -201,7 +201,7 @@ export class EIconStore {
   }
 
   search(searchString: string): string[] {
-    const query = searchString.trim().toLowerCase();
+    const query = searchString.toLowerCase();
     const found = this.lookup.filter(e => e.indexOf(query) >= 0);
 
     return found.sort((a, b) => {
