@@ -15,7 +15,7 @@ const CURRENT_STORE_VERSION = 2.0;
 function Rotate<T>(arr: T[], amount: number): T[] {
   const remove = arr.splice(0, amount);
 
-  arr = arr.concat(remove);
+  arr.push(...remove);
 
   return remove;
 }
