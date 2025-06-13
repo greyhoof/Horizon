@@ -6,35 +6,9 @@
     @auxclick.prevent
   >
     <div v-html="styling"></div>
-    <!--<div
-      style="display: flex; align-items: stretch; border-bottom-width: 1px"
-      class="border-bottom"
-      id="window-browser-settings"
-    >
-      <h4 style="padding: 2px 0">{{ l('settings.browserOptionHeader') }}</h4>
-      <div
-        style="
-          flex: 1;
-          display: flex;
-          justify-content: flex-end;
-          -webkit-app-region: drag;
-        "
-        class="btn-group"
-        id="windowButtons"
-      >
-        <i
-          class="far fa-window-minimize btn btn-light"
-          @click.stop="minimize()"
-        ></i>
-        <!--        <i class="far btn btn-light" :class="'fa-window-' + (isMaximized ? 'restore' : 'maximize')" @click="maximize()"></i>-->
-    <!--<span class="btn btn-light" @click.stop="close()">
-          <i class="fa fa-times fa-lg"></i>
-        </span>
-      </div>
-</div>-->
     <div class="window-modal modal" :class="getThemeClass()" tabindex="-1">
-      <div class="modal-dialog modal-xl" style="height: 100vh;">
-        <div class="modal-content" style="height: 100vh;">
+      <div class="modal-dialog modal-xl" style="height: 100vh">
+        <div class="modal-content" style="height: 100vh">
           <div class="modal-header" style="-webkit-app-region: drag">
             <h5 class="modal-title">{{ l('settings.action') }}</h5>
           </div>
@@ -71,6 +45,28 @@
                 <label class="control-label" for="beta">
                   <input type="checkbox" id="beta" v-model="settings.beta" />
                   {{ l('settings.beta') }}
+                </label>
+              </div>
+              <!--On MacOS, Electron uses the OS' native spell checker as of version 35.2.0 -->
+              <div class="form-group" v-if="!isMac">
+                <label class="control-label" for="spellCheckLang">
+                  {{ l('settings.spellcheck') }}
+                  <filterable-select
+                    v-model="selectedLang"
+                    :options="sortedLangs"
+                    :filterFunc="filterLanguage"
+                    :placeholder="l('filter')"
+                    :multiple="true"
+                    :title="l('settings.spellcheck.language')"
+                  >
+                    <template slot-scope="s">
+                      {{
+                        //s.option ||
+                        formatLanguage(s.option) ||
+                        l('settings.spellcheck.language')
+                      }}
+                    </template>
+                  </filterable-select>
                 </label>
               </div>
             </div>
@@ -304,7 +300,6 @@
 </template>
 
 <script lang="ts">
-  import * as electron from 'electron';
   import { Component, Hook } from '@f-list/vue-ts';
   import * as remote from '@electron/remote';
   import Vue from 'vue';
@@ -315,12 +310,20 @@
   import { ipcRenderer } from 'electron';
   import log from 'electron-log';
   import Tabs from '../components/tabs';
+  import FilterableSelect from '../components/FilterableSelect.vue';
+  import {
+    knownLanguageNames,
+    getSafeLanguages,
+    updateSupportedLanguages
+  } from './language';
+  import _ from 'lodash';
 
   const browserWindow = remote.getCurrentWindow();
   @Component({
-    components: { tabs: Tabs }
+    components: { tabs: Tabs, 'filterable-select': FilterableSelect }
   })
   export default class BrowserOption extends Vue {
+    sortedLangs: string[] = [];
     settings!: GeneralSettings;
     selectedTab = '0';
     isMaximized = false;
@@ -329,12 +332,12 @@
     hasCompletedUpgrades = false;
     browserPath = '';
     browserArgs = '';
-    availableThemes!: ReadonlyArray<string> = [];
-    logLevel = 'Info';
-
+    availableThemes: ReadonlyArray<string> = [];
+    logLevel: log.LevelOption = false;
+    selectedLang: string | string[] | undefined;
     //These are not reactive.
     //Which is kind of good because of all the security issues that'd otherwise arise
-    isWindows = process.platform === 'windows';
+    isWindows = process.platform === 'win32';
     isMac = process.platform === 'darwin';
 
     get styling(): string {
@@ -354,17 +357,31 @@
 
     @Hook('mounted')
     async mounted(): Promise<void> {
+      updateSupportedLanguages(
+        browserWindow.webContents.session.availableSpellCheckerLanguages
+      );
       this.browserPath = this.settings.browserPath;
       this.browserArgs = this.settings.browserArgs;
-      this.logLevel = this.settings.risingSystemLogLevel.to;
+      this.logLevel = this.settings.risingSystemLogLevel;
       this.availableThemes = fs
         .readdirSync(path.join(__dirname, 'themes'))
         .filter(x => x.substr(-4) === '.css')
         .map(x => x.slice(0, -4));
+      this.selectedLang = getSafeLanguages(this.settings.spellcheckLang);
+      let availableLanguages = getSafeLanguages(
+        remote.session.defaultSession.availableSpellCheckerLanguages
+      );
+      this.sortedLangs = _.sortBy(availableLanguages, 'name');
     }
 
     minimize(): void {
       browserWindow.minimize();
+    }
+
+    formatLanguage(lang: string): string {
+      return lang in knownLanguageNames
+        ? `${(knownLanguageNames as any)[lang]} (${lang})`
+        : lang;
     }
 
     close(): void {
@@ -401,6 +418,7 @@
     }
 
     submit(): void {
+      this.settings.spellcheckLang = this.selectedLang;
       ipcRenderer.send('general-settings-update', this.settings);
       this.close();
     }
@@ -415,6 +433,13 @@
         this.browserPath = result;
       });
     }
+
+    filterLanguage(
+      filter: RegExp,
+      languageEntry: { lang: string; name: string }
+    ): boolean {
+      return filter.test(languageEntry.name);
+    }
   }
 </script>
 
@@ -427,7 +452,7 @@
     margin: 0px;
     max-width: 100%;
   }
-  
+
   .modal-body {
     overflow: auto;
   }

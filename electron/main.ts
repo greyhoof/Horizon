@@ -412,10 +412,8 @@ function onReady(): void {
       { role: 'toggleDevTools' },
       { type: 'separator' }
     );
-  const spellcheckerMenu = new electron.Menu();
 
   //tslint:disable-next-line:no-floating-promises
-  addSpellcheckerItems(spellcheckerMenu);
 
   electron.Menu.setApplicationMenu(
     electron.Menu.buildFromTemplate([
@@ -492,7 +490,6 @@ function onReady(): void {
               }
             }
           },
-          { label: l('settings.spellcheck'), submenu: spellcheckerMenu },
           {
             label: l('fixLogs.action'),
             click: (_m, window: electron.BrowserWindow) =>
