@@ -456,7 +456,9 @@ function onReady(): void {
                 shouldImportSettings,
                 window
               );
-            }
+            },
+            accelerator:
+              process.platform === 'darwin' ? 'CmdOrCtrl+,' : undefined
           },
 
           {
