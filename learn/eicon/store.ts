@@ -15,7 +15,7 @@ const CURRENT_STORE_VERSION = 2.0;
 function Rotate<T>(arr: T[], amount: number): T[] {
   const remove = arr.splice(0, amount);
 
-  arr = arr.concat(remove);
+  arr.push(...remove);
 
   return remove;
 }
@@ -35,20 +35,27 @@ export class EIconStore {
   protected updater = new EIconUpdater();
 
   async save(): Promise<void> {
-    log.info('eicons.save', {
-      records: this.lookup.length,
-      asOfTimestamp: this.asOfTimestamp,
-      file: this.getStoreFilename()
-    });
-
-    fs.writeFileSync(
-      this.getStoreFilename(),
-      JSON.stringify({
-        version: CURRENT_STORE_VERSION,
+    if (this.lookup.length) {
+      log.info('eicons.save', {
+        records: this.lookup.length,
         asOfTimestamp: this.asOfTimestamp,
-        records: this.lookup
-      })
-    );
+        file: this.getStoreFilename()
+      });
+
+      try {
+        fs.writeFileSync(
+          this.getStoreFilename(),
+          JSON.stringify({
+            version: CURRENT_STORE_VERSION,
+            asOfTimestamp: this.asOfTimestamp,
+            records: this.lookup
+          })
+        );
+      } catch (e) {
+        // This is not a showstopper.
+        log.error('eicons.save.failure', { e });
+      }
+    }
 
     remote.ipcMain.emit('eicons.reload', { asOfTimestamp: this.asOfTimestamp });
   }
@@ -184,9 +191,7 @@ export class EIconStore {
   }
 
   protected addIcons(additions: string[]): void {
-    additions.forEach(e => {
-      if (!this.lookup.includes(e)) this.lookup.push(e);
-    });
+    this.lookup.push(...additions.filter(e => !this.lookup.includes(e)));
   }
 
   protected removeIcons(removals: string[]): void {
@@ -194,8 +199,8 @@ export class EIconStore {
   }
 
   search(searchString: string): string[] {
-    const query = searchString.trim().toLowerCase();
-    const found = this.lookup.filter(e => e.indexOf(query) >= 0);
+    const query = searchString.toLowerCase();
+    const found = this.lookup.filter(e => e.includes(query));
 
     return found.sort((a, b) => {
       if (a.startsWith(query) && !b.startsWith(query)) return -1;
