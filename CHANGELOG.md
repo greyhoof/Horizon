@@ -3,25 +3,11 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html). You also read it on our [website](https://fchat-horizon.github.io/docs/changelog.html).
-
-# [Development]
-
-> [!WARNING]
-> Heed this warning.
-> Beta builds **may** have unfound bugs, some of which may be fatal to your data— including chat logs.
->
-> If you haven't already, you should make a good habit of backing up your logs.
-
-### Added
-
-### Fixed
-
-### Changed
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html). You can also read it on our [website](https://fchat-horizon.github.io/docs/changelog.html).
 
 # [Releases]
 
-## [1.32.0] - 2025-06-09
+## [1.32.0] - 2025-06-15
 
 > [!IMPORTANT]
 > If you want to _downgrade_ from 1.32.0 or later to an earlier version, you will need to manually delete the `eicon.json` file in your Horizon data folder, or the EIcon search window might not show all results anymore.
@@ -32,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - New EIcon Selector and Store update, significantly improving the EIcon selection UI and handling. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/2439abc9253ca87a510d3ac5bc8abded9f1b5d68)
   - You should see a **_massive_** decrease in memory per tab now, and searching for eicons is now a lot snappier.
+  - Also fixes some issues where searchig for EIcons with a leading space wouldn't work. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/b88290eef690fdd3111abae52b6c41124b3e8663)
+  - _Also_ fixes the EIcon search potentially messing up if Xariah's API is having issues. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/130d91b7fca64740cf7c08ca05f768fc83d3c0e6)
   - Special thanks to @FireUnderTheMountain for helping investigate this, and subsequently writing the PR.
 - Experimental gender matcher rework (community feedback appreciated). [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/7b35203e4e77245ff1864fcf505646bd55855b00)
   - Read more about it [here](https://github.com/Fchat-Horizon/Horizon/pull/173).

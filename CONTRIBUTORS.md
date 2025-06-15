@@ -5,6 +5,7 @@
 - **CodingWithAnxiety**, As the project maintainer
 - [freenutsxd](https://github.com/freenutsxd)
 - [FatcatClient](https://github.com/FatCatClient)
+- [Fire Under the Mountain](https://github.com/FireUnderTheMountain)
 
 As well, **Rising** received contributions from the following:
 

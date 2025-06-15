@@ -1,7 +1,7 @@
 # Table of Contents <!-- omit in toc -->
 
 - [Download](#download)
-- [Horizon](#f-chat-horizon)
+- [Horizon](#horizon)
   - [Features](#features)
   - [Goals](#goals)
 - [Installing](#installing)
@@ -102,7 +102,7 @@ Since we currently don't have a paid developer license (and MacOS by default blo
 ![MacOS Ctrl-Open](https://raw.githubusercontent.com/Fchat-Horizon/Horizon/refs/heads/main/docs/images/macos-whitelist-ctrl-open.png)
 ![MacOS System Settings Whitelist](https://raw.githubusercontent.com/Fchat-Horizon/Horizon/refs/heads/main/docs/images/macos-whitelist-settings.png)
 
-\_Or if you're more of a Terminal hero:
+Or if you're more of a Terminal hero:
 
 3. Open your Terminal app
 4. Type the following command and press Enter:

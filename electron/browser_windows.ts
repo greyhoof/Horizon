@@ -244,6 +244,8 @@ export function createAboutWindow(
     height: 400,
     center: true,
     resizable: false,
+    minimizable: false,
+    alwaysOnTop: true,
     modal: false,
     parent: parentWindow,
     autoHideMenuBar: true,
