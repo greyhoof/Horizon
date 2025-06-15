@@ -168,6 +168,8 @@
                 cannot and will not make ElectronLogger.LogType reactive -->
                 <label class="control-label" for="systemLogLevel">
                   {{ l('settings.systemLogLevel') }}
+                </label>
+                <div class="input-group">
                   <select
                     id="systemLogLevel"
                     class="form-control"
@@ -181,7 +183,28 @@
                     <option value="debug">Debug</option>
                     <option value="silly">Silly</option>
                   </select>
+                </div>
+
+                <label class="control-label" for="logDir">
+                  {{ l('settings.logDir') }}
                 </label>
+
+                <div class="input-group">
+                  <input
+                    class="form-control"
+                    id="logDir"
+                    v-model="settings.logDirectory"
+                  />
+
+                  <div class="input-group-append">
+                    <button
+                      class="btn btn-outline-secondary"
+                      @click="browseForLogDir()"
+                    >
+                      <span class="far fa-folder-open"></span>
+                    </button>
+                  </div>
+                </div>
               </div>
 
               <h4 class="card-title">{{ l('settings.browserOptionTitle') }}</h4>
@@ -332,6 +355,7 @@
     hasCompletedUpgrades = false;
     browserPath = '';
     browserArgs = '';
+    logDirectory = '';
     availableThemes: ReadonlyArray<string> = [];
     logLevel: log.LevelOption = false;
     selectedLang: string | string[] | undefined;
@@ -362,6 +386,7 @@
       );
       this.browserPath = this.settings.browserPath;
       this.browserArgs = this.settings.browserArgs;
+      this.logDirectory = this.settings.logDirectory;
       this.logLevel = this.settings.risingSystemLogLevel;
       this.availableThemes = fs
         .readdirSync(path.join(__dirname, 'themes'))
@@ -432,6 +457,32 @@
       ipcRenderer.invoke('browser-option-browse').then(result => {
         this.browserPath = result;
       });
+    }
+
+    browseForLogDir(): void {
+      const dir = remote.dialog.showOpenDialogSync({
+        defaultPath: this.settings.logDirectory,
+        properties: ['openDirectory']
+      });
+      if (dir !== undefined) {
+        if (dir[0].startsWith(path.dirname(remote.app.getPath('exe'))))
+          return remote.dialog.showErrorBox(
+            l('settings.logDir'),
+            l('settings.logDir.inAppDir')
+          );
+        const button = remote.dialog.showMessageBoxSync(browserWindow, {
+          message: l(
+            'settings.logDir.confirm',
+            dir[0],
+            this.settings.logDirectory
+          ),
+          buttons: [l('confirmYes'), l('confirmNo')],
+          cancelId: 1
+        });
+        if (button === 0) {
+          ipcRenderer.send('log-path-update', dir[0]);
+        }
+      }
     }
 
     filterLanguage(

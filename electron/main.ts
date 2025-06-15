@@ -42,7 +42,6 @@ import * as path from 'path';
 // import * as url from 'url';
 import l from '../chat/localize';
 import { defaultHost, GeneralSettings } from './common';
-import { getSafeLanguages, knownLanguageNames } from './language';
 // import BrowserWindow = electron.BrowserWindow;
 import MenuItem = electron.MenuItem;
 import MenuItemConstructorOptions = electron.MenuItemConstructorOptions;
@@ -52,7 +51,6 @@ import { IpcMainEvent } from 'electron';
 import Axios from 'axios';
 import * as browserWindows from './browser_windows';
 import * as remoteMain from '@electron/remote/main';
-
 // Module to control application life.
 const app = electron.app;
 
@@ -108,29 +106,6 @@ export function updateSpellCheckerLanguages(langs: string[]): void {
   browserWindows.setSpellCheckerLanguages(langs);
 }
 
-async function toggleDictionary(lang: string): Promise<void> {
-  const activeLangs = getSafeLanguages(settings.spellcheckLang);
-
-  // console.log('INITIAL LANG', activeLangs, lang);
-
-  let newLangs: string[] = [];
-
-  if (_.indexOf(activeLangs, lang) >= 0) {
-    newLangs = _.reject(activeLangs, al => al === lang);
-  } else {
-    activeLangs.push(lang);
-    newLangs = activeLangs;
-  }
-
-  settings.spellcheckLang = _.uniq(newLangs);
-
-  setGeneralSettings(settings);
-
-  // console.log('NEW LANG', newLangs);
-
-  updateSpellCheckerLanguages(newLangs);
-}
-
 function setGeneralSettings(value: GeneralSettings): void {
   log.debug('settings.save', value);
   fs.writeFileSync(path.join(settingsDir, 'settings'), JSON.stringify(value));
@@ -141,32 +116,6 @@ function setGeneralSettings(value: GeneralSettings): void {
 
   log.transports.file.level = settings.risingSystemLogLevel;
   log.transports.console.level = settings.risingSystemLogLevel;
-}
-
-async function addSpellcheckerItems(menu: electron.Menu): Promise<void> {
-  const selected = getSafeLanguages(settings.spellcheckLang);
-  const langs = electron.session.defaultSession.availableSpellCheckerLanguages;
-
-  const sortedLangs = _.sortBy(
-    _.map(langs, lang => ({
-      lang,
-      name:
-        lang in knownLanguageNames
-          ? `${(knownLanguageNames as any)[lang]} (${lang})`
-          : lang
-    })),
-    'name'
-  );
-
-  for (const lang of sortedLangs)
-    menu.append(
-      new electron.MenuItem({
-        type: 'checkbox',
-        label: lang.name,
-        checked: _.indexOf(selected, lang.lang) >= 0,
-        click: async () => toggleDictionary(lang.lang)
-      })
-    );
 }
 
 async function checkForGitRelease(
@@ -458,38 +407,6 @@ function onReady(): void {
             accelerator:
               process.platform === 'darwin' ? 'CmdOrCtrl+,' : undefined
           },
-
-          {
-            label: l('settings.logDir'),
-            click: (_m, window: electron.BrowserWindow) => {
-              const dir = electron.dialog.showOpenDialogSync({
-                defaultPath: settings.logDirectory,
-                properties: ['openDirectory']
-              });
-              if (dir !== undefined) {
-                if (dir[0].startsWith(path.dirname(app.getPath('exe'))))
-                  return electron.dialog.showErrorBox(
-                    l('settings.logDir'),
-                    l('settings.logDir.inAppDir')
-                  );
-                const button = electron.dialog.showMessageBoxSync(window, {
-                  message: l(
-                    'settings.logDir.confirm',
-                    dir[0],
-                    settings.logDirectory
-                  ),
-                  buttons: [l('confirmYes'), l('confirmNo')],
-                  cancelId: 1
-                });
-                if (button === 0) {
-                  browserWindows.quitAllWindows();
-                  settings.logDirectory = dir[0];
-                  setGeneralSettings(settings);
-                  app.quit();
-                }
-              }
-            }
-          },
           {
             label: l('fixLogs.action'),
             click: (_m, window: electron.BrowserWindow) =>
@@ -710,6 +627,13 @@ function onReady(): void {
       setGeneralSettings(settings);
     }
   );
+
+  electron.ipcMain.on('log-path-update', (_e, _path: string) => {
+    browserWindows.quitAllWindows();
+    settings.logDirectory = _path;
+    setGeneralSettings(settings);
+    app.quit();
+  });
 
   electron.ipcMain.on(
     'general-settings-update',
