@@ -614,7 +614,8 @@
           electron.ipcRenderer.send(
             'save-login',
             this.settings.account,
-            this.settings.host
+            this.settings.host,
+            this.settings.proxy
           );
           await keyStore.setPassword(
             'f-list.net',
