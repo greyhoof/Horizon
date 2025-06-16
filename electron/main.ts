@@ -321,11 +321,11 @@ function onReady(): void {
     settings.version !== app.getVersion() &&
     process.env.NODE_ENV !== 'development'
   ) {
-    showCurrentPatchNotes();
     if (settings.host === 'wss://chat.f-list.net:9799')
       settings.host = defaultHost;
     settings.version = app.getVersion();
     setGeneralSettings(settings);
+    showCurrentPatchNotes();
   }
 
   // require('update-electron-app')(
