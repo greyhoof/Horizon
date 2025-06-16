@@ -1,3 +1,4 @@
+<!--For potential git history reasons, this file used to be named "browser_options.ts" prior to f257b4c6a9d6fc06c1a6f7354e38c2dbd7bc69f6-->
 <template>
   <div
     class="card-full"

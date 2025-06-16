@@ -222,7 +222,7 @@ export function createBrowserSettings(
   }
   const browserWindow = new electron.BrowserWindow(windowProperties);
   remoteMain.enable(browserWindow.webContents);
-  browserWindow.loadFile(path.join(__dirname, 'browser_option.html'), {
+  browserWindow.loadFile(path.join(__dirname, 'settings.html'), {
     query: {
       settings: JSON.stringify(settings),
       import: shouldImportSettings ? 'true' : ''
