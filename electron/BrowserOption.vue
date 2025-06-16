@@ -324,7 +324,7 @@
                     <input
                       class="form-control"
                       id="browserArgs"
-                      v-model="browserPath"
+                      v-model="browserArgs"
                     />
                   </div>
                   <small class="form-text text-muted">{{
@@ -584,14 +584,6 @@
 
   .close {
     z-index: 3;
-  }
-
-  .platform-darwin {
-    .modal-header {
-      h4 {
-        margin: 0 15px 0 77px;
-      }
-    }
   }
 
   .card-full {
