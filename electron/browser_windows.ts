@@ -217,6 +217,9 @@ export function createBrowserSettings(
     } as any
   };
 
+  if (process.platform === 'darwin') {
+    windowProperties.titleBarStyle = 'hiddenInset';
+  }
   const browserWindow = new electron.BrowserWindow(windowProperties);
   remoteMain.enable(browserWindow.webContents);
   browserWindow.loadFile(path.join(__dirname, 'browser_option.html'), {
