@@ -299,7 +299,7 @@ function showCurrentPatchNotes(): void {
   );
 }
 
-let zoomLevel = 0;
+let zoomLevel = settings.zoomLevel;
 
 function onReady(): void {
   let hasCompletedUpgrades = false;
@@ -362,6 +362,8 @@ function onReady(): void {
           for (const win of electron.webContents.getAllWebContents())
             win.send('update-zoom', 0);
           browserWindows.updateZoomLevel(0);
+          settings.zoomLevel = zoomLevel;
+          setGeneralSettings(settings);
         },
         accelerator: 'CmdOrCtrl+0'
       },
@@ -379,6 +381,8 @@ function onReady(): void {
           for (const win of electron.webContents.getAllWebContents())
             win.send('update-zoom', zoomLevel);
           browserWindows.updateZoomLevel(zoomLevel);
+          settings.zoomLevel = zoomLevel;
+          setGeneralSettings(settings);
         },
         accelerator: 'CmdOrCtrl+='
       },
@@ -397,6 +401,8 @@ function onReady(): void {
           for (const win of electron.webContents.getAllWebContents())
             win.send('update-zoom', zoomLevel);
           browserWindows.updateZoomLevel(zoomLevel);
+          settings.zoomLevel = zoomLevel;
+          setGeneralSettings(settings);
         },
         accelerator: 'CmdOrCtrl+-'
       },

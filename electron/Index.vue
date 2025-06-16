@@ -455,6 +455,7 @@
       log.debug('init.chat.keystore.get.done');
 
       Vue.set(core.state, 'generalSettings', this.settings);
+      webContents.setZoomLevel(this.settings.zoomLevel);
 
       electron.ipcRenderer.on(
         'settings',
