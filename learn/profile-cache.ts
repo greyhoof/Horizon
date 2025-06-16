@@ -250,17 +250,16 @@ export class ProfileCache extends AsyncCache<CharacterCacheRecord> {
     if (avatarUrl) {
       if (!ProfileCache.isSafeRisingPortraitURL(avatarUrl)) {
         log.info('portrait.hq.invalid.domain', { name, url: avatarUrl });
-        return;
+      } else {
+        if (c.character.name === core.characters.ownCharacter.name) {
+          const parent = remote.getCurrentWindow().webContents;
+
+          parent.send('update-avatar-url', c.character.name, avatarUrl);
+        }
+
+        log.info('portrait.hq.url', { name: c.character.name, url: avatarUrl });
+        core.characters.setOverride(c.character.name, 'avatarUrl', avatarUrl);
       }
-
-      if (c.character.name === core.characters.ownCharacter.name) {
-        const parent = remote.getCurrentWindow().webContents;
-
-        parent.send('update-avatar-url', c.character.name, avatarUrl);
-      }
-
-      log.info('portrait.hq.url', { name: c.character.name, url: avatarUrl });
-      core.characters.setOverride(c.character.name, 'avatarUrl', avatarUrl);
     }
 
     if (characterColor) {
@@ -269,23 +268,26 @@ export class ProfileCache extends AsyncCache<CharacterCacheRecord> {
           name: c.character.name,
           color: characterColor
         });
-        return;
-      }
+      } else {
+        if (c.character.name === core.characters.ownCharacter.name) {
+          const parent = remote.getCurrentWindow().webContents;
+          parent.send(
+            'update-character-color',
+            c.character.name,
+            characterColor
+          );
+        }
 
-      if (c.character.name === core.characters.ownCharacter.name) {
-        const parent = remote.getCurrentWindow().webContents;
-        parent.send('update-character-color', c.character.name, characterColor);
+        log.info('character.custom.color.applied', {
+          name: c.character.name,
+          color: characterColor
+        });
+        core.characters.setOverride(
+          c.character.name,
+          'characterColor',
+          characterColor
+        );
       }
-
-      log.info('character.custom.color.applied', {
-        name: c.character.name,
-        color: characterColor
-      });
-      core.characters.setOverride(
-        c.character.name,
-        'characterColor',
-        characterColor
-      );
     }
   }
 
