@@ -19,6 +19,17 @@
       ]"
     ></tabs>
     <div v-show="selectedTab === '0'">
+      <div class="info">
+        <h5>Info</h5>
+        <div>
+          {{ l('settings.charactersToGeneral') }}
+        </div>
+
+        <div>
+          {{ l('settings.charactersToGeneral.instructions') }}
+        </div>
+      </div>
+
       <div class="form-group">
         <label class="control-label" for="disallowedTags">{{
           l('settings.disallowedTags')
@@ -974,8 +985,8 @@
     list-style: none;
   }
 
-  #settings .warning {
-    border: 1px solid var(--warning);
+  #settings .warning,
+  #settings .info {
     padding: 10px;
     margin-bottom: 20px;
     border-radius: 3px;
@@ -983,6 +994,13 @@
     div {
       margin-top: 10px;
     }
+  }
+  #settings .warning {
+    border: 1px solid var(--warning);
+  }
+
+  #settings .info {
+    border: 1px solid var(--info);
   }
 
   #settings .bbcode-preview {

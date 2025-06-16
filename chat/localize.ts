@@ -239,6 +239,10 @@ Current log location: {1}`,
     'Disable Windows high-contrast mode',
   'settings.system': 'System',
   'settings.systemLogLevel': 'System Log Level',
+  'settings.charactersToGeneral':
+    'In the nearby future, most of these settings will be moved to the global settings menu, where they will be applied globally across your characters. Settings like your pings, or other similar settings that can also be set on a per-conversation level will remain character-specific though.',
+  'settings.charactersToGeneral.instructions':
+    'This new settings menu can be found under the app menu in Horizon > Preferences. Check it out!',
   'fixLogs.action': 'Fix corrupted logs',
   'fixLogs.text': `There are a few reason log files can become corrupted - log files from old versions with bugs that have since been fixed or incomplete file operations caused by computer crashes are the most common.
 If one of your log files is corrupted, you may get an "Unknown Type" error when you log in or when you open a specific tab. You may also experience other issues.
