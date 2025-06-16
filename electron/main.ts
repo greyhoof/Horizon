@@ -212,6 +212,7 @@ async function checkForGitRelease(
                   openURLExternally(
                     'https://github.com/Fchat-Horizon/Horizon/releases'
                   );
+                  app.exit();
                 }
               },
               {
