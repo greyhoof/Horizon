@@ -190,23 +190,20 @@ export function createBrowserSettings(
   shouldImportSettings: boolean,
   parentWindow: electron.BrowserWindow
 ): electron.BrowserWindow | undefined {
-  let desiredHeight = 520;
-  if (process.platform === 'darwin') {
-    desiredHeight = 750;
-  }
+  let desiredHeight = 570;
+  let desiredWidth = 805;
 
   const windowProperties: electron.BrowserWindowConstructorOptions = {
     center: true,
     show: false,
     icon: process.platform === 'win32' ? winIcon : pngIcon,
     frame: false,
-    width: 650,
+    width: desiredWidth,
+    minWidth: desiredWidth,
     height: desiredHeight,
-    minWidth: 650,
     minHeight: desiredHeight,
-    maxWidth: 650,
-    maxHeight: desiredHeight,
-    modal: false,
+    resizable: true,
+    modal: true,
     parent: parentWindow,
     maximizable: false,
     webPreferences: {
@@ -220,9 +217,12 @@ export function createBrowserSettings(
     } as any
   };
 
+  if (process.platform === 'darwin') {
+    windowProperties.titleBarStyle = 'hiddenInset';
+  }
   const browserWindow = new electron.BrowserWindow(windowProperties);
   remoteMain.enable(browserWindow.webContents);
-  browserWindow.loadFile(path.join(__dirname, 'browser_option.html'), {
+  browserWindow.loadFile(path.join(__dirname, 'settings.html'), {
     query: {
       settings: JSON.stringify(settings),
       import: shouldImportSettings ? 'true' : ''
