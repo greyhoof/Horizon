@@ -469,7 +469,7 @@ function onReady(): void {
             label: l('help.fchat'),
             click: () =>
               openURLExternally(
-                'https://github.com/Fchat-Horizon/Horizon/blob/main/README.md'
+                'https://horizn.moe/docs'
               )
           },
           // {
