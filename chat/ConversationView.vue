@@ -589,7 +589,7 @@
     editorMemo: string = '';
     memoManager?: MemoManager;
 
-    ownName?: string;
+    ownName?: Character;
 
     @Hook('beforeMount')
     async onBeforeMount(): Promise<void> {
@@ -713,7 +713,7 @@
 
     updateOwnName(): void {
       this.ownName = core.state.settings.risingShowPortraitNearInput
-        ? core.characters.ownCharacter?.name
+        ? core.characters.ownCharacter
         : undefined;
     }
 
