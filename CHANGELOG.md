@@ -5,18 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html). You can also read it on our [website](https://fchat-horizon.github.io/docs/changelog.html).
 
-# [Development]
+# [Releases]
 
-> [!WARNING]
-> Heed this warning.
-> Beta builds **may** have unfound bugs, some of which may be fatal to your data— including chat logs.
->
-> If you haven't already, you should make a good habit of backing up your logs.
-
-## [1.32.1-beta1] - 2025-06-17
+## [1.32.1] - 2025-06-21
 
 > [!IMPORTANT]
-> This update changes the way global settings are accessed. Since this is still a beta build, it's probably an extra good idea to heed the above warning!
+> This update changes the way global settings are accessed. Backing up your logs is recommended.
 
 ### Added
 
@@ -33,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Having a broken URL for your HQ avatar no longer prevents your custom color from displaying either. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/efe8f252294c140177e842d0928f45e0b82f2adf)
 - Fixes the profile assistant linking to a nonexistent page when informing you about HQ portraits. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/3341f88941ffa3ab29830fdd1674fb38367746c1)
 - Fixes the "Show friends/ bookmarks in a different colour" setting not working in the Dracula theme. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/267728c5cadfd775955e12c16666c0c07c05455e)
+- Minor nitpicky visual fixes. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/bbfbd6b9736ca850677e4e70b30e9183279c96bd) [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/d13e7724a9f805720e507f3c0d3e239182161ca6)
 
 ### Development
 
@@ -43,8 +38,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - https://github.com/Fchat-Horizon/Horizon/pull/210 by @Keerthi421
   - This is her first PR! 🎉
 - https://github.com/Fchat-Horizon/Horizon/pull/216 by @FatCatClient
-
-# [Releases]
 
 ## [1.32.0] - 2025-06-15
 
