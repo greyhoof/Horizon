@@ -438,6 +438,7 @@ function onReady(): void {
               if (characters.length === 0) return app.quit();
               const button = electron.dialog.showMessageBoxSync(window, {
                 message: l('chat.confirmLeave'),
+                title: l('title'),
                 buttons: [l('confirmYes'), l('confirmNo')],
                 cancelId: 1
               });
@@ -467,10 +468,7 @@ function onReady(): void {
         submenu: [
           {
             label: l('help.fchat'),
-            click: () =>
-              openURLExternally(
-                'https://horizn.moe/docs'
-              )
+            click: () => openURLExternally('https://horizn.moe/docs')
           },
           // {
           //     label: l('help.feedback'),

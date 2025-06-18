@@ -1,12 +1,14 @@
 import * as remote from '@electron/remote';
 
+import l from '../chat/localize';
+
 export class Dialog {
   static confirmDialog(message: string): boolean {
     const result = remote.dialog.showMessageBoxSync({
       message,
-      title: 'Horizon',
+      title: l('title'),
       type: 'question',
-      buttons: ['Yes', 'No'],
+      buttons: [l('confirmYes'), l('confirmNo')],
       defaultId: 1,
       cancelId: 1
     });

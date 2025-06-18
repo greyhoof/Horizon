@@ -43,7 +43,7 @@ const strings: { [key: string]: string | undefined } = {
   'spellchecker.remove': 'Remove from Dictionary',
   'spellchecker.noCorrections': 'No corrections available',
   'window.newTab': 'New tab',
-  title: 'Horizon',
+  title: process.env.NODE_ENV === 'production' ? 'Horizon' : 'Horizon (Dev)',
   'title.connected': 'Horizon ({0})',
   version: 'Version {0}',
   developmentVersion: 'Development build [{0}]',
