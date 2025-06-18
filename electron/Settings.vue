@@ -367,6 +367,7 @@
   import path from 'path';
   import { ipcRenderer } from 'electron';
   import log from 'electron-log';
+  import { Dialog } from '../helpers/dialog';
   import Tabs from '../components/tabs';
   import FilterableSelect from '../components/FilterableSelect.vue';
   import {
@@ -510,16 +511,12 @@
             l('settings.logDir'),
             l('settings.logDir.inAppDir')
           );
-        const button = remote.dialog.showMessageBoxSync(browserWindow, {
-          message: l(
-            'settings.logDir.confirm',
-            dir[0],
-            this.settings.logDirectory
-          ),
-          buttons: [l('confirmYes'), l('confirmNo')],
-          cancelId: 1
-        });
-        if (button === 0) {
+
+        if (
+          Dialog.confirmDialog(
+            l('settings.logDir.confirm', dir[0], this.settings.logDirectory)
+          )
+        ) {
           ipcRenderer.send('log-path-update', dir[0]);
         }
       }
