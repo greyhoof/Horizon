@@ -36,13 +36,13 @@ function isArrayOfObjects(subj: any): subj is object[] {
 }
 
 export class EIconStore {
-  protected lookup: string[] = [];
+  private lookup: string[] = [];
 
-  protected asOfTimestamp = 0;
+  private asOfTimestamp = 0;
 
-  protected updater = new EIconUpdater();
+  private updater = new EIconUpdater();
 
-  async save(): Promise<void> {
+  private async save(): Promise<void> {
     if (this.lookup.length) {
       log.info('eicons.save', {
         records: this.lookup.length,
@@ -68,7 +68,7 @@ export class EIconStore {
     remote.ipcMain.emit('eicons.reload', { asOfTimestamp: this.asOfTimestamp });
   }
 
-  async load(): Promise<void> {
+  private async load(): Promise<void> {
     const fn = this.getStoreFilename();
     log.info('eicons.load', { fn });
 
@@ -143,14 +143,14 @@ export class EIconStore {
     }
   }
 
-  protected getStoreFilename(): string {
+  private getStoreFilename(): string {
     const baseDir = remote.app.getPath('userData');
     const settingsDir = path.join(baseDir, 'data');
 
     return path.join(settingsDir, 'eicons.json');
   }
 
-  async downloadAll(): Promise<void> {
+  private async downloadAll(): Promise<void> {
     log.info('eicons.downloadAll');
 
     const data = await this.updater.fetchAll();
@@ -169,7 +169,7 @@ export class EIconStore {
     else await this.update();
   }
 
-  protected async update(): Promise<void> {
+  private async update(): Promise<void> {
     log.verbose('eicons.update', { asOf: this.asOfTimestamp });
 
     const changes = await this.updater.fetchUpdates(this.asOfTimestamp);
@@ -201,11 +201,11 @@ export class EIconStore {
     this.shuffle();
   }
 
-  protected addIcons(additions: string[]): void {
+  private addIcons(additions: string[]): void {
     this.lookup.push(...additions.filter(e => !this.lookup.includes(e)));
   }
 
-  protected removeIcons(removals: string[]): void {
+  private removeIcons(removals: string[]): void {
     this.lookup = this.lookup.filter(e => !removals.includes(e));
   }
 
