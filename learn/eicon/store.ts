@@ -27,6 +27,14 @@ async function FisherYatesShuffle(arr: any[]): Promise<void> {
   }
 }
 
+function isArrayOfStrings(subj: any): subj is string[] {
+  return Array.isArray(subj) && subj.every(item => typeof item === 'string');
+}
+
+function isArrayOfObjects(subj: any): subj is object[] {
+  return Array.isArray(subj) && subj.every(item => typeof item === 'object');
+}
+
 export class EIconStore {
   protected lookup: string[] = [];
 
@@ -88,15 +96,18 @@ export class EIconStore {
        * but leave structure-based detection as a backup and for the original.
        */
       if (
-        (data?.version && data.version === 2) ||
-        (Array.isArray(data?.records) && typeof data?.records[0] === 'string')
+        data?.version &&
+        data.version === 2 &&
+        isArrayOfStrings(data.records)
       ) {
-        this.lookup = data?.records;
-      } else if (
-        Array.isArray(data?.records) &&
-        typeof data?.records[0] === 'object'
-      ) {
-        this.lookup = data?.records.map((i: { eicon: string }) => i.eicon);
+        log.debug('eicons.load.v2.explicit');
+        this.lookup = data.records;
+      } else if (isArrayOfStrings(data?.records)) {
+        log.debug('eicons.load.v2.implicit');
+        this.lookup = data.records;
+      } else if (isArrayOfObjects(data?.records)) {
+        log.debug('eicons.load.v1.implicit');
+        this.lookup = data.records.map((i: { eicon: string }) => i.eicon);
       } else this.lookup = [];
 
       this.asOfTimestamp = data?.asOfTimestamp || 0;
