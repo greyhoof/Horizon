@@ -17,6 +17,11 @@ const EICON_PAGE_RESULTS_COUNT = 7 * 7;
  */
 const CURRENT_STORE_VERSION = 2.0;
 
+/**
+ * Frequency to check for updates from the eicon service.
+ */
+const UPDATE_FREQUENCY = 60 * 60 * 1000;
+
 // These funtions are so generic they could be moved to a utils file.
 
 /**
@@ -368,7 +373,7 @@ export class EIconStore {
 
       setInterval(
         () => EIconStore.sharedStore!.checkForUpdates(),
-        60 * 60 * 1000
+        UPDATE_FREQUENCY
       );
     }
 
