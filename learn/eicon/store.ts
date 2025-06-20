@@ -108,7 +108,7 @@ export class EIconStore {
    * error is caught, logged, and ignored.
    */
   private async save(): Promise<void> {
-    if (this.lookup.length) {
+    if (this.lookup.length > 0 && this.asOfTimestamp > 0) {
       log.info('eicons.save', {
         records: this.lookup.length,
         asOfTimestamp: this.asOfTimestamp,
@@ -260,8 +260,8 @@ export class EIconStore {
    * Check for eicon db updates using the most efficient method.
    */
   async checkForUpdates(): Promise<void> {
-    if (this.asOfTimestamp === 0) await this.downloadAll();
-    else await this.update();
+    if (this.lookup.length > 0 && this.asOfTimestamp > 0) await this.update();
+    else await this.downloadAll();
   }
 
   /**
