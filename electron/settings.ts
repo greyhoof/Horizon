@@ -1,10 +1,11 @@
+//For potential git history reasons, this file used to be named "browser_options.ts" prior to f257b4c6a9d6fc06c1a6f7354e38c2dbd7bc69f6
 import * as qs from 'querystring';
 import log from 'electron-log'; //tslint:disable-line:match-default-export-name
 
 import { GeneralSettings } from './common';
-import BrowserOption from './BrowserOption.vue';
+import BrowserOption from './Settings.vue';
 
-log.info('init.browser_option');
+log.info('init.settings');
 
 const params = <{ [key: string]: string | undefined }>(
   qs.parse(window.location.search.substr(1))
@@ -17,11 +18,11 @@ log.transports.file.level = settings.risingSystemLogLevel || logLevel;
 log.transports.console.level = settings.risingSystemLogLevel || logLevel;
 log.transports.file.maxSize = 5 * 1024 * 1024;
 
-log.info('init.browser_option.vue');
+log.info('init.settings.vue');
 
 new BrowserOption({
   el: '#browserOption',
   data: { settings }
 });
 
-log.debug('init.browser_option.vue.done');
+log.debug('init.settings.vue.done');

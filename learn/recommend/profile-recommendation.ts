@@ -97,7 +97,7 @@ export class ProfileRecommendationAnalyzer {
         ProfileRecommendationLevel.CRITICAL,
         'Add a high-quality portrait',
         'Profiles with a high-quality portraits stand out in chats with other Horizon users.',
-        'https://github.com/Fchat-Horizon/Horizon/wiki/High%E2%80%90Quality-Portraits'
+        'https://horizn.moe/docs/guides/colors-and-avatars.html'
       );
     } else if (!ProfileCache.isSafeRisingPortraitURL(profileUrl)) {
       this.add(
@@ -105,7 +105,7 @@ export class ProfileRecommendationAnalyzer {
         ProfileRecommendationLevel.CRITICAL,
         'Unsupported high-quality portrait URL',
         'High-quality portraits can only point to f-list.net, freeimages.host, e621.net, iili.io, imgur.com, imgchest.com, or redgifs.com domains.',
-        'https://github.com/Fchat-Horizon/Horizon/wiki/High%E2%80%90Quality-Portraits'
+        'https://horizn.moe/docs/guides/colors-and-avatars.html'
       );
     }
   }

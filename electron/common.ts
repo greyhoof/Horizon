@@ -41,6 +41,7 @@ export class GeneralSettings {
   risingDisableWindowsHighContrast = false;
   browserPath = '';
   browserArgs = '%s';
+  zoomLevel = 0.0;
 }
 
 // //tslint:disable

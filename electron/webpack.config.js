@@ -80,9 +80,9 @@ const mainConfig = {
         path.join(__dirname, 'window.html'),
         path.join(__dirname, 'build', 'tray@2x.png')
       ],
-      browser_option: [
-        path.join(__dirname, 'browser_option.ts'),
-        path.join(__dirname, 'browser_option.html'),
+      settings: [
+        path.join(__dirname, 'settings.ts'),
+        path.join(__dirname, 'settings.html'),
         path.join(__dirname, 'build', 'tray@2x.png')
       ],
       about: [

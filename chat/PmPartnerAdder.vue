@@ -10,6 +10,7 @@
       <input
         type="text"
         id="name"
+        class="form-control"
         v-model="name"
         placeholder="Name"
         ref="name"
