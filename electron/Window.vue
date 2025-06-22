@@ -138,7 +138,6 @@
   function destroyTab(tab: Tab): void {
     if (tab.user !== undefined)
       electron.ipcRenderer.send('disconnect', tab.user);
-    tab.tray.destroy();
 
     tab.view.webContents.stop();
     tab.view.webContents.stopPainting();
@@ -183,23 +182,11 @@
     user: string | undefined;
     view: Electron.BrowserView;
     hasNew: boolean;
-    tray: Electron.Tray;
     avatarUrl?: string;
   }
 
   // console.log(require('./build/tray.png').default);
 
-  //tslint:disable-next-line:no-require-imports no-unsafe-any
-  const trayIcon = path.join(
-    __dirname,
-    <string>(
-      require(
-        process.platform !== 'darwin'
-          ? './build/tray.png'
-          : './build/trayTemplate.png'
-      ).default
-    )
-  );
   //path.join(__dirname, <string>require('./build/tray.png').default);
 
   @Component
@@ -296,13 +283,11 @@
         (_e: Electron.IpcRendererEvent, id: number, name: string) => {
           const tab = this.tabMap[id];
           tab.user = name;
-          tab.tray.setToolTip(`${l('title')} - ${tab.user}`);
           const menu = this.createTrayMenu(tab);
           menu.unshift(
             { label: tab.user, enabled: false },
             { type: 'separator' }
           );
-          tab.tray.setContextMenu(remote.Menu.buildFromTemplate(menu));
         }
       );
       electron.ipcRenderer.on(
@@ -331,10 +316,6 @@
           }
           tab.user = undefined;
           Vue.set(tab, 'avatarUrl', undefined);
-          tab.tray.setToolTip(l('title'));
-          tab.tray.setContextMenu(
-            remote.Menu.buildFromTemplate(this.createTrayMenu(tab))
-          );
         }
       );
       electron.ipcRenderer.on(
@@ -482,9 +463,6 @@
       log.debug('init.window.tab.add.start');
 
       if (this.lockTab) return;
-      const tray = new remote.Tray(trayIcon);
-      tray.setToolTip(l('title'));
-      tray.on('click', _e => this.trayClicked(tab));
 
       log.debug('init.window.tab.add.tray');
 
@@ -527,10 +505,7 @@
 
       log.debug('init.window.tab.add.notify');
 
-      const tab = { active: false, view, user: undefined, hasNew: false, tray };
-      tray.setContextMenu(
-        remote.Menu.buildFromTemplate(this.createTrayMenu(tab))
-      );
+      const tab = { active: false, view, user: undefined, hasNew: false };
       this.tabs.push(tab);
       this.tabMap[view.webContents.id] = tab;
 
