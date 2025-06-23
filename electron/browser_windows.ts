@@ -301,6 +301,7 @@ export function createAboutWindow(
     center: true,
     resizable: false,
     minimizable: false,
+    useContentSize: process.platform === 'win32',
     alwaysOnTop: true,
     modal: false,
     parent: parentWindow,
