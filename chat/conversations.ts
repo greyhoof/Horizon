@@ -77,6 +77,7 @@ abstract class Conversation implements Interfaces.Conversation {
     public _isPinned: boolean
   ) {
     this.adManager = new AdManager(this);
+    core.cache.conversationDraftCache.loadCache();
   }
 
   get settings(): Interfaces.Settings {
@@ -103,7 +104,10 @@ abstract class Conversation implements Interfaces.Conversation {
   }
 
   clearText(): void {
-    setImmediate(() => (this.enteredText = ''));
+    setImmediate(() => {
+      this.enteredText = '';
+      core.cache.conversationDraftCache.deregister(this.name);
+    });
   }
 
   async send(): Promise<void> {
@@ -245,6 +249,12 @@ class PrivateConversation
       state.pinned.private.indexOf(character.name) !== -1
     );
     this.lastRead = this.messages[this.messages.length - 1];
+
+    // Restore message draft if it exists (e.g. accidentally closing the tab)
+    // TODO: Patching multiple sets here, unlikely both need to be modified.
+    const draft = core.cache.getConversationDraft(this.name);
+    this._enteredText = draft;
+    this.enteredText = draft;
   }
 
   get enteredText(): string {
@@ -258,6 +268,11 @@ class PrivateConversation
       if (this.ownTypingStatus !== 'typing') this.setOwnTyping('typing');
       this.timer = window.setTimeout(() => this.setOwnTyping('paused'), 5000);
     } else if (this.ownTypingStatus !== 'clear') this.setOwnTyping('clear');
+
+    // FIXME: Saving on every edit, consider a slight buffer if non-performant.
+    value
+      ? core.cache.registerConversationDraft(this.name, value)
+      : core.cache.deregisterConversationDraft(this.name);
   }
 
   async addMessage(message: Interfaces.Message): Promise<void> {
@@ -428,6 +443,11 @@ class ChannelConversation
       channel.mode === 'both' && channel.id in state.modes
         ? state.modes[channel.id]!
         : channel.mode;
+
+    // Restore message draft if it exists (e.g. accidentally closing the tab)
+    // TODO: How does this interface with Ad and Chat modes? Should we also save the mode in the cache?
+    const draft = core.cache.getConversationDraft(this.name);
+    this.enteredText = draft;
   }
 
   get maxMessageLength(): number {
@@ -461,6 +481,11 @@ class ChannelConversation
   set enteredText(value: string) {
     if (this.isSendingAds) this.adEnteredText = value;
     else this.chatEnteredText = value;
+
+    // FIXME: Saving on every edit, consider a slight buffer if non-performant.
+    value
+      ? core.cache.registerConversationDraft(this.name, value)
+      : core.cache.deregisterConversationDraft(this.name);
   }
 
   addModeMessage(mode: Channel.Mode, message: Interfaces.Message): void {

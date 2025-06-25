@@ -68,6 +68,14 @@ function getLogFile(this: void, character: string, key: string): string {
   return path.join(getLogDir(character), key);
 }
 
+function getDraftFile(character: string): string {
+  return path.join(
+    core.state.generalSettings!.logDirectory,
+    character,
+    'drafts.txt'
+  );
+}
+
 export function checkIndex(
   this: void,
   index: Index,
@@ -420,4 +428,31 @@ export class SettingsStore implements Settings.Store {
   ): Promise<void> {
     writeFile(path.join(getSettingsDir(), key), JSON.stringify(value));
   }
+}
+
+// TODO: As below, create proper interface for draft loading/unloading
+export function getDrafts(): any {
+  const file = getDraftFile(core.connection.character);
+  if (!fs.existsSync(file)) return null;
+
+  // This is a simple JSON parse in this case, we're much less worried about corruption or serialization issues for drafts.
+  // The file should be quite small, so a full load should be very safe. Potential edge case is where a user maintains thousands of
+  // drafts for some reason, but that could be rectified with some kind of limit or user-controlled setting.
+  const fd = fs.readFileSync(file, 'utf8');
+  try {
+    const drafts = JSON.parse(fd);
+    return drafts;
+  } catch (e) {
+    console.error(`Error encountered when parsing drafts from ${file}: ${e}`);
+    return null;
+  }
+}
+
+// TODO: Create proper K,V for drafts format for reference.
+//tslint:disable-next-line:no-async-without-await
+export async function saveDrafts(drafts: any): Promise<void> {
+  const file = getDraftFile(core.connection.character);
+
+  // FIXME: Currently dangerous (e.g. if clearText() is called in rapid succession, file may still be open)
+  writeFile(file, JSON.stringify(drafts));
 }
