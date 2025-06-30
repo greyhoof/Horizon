@@ -228,7 +228,7 @@ export class ProfileCache extends AsyncCache<CharacterCacheRecord> {
     }
 
     const match = description.match(
-      /\[color=(.*?)]\s*?Horizon\s*?Color\s*?\[\/color]/i
+      /\[color=([a-zA-Z]*?)]\s*?Horizon\s*?Color\s*?\[\/color]/i
     );
 
     if (match && match[1]) {

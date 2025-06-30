@@ -5,13 +5,30 @@ import log from 'electron-log'; //tslint:disable-line:match-default-export-name
 import path from 'path';
 import { GeneralSettings } from './common';
 import { openURLExternally } from './main';
-import { DownloadItem } from 'electron';
+import { app, DownloadItem, IpcMainEvent } from 'electron';
 import { getSafeLanguages, updateSupportedLanguages } from './language';
 import { BlockerIntegration } from './blocker/blocker';
+import l from '../chat/localize';
 //In non-production modes we might want to connect to development servers too.
 //This won't change the amount of allowed connections to the live server.
 const maxTabCount = process.env.NODE_ENV === 'production' ? 3 : 5;
 
+const tabMap: { [key: string]: electron.WebContents } = {};
+
+//Our ID is the Window ID tracked by electron. The boolean dictates whether or not we have new messages on this tab.
+const newMessagesMap: { [id: number]: boolean } = {};
+const trayIcon = path.join(
+  __dirname,
+  <string>(
+    require(
+      process.platform !== 'darwin'
+        ? './build/tray.png'
+        : './build/trayTemplate.png'
+    ).default
+  )
+);
+
+let tray: electron.Tray;
 // tslint:disable-next-line:no-require-imports
 const pngIcon = path.join(
   __dirname,
@@ -24,13 +41,53 @@ const winIcon = path.join(
   <string>require('./build/icon.ico').default
 );
 
+const emptyBadge = electron.nativeImage.createEmpty();
+
+const badge = electron.nativeImage.createFromPath(
+  //tslint:disable-next-line:no-require-imports no-unsafe-any
+  path.join(__dirname, <string>require('./build/badge.png').default)
+);
+
+electron.ipcMain.on('has-new', (e: IpcMainEvent, hasNew: boolean) => {
+  if (process.platform === 'darwin' && app.dock !== undefined)
+    app.dock.setBadge(hasNew ? '!' : '');
+  const window = electron.BrowserWindow.fromWebContents(e.sender);
+  if (window !== undefined && window !== null) {
+    applyOverlayIcon(window, hasNew);
+    newMessagesMap[window.id] = hasNew;
+  }
+});
+
+//We're making this a seperate function now because we'll add more logic to this later
+//We'll want to track the amount of new messages eventually, so it's best to have it point to this specific function
+function applyOverlayIcon(window: electron.BrowserWindow, hasNew: boolean) {
+  window.setOverlayIcon(
+    hasNew ? badge : emptyBadge,
+    hasNew ? 'New messages' : ''
+  );
+}
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 const windows: electron.BrowserWindow[] = [];
 let tabCount = 0;
 
+electron.ipcMain.on(
+  'connect',
+  (e: IpcMainEvent & { sender: electron.WebContents }, character: string) => {
+    if (e.sender) {
+      //browserWindows.tabAddHandler(webContents, settings);
+      tabMap[character] = e.sender;
+      tray.setContextMenu(electron.Menu.buildFromTemplate(createTrayMenu()));
+    }
+  }
+);
+electron.ipcMain.on('disconnect', (_event: IpcMainEvent, character: string) => {
+  delete tabMap[character];
+  tray.setContextMenu(electron.Menu.buildFromTemplate(createTrayMenu()));
+});
 export function openTab(w: electron.BrowserWindow) {
-  if (tabCount <= maxTabCount) w.webContents.send('open-tab');
+  if (tabCount < maxTabCount) w.webContents.send('open-tab');
 }
 
 export function createMainWindow(
@@ -68,6 +125,7 @@ export function createMainWindow(
 
   const window = new electron.BrowserWindow(windowProperties);
 
+  newMessagesMap[window.id] = false;
   remoteMain.enable(window.webContents);
 
   windows.push(window);
@@ -79,6 +137,14 @@ export function createMainWindow(
     all.forEach(item => {
       remoteMain.enable(item);
     });
+  });
+
+  window.on('show', () => {
+    applyOverlayIcon(window, newMessagesMap[window.id]);
+  });
+
+  window.on('closed', () => {
+    delete newMessagesMap[window.id];
   });
 
   updateSupportedLanguages(
@@ -127,7 +193,39 @@ export function createMainWindow(
     if (lastState.maximized) window.maximize();
   });
 
+  //On MacOS, the app menu is not bound to any windows, so some options need to be manually toggled. An app can be "active" without any focused windows.
+  if (process.platform === 'darwin') {
+    window.on('show', () => {
+      toggleWindowSpecificMenuItems(true);
+    });
+    window.on('hide', () => {
+      if (!electron.BrowserWindow.getFocusedWindow()) {
+        toggleWindowSpecificMenuItems(false);
+      }
+    });
+  }
+  if (!tray) {
+    tray = new electron.Tray(trayIcon);
+    tray.setToolTip(l('title'));
+    tray.on('click', _e => tray.popUpContextMenu());
+
+    tray.setContextMenu(electron.Menu.buildFromTemplate(createTrayMenu()));
+    log.debug('init.window.add.tray');
+  }
+
   return window;
+}
+
+function toggleWindowSpecificMenuItems(active: boolean) {
+  let appMenu = app.applicationMenu;
+  if (appMenu) {
+    ['fixLogs', 'showProfile', 'newTab', 'zoomOut', 'zoomIn'].forEach(
+      itemId => {
+        var item = appMenu!.getMenuItemById(itemId);
+        if (item) item.enabled = active;
+      }
+    );
+  }
 }
 export function setUpWebContents(
   webContents: electron.WebContents,
@@ -159,6 +257,28 @@ export function setUpWebContents(
   });
 }
 
+function createTrayMenu(): electron.MenuItemConstructorOptions[] {
+  const tabItems: electron.MenuItemConstructorOptions[] = Object.entries(
+    tabMap
+  ).map(([tabId, webContents]) => ({
+    label: tabId,
+    click: () => {
+      // Example: focus this tab, or any action you want
+      windows.forEach(winow => {
+        winow.webContents.focus();
+        winow.show();
+        winow.webContents.send('show-tab', webContents.id);
+      });
+      webContents.focus();
+    }
+  }));
+  return [
+    { label: l('title'), enabled: false },
+    ...tabItems,
+    { label: l('action.quit'), click: () => electron.app.quit() }
+  ];
+}
+
 export function setSpellCheckerLanguages(langs: string[]): void {
   for (const w of windows) {
     // console.log('LANG SEND');
@@ -178,6 +298,10 @@ export function updateZoomLevel(zoomLevel: number) {
 
 export function quitAllWindows() {
   for (const w of windows) w.webContents.send('quit');
+}
+
+export function showAllWindows() {
+  for (const w of windows) w.show();
 }
 
 export function toggleUpdateNotice(updateAvailable: boolean) {
@@ -245,6 +369,7 @@ export function createAboutWindow(
     center: true,
     resizable: false,
     minimizable: false,
+    useContentSize: process.platform === 'win32',
     alwaysOnTop: true,
     modal: false,
     parent: parentWindow,
@@ -293,7 +418,7 @@ export function tabAddHandler(
 ) {
   setUpWebContents(webContents, settings);
   ++tabCount;
-  if (tabCount === maxTabCount) {
+  if (tabCount >= maxTabCount) {
     for (const w of windows) {
       w.webContents.send('allow-new-tabs', false);
     }
@@ -302,5 +427,6 @@ export function tabAddHandler(
 
 export function tabClosedHandler() {
   --tabCount;
-  for (const w of windows) w.webContents.send('allow-new-tabs', true);
+  if (tabCount < maxTabCount)
+    for (const w of windows) w.webContents.send('allow-new-tabs', true);
 }
