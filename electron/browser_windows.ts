@@ -58,7 +58,7 @@ electron.ipcMain.on('disconnect', (_event: IpcMainEvent, character: string) => {
   tray.setContextMenu(electron.Menu.buildFromTemplate(createTrayMenu()));
 });
 export function openTab(w: electron.BrowserWindow) {
-  if (tabCount <= maxTabCount) w.webContents.send('open-tab');
+  if (tabCount < maxTabCount) w.webContents.send('open-tab');
 }
 
 export function createMainWindow(
@@ -350,7 +350,7 @@ export function tabAddHandler(
 ) {
   setUpWebContents(webContents, settings);
   ++tabCount;
-  if (tabCount === maxTabCount) {
+  if (tabCount >= maxTabCount) {
     for (const w of windows) {
       w.webContents.send('allow-new-tabs', false);
     }
@@ -359,5 +359,6 @@ export function tabAddHandler(
 
 export function tabClosedHandler() {
   --tabCount;
-  for (const w of windows) w.webContents.send('allow-new-tabs', true);
+  if (tabCount < maxTabCount)
+    for (const w of windows) w.webContents.send('allow-new-tabs', true);
 }
