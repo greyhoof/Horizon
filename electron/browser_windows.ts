@@ -192,6 +192,18 @@ export function createMainWindow(
     window.show();
     if (lastState.maximized) window.maximize();
   });
+
+  //On MacOS, the app menu is not bound to any windows, so some options need to be manually toggled. An app can be "active" without any focused windows.
+  if (process.platform === 'darwin') {
+    window.on('show', () => {
+      toggleWindowSpecificMenuItems(true);
+    });
+    window.on('hide', () => {
+      if (!electron.BrowserWindow.getFocusedWindow()) {
+        toggleWindowSpecificMenuItems(false);
+      }
+    });
+  }
   if (!tray) {
     tray = new electron.Tray(trayIcon);
     tray.setToolTip(l('title'));
@@ -202,6 +214,18 @@ export function createMainWindow(
   }
 
   return window;
+}
+
+function toggleWindowSpecificMenuItems(active: boolean) {
+  let appMenu = app.applicationMenu;
+  if (appMenu) {
+    ['fixLogs', 'showProfile', 'newTab', 'zoomOut', 'zoomIn'].forEach(
+      itemId => {
+        var item = appMenu!.getMenuItemById(itemId);
+        if (item) item.enabled = active;
+      }
+    );
+  }
 }
 export function setUpWebContents(
   webContents: electron.WebContents,
@@ -274,6 +298,10 @@ export function updateZoomLevel(zoomLevel: number) {
 
 export function quitAllWindows() {
   for (const w of windows) w.webContents.send('quit');
+}
+
+export function showAllWindows() {
+  for (const w of windows) w.show();
 }
 
 export function toggleUpdateNotice(updateAvailable: boolean) {
