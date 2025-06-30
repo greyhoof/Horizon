@@ -562,25 +562,6 @@ function onReady(): void {
     adCoordinator.processAdRequest(event, adId)
   );
 
-  const emptyBadge = electron.nativeImage.createEmpty();
-
-  const badge = electron.nativeImage.createFromPath(
-    //tslint:disable-next-line:no-require-imports no-unsafe-any
-    path.join(__dirname, <string>require('./build/badge.png').default)
-  );
-
-  electron.ipcMain.on('has-new', (e: IpcMainEvent, hasNew: boolean) => {
-    if (process.platform === 'darwin' && app.dock !== undefined)
-      app.dock.setBadge(hasNew ? '!' : '');
-    const window = electron.BrowserWindow.fromWebContents(e.sender);
-    if (window !== undefined && window !== null) {
-      window.setOverlayIcon(
-        hasNew ? badge : emptyBadge,
-        hasNew ? 'New messages' : ''
-      );
-    }
-  });
-
   electron.ipcMain.on('rising-upgrade-complete', () => {
     // console.log('RISING COMPLETE SHARE');
     hasCompletedUpgrades = true;

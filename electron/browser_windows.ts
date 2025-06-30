@@ -5,7 +5,7 @@ import log from 'electron-log'; //tslint:disable-line:match-default-export-name
 import path from 'path';
 import { GeneralSettings } from './common';
 import { openURLExternally } from './main';
-import { DownloadItem, IpcMainEvent } from 'electron';
+import { app, DownloadItem, IpcMainEvent } from 'electron';
 import { getSafeLanguages, updateSupportedLanguages } from './language';
 import { BlockerIntegration } from './blocker/blocker';
 import l from '../chat/localize';
@@ -14,6 +14,9 @@ import l from '../chat/localize';
 const maxTabCount = process.env.NODE_ENV === 'production' ? 3 : 5;
 
 const tabMap: { [key: string]: electron.WebContents } = {};
+
+//Our ID is the Window ID tracked by electron. The boolean dictates whether or not we have new messages on this tab.
+const newMessagesMap: { [id: number]: boolean } = {};
 const trayIcon = path.join(
   __dirname,
   <string>(
@@ -37,6 +40,32 @@ const winIcon = path.join(
   __dirname,
   <string>require('./build/icon.ico').default
 );
+
+const emptyBadge = electron.nativeImage.createEmpty();
+
+const badge = electron.nativeImage.createFromPath(
+  //tslint:disable-next-line:no-require-imports no-unsafe-any
+  path.join(__dirname, <string>require('./build/badge.png').default)
+);
+
+electron.ipcMain.on('has-new', (e: IpcMainEvent, hasNew: boolean) => {
+  if (process.platform === 'darwin' && app.dock !== undefined)
+    app.dock.setBadge(hasNew ? '!' : '');
+  const window = electron.BrowserWindow.fromWebContents(e.sender);
+  if (window !== undefined && window !== null) {
+    applyOverlayIcon(window, hasNew);
+    newMessagesMap[window.id] = hasNew;
+  }
+});
+
+//We're making this a seperate function now because we'll add more logic to this later
+//We'll want to track the amount of new messages eventually, so it's best to have it point to this specific function
+function applyOverlayIcon(window: electron.BrowserWindow, hasNew: boolean) {
+  window.setOverlayIcon(
+    hasNew ? badge : emptyBadge,
+    hasNew ? 'New messages' : ''
+  );
+}
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -96,6 +125,7 @@ export function createMainWindow(
 
   const window = new electron.BrowserWindow(windowProperties);
 
+  newMessagesMap[window.id] = false;
   remoteMain.enable(window.webContents);
 
   windows.push(window);
@@ -107,6 +137,14 @@ export function createMainWindow(
     all.forEach(item => {
       remoteMain.enable(item);
     });
+  });
+
+  window.on('show', () => {
+    applyOverlayIcon(window, newMessagesMap[window.id]);
+  });
+
+  window.on('closed', () => {
+    delete newMessagesMap[window.id];
   });
 
   updateSupportedLanguages(
