@@ -192,12 +192,14 @@ export function createMainWindow(
     window.show();
     if (lastState.maximized) window.maximize();
   });
-  tray = new electron.Tray(trayIcon);
-  tray.setToolTip(l('title'));
-  tray.on('click', _e => tray.popUpContextMenu());
+  if (!tray) {
+    tray = new electron.Tray(trayIcon);
+    tray.setToolTip(l('title'));
+    tray.on('click', _e => tray.popUpContextMenu());
 
-  tray.setContextMenu(electron.Menu.buildFromTemplate(createTrayMenu()));
-  log.debug('init.window.add.tray');
+    tray.setContextMenu(electron.Menu.buildFromTemplate(createTrayMenu()));
+    log.debug('init.window.add.tray');
+  }
 
   return window;
 }
