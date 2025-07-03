@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 # [Releases]
 
-## [1.32.2-beta1] - 2025-06-30
+## [1.32.2] - 2025-07-05
 
 > [!IMPORTANT]
 > We are hard at work updating Horizon to use Vue 3 instead of Vue 2, [which should have been done well during Rising's lifespan](https://blog.vuejs.org/posts/vue-2-eol).
