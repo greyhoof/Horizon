@@ -5,15 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html). You can also read it on our [website](https://fchat-horizon.github.io/docs/changelog.html).
 
-# [Development]
+# [Releases]
 
 ## [1.32.2-beta1] - 2025-06-30
-
-> [!WARNING]
-> Heed this warning.
-> Beta builds **may** have unfound bugs, some of which may be fatal to your data— including chat logs.
->
-> If you haven't already, you should make a good habit of backing up your logs.
 
 > [!IMPORTANT]
 > We are hard at work updating Horizon to use Vue 3 instead of Vue 2, [which should have been done well during Rising's lifespan](https://blog.vuejs.org/posts/vue-2-eol).
@@ -23,7 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Fixed issues where the eicon picker's cache would get corrupted during a botched upgrade to any 1.32.X version from an earlier version. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/9a114a16c688961fa25d9bf90e9b8dd47c1de756)
+  - This will also make sure that any `eicons.json` files that have already been broken because of this issue are automatically fixed.
 - Fixes some cases where custom name colors wouldn't be applied even though the BBCode formatting was valid. This mostly happened if you had the `[color]` tag inside or right next to another one. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/831ffbc838e5adf656457daa8e2524929086b24f)
+- Fixes the external browser setting no longer working in the new settings menu. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/b9b0adf0a75ab07a33cfa4d64eb63569508228f1)
 - Fixes some instances where using the wrong capitalisation with an `[icon]` tag would link to an improperly capitalised profile preview. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/93247fd76b134162ae92e6ef450b6756b82b0f7c)
 - Fixes the 'About Horizon' window being cut off on Windows. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/6020e542358c465343bd21d7caeffcac9806aa8b)
 - Fixes the badge on the taskbar icon disappearing if you close a window and reopen it through the tray icon. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/2d8ab92f5497c3cf490dc4247caa926b2174f6e8)
@@ -32,7 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- System broadcasts are now thrown into the console tab instead of pinging and notifying you for every single conversation you are in. The console tab glows just like you were pinged if there is an announcement. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/37a54fe06c4e1dfc876bc6b3004ad27cd2403512)
+- System broadcasts are now thrown into the console tab instead of pinging and notifying you for every single conversation you are in. The console tab glows just like if you were pinged when there is an announcement. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/37a54fe06c4e1dfc876bc6b3004ad27cd2403512)
 - If "Close to system tray" is enabled, you now get only one tray icon that lets you open any tab, instead of one tray icon per tab. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/0176a37f3ae59a083a7a901b31b785e29aff0d70)
 
 ### Development
@@ -46,8 +42,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - #228 by @FatCatClient
 - #233 by @FatCatClient
 - #241 by @FireUnderTheMountain
-
-# [Releases]
 
 ## [1.32.1] - 2025-06-21
 
