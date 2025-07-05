@@ -276,6 +276,35 @@
         </label>
       </div>
 
+      <h5>Draft Messages</h5>
+
+      <div class="form-group">
+        <label class="control-label" for="horizonCacheDraftMessages">
+          <input
+            type="checkbox"
+            id="horizonCacheDraftMessages"
+            v-model="horizonCacheDraftMessages"
+          />
+          Automatically save and restore in-progress messages while using
+          Horizon (change requires new tab)
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label" for="horizonSaveDraftMessagesToDiskTimer"
+          >How often to backup save in-progress messages to disk (seconds,
+          minimum 5, change requires new tab)</label
+        >
+        <input
+          id="horizonSaveDraftMessagesToDiskTimer"
+          type="number"
+          class="form-control"
+          v-model="horizonSaveDraftMessagesToDiskTimer"
+          placeholder="60"
+          min="5"
+        />
+      </div>
+
       <h5>Misc</h5>
 
       <div class="form-group">
@@ -725,6 +754,9 @@
     horizonChangeOfflineColor!: boolean;
     horizonNotifyFriendSignIn!: boolean;
 
+    horizonCacheDraftMessages!: boolean;
+    horizonSaveDraftMessagesToDiskTimer!: string;
+
     risingFilter!: SmartFilterSettings = {} as any;
 
     risingAvailableThemes!: ReadonlyArray<string> = [];
@@ -781,6 +813,10 @@
       this.horizonGenderMarkerOrigColor = settings.horizonGenderMarkerOrigColor;
       this.horizonChangeOfflineColor = settings.horizonChangeOfflineColor;
 
+      this.horizonCacheDraftMessages = settings.horizonCacheDraftMessages;
+      this.horizonSaveDraftMessagesToDiskTimer =
+        settings.horizonSaveDraftMessagesToDiskTimer.toString();
+
       this.horizonNotifyFriendSignIn = settings.horizonNotifyFriendSignIn;
       this.risingFilter = settings.risingFilter;
 
@@ -830,6 +866,10 @@
 
       const minAge = this.getAsNumber(this.risingFilter.minAge);
       const maxAge = this.getAsNumber(this.risingFilter.maxAge);
+
+      const diskDraftTimer = this.getAsNumber(
+        this.horizonSaveDraftMessagesToDiskTimer
+      );
 
       core.state.settings = {
         playSound: this.playSound,
@@ -888,6 +928,14 @@
         horizonGenderMarkerOrigColor: this.horizonGenderMarkerOrigColor,
         horizonChangeOfflineColor: this.horizonChangeOfflineColor,
         horizonNotifyFriendSignIn: this.horizonNotifyFriendSignIn,
+
+        horizonCacheDraftMessages: this.horizonCacheDraftMessages,
+        horizonSaveDraftMessagesToDiskTimer:
+          diskDraftTimer === null
+            ? 60
+            : diskDraftTimer > 5
+              ? diskDraftTimer
+              : 5,
 
         risingColorblindMode: this.risingColorblindMode,
         risingFilter: {
