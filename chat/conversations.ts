@@ -982,7 +982,7 @@ function initConversationCache(this: Conversation): void {
       this.enteredText
         ? core.cache.registerConversationDraft(this.name, this.enteredText)
         : core.cache.deregisterConversationDraft(this.name);
-    }, 5000);
+    }, 2500);
   }
 }
 
