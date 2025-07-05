@@ -976,9 +976,6 @@ function initConversationCache(this: Conversation): void {
   const draft = core.cache.getConversationDraft(this.name);
   this.enteredText = draft;
 
-  // Save the draft every 5 seconds
-  // TODO: Make this a user-controlled setting
-  // TODO: Test this.
   if (!this.cacheActive) {
     this.cacheActive = true;
     this.cacheInterval = setInterval(() => {
