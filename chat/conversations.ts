@@ -69,6 +69,8 @@ abstract class Conversation implements Interfaces.Conversation {
   private lastSent = '';
   // private loadedMore = false;
   adManager: AdManager;
+  cacheActive = false;
+  protected cacheInterval: NodeJS.Timer | undefined;
 
   public static readonly conversationThroat = throat(1); // make sure user posting and ad posting won't get in each others' way
 
@@ -250,11 +252,8 @@ class PrivateConversation
     );
     this.lastRead = this.messages[this.messages.length - 1];
 
-    // Restore message draft if it exists (e.g. accidentally closing the tab)
-    // TODO: Patching multiple sets here, unlikely both need to be modified.
-    const draft = core.cache.getConversationDraft(this.name);
-    this._enteredText = draft;
-    this.enteredText = draft;
+    // I think this is the first time I've had a use for bind/apply/call since 2015.
+    initConversationCache.call(this);
   }
 
   get enteredText(): string {
@@ -268,11 +267,6 @@ class PrivateConversation
       if (this.ownTypingStatus !== 'typing') this.setOwnTyping('typing');
       this.timer = window.setTimeout(() => this.setOwnTyping('paused'), 5000);
     } else if (this.ownTypingStatus !== 'clear') this.setOwnTyping('clear');
-
-    // FIXME: Saving on every edit, consider a slight buffer if non-performant.
-    value
-      ? core.cache.registerConversationDraft(this.name, value)
-      : core.cache.deregisterConversationDraft(this.name);
   }
 
   async addMessage(message: Interfaces.Message): Promise<void> {
@@ -309,6 +303,7 @@ class PrivateConversation
     delete state.privateMap[this.character.name.toLowerCase()];
     await state.savePinned();
     if (state.selectedConversation === this) state.show(state.consoleTab);
+    clearInterval(this.cacheInterval);
   }
 
   async sort(newIndex: number): Promise<void> {
@@ -444,10 +439,7 @@ class ChannelConversation
         ? state.modes[channel.id]!
         : channel.mode;
 
-    // Restore message draft if it exists (e.g. accidentally closing the tab)
-    // TODO: How does this interface with Ad and Chat modes? Should we also save the mode in the cache?
-    const draft = core.cache.getConversationDraft(this.name);
-    this.enteredText = draft;
+    initConversationCache.call(this);
   }
 
   get maxMessageLength(): number {
@@ -481,11 +473,6 @@ class ChannelConversation
   set enteredText(value: string) {
     if (this.isSendingAds) this.adEnteredText = value;
     else this.chatEnteredText = value;
-
-    // FIXME: Saving on every edit, consider a slight buffer if non-performant.
-    value
-      ? core.cache.registerConversationDraft(this.name, value)
-      : core.cache.deregisterConversationDraft(this.name);
   }
 
   addModeMessage(mode: Channel.Mode, message: Interfaces.Message): void {
@@ -549,6 +536,7 @@ class ChannelConversation
 
   close(): void {
     core.connection.send('LCH', { channel: this.channel.id });
+    clearInterval(this.cacheInterval);
   }
 
   async sort(newIndex: number): Promise<void> {
@@ -679,10 +667,13 @@ class ConsoleConversation extends Conversation {
   constructor() {
     super('_', false);
     this.allMessages = [];
+
+    initConversationCache.call(this);
   }
 
-  //tslint:disable-next-line:no-empty
-  close(): void {}
+  close(): void {
+    clearInterval(this.cacheInterval);
+  }
 
   async addMessage(message: Interfaces.Message): Promise<void> {
     this.safeAddMessage(message);
@@ -978,6 +969,24 @@ async function testSmartFilterForChannel(
   }
 
   return false;
+}
+
+function initConversationCache(this: Conversation): void {
+  // Restore message draft if it exists (e.g. accidentally closing the tab)
+  const draft = core.cache.getConversationDraft(this.name);
+  this.enteredText = draft;
+
+  // Save the draft every 5 seconds
+  // TODO: Make this a user-controlled setting
+  // TODO: Test this.
+  if (!this.cacheActive) {
+    this.cacheActive = true;
+    this.cacheInterval = setInterval(() => {
+      this.enteredText
+        ? core.cache.registerConversationDraft(this.name, this.enteredText)
+        : core.cache.deregisterConversationDraft(this.name);
+    }, 5000);
+  }
 }
 
 export default function (this: any): Interfaces.State {

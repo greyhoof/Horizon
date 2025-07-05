@@ -25,7 +25,6 @@ export class ConversationDraftCache extends Cache<ConversationDraftRecord> {
   loadCache(): void {
     if (!core.connection.character || this.cacheAlreadyLoaded) return;
 
-    log.info('Attempting to load drafts');
     const drafts = getDrafts();
     this.cache = drafts || {};
     log.info('Drafts loaded, if any');
@@ -48,10 +47,6 @@ export class ConversationDraftCache extends Cache<ConversationDraftRecord> {
     const k = Cache.nameKey(channel);
 
     delete this.cache[k];
-
-    // TODO: Right now this also runs if people dump their message box (e.g. Ctrl-X to hold a message).
-    // Intent is just to run on message send, maybe just reveal a method for that? deregisterAndClear?
-    // Otherwise, it just leaves empty objects in the disk file for every char/channel they interact with, which is ugly.
     this.saveCacheToDisk();
   }
 

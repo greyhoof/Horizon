@@ -430,7 +430,6 @@ export class SettingsStore implements Settings.Store {
   }
 }
 
-// TODO: As below, create proper interface for draft loading/unloading
 export function getDrafts(): any {
   const file = getDraftFile(core.connection.character);
   if (!fs.existsSync(file)) return null;
@@ -448,11 +447,12 @@ export function getDrafts(): any {
   }
 }
 
-// TODO: Create proper K,V for drafts format for reference.
 //tslint:disable-next-line:no-async-without-await
 export async function saveDrafts(drafts: any): Promise<void> {
   const file = getDraftFile(core.connection.character);
 
-  // FIXME: Currently dangerous (e.g. if clearText() is called in rapid succession, file may still be open)
+  // Note: this is actually a wrapper around fs.writeFileSync, NOT the async method. If we get blocked loop, suspect this line.
+  // This function is cargo-culted from SettingsStore at the moment to maintain uniform behavior. TBH we're likely not
+  // concerned with any data loss here, consider async to prevent random freezes if the application locks up during normal use.
   writeFile(file, JSON.stringify(drafts));
 }
