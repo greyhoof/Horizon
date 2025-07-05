@@ -7,8 +7,10 @@ node_modules/
 /electron/adblocker.bin
 electron/release_artifacts/**
 .idea/
+.husky/**
 
-
+.prettierignore
+.gitignore
 .DS_Store
 
 

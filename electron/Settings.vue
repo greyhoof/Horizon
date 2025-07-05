@@ -196,7 +196,7 @@
                           class="btn btn-outline-secondary"
                           @click="browseForLogDir()"
                         >
-                          <span class="far fa-folder-open"></span>
+                          <span class="far fa-fw fa-folder-open"></span>
                         </button>
                       </div></div
                   ></label>
@@ -306,7 +306,7 @@
                     <input
                       class="form-control"
                       id="browserPath"
-                      v-model="browserPath"
+                      v-model="settings.browserPath"
                     />
 
                     <div class="input-group-append">
@@ -314,7 +314,15 @@
                         class="btn btn-outline-secondary"
                         @click.prevent.stop="browseForPath()"
                       >
-                        <span class="far fa-folder-open"></span>
+                        <span class="far fa-fw fa-folder-open"></span>
+                      </button>
+                      <button
+                        class="btn btn-outline-danger"
+                        @click.prevent.stop="browserReset()"
+                      >
+                        <span
+                          class="fa-solid fa-fw fa-arrow-rotate-right"
+                        ></span>
                       </button>
                     </div></div
                 ></label>
@@ -325,7 +333,7 @@
                     <input
                       class="form-control"
                       id="browserArgs"
-                      v-model="browserArgs"
+                      v-model="settings.browserArgs"
                     />
                   </div>
                   <small class="form-text text-muted">{{
@@ -489,14 +497,14 @@
       this.close();
     }
 
-    resetToDefault(): void {
-      this.browserPath = '';
-      this.browserArgs = '';
+    browserReset(): void {
+      this.settings.browserPath = '';
+      this.settings.browserArgs = '%s';
     }
 
     browseForPath(): void {
       ipcRenderer.invoke('browser-option-browse').then(result => {
-        this.browserPath = result;
+        this.settings.browserPath = result;
       });
     }
 
