@@ -81,7 +81,7 @@
   },
   "devDependencies": {
     "commander": "^13.1.0",
-    "electron": "35.2.0",
+    "electron": "37.2.0",
     "electron-builder": "^25.1.8"
   },
   "pnpm": {

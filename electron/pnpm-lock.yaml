@@ -11,8 +11,8 @@ importers:
         specifier: ^13.1.0
         version: 13.1.0
       electron:
-        specifier: 35.2.0
-        version: 35.2.0
+        specifier: 37.2.0
+        version: 37.2.0
       electron-builder:
         specifier: ^25.1.8
         version: 25.1.8(electron-builder-squirrel-windows@25.1.8)
@@ -180,12 +180,6 @@ packages:
     resolution:
       {
         integrity: sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==
-      }
-
-  '@types/node@18.19.80':
-    resolution:
-      {
-        integrity: sha512-kEWeMwMeIvxYkeg1gTc01awpwLbfMRZXdIhwRcakd/KlK53jmRC26LqcbIt7fnAQTu5GzlnWmzA3H6+l1u6xxQ==
       }
 
   '@types/node@22.14.1':
@@ -842,12 +836,9 @@ packages:
         integrity: sha512-+jbTkR9m39eDBMP4gfbqglDd6UvBC7RLh5Y0MhFSsc6UkGHj9Vj9TWobxevHYMMqmoujL11ZLjfPpMX+Pt6YEg==
       }
 
-  electron@35.2.0:
-    resolution:
-      {
-        integrity: sha512-GHda7oCkN0pA23qzah735DEbRa06IPwlzP3uvjAmf9af8gxdj5i93JEHeQVGVmSVpd7sSb1pfecs9nz7B1q5ag==
-      }
-    engines: { node: '>= 12.20.55' }
+  electron@37.2.0:
+    resolution: {integrity: sha512-dE6+qeg6SBUVd5d8CD2+GH82kh+gF1v40+hs+U+UOno681NMSGmBtgqwldQRpbvtnQDD7V2M9Cpfr3+Abw7aBg==}
+    engines: {node: '>= 12.20.55'}
     hasBin: true
 
   emoji-regex@8.0.0:
@@ -2240,12 +2231,6 @@ packages:
     engines: { node: '>=14.17' }
     hasBin: true
 
-  undici-types@5.26.5:
-    resolution:
-      {
-        integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==
-      }
-
   undici-types@6.21.0:
     resolution:
       {
@@ -2527,7 +2512,7 @@ snapshots:
     dependencies:
       '@types/http-cache-semantics': 4.0.4
       '@types/keyv': 3.1.4
-      '@types/node': 18.19.80
+      '@types/node': 22.14.1
       '@types/responselike': 1.0.3
 
   '@types/debug@4.1.12':
@@ -2536,19 +2521,15 @@ snapshots:
 
   '@types/fs-extra@9.0.13':
     dependencies:
-      '@types/node': 18.19.80
+      '@types/node': 22.14.1
 
   '@types/http-cache-semantics@4.0.4': {}
 
   '@types/keyv@3.1.4':
     dependencies:
-      '@types/node': 18.19.80
+      '@types/node': 22.14.1
 
   '@types/ms@2.1.0': {}
-
-  '@types/node@18.19.80':
-    dependencies:
-      undici-types: 5.26.5
 
   '@types/node@22.14.1':
     dependencies:
@@ -2556,13 +2537,13 @@ snapshots:
 
   '@types/plist@3.0.5':
     dependencies:
-      '@types/node': 18.19.80
+      '@types/node': 22.14.1
       xmlbuilder: 15.1.1
     optional: true
 
   '@types/responselike@1.0.3':
     dependencies:
-      '@types/node': 18.19.80
+      '@types/node': 22.14.1
 
   '@types/verror@1.10.11':
     optional: true
@@ -3041,7 +3022,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  electron@35.2.0:
+  electron@37.2.0:
     dependencies:
       '@electron/get': 2.0.3
       '@types/node': 22.14.1
@@ -3877,8 +3858,6 @@ snapshots:
     optional: true
 
   typescript@5.8.2: {}
-
-  undici-types@5.26.5: {}
 
   undici-types@6.21.0: {}
 
