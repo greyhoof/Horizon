@@ -504,9 +504,30 @@ function onReady(): void {
                 : 'developmentVersion',
               process.env.APP_VERSION || app.getVersion()
             ),
-            click: showCurrentPatchNotes
+            click: (
+              _m: electron.MenuItem,
+              w: electron.BrowserWindow,
+              _e: KeyboardEvent
+            ) => {
+              browserWindows.createChangelogWindow(settings, false, w);
+            }
+          },
+          {
+            label: 'test update menu',
+            click: (
+              _m: electron.MenuItem,
+              w: electron.BrowserWindow,
+              _e: KeyboardEvent
+            ) => {
+              browserWindows.createChangelogWindow(
+                settings,
+                false,
+                w,
+                'v1.32.1'
+              );
+            }
           }
-        ]
+        ] as MenuItemConstructorOptions[]
       }
     ])
   );

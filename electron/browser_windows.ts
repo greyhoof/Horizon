@@ -360,6 +360,59 @@ export function createBrowserSettings(
   return browserWindow;
 }
 
+export function createChangelogWindow(
+  settings: GeneralSettings,
+  shouldImportSettings: boolean,
+  parentWindow: electron.BrowserWindow,
+  updateVer?: string
+): electron.BrowserWindow | undefined {
+  let desiredHeight = 700;
+  let desiredWidth = 600;
+
+  const windowProperties: electron.BrowserWindowConstructorOptions = {
+    center: true,
+    show: false,
+    icon: process.platform === 'win32' ? winIcon : pngIcon,
+    frame: false,
+    width: desiredWidth,
+    minWidth: desiredWidth,
+    height: desiredHeight,
+    minHeight: desiredHeight,
+    resizable: true,
+    modal: true,
+    parent: parentWindow,
+    maximizable: false,
+    webPreferences: {
+      webviewTag: true,
+      nodeIntegration: true,
+      nodeIntegrationInWorker: true,
+      spellcheck: true,
+      enableRemoteModule: true,
+      contextIsolation: false,
+      partition: 'persist:fchat'
+    } as any
+  };
+
+  if (process.platform === 'darwin') {
+    windowProperties.titleBarStyle = 'hiddenInset';
+  }
+  const browserWindow = new electron.BrowserWindow(windowProperties);
+  remoteMain.enable(browserWindow.webContents);
+  browserWindow.loadFile(path.join(__dirname, 'changelog.html'), {
+    query: {
+      settings: JSON.stringify(settings),
+      import: shouldImportSettings ? 'true' : '',
+      updateVer: updateVer ? updateVer : ''
+    }
+  });
+
+  browserWindow.once('ready-to-show', () => {
+    browserWindow.show();
+  });
+
+  return browserWindow;
+}
+
 export function createAboutWindow(
   parentWindow: electron.BrowserWindow
 ): electron.BrowserWindow {

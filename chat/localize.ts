@@ -542,6 +542,9 @@ Once this process has started, do not interrupt it or your logs will get corrupt
   'status.idle': 'Idle',
   'status.offline': 'Offline',
   'status.crown': 'Rewarded',
+  'changelog.version': 'Changelog for version {0}',
+  'changelog.quitAndDownload': 'Quit and download',
+  'changelog.download': 'Download',
   'importer.importGeneral':
     'slimCat data has been detected on your computer.\nWould you like to import general settings?',
   'importer.importCharacter': `slimCat data for this character has been detected on your computer.
