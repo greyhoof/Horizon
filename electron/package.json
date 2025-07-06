@@ -60,7 +60,8 @@
     "linux": {
       "icon": "build/icon.png",
       "category": "Network",
-      "maintainer": "The F-List Team"
+      "maintainer": "The Horizon Maintainers",
+      "desktop": "build/horizon.desktop"
     }
   },
   "scripts": {
