@@ -542,6 +542,31 @@ function onReady(): void {
   electron.ipcMain.on('tab-closed', () => {
     browserWindows.tabClosedHandler();
   });
+
+  electron.ipcMain.on(
+    'update-and-exit',
+    (_event: IpcMainEvent, updateVersion: string) => {
+      if (characters.length > 0) {
+        const button = electron.dialog.showMessageBoxSync(
+          //Yes this could technically fail if this event is ever emitted from something that's not a user interaction.
+          electron.BrowserWindow.getFocusedWindow()!,
+          {
+            message: l('changelog.quitAndDownload.confirm'),
+            title: l('title'),
+            buttons: [l('confirmYes'), l('confirmNo')],
+            cancelId: 1
+          }
+        );
+        if (button !== 0) return;
+      }
+      openURLExternally(
+        'https://horizn.moe/download.html?ver=' + updateVersion
+      );
+      browserWindows.quitAllWindows();
+      app.quit();
+    }
+  );
+
   electron.ipcMain.on(
     'save-login',
     (_event: IpcMainEvent, account: string, host: string, proxy: string) => {

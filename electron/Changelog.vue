@@ -46,7 +46,7 @@
                 v-if="updateVersion"
                 type="button"
                 class="btn btn-secondary"
-                @click.stop="close()"
+                @click.stop="goToDownload()"
               >
                 {{ l('changelog.download') }}
               </button>
@@ -55,7 +55,7 @@
                 v-if="updateVersion"
                 type="button"
                 class="btn btn-primary"
-                @click.stop="submit()"
+                @click.stop="closeAndDownload()"
               >
                 {{ l('changelog.quitAndDownload') }}
               </button>
@@ -197,8 +197,14 @@
       }
     }
 
-    submit(): void {
-      this.close();
+    goToDownload() {
+      this.externalUrlHandler(
+        'https://horizn.moe/download.html?ver=' + this.updateVersion
+      );
+    }
+
+    closeAndDownload(): void {
+      electron.ipcRenderer.send('update-and-exit', this.updateVersion);
     }
   }
 </script>

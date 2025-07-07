@@ -544,6 +544,8 @@ Once this process has started, do not interrupt it or your logs will get corrupt
   'status.crown': 'Rewarded',
   'changelog.version': 'Changelog for version {0}',
   'changelog.quitAndDownload': 'Quit and download',
+  'changelog.quitAndDownload.confirm':
+    'You are still connected to chat. \nAre you sure you want to exit and download the update right now?',
   'changelog.download': 'Download',
   'importer.importGeneral':
     'slimCat data has been detected on your computer.\nWould you like to import general settings?',
