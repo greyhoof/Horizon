@@ -79,14 +79,6 @@ export class CoreBBCodeParser extends BBCodeParser {
       new BBCodeSimpleTag('sub', 'sub', [], ['b', 'i', 'u', 's', 'color'])
     );
     this.addTag(
-      new BBCodeSimpleTag(
-        'big',
-        'span',
-        ['bigText'],
-        ['b', 'i', 'u', 's', 'color']
-      )
-    );
-    this.addTag(
       new BBCodeSimpleTag('sup', 'sup', [], ['b', 'i', 'u', 's', 'color'])
     );
     this.addTag(
