@@ -12,9 +12,10 @@
           <div class="modal-header">
             <h4 class="modal-title" style="-webkit-app-region: drag">
               {{
-                updateVersion
-                  ? l('changelog.version', updateVersion)
-                  : l('help.changelog')
+                l(
+                  'changelog.version',
+                  updateVersion ? updateVersion : currentVersion
+                )
               }}
             </h4>
             <button
@@ -29,8 +30,11 @@
             </button>
           </div>
           <div class="modal-body">
+            <div v-if="updateVersion" class="version-compare">
+              {{ l('changelog.compare', updateVersion, currentVersion) }}
+            </div>
             <div
-              class="logs-container"
+              class="logs-container bg-light"
               v-html="changeLogText"
               ref="mdContainer"
             ></div>
@@ -94,6 +98,7 @@
   export default class Changelog extends Vue {
     settings!: GeneralSettings;
     updateVersion!: string | undefined;
+    currentVersion = process.env.APP_VERSION;
     isMaximized = false;
     l = l;
     platform = process.platform;
@@ -237,6 +242,9 @@
     height: 100%;
     width: 100%;
     overflow-y: scroll;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    padding: 1em;
   }
 
   /*This override exists because we allow the user to resize the window, which potentially resizes the footer otherwise*/

@@ -43,7 +43,6 @@ import * as path from 'path';
 import l from '../chat/localize';
 import { defaultHost, GeneralSettings } from './common';
 // import BrowserWindow = electron.BrowserWindow;
-import MenuItem = electron.MenuItem;
 import MenuItemConstructorOptions = electron.MenuItemConstructorOptions;
 import * as _ from 'lodash';
 import { AdCoordinatorHost } from '../chat/ads/ad-coordinator-host';
@@ -144,36 +143,8 @@ async function checkForGitRelease(
         'updateCheck.state.new',
         `Update available: You're using ${semVer} instead of ${release.tag_name}`
       );
-      const menu = electron.Menu.getApplicationMenu()!;
 
-      const item = menu.getMenuItemById('update') as MenuItem | null;
-
-      if (item !== null) item.visible = true;
-      else
-        menu.append(
-          new electron.MenuItem({
-            label: l('action.updateAvailable'),
-            submenu: electron.Menu.buildFromTemplate([
-              {
-                label: l('action.update'),
-                click: () => {
-                  browserWindows.quitAllWindows();
-                  openURLExternally(
-                    'https://github.com/Fchat-Horizon/Horizon/releases'
-                  );
-                  app.exit();
-                }
-              },
-              {
-                label: l('help.changelog'),
-                click: showPatchNotes
-              }
-            ]),
-            id: 'update'
-          })
-        );
-      electron.Menu.setApplicationMenu(menu);
-      browserWindows.toggleUpdateNotice(true);
+      browserWindows.toggleUpdateNotice(true, release.tag_name);
       return;
     }
   } catch (e) {
@@ -231,13 +202,6 @@ export function openURLExternally(linkUrl: string): void {
   }
 
   electron.shell.openExternal(linkUrl);
-}
-
-function showPatchNotes(): void {
-  //tslint:disable-next-line: no-floating-promises
-  openURLExternally(
-    'https://github.com/Fchat-Horizon/Horizon/blob/main/CHANGELOG.md'
-  );
 }
 
 function showCurrentPatchNotes(): void {
@@ -475,10 +439,27 @@ function onReady(): void {
             label: l('help.fchat'),
             click: () => openURLExternally('https://horizn.moe/docs')
           },
+          {
+            label: l(
+              process.env.NODE_ENV !== 'development'
+                ? 'version'
+                : 'developmentVersion',
+              process.env.APP_VERSION || app.getVersion()
+            ),
+            click: (
+              _m: electron.MenuItem,
+              w: electron.BrowserWindow,
+              _e: KeyboardEvent
+            ) => {
+              browserWindows.createChangelogWindow(settings, false, w);
+            }
+          },
           // {
           //     label: l('help.feedback'),
           //     click: () => openURLExternally('https://goo.gl/forms/WnLt3Qm3TPt64jQt2')
           // },
+          { type: 'separator' },
+
           {
             label: l('help.rules'),
             click: () => openURLExternally('https://wiki.f-list.net/Rules')
@@ -496,36 +477,6 @@ function onReady(): void {
               openURLExternally(
                 'https://wiki.f-list.net/How_to_Report_a_User#In_chat'
               )
-          },
-          {
-            label: l(
-              process.env.NODE_ENV !== 'development'
-                ? 'version'
-                : 'developmentVersion',
-              process.env.APP_VERSION || app.getVersion()
-            ),
-            click: (
-              _m: electron.MenuItem,
-              w: electron.BrowserWindow,
-              _e: KeyboardEvent
-            ) => {
-              browserWindows.createChangelogWindow(settings, false, w);
-            }
-          },
-          {
-            label: 'test update menu',
-            click: (
-              _m: electron.MenuItem,
-              w: electron.BrowserWindow,
-              _e: KeyboardEvent
-            ) => {
-              browserWindows.createChangelogWindow(
-                settings,
-                false,
-                w,
-                'v1.32.1'
-              );
-            }
           }
         ] as MenuItemConstructorOptions[]
       }
@@ -564,6 +515,17 @@ function onReady(): void {
       );
       browserWindows.quitAllWindows();
       app.quit();
+    }
+  );
+  electron.ipcMain.on(
+    'open-update-changelog',
+    (_event: IpcMainEvent, updateVersion: string) => {
+      browserWindows.createChangelogWindow(
+        settings,
+        true,
+        electron.BrowserWindow.getFocusedWindow()!,
+        updateVersion
+      );
     }
   );
 

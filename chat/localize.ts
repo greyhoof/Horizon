@@ -542,7 +542,8 @@ Once this process has started, do not interrupt it or your logs will get corrupt
   'status.idle': 'Idle',
   'status.offline': 'Offline',
   'status.crown': 'Rewarded',
-  'changelog.version': 'Changelog for version {0}',
+  'changelog.version': 'Changelog for {0}',
+  'changelog.compare': 'Horizon {0} is available, you are using {1}.',
   'changelog.quitAndDownload': 'Quit and download',
   'changelog.quitAndDownload.confirm':
     'You are still connected to chat. \nAre you sure you want to exit and download the update right now?',

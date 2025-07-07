@@ -304,9 +304,9 @@ export function showAllWindows() {
   for (const w of windows) w.show();
 }
 
-export function toggleUpdateNotice(updateAvailable: boolean) {
+export function toggleUpdateNotice(updateAvailable: boolean, version?: string) {
   for (const w of windows)
-    w.webContents.send('update-available', updateAvailable);
+    w.webContents.send('update-available', updateAvailable, version);
 }
 
 export function createBrowserSettings(
