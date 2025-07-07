@@ -50,7 +50,7 @@ const badge = electron.nativeImage.createFromPath(
 
 electron.ipcMain.on('has-new', (e: IpcMainEvent, hasNew: boolean) => {
   if (process.platform === 'darwin' && app.dock !== undefined)
-    app.dock.setBadge(hasNew ? '!' : '');
+    app.dock.setBadge(hasNew ? '•' : '');
   const window = electron.BrowserWindow.fromWebContents(e.sender);
   if (window !== undefined && window !== null) {
     applyOverlayIcon(window, hasNew);
