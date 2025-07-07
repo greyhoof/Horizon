@@ -104,7 +104,7 @@ export class StandardBBCodeParser extends CoreBBCodeParser {
     this.addTag(
       new BBCodeSimpleTag(
         'sub',
-        'span',
+        'sub',
         ['smallText'],
         ['url', 'i', 'u', 'b', 'color', 's', 'hr']
       )
@@ -112,7 +112,7 @@ export class StandardBBCodeParser extends CoreBBCodeParser {
     this.addTag(
       new BBCodeSimpleTag(
         'sup',
-        'span',
+        'sup',
         ['smallText'],
         ['url', 'i', 'u', 'b', 'color', 's', 'hr']
       )
