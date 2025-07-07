@@ -157,7 +157,7 @@ SELECT THE TAB YOU WISH TO REPORT, LOGS ARE AUTOMATICALLY ATTACHED[/color]`,
   'chat.report.general':
     'No one in particular. If you wish to report a specific user, please right-click them and select "Report".',
   'chat.report.text': 'Report text',
-  'chat.recentConversations': 'Recent conversations',
+  'chat.recentConversations': 'Recent Conversations',
   'settings.tabs.general': 'General',
   'settings.tabs.look': 'Look and feel',
   'settings.tabs.notifications': 'Notifications',
