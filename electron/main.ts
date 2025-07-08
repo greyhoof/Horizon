@@ -74,6 +74,8 @@ const settingsDir = path.join(baseDir, 'data');
 fs.mkdirSync(settingsDir, { recursive: true });
 const settingsFile = path.join(settingsDir, 'settings');
 const settings = new GeneralSettings();
+//We need this, since displaying the changelog is done through a child window instead of an external link
+let showChangelogOnBoot = false;
 
 if (!fs.existsSync(settingsFile)) shouldImportSettings = true;
 else
@@ -204,15 +206,6 @@ export function openURLExternally(linkUrl: string): void {
   electron.shell.openExternal(linkUrl);
 }
 
-function showCurrentPatchNotes(): void {
-  //tslint:disable-next-line: no-floating-promises
-  openURLExternally(
-    'https://github.com/Fchat-Horizon/Horizon/blob/v' +
-      settings.version +
-      '/CHANGELOG.md'
-  );
-}
-
 let zoomLevel = settings.zoomLevel;
 
 function onReady(): void {
@@ -239,7 +232,7 @@ function onReady(): void {
       settings.host = defaultHost;
     settings.version = app.getVersion();
     setGeneralSettings(settings);
-    showCurrentPatchNotes();
+    showChangelogOnBoot = true;
   }
 
   // require('update-electron-app')(
@@ -650,7 +643,19 @@ function onReady(): void {
     openURLExternally(_url);
   });
 
-  browserWindows.createMainWindow(settings, shouldImportSettings, baseDir);
+  let window = browserWindows.createMainWindow(
+    settings,
+    shouldImportSettings,
+    baseDir
+  );
+  if (showChangelogOnBoot && window) {
+    browserWindows.createChangelogWindow(
+      settings,
+      shouldImportSettings,
+      window
+    );
+    showChangelogOnBoot = false;
+  }
 }
 
 // Twitter fix
