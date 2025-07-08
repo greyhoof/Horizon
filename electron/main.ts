@@ -334,6 +334,7 @@ function onReady(): void {
           settings.zoomLevel = zoomLevel;
           setGeneralSettings(settings);
         },
+        id: 'zoomIn',
         accelerator: 'CmdOrCtrl+='
       },
       {
@@ -354,6 +355,7 @@ function onReady(): void {
           settings.zoomLevel = zoomLevel;
           setGeneralSettings(settings);
         },
+        id: 'zoomOut',
         accelerator: 'CmdOrCtrl+-'
       },
       // {role: 'zoomOut'},
@@ -400,6 +402,7 @@ function onReady(): void {
             click: (_m: electron.MenuItem, w: electron.BrowserWindow) => {
               if (hasCompletedUpgrades) browserWindows.openTab(w);
             },
+            id: 'newTab',
             accelerator: 'CmdOrCtrl+t'
           },
           {
@@ -417,7 +420,8 @@ function onReady(): void {
           {
             label: l('fixLogs.action'),
             click: (_m, window: electron.BrowserWindow) =>
-              window.webContents.send('fix-logs')
+              window.webContents.send('fix-logs'),
+            id: 'fixLogs'
           },
 
           { type: 'separator' },
@@ -426,7 +430,8 @@ function onReady(): void {
             click: (_m: electron.MenuItem, w: electron.BrowserWindow) => {
               w.webContents.send('reopen-profile');
             },
-            accelerator: 'CmdOrCtrl+p'
+            accelerator: 'CmdOrCtrl+p',
+            id: 'showProfile'
           },
 
           { type: 'separator' },
@@ -649,7 +654,17 @@ if (
   (process.env.NODE_ENV === 'production' && !app.requestSingleInstanceLock())
 )
   app.quit();
-else app.on('ready', onReady);
+else
+  app.on('ready', () => {
+    onReady();
+    //MacOS event for opening via the dock. Only to subscribe to once we are truly ready
+    app.on('activate', () => {
+      browserWindows.showAllWindows();
+    });
+    app.on('did-become-active', () => {
+      browserWindows.showAllWindows();
+    });
+  });
 app.on('second-instance', () => {
   browserWindows.createMainWindow(settings, shouldImportSettings, baseDir);
 });

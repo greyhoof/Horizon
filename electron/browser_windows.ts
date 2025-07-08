@@ -50,7 +50,7 @@ const badge = electron.nativeImage.createFromPath(
 
 electron.ipcMain.on('has-new', (e: IpcMainEvent, hasNew: boolean) => {
   if (process.platform === 'darwin' && app.dock !== undefined)
-    app.dock.setBadge(hasNew ? '!' : '');
+    app.dock.setBadge(hasNew ? '•' : '');
   const window = electron.BrowserWindow.fromWebContents(e.sender);
   if (window !== undefined && window !== null) {
     applyOverlayIcon(window, hasNew);
@@ -192,14 +192,40 @@ export function createMainWindow(
     window.show();
     if (lastState.maximized) window.maximize();
   });
-  tray = new electron.Tray(trayIcon);
-  tray.setToolTip(l('title'));
-  tray.on('click', _e => tray.popUpContextMenu());
 
-  tray.setContextMenu(electron.Menu.buildFromTemplate(createTrayMenu()));
-  log.debug('init.window.add.tray');
+  //On MacOS, the app menu is not bound to any windows, so some options need to be manually toggled. An app can be "active" without any focused windows.
+  if (process.platform === 'darwin') {
+    window.on('show', () => {
+      toggleWindowSpecificMenuItems(true);
+    });
+    window.on('hide', () => {
+      if (!electron.BrowserWindow.getFocusedWindow()) {
+        toggleWindowSpecificMenuItems(false);
+      }
+    });
+  }
+  if (!tray) {
+    tray = new electron.Tray(trayIcon);
+    tray.setToolTip(l('title'));
+    tray.on('click', _e => tray.popUpContextMenu());
+
+    tray.setContextMenu(electron.Menu.buildFromTemplate(createTrayMenu()));
+    log.debug('init.window.add.tray');
+  }
 
   return window;
+}
+
+function toggleWindowSpecificMenuItems(active: boolean) {
+  let appMenu = app.applicationMenu;
+  if (appMenu) {
+    ['fixLogs', 'showProfile', 'newTab', 'zoomOut', 'zoomIn'].forEach(
+      itemId => {
+        var item = appMenu!.getMenuItemById(itemId);
+        if (item) item.enabled = active;
+      }
+    );
+  }
 }
 export function setUpWebContents(
   webContents: electron.WebContents,
@@ -272,6 +298,10 @@ export function updateZoomLevel(zoomLevel: number) {
 
 export function quitAllWindows() {
   for (const w of windows) w.webContents.send('quit');
+}
+
+export function showAllWindows() {
+  for (const w of windows) w.show();
 }
 
 export function toggleUpdateNotice(updateAvailable: boolean) {
