@@ -34,7 +34,7 @@
               {{ l('changelog.compare', updateVersion, currentVersion) }}
             </div>
             <div
-              class="logs-container bg-light"
+              class="logs-container border bg-light"
               v-html="changeLogText"
               ref="mdContainer"
             ></div>
@@ -83,6 +83,7 @@
   import FilterableSelect from '../components/FilterableSelect.vue';
   import Axios from 'axios';
   import markdownit from 'markdown-it';
+  import { alert } from '@mdit/plugin-alert';
   import electron from 'electron';
 
   type ReleaseInfo = {
@@ -92,9 +93,7 @@
   };
 
   const browserWindow = remote.getCurrentWindow();
-  @Component({
-    components: { tabs: Tabs, 'filterable-select': FilterableSelect }
-  })
+  @Component()
   export default class Changelog extends Vue {
     settings!: GeneralSettings;
     updateVersion!: string | undefined;
@@ -135,6 +134,7 @@
       let releaseInfo: ReleaseInfo = (await Axios.get<ReleaseInfo>(apiUrl))
         .data;
       let md = markdownit();
+      md.use(alert);
 
       const defaultRender =
         md.renderer.rules.link_open ||
@@ -228,10 +228,6 @@
     width: 100%;
   }
 
-  .tab-content {
-    overflow: auto;
-  }
-
   .modal-body {
     height: 100%;
     display: flex;
@@ -245,9 +241,43 @@
     margin-top: 1em;
     margin-bottom: 1em;
     padding: 1em;
+    border-radius: 10px;
+    a {
+      text-decoration: underline;
+    }
+
+    a:hover {
+      text-decoration: none;
+    }
   }
 
-  /*This override exists because we allow the user to resize the window, which potentially resizes the footer otherwise*/
+  .markdown-alert {
+    border-left: 2px solid;
+    padding-left: 10px;
+
+    .markdown-alert-title {
+      font-size: 1.25em;
+      font-weight: bold;
+    }
+  }
+
+  .markdown-alert-important {
+    border-color: var(--primary);
+  }
+
+  .markdown-alert-note {
+    border-color: var(--secondary);
+  }
+
+  .markdown-alert-tip {
+    border-color: var(--info);
+  }
+  .markdown-alert-caution {
+    border-color: var(--danger);
+  }
+  .markdown-alert-warning {
+    border-color: var(--warning);
+  } /*This override exists because we allow the user to resize the window, which potentially resizes the footer otherwise*/
   .modal-body .modal-footer {
     height: 52px;
     min-height: 52px;
@@ -277,47 +307,6 @@
   #windowButtons .btn {
     border-top: 0;
     font-size: 14px;
-  }
-
-  #window-browser-settings {
-    user-select: none;
-    .btn {
-      border: 0;
-      border-radius: 0;
-      padding: 0 18px;
-      display: flex;
-      align-items: center;
-      line-height: 1;
-      -webkit-app-region: no-drag;
-      flex-grow: 0;
-    }
-
-    .btn-default {
-      background: transparent;
-    }
-
-    h4 {
-      margin: 0 10px;
-      user-select: none;
-      cursor: default;
-      align-self: center;
-      -webkit-app-region: drag;
-    }
-
-    .fa {
-      line-height: inherit;
-    }
-  }
-
-  .warning {
-    border: 1px solid var(--warning);
-    padding: 10px;
-    margin-bottom: 20px;
-    border-radius: 3px;
-
-    div {
-      margin-top: 10px;
-    }
   }
 
   .disableWindowsHighContrast,
