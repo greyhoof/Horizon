@@ -365,7 +365,7 @@ function onReady(): void {
           {
             label: l('action.preferences'),
             click: (_m, window: electron.BrowserWindow) => {
-              browserWindows.createBrowserSettings(
+              browserWindows.createSettingsWindow(
                 settings,
                 shouldImportSettings,
                 window
