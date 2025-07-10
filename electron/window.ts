@@ -3,6 +3,7 @@ import log from 'electron-log'; //tslint:disable-line:match-default-export-name
 
 import { GeneralSettings } from './common';
 import Window from './Window.vue';
+import Vue from 'vue';
 
 log.info('init.window');
 
@@ -17,7 +18,7 @@ log.transports.file.level = settings.risingSystemLogLevel || logLevel;
 log.transports.console.level = settings.risingSystemLogLevel || logLevel;
 log.transports.file.maxSize = 5 * 1024 * 1024;
 
-log.info('init.window.vue');
+log.info('init.window.vue', Vue.version);
 
 //tslint:disable-next-line:no-unused-expression
 export default new Window({
