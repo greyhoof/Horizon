@@ -89,5 +89,9 @@
     "onlyBuiltDependencies": [
       "electron"
     ]
+  },
+  "dependencies": {
+    "@mdit/plugin-alert": "^0.22.2",
+    "markdown-it": "^14.1.0"
   }
 }

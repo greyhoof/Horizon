@@ -310,9 +310,9 @@ export function showAllWindows() {
   for (const w of windows) w.show();
 }
 
-export function toggleUpdateNotice(updateAvailable: boolean) {
+export function toggleUpdateNotice(updateAvailable: boolean, version?: string) {
   for (const w of windows)
-    w.webContents.send('update-available', updateAvailable);
+    w.webContents.send('update-available', updateAvailable, version);
 }
 
 export function createBrowserSettings(
@@ -356,6 +356,59 @@ export function createBrowserSettings(
     query: {
       settings: JSON.stringify(settings),
       import: shouldImportSettings ? 'true' : ''
+    }
+  });
+
+  browserWindow.once('ready-to-show', () => {
+    browserWindow.show();
+  });
+
+  return browserWindow;
+}
+
+export function createChangelogWindow(
+  settings: GeneralSettings,
+  shouldImportSettings: boolean,
+  parentWindow: electron.BrowserWindow,
+  updateVer?: string
+): electron.BrowserWindow | undefined {
+  let desiredHeight = 700;
+  let desiredWidth = 600;
+
+  const windowProperties: electron.BrowserWindowConstructorOptions = {
+    center: true,
+    show: false,
+    icon: process.platform === 'win32' ? winIcon : pngIcon,
+    frame: false,
+    width: desiredWidth,
+    minWidth: desiredWidth,
+    height: desiredHeight,
+    minHeight: desiredHeight,
+    resizable: true,
+    modal: true,
+    parent: parentWindow,
+    maximizable: false,
+    webPreferences: {
+      webviewTag: true,
+      nodeIntegration: true,
+      nodeIntegrationInWorker: true,
+      spellcheck: true,
+      enableRemoteModule: true,
+      contextIsolation: false,
+      partition: 'persist:fchat'
+    } as any
+  };
+
+  if (process.platform === 'darwin') {
+    windowProperties.titleBarStyle = 'hiddenInset';
+  }
+  const browserWindow = new electron.BrowserWindow(windowProperties);
+  remoteMain.enable(browserWindow.webContents);
+  browserWindow.loadFile(path.join(__dirname, 'changelog.html'), {
+    query: {
+      settings: JSON.stringify(settings),
+      import: shouldImportSettings ? 'true' : '',
+      updateVer: updateVer ? updateVer : ''
     }
   });
 
