@@ -275,7 +275,13 @@ function createTrayMenu(): electron.MenuItemConstructorOptions[] {
   return [
     { label: l('title'), enabled: false },
     ...tabItems,
-    { label: l('action.quit'), click: () => electron.app.quit() }
+    {
+      label: l('action.quit'),
+      click: () => {
+        quitAllWindows();
+        electron.app.quit();
+      }
+    }
   ];
 }
 
