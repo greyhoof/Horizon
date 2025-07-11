@@ -285,16 +285,14 @@
             id="horizonCacheDraftMessages"
             v-model="horizonCacheDraftMessages"
           />
-          Automatically save and restore in-progress messages while using
-          Horizon (change requires new tab)
+          {{ l('settings.horizonCacheDraftMessages') }}
         </label>
       </div>
 
       <div class="form-group">
-        <label class="control-label" for="horizonSaveDraftMessagesToDiskTimer"
-          >How often to backup save in-progress messages to disk (seconds,
-          minimum 5, change requires new tab)</label
-        >
+        <label class="control-label" for="horizonSaveDraftMessagesToDiskTimer">
+          {{ l('settings.horizonSaveDraftMessagesToDiskTimer') }}
+        </label>
         <input
           id="horizonSaveDraftMessagesToDiskTimer"
           type="number"
