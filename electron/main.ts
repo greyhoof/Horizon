@@ -425,6 +425,9 @@ function onReady(): void {
         ] as MenuItemConstructorOptions[]
       },
       viewItem,
+      ...(process.platform === 'darwin'
+        ? [{ role: 'windowMenu' } as electron.MenuItem]
+        : []),
       {
         label: `&${l('help')}`,
         submenu: [
