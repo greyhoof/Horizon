@@ -402,6 +402,7 @@ function createTrayMenu(): electron.MenuItemConstructorOptions[] {
   }));
   return [
     { label: l('title'), enabled: false },
+    { type: 'separator' },
     ...tabItems,
     {
       label: l('action.quit'),
