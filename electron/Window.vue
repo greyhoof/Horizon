@@ -133,12 +133,8 @@
     if (tab.user !== undefined)
       electron.ipcRenderer.send('disconnect', tab.user);
 
-    try {
-      tab.view.webContents.stop();
-      tab.view.webContents.stopPainting();
-    } catch (err) {
-      console.log(err);
-    }
+    tab.view.webContents.stop();
+    tab.view.webContents.stopPainting();
 
     try {
       if ((tab.view.webContents as any).destroy) {
@@ -514,23 +510,6 @@
       this.tabs.push(tab);
       this.tabMap[view.webContents.id] = tab;
 
-      view.webContents.on(
-        'render-process-gone',
-        (
-          _event: electron.Event,
-          details: electron.RenderProcessGoneDetails
-        ) => {
-          log.debug('window.tab.gone', details.reason);
-          if (details.reason !== 'clean-exit') {
-            log.warn(
-              'window.tab.gone.abnormally',
-              details.reason,
-              'Exit code:' + details.exitCode
-            );
-            this.remove(tab, false);
-          }
-        }
-      );
       log.debug('init.window.tab.add.context');
 
       this.show(tab);
@@ -588,13 +567,12 @@
         'has-new',
         this.tabs.reduce((cur, t) => cur || t.hasNew, false)
       );
-      if (tab.user !== undefined)
-        electron.ipcRenderer.send('disconnect', tab.user);
       delete this.tabMap[tab.view.webContents.id];
       if (this.tabs.length === 0) {
         browserWindow.setBrowserView(null!); //tslint:disable-line:no-null-keyword
         if (process.env.NODE_ENV === 'production') browserWindow.close();
       } else if (this.activeTab === tab) this.show(this.tabs[0]);
+      destroyTab(tab);
     }
 
     minimize(): void {
