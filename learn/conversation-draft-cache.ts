@@ -1,6 +1,5 @@
 import { Cache } from './cache';
 import { getDrafts, saveDrafts } from '../electron/filesystem';
-import log from 'electron-log';
 import core from '../chat/core';
 
 export interface ConversationCachedMessage {
@@ -21,14 +20,26 @@ export class ConversationDraftRecord {
 export class ConversationDraftCache extends Cache<ConversationDraftRecord> {
   private lastCacheSave = Date.now();
   private cacheAlreadyLoaded = false;
-  private useCache = false;
+  private useCache = true;
   private diskSaveTimerInSeconds = 60;
+  private diskSaveInterval: NodeJS.Timer | null = null;
+  private currentlyCachedCharacter = '';
+  private resetListenerActive = false;
 
   async loadCache(): Promise<void> {
+    if (!this.resetListenerActive) {
+      core.connection.onEvent('connected', () => {
+        this.resetCacheIfNeeded();
+      });
+      this.resetListenerActive = true;
+    }
+
     if (!core.connection.character || this.cacheAlreadyLoaded) return;
 
     const settings = await core.settingsStore.get('settings');
-    this.useCache = settings?.horizonCacheDraftMessages || this.useCache;
+
+    // Check for opt-out setting on cache.
+    if (settings?.horizonCacheDraftMessages === false) this.useCache = false;
     this.diskSaveTimerInSeconds =
       settings?.horizonSaveDraftMessagesToDiskTimer ||
       this.diskSaveTimerInSeconds;
@@ -43,13 +54,32 @@ export class ConversationDraftCache extends Cache<ConversationDraftRecord> {
 
     const drafts = getDrafts();
     this.cache = drafts || {};
-    log.info('Drafts loaded, if any');
 
     this.cacheAlreadyLoaded = true;
-    setInterval(
+    this.currentlyCachedCharacter = core.connection.character;
+    this.diskSaveInterval = setInterval(
       () => this.saveCacheToDisk(),
       this.diskSaveTimerInSeconds * 1000
     );
+  }
+
+  async resetCacheIfNeeded(): Promise<void> {
+    // Clear cache and re-fetch per-character settings upon switching characters in the same tab.
+    if (
+      this.currentlyCachedCharacter &&
+      this.currentlyCachedCharacter !== core.connection.character
+    ) {
+      if (this.diskSaveInterval !== null) {
+        clearInterval(this.diskSaveInterval);
+        this.diskSaveInterval = null;
+      }
+      // In the future, we could consider keeping all characters in-memory as people jump around in one tab and just reference the "current"
+      // cache. A cacheCache, if you will. For now, the on-disk cache should be sufficient, but it's an option for later.
+      this.cache = {};
+      this.cacheAlreadyLoaded = false;
+    }
+
+    await this.loadCache();
   }
 
   register(draft: ConversationCachedMessage): void {
@@ -70,7 +100,7 @@ export class ConversationDraftCache extends Cache<ConversationDraftRecord> {
   }
 
   private saveCacheToDisk(): void {
-    if (!this.useCache) return;
+    if (!this.useCache || !core.connection.character) return;
 
     // Buffer close writes. Missing an occasional save isn't the end of the world.
     const now = Date.now();
