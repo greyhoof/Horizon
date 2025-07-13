@@ -487,6 +487,15 @@ export class CacheManager {
     }
   }
 
+  /**
+   * Register the given draft in the draft cache.
+   * @function
+   * @param {string} channel
+   * The intended recipient of the message, either a character name or a channel name.
+   * @param {string} message
+   * The draft text as it currently exists in the input textbox.
+   * @internal
+   */
   public registerConversationDraft(channel: string, message: string): void {
     this.conversationDraftCache.register({
       channel,
@@ -494,10 +503,26 @@ export class CacheManager {
     });
   }
 
+  /**
+   * Removes any existing draft from the cache for a given channel.
+   * @function
+   * @param {string} channel
+   * The intended recipient of the message, either a character name or a channel name.
+   * @internal
+   */
   public deregisterConversationDraft(channel: string): void {
     this.conversationDraftCache.deregister(channel);
   }
 
+  /**
+   * Retrieves the draft message for a given channel.
+   * @function
+   * @param {string} channel
+   * The intended recipient of the message, either a character name or a channel name.
+   * @returns {string}
+   * The text of the saved draft in the requested channel.
+   * @internal
+   */
   public getConversationDraft(channel: string): string {
     const draft: ConversationDraftRecord | null =
       this.conversationDraftCache.get(channel);

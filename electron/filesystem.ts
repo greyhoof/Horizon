@@ -68,6 +68,12 @@ function getLogFile(this: void, character: string, key: string): string {
   return path.join(getLogDir(character), key);
 }
 
+/**
+ * Gets the file path for saved draft messages.
+ * @function
+ * @param {string} character
+ * The name of the logged-in character the user is using.
+ */
 function getDraftFile(character: string): string {
   return path.join(
     core.state.generalSettings!.logDirectory,
@@ -430,6 +436,11 @@ export class SettingsStore implements Settings.Store {
   }
 }
 
+/**
+ * Directly fetch the previously saved drafts from disk and return the resulting object to the cache.
+ * @function
+ * @internal
+ */
 export function getDrafts(): any {
   const file = getDraftFile(core.connection.character);
   if (!fs.existsSync(file)) return null;
@@ -448,6 +459,13 @@ export function getDrafts(): any {
 }
 
 //tslint:disable-next-line:no-async-without-await
+/**
+ * Directly fetch the draft file location (located in the log folder for the character) and fully overwrite it with the new cache data.
+ * @function
+ * @param drafts
+ * The full conversation cache object, to be dumped as raw JSON.
+ * @internal
+ */
 export async function saveDrafts(drafts: any): Promise<void> {
   const file = getDraftFile(core.connection.character);
 

@@ -27,6 +27,12 @@ import Bluebird from 'bluebird';
 import log from 'electron-log';
 import isChannel = Interfaces.isChannel;
 
+/**
+ * @constant
+ * How frequently the contents of the textbox in each conversation should save to the in-memory cache, if enabled.
+ */
+const CONVERSATION_CACHE_UPDATE_FREQ_IN_MS = 1000;
+
 function createMessage(
   this: any,
   type: MessageType,
@@ -970,6 +976,15 @@ async function testSmartFilterForChannel(
   return false;
 }
 
+/**
+ * Sets up the backend draft message cache if needed, then populates the input textbox with the saved draft if one exists. At regular
+ * intervals, this also saves the current draft message to the cache to be recovered in the event of a full tab crash, disconnect (in the
+ * event the tab does not attempt to save state), or process/system crash.
+ * @function
+ * @param {Conversation} this
+ * The conversation which will control the textbox and update interval. Upon close, the interval will be terminated to prevent leaks.
+ * @internal
+ */
 async function initConversationCache(this: Conversation): Promise<void> {
   // Restore message draft if it exists (e.g. accidentally closing the tab). Be sure the cache is reset for a new character if needed.
   await core.cache.conversationDraftCache.resetCacheIfNeeded();
@@ -996,7 +1011,7 @@ async function initConversationCache(this: Conversation): Promise<void> {
       this.enteredText
         ? core.cache.registerConversationDraft(this.name, this.enteredText)
         : core.cache.deregisterConversationDraft(this.name);
-    }, 1000);
+    }, CONVERSATION_CACHE_UPDATE_FREQ_IN_MS);
   }
 }
 
