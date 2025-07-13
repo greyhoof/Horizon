@@ -63,7 +63,10 @@ $genders: (
 
 .btn-primary,
 .btn-primary:hover,
-.list-group-item.active {
+.btn-primary:active,
+.btn-primary:focus,
+.list-group-item.active,
+.quick-jump-result.selected .badge-warning {
   color: $dracula-bg;
 }
 
