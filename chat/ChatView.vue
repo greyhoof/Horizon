@@ -273,6 +273,7 @@
         <a class="btn" @click="showProfileAnalyzer"><i class="fa fa-sync" /></a>
       </template>
     </modal>
+    <quick-jump ref="quickJump"></quick-jump>
   </div>
 </template>
 
@@ -308,6 +309,7 @@
   import AdLauncherDialog from './ads/AdLauncher.vue';
   import Modal from '../components/Modal.vue';
   import ProfileAnalysis from '../learn/recommend/ProfileAnalysis.vue';
+  import QuickJump from './QuickJump.vue';
 
   const unreadClasses = {
     [Conversation.UnreadState.None]: '',
@@ -333,7 +335,8 @@
       adCenter: AdCenterDialog,
       adLauncher: AdLauncherDialog,
       modal: Modal,
-      'profile-analysis': ProfileAnalysis
+      'profile-analysis': ProfileAnalysis,
+      'quick-jump': QuickJump
     }
   })
   export default class ChatView extends Vue {
@@ -552,6 +555,15 @@
             )
           );
         }
+      } else if (
+        getKey(e) === Keys.KeyP &&
+        this.isControlOrCommand(e) &&
+        e.shiftKey &&
+        !e.altKey
+      ) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.showQuickJump();
       }
     }
 
@@ -705,6 +717,10 @@
 
     userMenuHandle(e: MouseEvent | TouchEvent): void {
       (<UserMenu>this.$refs['userMenu']).handleEvent(e);
+    }
+
+    showQuickJump(): void {
+      (<QuickJump>this.$refs['quickJump']).show();
     }
 
     get showAvatars(): boolean {
