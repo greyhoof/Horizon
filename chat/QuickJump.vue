@@ -1,6 +1,6 @@
 <template>
   <div class="quick-jump-overlay" v-show="visible" @click="hide">
-    <div class="quick-jump-container" @click.stop>
+    <div class="quick-jump-container bg-light" @click.stop>
       <div class="quick-jump-header">
         <span class="fas fa-search"></span>
         <span>{{ l('quickJump.title') }}</span>
@@ -9,7 +9,7 @@
         ref="searchInput"
         v-model="searchQuery"
         :placeholder="l('quickJump.placeholder')"
-        class="quick-jump-input"
+        class="quick-jump-input form-control"
         @keydown="onKeyDown"
         @input="onInput"
       />
@@ -17,7 +17,10 @@
         <div
           v-for="(result, index) in filteredResults"
           :key="result.key"
-          :class="['quick-jump-result', { selected: index === selectedIndex }]"
+          :class="[
+            'quick-jump-result',
+            { 'selected border-left': index === selectedIndex }
+          ]"
           @click="selectResult(result)"
           @mouseenter="selectedIndex = index"
         >
@@ -49,7 +52,7 @@
       >
         <span>{{ l('quickJump.noResults') }}</span>
         <div
-          class="quick-jump-new-conversation"
+          class="quick-jump-new-conversation border"
           :class="{ selected: selectedIndex === -1 }"
           @click="openNewConversation"
           @mouseenter="selectedIndex = -1"
@@ -328,8 +331,6 @@
     padding-top: 10vh;
 
     .quick-jump-container {
-      background-color: var(--backgroundColor);
-      border: 1px solid var(--borderColor);
       border-radius: 12px;
       box-shadow:
         0 20px 60px rgba(0, 0, 0, 0.3),
@@ -341,7 +342,6 @@
       -webkit-backdrop-filter: blur(8px);
 
       .quick-jump-header {
-        background-color: var(--primaryColor);
         padding: 12px 16px;
         font-weight: bold;
         display: flex;
@@ -354,7 +354,6 @@
         border: none;
         padding: 16px;
         font-size: 16px;
-        background-color: var(--backgroundColor);
         color: var(--textColor);
         outline: none;
 
@@ -366,7 +365,6 @@
       .quick-jump-results {
         max-height: 400px;
         overflow-y: auto;
-        border-top: 1px solid var(--borderColor);
 
         .quick-jump-result {
           padding: 12px 16px;
@@ -374,12 +372,11 @@
           align-items: center;
           gap: 12px;
           cursor: pointer;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
           transition: all 0.2s ease;
           position: relative;
 
           &:hover {
-            background-color: rgba(59, 130, 246, 0.1);
+            background-color: var(--primary);
             color: var(--textColor);
           }
 
@@ -423,7 +420,6 @@
         text-align: center;
 
         opacity: 0.8;
-        border-top: 1px solid var(--borderColor);
 
         .quick-jump-new-conversation {
           margin-top: 12px;
@@ -432,7 +428,6 @@
           align-items: center;
           gap: 12px;
           cursor: pointer;
-          border: 1px solid var(--borderColor);
           border-radius: 4px;
           background-color: var(primary);
           transition: all 0.2s ease;
@@ -443,10 +438,9 @@
           }
 
           &.selected {
-            border-left: 4px solid var(--primaryTextColor);
             padding-left: 12px;
             font-weight: 600;
-            background-color: var(--primaryColor);
+            background-color: var(--primary);
             opacity: 1;
           }
 
