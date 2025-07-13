@@ -91,7 +91,7 @@ export class StandardBBCodeParser extends CoreBBCodeParser {
         'big',
         'span',
         ['bigText'],
-        ['url', 'i', 'u', 'b', 'color', 's', 'hr', 'img']
+        ['url', 'i', 'u', 'b', 'color', 's', 'hr', 'img', 'eicon']
       )
     );
     this.addTag(
@@ -99,7 +99,7 @@ export class StandardBBCodeParser extends CoreBBCodeParser {
         'small',
         'span',
         ['smallText'],
-        ['url', 'i', 'u', 'b', 'color', 's', 'hr', 'img']
+        ['url', 'i', 'u', 'b', 'color', 's', 'hr', 'img', 'eicon']
       )
     );
     this.addTag(
@@ -107,7 +107,7 @@ export class StandardBBCodeParser extends CoreBBCodeParser {
         'sub',
         'sub',
         ['smallText'],
-        ['url', 'i', 'u', 'b', 'color', 's', 'hr', 'img']
+        ['url', 'i', 'u', 'b', 'color', 's', 'hr', 'img', 'eicon']
       )
     );
     this.addTag(
@@ -115,7 +115,7 @@ export class StandardBBCodeParser extends CoreBBCodeParser {
         'sup',
         'sup',
         ['smallText'],
-        ['url', 'i', 'u', 'b', 'color', 's', 'hr', 'img']
+        ['url', 'i', 'u', 'b', 'color', 's', 'hr', 'img', 'eicon']
       )
     );
     this.addTag(new BBCodeSimpleTag('indent', 'div', ['indentText']));
@@ -139,7 +139,8 @@ export class StandardBBCodeParser extends CoreBBCodeParser {
           'big',
           'sub',
           'hr',
-          'img'
+          'img',
+          'eicon'
         ]
       )
     );
