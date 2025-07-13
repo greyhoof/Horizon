@@ -395,6 +395,10 @@
           display: none !important;
         }
 
+        .character-avatar.icon {
+          display: initial !important;
+        }
+
         #characterView {
           .card {
             border: none !important;
