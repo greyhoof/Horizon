@@ -4,6 +4,10 @@ import {
   BBCodeSimpleTag,
   BBCodeTextTag
 } from './parser';
+import * as Utils from '../site/utils';
+import { default as IconView } from '../bbcode/IconView.vue';
+import UrlTagView from './UrlTagView.vue';
+import core from '../chat/core';
 
 const urlFormat = '((?:https?|ftps?|irc)://[^\\s/$.?#"\']+\\.[^\\s"]+)';
 export const findUrlRegex = new RegExp(`(\\[url[=\\]]\\s*)?${urlFormat}`, 'gi');
@@ -67,6 +71,7 @@ export function analyzeUrlTag(
 }
 
 export class CoreBBCodeParser extends BBCodeParser {
+  cleanup: Vue[] = [];
   /*tslint:disable-next-line:typedef*/ //https://github.com/palantir/tslint/issues/711
   constructor(public makeLinksClickable = true) {
     super();
@@ -76,63 +81,81 @@ export class CoreBBCodeParser extends BBCodeParser {
     this.addTag(new BBCodeSimpleTag('s', 'del'));
     this.addTag(new BBCodeSimpleTag('noparse', 'span', [], []));
     this.addTag(
-      new BBCodeSimpleTag('sub', 'sub', [], ['b', 'i', 'u', 's', 'color'])
-    );
-    this.addTag(
       new BBCodeSimpleTag(
-        'big',
-        'span',
-        ['bigText'],
-        ['b', 'i', 'u', 's', 'color']
+        'sub',
+        'sub',
+        [],
+        ['url', 'i', 'u', 'b', 'color', 's', 'hr', 'img', 'eicon']
       )
     );
     this.addTag(
-      new BBCodeSimpleTag('sup', 'sup', [], ['b', 'i', 'u', 's', 'color'])
+      new BBCodeSimpleTag(
+        'sup',
+        'sup',
+        [],
+        ['url', 'i', 'u', 'b', 'color', 's', 'hr', 'img', 'eicon']
+      )
     );
     this.addTag(
-      new BBCodeCustomTag('color', (parser, parent, param) => {
-        const cregex =
-          /^(red|blue|white|yellow|pink|gray|green|orange|purple|black|brown|cyan)$/;
-        if (!cregex.test(param)) {
-          parser.warning('Invalid color parameter provided.');
-          return undefined;
-        }
+      new BBCodeTextTag('icon', (parser, parent, param, content) => {
+        if (param.length > 0)
+          parser.warning('Unexpected parameter on icon tag.');
+        const uregex = /^[a-zA-Z0-9_\-\s]+$/;
+        if (!uregex.test(content)) return;
+        const root = parser.createElement('span');
         const el = parser.createElement('span');
-        el.className = `${param}Text`;
-        parent.appendChild(el);
-        return el;
+        parent.appendChild(root);
+        root.appendChild(el);
+        const view = new IconView({
+          el,
+          propsData: {
+            character: core.characters.get(content)
+          }
+        });
+
+        this.cleanup.push(view);
+        return root;
       })
     );
-
     this.addTag(
-      new BBCodeTextTag('url', (parser, parent, param, content) => {
-        const tagData = analyzeUrlTag(parser, param, content);
-        const element = parser.createElement('span');
+      new BBCodeTextTag('eicon', (parser, parent, param, content) => {
+        if (param.length > 0)
+          parser.warning('Unexpected parameter on eicon tag.');
+        const uregex = /^[a-zA-Z0-9_\-\s]+$/;
+        if (!uregex.test(content)) return;
+        let extension = '.gif';
+        if (!Utils.settings.animateEicons) extension = '.png';
+        const img = parser.createElement('img');
+        img.src = `${Utils.staticDomain}images/eicon/${content.toLowerCase()}${extension}`;
+        img.title = img.alt = content;
+        img.className = 'character-avatar icon';
+        parent.appendChild(img);
+        return img;
+      })
+    );
+    this.addTag(
+      new BBCodeTextTag('url', (parser, parent, _, content) => {
+        const tagData = analyzeUrlTag(parser, _, content);
+        const root = parser.createElement('span');
 
-        parent.appendChild(element);
+        parent.appendChild(root);
 
         if (!tagData.success) {
-          element.textContent = tagData.textContent;
+          root.textContent = tagData.textContent;
           return;
         }
 
-        const fa = parser.createElement('i');
-        fa.className = 'fa fa-link';
-        element.appendChild(fa);
-        const a = parser.createElement('a');
-        a.href = tagData.url as string;
-        a.rel = 'nofollow noreferrer noopener';
-        a.target = '_blank';
-        a.className = 'user-link';
-        a.title = tagData.url as string;
-        a.textContent = tagData.textContent;
-        element.appendChild(a);
-        const span = document.createElement('span');
-        span.className = 'link-domain bbcode-pseudo';
-        span.textContent = ` [${tagData.domain}]`;
-        element.appendChild(span);
+        const view = new UrlTagView({
+          el: root,
+          propsData: {
+            url: tagData.url,
+            text: tagData.textContent,
+            domain: tagData.domain
+          }
+        });
+        this.cleanup.push(view);
 
-        return element;
+        return root;
       })
     );
     this.addTag(

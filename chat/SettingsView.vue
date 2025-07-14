@@ -1,6 +1,6 @@
 <template>
   <modal
-    :action="l('settings.action')"
+    :action="l('settings.character')"
     @submit="submit"
     @open="load()"
     id="settings"
@@ -274,6 +274,33 @@
           />
           Automatically expand custom kinks
         </label>
+      </div>
+
+      <h5>Draft Messages</h5>
+
+      <div class="form-group">
+        <label class="control-label" for="horizonCacheDraftMessages">
+          <input
+            type="checkbox"
+            id="horizonCacheDraftMessages"
+            v-model="horizonCacheDraftMessages"
+          />
+          {{ l('settings.horizonCacheDraftMessages') }}
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label" for="horizonSaveDraftMessagesToDiskTimer">
+          {{ l('settings.horizonSaveDraftMessagesToDiskTimer') }}
+        </label>
+        <input
+          id="horizonSaveDraftMessagesToDiskTimer"
+          type="number"
+          class="form-control"
+          v-model="horizonSaveDraftMessagesToDiskTimer"
+          placeholder="60"
+          min="5"
+        />
       </div>
 
       <h5>Misc</h5>
@@ -632,25 +659,27 @@
       </template>
       <template v-else>{{ l('settings.hideAds.empty') }}</template>
     </div>
-    <div v-show="selectedTab === '5'" style="display: flex; padding-top: 10px">
-      <select
-        id="import"
-        class="form-control"
-        v-model="importCharacter"
-        style="flex: 1; margin-right: 10px"
-      >
-        <option value="">{{ l('settings.import.selectCharacter') }}</option>
-        <option v-for="character in availableImports" :value="character">
-          {{ character }}
-        </option>
-      </select>
-      <button
-        class="btn btn-secondary"
-        @click="doImport"
-        :disabled="!importCharacter"
-      >
-        {{ l('settings.import') }}
-      </button>
+    <div v-show="selectedTab === '5'">
+      <div style="display: flex; padding-top: 10px">
+        <select
+          id="import"
+          class="form-control"
+          v-model="importCharacter"
+          style="flex: 1; margin-right: 10px"
+        >
+          <option value="">{{ l('settings.import.selectCharacter') }}</option>
+          <option v-for="character in availableImports" :value="character">
+            {{ character }}
+          </option>
+        </select>
+        <button
+          class="btn btn-secondary"
+          @click="doImport"
+          :disabled="!importCharacter"
+        >
+          {{ l('settings.import') }}
+        </button>
+      </div>
     </div>
   </modal>
 </template>
@@ -725,6 +754,9 @@
     horizonChangeOfflineColor!: boolean;
     horizonNotifyFriendSignIn!: boolean;
 
+    horizonCacheDraftMessages!: boolean;
+    horizonSaveDraftMessagesToDiskTimer!: string;
+
     risingFilter!: SmartFilterSettings = {} as any;
 
     risingAvailableThemes!: ReadonlyArray<string> = [];
@@ -781,6 +813,10 @@
       this.horizonGenderMarkerOrigColor = settings.horizonGenderMarkerOrigColor;
       this.horizonChangeOfflineColor = settings.horizonChangeOfflineColor;
 
+      this.horizonCacheDraftMessages = settings.horizonCacheDraftMessages;
+      this.horizonSaveDraftMessagesToDiskTimer =
+        settings.horizonSaveDraftMessagesToDiskTimer.toString();
+
       this.horizonNotifyFriendSignIn = settings.horizonNotifyFriendSignIn;
       this.risingFilter = settings.risingFilter;
 
@@ -830,6 +866,10 @@
 
       const minAge = this.getAsNumber(this.risingFilter.minAge);
       const maxAge = this.getAsNumber(this.risingFilter.maxAge);
+
+      const diskDraftTimer = this.getAsNumber(
+        this.horizonSaveDraftMessagesToDiskTimer
+      );
 
       core.state.settings = {
         playSound: this.playSound,
@@ -888,6 +928,14 @@
         horizonGenderMarkerOrigColor: this.horizonGenderMarkerOrigColor,
         horizonChangeOfflineColor: this.horizonChangeOfflineColor,
         horizonNotifyFriendSignIn: this.horizonNotifyFriendSignIn,
+
+        horizonCacheDraftMessages: this.horizonCacheDraftMessages,
+        horizonSaveDraftMessagesToDiskTimer:
+          diskDraftTimer === null
+            ? 60
+            : diskDraftTimer > 5
+              ? diskDraftTimer
+              : 5,
 
         risingColorblindMode: this.risingColorblindMode,
         risingFilter: {

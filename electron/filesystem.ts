@@ -68,6 +68,20 @@ function getLogFile(this: void, character: string, key: string): string {
   return path.join(getLogDir(character), key);
 }
 
+/**
+ * Gets the file path for saved draft messages.
+ * @function
+ * @param {string} character
+ * The name of the logged-in character the user is using.
+ */
+function getDraftFile(character: string): string {
+  return path.join(
+    core.state.generalSettings!.logDirectory,
+    character,
+    'drafts.txt'
+  );
+}
+
 export function checkIndex(
   this: void,
   index: Index,
@@ -420,4 +434,43 @@ export class SettingsStore implements Settings.Store {
   ): Promise<void> {
     writeFile(path.join(getSettingsDir(), key), JSON.stringify(value));
   }
+}
+
+/**
+ * Directly fetch the previously saved drafts from disk and return the resulting object to the cache.
+ * @function
+ * @internal
+ */
+export function getDrafts(): any {
+  const file = getDraftFile(core.connection.character);
+  if (!fs.existsSync(file)) return null;
+
+  // This is a simple JSON parse in this case, we're much less worried about corruption or serialization issues for drafts.
+  // The file should be quite small, so a full load should be very safe. Potential edge case is where a user maintains thousands of
+  // drafts for some reason, but that could be rectified with some kind of limit or user-controlled setting.
+  const fd = fs.readFileSync(file, 'utf8');
+  try {
+    const drafts = JSON.parse(fd);
+    return drafts;
+  } catch (e) {
+    console.error(`Error encountered when parsing drafts from ${file}: ${e}`);
+    return null;
+  }
+}
+
+//tslint:disable-next-line:no-async-without-await
+/**
+ * Directly fetch the draft file location (located in the log folder for the character) and fully overwrite it with the new cache data.
+ * @function
+ * @param drafts
+ * The full conversation cache object, to be dumped as raw JSON.
+ * @internal
+ */
+export async function saveDrafts(drafts: any): Promise<void> {
+  const file = getDraftFile(core.connection.character);
+
+  // Note: this is actually a wrapper around fs.writeFileSync, NOT the async method. If we get blocked loop, suspect this line.
+  // This function is cargo-culted from SettingsStore at the moment to maintain uniform behavior. TBH we're likely not
+  // concerned with any data loss here, consider async to prevent random freezes if the application locks up during normal use.
+  writeFile(file, JSON.stringify(drafts));
 }

@@ -188,6 +188,10 @@ export class ProfileCache extends AsyncCache<CharacterCacheRecord> {
       return true;
     }
 
+    if (url.match(/^https?:\/\/([a-z0-9\-.]+\.)?toyhou\.se\//i)) {
+      return true;
+    }
+
     return false;
   }
 
@@ -208,11 +212,11 @@ export class ProfileCache extends AsyncCache<CharacterCacheRecord> {
     }
 
     // * We should check for both:
+    //  [url=https://some.domain.ext/path/to/image.png]Horizon Portrait[/url]
     //  [url=https://some.domain.ext/path/to/image.png]Rising Portrait[/url]
-    //  [url=https://some.domain.ext/path/to/image.png]Rising Portrait[/url]
-    // * Despite our name change, we should REMAIN COMPATABLE!
+    // * Despite our name change, we should REMAIN COMPATIBLE!
     const match = description.match(
-      /\[url=(.*?)]\s*?(Rising|Horizon)\s*?Portrait\s*?\[\/url]/i
+      /\[url=([^\]]*?)]\s*?(Rising|Horizon)\s*?Portrait\s*?\[\/url]/i
     );
 
     if (match && match[1]) {

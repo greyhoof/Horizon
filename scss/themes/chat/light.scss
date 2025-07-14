@@ -32,6 +32,10 @@
   }
 }
 
+.quick-jump-result.selected {
+  color: #fff;
+}
+
 .colorblindMode {
   @import '../colorblind';
   @import '../../rising';

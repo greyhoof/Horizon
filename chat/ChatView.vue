@@ -47,7 +47,8 @@
       </div>
       <div>
         <a href="#" @click.prevent="showSettings()" class="btn"
-          ><span class="fas fa-fw fa-cog"></span> {{ l('settings.open') }}</a
+          ><span class="fas fa-fw fa-user-gear"></span>
+          {{ l('settings.character') }}</a
         >
       </div>
       <div>
@@ -144,16 +145,9 @@
           </div>
         </a>
       </div>
-      <a
-        href="#"
-        @click.prevent="showAddPmPartner()"
-        class="new-conversation"
-        :class="{
-          glowing:
-            conversations.privateConversations.length === 0 && privateCanGlow
-        }"
-        >Open Conversation</a
-      >
+      <a href="#" @click.prevent="showQuickJump()" class="new-conversation">{{
+        l('quickJump.action')
+      }}</a>
       <a
         href="#"
         @click.prevent="showChannels()"
@@ -273,6 +267,7 @@
         <a class="btn" @click="showProfileAnalyzer"><i class="fa fa-sync" /></a>
       </template>
     </modal>
+    <quick-jump ref="quickJump"></quick-jump>
   </div>
 </template>
 
@@ -308,6 +303,7 @@
   import AdLauncherDialog from './ads/AdLauncher.vue';
   import Modal from '../components/Modal.vue';
   import ProfileAnalysis from '../learn/recommend/ProfileAnalysis.vue';
+  import QuickJump from './QuickJump.vue';
 
   const unreadClasses = {
     [Conversation.UnreadState.None]: '',
@@ -333,7 +329,8 @@
       adCenter: AdCenterDialog,
       adLauncher: AdLauncherDialog,
       modal: Modal,
-      'profile-analysis': ProfileAnalysis
+      'profile-analysis': ProfileAnalysis,
+      'quick-jump': QuickJump
     }
   })
   export default class ChatView extends Vue {
@@ -552,6 +549,15 @@
             )
           );
         }
+      } else if (
+        getKey(e) === Keys.KeyP &&
+        this.isControlOrCommand(e) &&
+        e.shiftKey &&
+        !e.altKey
+      ) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.showQuickJump();
       }
     }
 
@@ -707,6 +713,10 @@
       (<UserMenu>this.$refs['userMenu']).handleEvent(e);
     }
 
+    showQuickJump(): void {
+      (<QuickJump>this.$refs['quickJump']).show();
+    }
+
     get showAvatars(): boolean {
       return core.state.settings.showAvatars;
     }
@@ -806,23 +816,23 @@
         /*}*/
 
         .offline {
-          color: #5c5c84;
+          color: var(--text-muted);
         }
 
         .online {
-          color: #02a002;
+          color: var(--success);
         }
 
         .away {
-          color: #c7894f;
+          color: var(--warning);
         }
         .dnd {
-          color: #ce2d4f;
+          color: var(--danger);
         }
 
         .fa-comment,
         .fa-comment-dots {
-          color: #cbcbe5;
+          color: var(--black);
         }
 
         /*.fa-eye {*/
