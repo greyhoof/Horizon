@@ -1,6 +1,6 @@
 <template>
   <modal
-    :action="l('settings.action')"
+    :action="l('settings.character')"
     @submit="submit"
     @open="load()"
     id="settings"

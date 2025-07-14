@@ -47,7 +47,8 @@
       </div>
       <div>
         <a href="#" @click.prevent="showSettings()" class="btn"
-          ><span class="fas fa-fw fa-cog"></span> {{ l('settings.open') }}</a
+          ><span class="fas fa-fw fa-user-gear"></span>
+          {{ l('settings.character') }}</a
         >
       </div>
       <div>
