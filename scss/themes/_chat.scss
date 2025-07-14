@@ -64,3 +64,24 @@
     }
   }
 }
+
+.hidden-scrollbar {
+  $scrollbar-width: 8px;
+  overflow-y: scroll;
+  &::-webkit-scrollbar-thumb {
+    display: none;
+  }
+
+  &::-webkit-scrollbar-track {
+    box-shadow: none;
+  }
+  &::-webkit-scrollbar {
+    width: $scrollbar-width;
+  }
+}
+
+.hidden-scrollbar:hover {
+  &::-webkit-scrollbar-thumb {
+    display: initial;
+  }
+}
