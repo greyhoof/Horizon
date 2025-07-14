@@ -70,7 +70,7 @@
         v-if="!showProfileFirst"
         class="list-group-item list-group-item-action"
       >
-        <span class="fa fa-fw fa-user"></span
+        <span class="fas fa-fw fa-address-card"></span
         ><span class="action-label">{{ l('user.profile') }}</span></a
       >
       <a
@@ -79,7 +79,7 @@
         @click.prevent="showMemo()"
         class="list-group-item list-group-item-action"
       >
-        <span class="far fa-fw fa-sticky-note"></span
+        <span class="fas fa-fw fa-sticky-note"></span
         ><span class="action-label">{{ l('user.memo') }}</span></a
       >
       <a
@@ -480,7 +480,7 @@
   }
 
   #userMenu .list-group-item-action {
-    font-size: 1.2em;
+    font-size: 1.1em;
   }
 
   #userMenu .list-group-item .fa-fw,
