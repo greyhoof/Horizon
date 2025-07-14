@@ -564,6 +564,7 @@ Any existing FChat 3.0 data for this character will be overwritten.`,
     'Importing logs. This may take a couple of minutes. Please do not close the application, even if it appears to hang for a while, as you may end up with incomplete logs.',
   'importer.error':
     'There was an error importing your settings. The defaults will be used.',
+  'quickJump.action': 'Switch conversations',
   'quickJump.title': 'Quick Jump',
   'quickJump.placeholder': 'Search channels and conversations...',
   'quickJump.noResults': 'No results found',

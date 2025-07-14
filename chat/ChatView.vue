@@ -145,16 +145,9 @@
           </div>
         </a>
       </div>
-      <a
-        href="#"
-        @click.prevent="showAddPmPartner()"
-        class="new-conversation"
-        :class="{
-          glowing:
-            conversations.privateConversations.length === 0 && privateCanGlow
-        }"
-        >Open Conversation</a
-      >
+      <a href="#" @click.prevent="showQuickJump()" class="new-conversation">{{
+        l('quickJump.action')
+      }}</a>
       <a
         href="#"
         @click.prevent="showChannels()"
