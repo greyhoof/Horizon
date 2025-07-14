@@ -59,9 +59,18 @@
     },
     "linux": {
       "icon": "build/icon.png",
-      "category": "Network",
       "maintainer": "The Horizon Maintainers",
-      "desktop": "build/horizon.desktop"
+      "executableName": "horizon-electron",
+      "desktop": {
+        "entry": {
+          "Name": "Horizon",
+          "Comment": "The F-Chat Horizon Client",
+          "Terminal": "false",
+          "Type": "Application",
+          "StartupWMClass": "Horizon",
+          "Categories": "Network;Chat;"
+        }
+      }
     }
   },
   "scripts": {
@@ -81,9 +90,9 @@
     "build:dev:linux": "mkdir -p dist && (node ../webpack development && electron-builder --linux deb tar.gz AppImage --arm64 --x64) | tee dist/build.log"
   },
   "devDependencies": {
-    "commander": "^13.1.0",
-    "electron": "37.2.0",
-    "electron-builder": "^25.1.8"
+    "commander": "^14.0.0",
+    "electron": "37.2.1",
+    "electron-builder": "^26.0.12"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
