@@ -31,7 +31,7 @@
             </button>
           </div>
           <div
-            class="modal-body"
+            class="modal-body hidden-scrollbar"
             style="overflow: auto; -webkit-overflow-scrolling: auto"
             tabindex="-1"
           >

@@ -39,7 +39,11 @@
             ></span>
           </a>
         </div>
-        <div style="overflow: auto" v-show="tab === '0'">
+        <div
+          class="hidden-scrollbar"
+          style="overflow: auto"
+          v-show="tab === '0'"
+        >
           <div v-for="channel in officialChannels" :key="channel.id">
             <label :for="channel.id">
               <input
@@ -52,7 +56,11 @@
             </label>
           </div>
         </div>
-        <div style="overflow: auto" v-show="tab === '1'">
+        <div
+          class="hidden-scrollbar"
+          style="overflow: auto"
+          v-show="tab === '1'"
+        >
           <div v-for="channel in openRooms" :key="channel.id">
             <label :for="channel.id">
               <input
