@@ -216,7 +216,7 @@ export class ProfileCache extends AsyncCache<CharacterCacheRecord> {
     //  [url=https://some.domain.ext/path/to/image.png]Rising Portrait[/url]
     // * Despite our name change, we should REMAIN COMPATIBLE!
     const match = description.match(
-      /\[url=([^]]*?)]\s*?(Rising|Horizon)\s*?Portrait\s*?\[\/url]/i
+      /\[url=([^\]]*?)]\s*?(Rising|Horizon)\s*?Portrait\s*?\[\/url]/i
     );
 
     if (match && match[1]) {
