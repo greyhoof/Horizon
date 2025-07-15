@@ -68,10 +68,12 @@ $genders: (
 .list-group-item.active,
 .quick-jump-result.selected,
 .btn-primary:not(:disabled):not(.disabled):active,
-.badge-warning {
+.badge-warning,
+.list-group.conversation-nav
+  .list-group-item.item-private.active
+  .online-status {
   color: $dracula-bg;
 }
-
 @each $gender, $color in $genders {
   .gender-#{$gender} {
     color: $color;
