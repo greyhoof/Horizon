@@ -5,11 +5,12 @@
       class="list-group bg-solid-text"
       :style="position"
       v-if="character && showContextMenu"
-      style="position: fixed; display: block; width: 220px; z-index: 1100"
+      style="position: fixed; display: block; min-width: 220px; z-index: 1100"
       ref="menu"
     >
       <div
-        style="min-height: 65px; padding: 5px; overflow: auto"
+        style="min-height: 65px; overflow: auto"
+        id="userMenuUser"
         class="list-group-item"
         @click.stop
       >
@@ -28,21 +29,22 @@
           }}</span>
         </div>
       </div>
-      <bbcode
-        id="userMenuStatus"
-        :text="character.statusText"
-        v-show="character.statusText"
-        class="list-group-item"
-        style="max-height: 200px; overflow: auto; clear: both"
-      ></bbcode>
+      <div class="userMenuInner">
+        <bbcode
+          id="userMenuStatus"
+          :text="character.statusText"
+          v-show="character.statusText"
+          class="list-group-item"
+          style="max-height: 200px; overflow: auto; clear: both"
+        ></bbcode>
 
-      <match-tags
-        v-if="match"
-        id="userMenuMatch"
-        :match="match"
-        class="list-group-item"
-      ></match-tags>
-
+        <match-tags
+          v-if="match"
+          id="userMenuMatch"
+          :match="match"
+          class="list-group-item"
+        ></match-tags>
+      </div>
       <a
         tabindex="-1"
         :href="profileLink"
@@ -466,17 +468,27 @@
     padding: 5px;
   }
 
+  #userMenu-userInfo {
+    max-width: 70%;
+    overflow-x: hidden;
+  }
+
   #userMenu-userInfo,
   #userMenu-avatar {
-    display: inline-block;
+    //display: inline-block;
   }
 
   #userMenu-userInfo {
-    width: 140px;
+    //width: 140px;
   }
 
   .userInfo-status {
     opacity: 0.7;
+  }
+
+  .userInfo-name {
+    font-size: 1.3em;
+    font-weight: bold;
   }
 
   #userMenu .list-group-item-action {
@@ -493,10 +505,20 @@
     box-shadow: 6px 9px 19px 0px rgba(16, 16, 16, 0.54);
     -webkit-box-shadow: 6px 9px 19px 0px rgba(16, 16, 16, 0.54);
     -moz-box-shadow: 6px 9px 19px 0px rgba(16, 16, 16, 0.54);
+    max-width: 265px;
+  }
+
+  #userMenu #userMenuUser {
+    padding: 7px 10px 5px 10px;
   }
 
   #userMenuMatch,
   #userMenuStatus {
+    max-width: 220px;
+    background: none;
+  }
+
+  .userMenuInner {
     background-color: var(--scoreReportBg);
   }
 
