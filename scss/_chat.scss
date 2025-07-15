@@ -344,6 +344,10 @@ $genders: (
   border: 0px;
 }
 
+.list-group-item + .list-group-item.active {
+  margin-top: 0px;
+}
+
 .logs-fab {
   position: absolute;
   top: 47px;
