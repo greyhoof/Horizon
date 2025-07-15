@@ -244,6 +244,8 @@ Current log location: {1}`,
     'In the nearby future, most of these settings will be moved to the global settings menu, where they will be applied globally across your characters. Settings like your pings, or other similar settings that can also be set on a per-conversation level will remain character-specific though.',
   'settings.charactersToGeneral.instructions':
     'This new settings menu can be found under the app menu in Horizon > Preferences. Check it out!',
+  'settings.charactersToGeneral.generalInfo':
+    "Looking a bit empty? In the nearby future, most of the settings in the character-specific settings (the ones you see in the chat window once you've signed in) will be moved to this general window, where they will be applied globally across your characters.",
   'settings.horizonCacheDraftMessages':
     'Automatically save and restore in-progress messages while using Horizon (change requires new tab)',
   'settings.horizonSaveDraftMessagesToDiskTimer':

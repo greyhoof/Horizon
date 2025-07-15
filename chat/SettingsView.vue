@@ -20,8 +20,8 @@
       ]"
     ></tabs>
     <div v-show="selectedTab === '0'">
-      <div class="info">
-        <h5>Info</h5>
+      <div class="warning">
+        <h5>Heads up!</h5>
         <div>
           {{ l('settings.charactersToGeneral') }}
         </div>
