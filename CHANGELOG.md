@@ -5,17 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html). You can also read it on our [website](https://fchat-horizon.github.io/docs/changelog.html).
 
-# [Development]
+# [Releases]
 
-# Preemptive changelog
-
-## [1.32.3-beta1] - 2025-07-14
-
-> [!WARNING]
-> Heed this warning.
-> Beta builds **may** have unfound bugs, some of which may be fatal to your data— including chat logs.
->
-> If you haven't already, you should make a good habit of [backing up your logs](https://horizn.moe/docs/guides/backup.html).
+## [1.32.3] - 2025-07-17
 
 ### Added
 
@@ -31,7 +23,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Fixes the gender icons for some genders overlapping after the Font Awesome update. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/b556dd71b103f3779a0d38da87b3b4432a6e8630)
-- Fixes Xeets not showing a ximage preview if they're xinked from x.com instead of twitter.com/ vxtwitter.com/ etc. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/762179eab7917d159a4dce603e2ee84a0996d413)
+- Fixed Twitter embeds.
+  - Fixes Xeets not showing a ximage preview if they're xinked from x.com instead of twitter.com/ vxtwitter.com/ etc. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/762179eab7917d159a4dce603e2ee84a0996d413)
+  - Fixes previews for photo links either not working, or only showing the first photo (instead of the one linked). [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/f15e2e09f2bbbc1c73b88b1967234ba58515a466)
 - Fixes a bunch of BBCode bugs and inconsistencies w/ the website for the profile viewer:
   - Incorrect `[color]` tags now parse the same as the website. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/ce3b47d08d0eb0f545fb4e146da3d33723de704c)
   - `[hr]` tags no longer break while next to, or inside of certain other tags. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/08c1b15ad04c750842ff62378517d9bbd1a93c21)
@@ -45,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixes the profile viewer not showing new inlines when it's being refreshed due to a cache expiry. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/e228ee32d4daab3220c4c43bf1bbb9d25aa9cbce)
 - Fixed some cases where HQ avatars wouldn't parse if they were in the same line as another `[url]` tag on your profile. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/9a7d6bb4a790504335a5c95cfbf1fec0438abbbe)
 - Fixes the tray icon's "Quit" option only closing windows instead of actually exiting the app. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/52bbabda7649ef2314a8195fe1a8ede28ac983d8)
+- Minor theme visual nitpicks. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/4e26ac904fea85e0c4ec82f9d5303392ca803fdb) [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/d5389f9fe4188262e507a9b269f33d780e92e9e9)
 
 ### Changed
 
@@ -63,6 +58,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Merged Pull Requests
 
 - https://github.com/Fchat-Horizon/Horizon/pull/240 by @AriannaAltomare
+  - This is their first contribution! 🎉🎉
 - https://github.com/Fchat-Horizon/Horizon/pull/257 by @FatCatClient
 - https://github.com/Fchat-Horizon/Horizon/pull/258 by @BootsieWootsie
 - https://github.com/Fchat-Horizon/Horizon/pull/260 by @BootsieWootsie
@@ -76,8 +72,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - https://github.com/Fchat-Horizon/Horizon/pull/278 by @BootsieWootsie
 - https://github.com/Fchat-Horizon/Horizon/pull/280 by @little-voice
   - This is their first contribution! 🎉🎉
-
-# [Releases]
 
 ## [1.32.2] - 2025-07-05
 
