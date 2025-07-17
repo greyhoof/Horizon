@@ -8,82 +8,99 @@
     @touchend="userMenuHandle"
   >
     <sidebar id="sidebar" :label="l('chat.menu')" icon="fa-bars">
-      <img
-        :src="characterImage(ownCharacter.name)"
-        v-if="showAvatars"
-        style="
-          float: left;
-          margin-right: 5px;
-          margin-top: 5px;
-          width: 70px;
-          height: 70px;
-        "
-      />
-      <a
-        target="_blank"
-        :href="ownCharacterLink"
-        class="btn"
-        style="display: block"
-        >{{ ownCharacter.name }}</a
-      >
-      <a href="#" @click.prevent="logOut()" class="btn"
-        ><i class="fas fa-sign-out-alt"></i>{{ l('chat.logout') }}</a
-      ><br />
-      <div>
-        {{ l('chat.status') }}
-        <a href="#" @click.prevent="showStatus()" class="btn">
-          <span
-            class="fas fa-fw"
-            :class="getStatusIcon(ownCharacter.status)"
-          ></span
-          >{{ l('status.' + ownCharacter.status) }}
-        </a>
-      </div>
-      <div style="clear: both">
-        <a href="#" @click.prevent="showSearch()" class="btn"
-          ><span class="fas fa-fw fa-search"></span>
-          {{ l('characterSearch.open') }}</a
+      <div id="sidebarUserInfo">
+        <div
+          style="min-height: 65px; overflow: auto"
+          class="sidebarUserInfo-character"
         >
-      </div>
-      <div>
-        <a href="#" @click.prevent="showSettings()" class="btn"
-          ><span class="fas fa-fw fa-user-gear"></span>
-          {{ l('settings.character') }}</a
-        >
-      </div>
-      <div>
-        <a href="#" @click.prevent="showRecent()" class="btn"
-          ><span class="fas fa-fw fa-history"></span>
-          {{ l('chat.recentConversations') }}</a
-        >
-      </div>
+          <img
+            :src="characterImage(ownCharacter.name)"
+            id="userInfo-avatar"
+            v-if="showAvatars"
+            style="width: 60px; height: 60px; margin-right: 5px; float: left"
+          />
+          <div class="sidebarUserInfo-user">
+            <h4 style="margin: 0; line-height: 1" class="sidebarUserInfo-name">
+              <a target="_blank" :href="ownCharacterLink">{{
+                ownCharacter.name
+              }}</a>
+            </h4>
+            <a href="#" @click.prevent="showStatus()" class="userInfo-status">
+              {{ l('status.' + ownCharacter.status) }}
+            </a>
+          </div>
+        </div>
+        <div>
+          <div class="userInfo-buttons-container">
+            <a
+              href="#"
+              role="button"
+              class="userInfo-button-item"
+              :title="l('settings.character')"
+              @click.prevent="showSettings()"
+            >
+              <i class="fa-solid fa-user-gear fa-fw"></i>
+            </a>
+            <a
+              href="#"
+              role="button"
+              class="userInfo-button-item"
+              :title="l('admgr.open')"
+              @click.prevent="showAdCenter()"
+            >
+              <i class="fa-solid fa-rectangle-ad fa-fw"></i>
+            </a>
 
-      <div>
-        <a href="#" @click.prevent="showAdCenter()" class="btn"
-          ><span class="fas fa-fw fa-ad"></span> Ad Editor</a
-        >
+            <span v-show="adsAreRunning()" class="adControls">
+              <span
+                aria-label="Stop All Ads"
+                class="fas fa-fw fa-stop"
+                @click.prevent="stopAllAds()"
+              ></span>
+            </span>
+
+            <a
+              href="#"
+              role="button"
+              class="userInfo-button-item"
+              :title="l('chat.logout')"
+              @click.prevent="logOut()"
+            >
+              <i class="fa-solid fa-sign-out-alt fa-fw"></i>
+            </a>
+          </div>
+          <div class="userInfo-buttons-container">
+            <a
+              href="#"
+              role="button"
+              class="userInfo-button-item"
+              :title="l('pager.notes')"
+            >
+              <i class="fa-regular fa-envelope fa-fw"></i>
+              <span class="userInfo-pager-text text-muted"> 3 </span>
+            </a>
+            <a
+              href="#"
+              role="button"
+              class="userInfo-button-item"
+              :title="l('pager.messages')"
+            >
+              <i class="fa-regular fa-bell fa-fw"></i>
+
+              <span class="userInfo-pager-text text-muted"> 3561 </span>
+            </a>
+          </div>
+        </div>
+
+        <!--
+        This is temporarily commented out until we properly merge the two ad centre modals into one.
+        <div>
+          <a href="#" @click.prevent="showAdLauncher()" class="btn"
+            ><span class="fas fa-fw fa-play"></span> Post Ads</a
+          >
+        </div>
+        -->
       </div>
-
-      <div>
-        <a href="#" @click.prevent="showAdLauncher()" class="btn"
-          ><span class="fas fa-fw fa-play"></span> Post Ads</a
-        >
-
-        <span v-show="adsAreRunning()" class="adControls">
-          <span
-            aria-label="Stop All Ads"
-            class="fas fa-fw fa-stop"
-            @click.prevent="stopAllAds()"
-          ></span>
-        </span>
-      </div>
-
-      <div>
-        <a href="#" @click.prevent="showProfileAnalyzer()" class="btn"
-          ><span class="fas fa-fw fa-user-md"></span> Profile Helper</a
-        >
-      </div>
-
       <div class="list-group conversation-nav">
         <a
           :class="getClasses(conversations.consoleTab)"
@@ -102,6 +119,18 @@
         ><span class="fas fa-comment"></span> {{ l('chat.pms') }}</a
       >
 
+      <div style="clear: both">
+        <a href="#" @click.prevent="showSearch()" class="btn"
+          ><span class="fas fa-fw fa-search"></span>
+          {{ l('characterSearch.open') }}</a
+        >
+      </div>
+      <div>
+        <a href="#" @click.prevent="showRecent()" class="btn"
+          ><span class="fas fa-fw fa-history"></span>
+          {{ l('chat.recentConversations') }}</a
+        >
+      </div>
       <div class="list-group conversation-nav" ref="privateConversations">
         <a
           v-for="conversation in conversations.privateConversations"
@@ -368,7 +397,6 @@
           this.privateCanGlow = false;
         }
       });
-
       Sortable.create(<HTMLElement>this.$refs['privateConversations'], {
         animation: 50,
         fallbackTolerance: 5,
@@ -761,7 +789,43 @@
   body {
     user-select: none;
   }
+  .sidebarUserInfo-user {
+    max-width: 70%;
+    overflow-x: hidden;
+  }
+  .sidebarUserInfo-name {
+    overflow-x: hidden;
+    overflow-y: clip;
+    text-overflow: ellipsis;
+  }
+  #sidebarUserInfo {
+    padding-bottom: 7px;
+  }
 
+  .userInfo-buttons-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    .userInfo-button-item {
+      &:hover,
+      &:active {
+        text-decoration: none;
+        background-color: var(--secondary);
+      }
+      flex: auto;
+      padding: 5px 3px 5px 3px;
+      min-width: 55px;
+      text-align: center;
+      font-size: 1.4em;
+      display: inline-block;
+      border-radius: 6px;
+      transition: 0.2s;
+      .userInfo-pager-text {
+        font-size: 1rem;
+        color: var(--gray-dark);
+      }
+    }
+  }
   .bbcode,
   .message,
   .profile-viewer {
@@ -775,6 +839,7 @@
   }
 
   .list-group.conversation-nav {
+    padding-top: 8px;
     .fas.active {
       color: #02a002;
     }

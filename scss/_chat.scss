@@ -125,6 +125,10 @@
       -webkit-transform-origin: 0 0;
     }
   }
+
+  #sidebarUserInfo {
+    border-bottom: solid 1px $card-border-color;
+  }
 }
 
 @mixin sidebar-fixed() {
