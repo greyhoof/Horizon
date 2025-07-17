@@ -101,7 +101,7 @@
         </div>
         -->
       </div>
-      <div class="list-group conversation-nav">
+      <div style="padding-top: 8px" class="list-group conversation-nav">
         <a
           :class="getClasses(conversations.consoleTab)"
           href="#"
@@ -112,24 +112,26 @@
         </a>
       </div>
 
-      <a
-        href="#"
-        @click.prevent="showAddPmPartner()"
-        class="btn btn-new-conversation"
-        ><span class="fas fa-comment"></span> {{ l('chat.pms') }}</a
-      >
+      <div style="clear: both" class="conversationList-header d-flex">
+        <a href="#" @click.prevent="showAddPmPartner()" class="btn flex-grow-1">
+          {{ l('chat.pms') }}</a
+        >
 
-      <div style="clear: both">
         <a href="#" @click.prevent="showSearch()" class="btn"
           ><span class="fas fa-fw fa-search"></span>
-          {{ l('characterSearch.open') }}</a
-        >
-      </div>
-      <div>
+        </a>
         <a href="#" @click.prevent="showRecent()" class="btn"
-          ><span class="fas fa-fw fa-history"></span>
-          {{ l('chat.recentConversations') }}</a
-        >
+          ><span class="fas fa-fw fa-history"></span> </a
+        ><a
+          :class="{
+            glowing:
+              conversations.privateConversations.length === 0 && privateCanGlow
+          }"
+          href="#"
+          @click.prevent="showQuickJump()"
+          class="btn"
+          ><span class="fas fa-fw fa-shuffle"></span
+        ></a>
       </div>
       <div class="list-group conversation-nav" ref="privateConversations">
         <a
@@ -174,15 +176,25 @@
           </div>
         </a>
       </div>
-      <a href="#" @click.prevent="showQuickJump()" class="new-conversation">{{
-        l('quickJump.action')
-      }}</a>
-      <a
-        href="#"
-        @click.prevent="showChannels()"
-        class="btn btn-new-conversation"
-        ><span class="fas fa-list"></span> {{ l('chat.channels') }}</a
-      >
+
+      <div style="clear: both" class="conversationList-header d-flex">
+        <a href="#" @click.prevent="showChannels()" class="btn flex-grow-1">
+          {{ l('chat.channels') }}</a
+        >
+
+        <a href="#" @click.prevent="showRecent()" class="btn"
+          ><span class="fas fa-fw fa-history"></span> </a
+        ><a
+          href="#"
+          @click.prevent="showChannels()"
+          class="btn"
+          :class="{
+            glowing:
+              conversations.channelConversations.length === 0 && channelCanGlow
+          }"
+          ><span class="fas fa-fw fa-plus"></span
+        ></a>
+      </div>
 
       <div class="list-group conversation-nav" ref="channelConversations">
         <a
@@ -218,16 +230,6 @@
           </span>
         </a>
       </div>
-      <a
-        href="#"
-        @click.prevent="showChannels()"
-        class="join-channel"
-        :class="{
-          glowing:
-            conversations.channelConversations.length === 0 && channelCanGlow
-        }"
-        >Join Channel</a
-      >
     </sidebar>
     <div style="display: flex; flex-direction: column; flex: 1; min-width: 0">
       <div id="quick-switcher" class="list-group">
@@ -839,7 +841,7 @@
   }
 
   .list-group.conversation-nav {
-    padding-top: 8px;
+    //padding-top: 8px;
     .fas.active {
       color: #02a002;
     }
@@ -975,9 +977,12 @@
       padding: 2px 0;
       text-align: left;
     }
-    .btn-new-conversation {
+    .conversationList-header {
       display: block;
       margin-top: 10px;
+      .btn {
+        display: block;
+      }
     }
     @media (min-width: breakpoint-min(md)) {
       .sidebar {
@@ -1021,8 +1026,6 @@
     }
 
     .glowing {
-      padding: 3px;
-      margin-right: 0.5em;
       animation: noticeme 2.5s alternate;
       animation-iteration-count: 10;
       animation-timing-function: ease-in-out;

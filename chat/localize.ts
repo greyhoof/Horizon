@@ -78,7 +78,7 @@ const strings: { [key: string]: string | undefined } = {
   'chat.setStatus.message': 'Status message (optional)',
   'chat.menu': 'Menu',
   'chat.channels': 'Channels',
-  'chat.pms': 'PMs',
+  'chat.pms': 'Private messages',
   'chat.consoleTab': 'Console',
   'chat.pinTab': 'Pin this tab',
   'chat.closeTab': 'Close this tab',
