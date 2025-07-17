@@ -492,7 +492,7 @@
   }
 
   #userMenu .list-group-item-action {
-    font-size: 1.1em;
+    font-size: 1.04em;
   }
 
   #userMenu .list-group-item .fa-fw,
