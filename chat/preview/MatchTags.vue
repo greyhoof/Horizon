@@ -68,10 +68,6 @@
       border: 1px solid;
       border-radius: 3px;
 
-      i {
-        color: white;
-      }
-
       &.match {
         background-color: var(--scoreMatchBg);
         border: solid 1px var(--scoreMatchFg);

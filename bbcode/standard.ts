@@ -2,11 +2,8 @@ import Vue from 'vue';
 import { BBCodeElement } from './core';
 import { InlineDisplayMode, InlineImage } from '../interfaces';
 import * as Utils from '../site/utils';
-import { analyzeUrlTag, CoreBBCodeParser } from './core';
+import { CoreBBCodeParser } from './core';
 import { BBCodeCustomTag, BBCodeSimpleTag, BBCodeTextTag } from './parser';
-import UrlTagView from './UrlTagView.vue';
-import { default as IconView } from '../bbcode/IconView.vue';
-import core from '../chat/core';
 
 const usernameRegex = /^[a-zA-Z0-9_\-\s]+$/;
 
@@ -91,7 +88,7 @@ export class StandardBBCodeParser extends CoreBBCodeParser {
         'big',
         'span',
         ['bigText'],
-        ['url', 'i', 'u', 'b', 'color', 's', 'hr', 'img']
+        ['url', 'i', 'u', 'b', 'color', 's', 'hr', 'img', 'eicon']
       )
     );
     this.addTag(
@@ -99,23 +96,7 @@ export class StandardBBCodeParser extends CoreBBCodeParser {
         'small',
         'span',
         ['smallText'],
-        ['url', 'i', 'u', 'b', 'color', 's', 'hr', 'img']
-      )
-    );
-    this.addTag(
-      new BBCodeSimpleTag(
-        'sub',
-        'sub',
-        ['smallText'],
-        ['url', 'i', 'u', 'b', 'color', 's', 'hr', 'img']
-      )
-    );
-    this.addTag(
-      new BBCodeSimpleTag(
-        'sup',
-        'sup',
-        ['smallText'],
-        ['url', 'i', 'u', 'b', 'color', 's', 'hr', 'img']
+        ['url', 'i', 'u', 'b', 'color', 's', 'hr', 'img', 'eicon']
       )
     );
     this.addTag(new BBCodeSimpleTag('indent', 'div', ['indentText']));
@@ -139,7 +120,8 @@ export class StandardBBCodeParser extends CoreBBCodeParser {
           'big',
           'sub',
           'hr',
-          'img'
+          'img',
+          'eicon'
         ]
       )
     );
@@ -229,50 +211,6 @@ export class StandardBBCodeParser extends CoreBBCodeParser {
       })
     );
     this.addTag(
-      new BBCodeTextTag('icon', (parser, parent, param, content) => {
-        if (param !== '') parser.warning('Unexpected parameter on icon tag.');
-        if (!usernameRegex.test(content)) return;
-
-        const root = parser.createElement('span');
-        const el = parser.createElement('span');
-        parent.appendChild(root);
-        root.appendChild(el);
-        const view = new IconView({
-          el,
-          propsData: { character: core.characters.get(content) }
-        });
-
-        this.cleanup.push(view);
-        return root;
-
-        // const a = parser.createElement('a');
-        // a.href = `${Utils.siteDomain}c/${content}`;
-        // a.target = '_blank';
-        // const img = parser.createElement('img');
-        // img.src = `${Utils.staticDomain}images/avatar/${content.toLowerCase()}.png`;
-        // img.className = 'character-avatar icon';
-        // img.title = img.alt = content;
-        // a.appendChild(img);
-        // parent.appendChild(a);
-        // return a;
-      })
-    );
-    this.addTag(
-      new BBCodeTextTag('eicon', (parser, parent, param, content) => {
-        if (param !== '') parser.warning('Unexpected parameter on eicon tag.');
-
-        if (!usernameRegex.test(content)) return;
-        let extension = '.gif';
-        if (!Utils.settings.animateEicons) extension = '.png';
-        const img = parser.createElement('img');
-        img.src = `${Utils.staticDomain}images/eicon/${content.toLowerCase()}${extension}`;
-        img.className = 'character-avatar icon';
-        img.title = img.alt = content;
-        parent.appendChild(img);
-        return img;
-      })
-    );
-    this.addTag(
       new BBCodeTextTag('img', (p, parent, param, content) => {
         const parser = <StandardBBCodeParser>p;
         if (typeof parser.inlines === 'undefined') {
@@ -318,34 +256,6 @@ export class StandardBBCodeParser extends CoreBBCodeParser {
           parent.appendChild(el);
         } else parent.appendChild((element = parser.createInline(inline)));
         return element;
-      })
-    );
-
-    this.addTag(
-      new BBCodeTextTag('url', (parser, parent, _, content) => {
-        const tagData = analyzeUrlTag(parser, _, content);
-        const root = parser.createElement('span');
-
-        parent.appendChild(root);
-
-        // root.appendChild(el);
-
-        if (!tagData.success) {
-          root.textContent = tagData.textContent;
-          return;
-        }
-
-        const view = new UrlTagView({
-          el: root,
-          propsData: {
-            url: tagData.url,
-            text: tagData.textContent,
-            domain: tagData.domain
-          }
-        });
-        this.cleanup.push(view);
-
-        return root;
       })
     );
   }

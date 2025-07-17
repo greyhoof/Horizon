@@ -169,6 +169,7 @@ SELECT THE TAB YOU WISH TO REPORT, LOGS ARE AUTOMATICALLY ATTACHED[/color]`,
   'settings.comingsoon': 'Coming soon.',
   'settings.open': 'Settings',
   'settings.action': 'Change settings',
+  'settings.character': 'Character Settings',
   'settings.hideAds.empty': `You aren't currently hiding the ads of any users.`,
   'settings.import': 'Import settings',
   'settings.import.selectCharacter': 'Select a character',
@@ -243,6 +244,12 @@ Current log location: {1}`,
     'In the nearby future, most of these settings will be moved to the global settings menu, where they will be applied globally across your characters. Settings like your pings, or other similar settings that can also be set on a per-conversation level will remain character-specific though.',
   'settings.charactersToGeneral.instructions':
     'This new settings menu can be found under the app menu in Horizon > Preferences. Check it out!',
+  'settings.charactersToGeneral.generalInfo':
+    "Looking a bit empty? In the nearby future, most of the settings in the character-specific settings (the ones you see in the chat window once you've signed in) will be moved to this general window, where they will be applied globally across your characters.",
+  'settings.horizonCacheDraftMessages':
+    'Automatically save and restore in-progress messages while using Horizon (change requires new tab)',
+  'settings.horizonSaveDraftMessagesToDiskTimer':
+    'How often to backup save in-progress messages to disk (seconds, minimum 5, change requires new tab)',
   'fixLogs.action': 'Fix corrupted logs',
   'fixLogs.text': `There are a few reason log files can become corrupted - log files from old versions with bugs that have since been fixed or incomplete file operations caused by computer crashes are the most common.
 If one of your log files is corrupted, you may get an "Unknown Type" error when you log in or when you open a specific tab. You may also experience other issues.
@@ -558,7 +565,16 @@ Any existing FChat 3.0 data for this character will be overwritten.`,
   'importer.importingNote':
     'Importing logs. This may take a couple of minutes. Please do not close the application, even if it appears to hang for a while, as you may end up with incomplete logs.',
   'importer.error':
-    'There was an error importing your settings. The defaults will be used.'
+    'There was an error importing your settings. The defaults will be used.',
+  'quickJump.action': 'Switch conversations',
+  'quickJump.title': 'Quick Jump',
+  'quickJump.placeholder': 'Search channels and conversations...',
+  'quickJump.noResults': 'No results found',
+  'quickJump.openNewConversation': 'Open new conversation with "{0}"',
+  'quickJump.consoleDescription': 'Console tab',
+  'quickJump.privateConversation': 'Private conversation',
+  'quickJump.channel': 'Channel',
+  'quickJump.members': 'members'
 };
 
 export default function l(key: string, ...args: (string | number)[]): string {

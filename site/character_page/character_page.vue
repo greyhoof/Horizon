@@ -570,6 +570,8 @@
 
         this.character = character;
 
+        standardParser.inlines = this.character.character.inlines;
+
         this.updateMatches();
 
         // No awaits on these on purpose:

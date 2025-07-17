@@ -157,7 +157,11 @@
                 class="card-body settings-content"
                 style="height: 100%; width: 100%"
               >
-                <h5>{{ l('settings.comingsoon') }}</h5>
+                <div class="warning">
+                  <h5>{{ l('settings.comingsoon') }}</h5>
+                  <hr />
+                  <p>{{ l('settings.charactersToGeneral.generalInfo') }}</p>
+                </div>
               </div>
               <!--Behavior-->
               <div
@@ -232,7 +236,11 @@
                     {{ l('settings.risingDisableWindowsHighContrast') }}
                   </label>
                 </div>
-                <h5 v-else>{{ l('settings.comingsoon') }}</h5>
+                <div v-else class="warning">
+                  <h5>{{ l('settings.comingsoon') }}</h5>
+                  <hr />
+                  <p>{{ l('settings.charactersToGeneral.generalInfo') }}</p>
+                </div>
               </div>
               <!-- Advanced -->
               <div

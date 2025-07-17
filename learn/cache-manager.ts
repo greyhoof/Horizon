@@ -14,6 +14,10 @@ import { AdCache } from './ad-cache';
 import { ChannelConversationCache } from './channel-conversation-cache';
 import { CharacterProfiler } from './character-profiler';
 import { CharacterCacheRecord, ProfileCache } from './profile-cache';
+import {
+  ConversationDraftCache,
+  ConversationDraftRecord
+} from './conversation-draft-cache';
 import Timer = NodeJS.Timer;
 import ChannelConversation = Conversation.ChannelConversation;
 import Message = Conversation.Message;
@@ -52,6 +56,8 @@ export class CacheManager {
   profileCache: ProfileCache = new ProfileCache();
   channelConversationCache: ChannelConversationCache =
     new ChannelConversationCache();
+
+  conversationDraftCache: ConversationDraftCache = new ConversationDraftCache();
 
   protected queue: ProfileCacheQueueEntry[] = [];
 
@@ -479,6 +485,48 @@ export class CacheManager {
         }
       );
     }
+  }
+
+  /**
+   * Register the given draft in the draft cache.
+   * @function
+   * @param {string} channel
+   * The intended recipient of the message, either a character name or a channel name.
+   * @param {string} message
+   * The draft text as it currently exists in the input textbox.
+   * @internal
+   */
+  public registerConversationDraft(channel: string, message: string): void {
+    this.conversationDraftCache.register({
+      channel,
+      message
+    });
+  }
+
+  /**
+   * Removes any existing draft from the cache for a given channel.
+   * @function
+   * @param {string} channel
+   * The intended recipient of the message, either a character name or a channel name.
+   * @internal
+   */
+  public deregisterConversationDraft(channel: string): void {
+    this.conversationDraftCache.deregister(channel);
+  }
+
+  /**
+   * Retrieves the draft message for a given channel.
+   * @function
+   * @param {string} channel
+   * The intended recipient of the message, either a character name or a channel name.
+   * @returns {string}
+   * The text of the saved draft in the requested channel.
+   * @internal
+   */
+  public getConversationDraft(channel: string): string {
+    const draft: ConversationDraftRecord | null =
+      this.conversationDraftCache.get(channel);
+    return draft?.message || '';
   }
 
   async resolveProfileScore(
