@@ -465,7 +465,7 @@
   @import '~bootstrap/scss/mixins/breakpoints';
 
   #userMenu .list-group-item {
-    padding: 5px;
+    padding: 3px 5px 3px 5px;
   }
 
   #userMenu-userInfo {

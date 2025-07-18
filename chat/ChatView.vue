@@ -20,12 +20,20 @@
             style="width: 60px; height: 60px; margin-right: 5px; float: left"
           />
           <div class="sidebarUserInfo-user">
-            <h4 style="margin: 0; line-height: 1" class="sidebarUserInfo-name">
+            <h5 style="margin: 0; line-height: 1" class="sidebarUserInfo-name">
               <a target="_blank" :href="ownCharacterLink">{{
                 ownCharacter.name
               }}</a>
-            </h4>
-            <a href="#" @click.prevent="showStatus()" class="userInfo-status">
+            </h5>
+            <a
+              href="#"
+              @click.prevent="showStatus()"
+              class="sidebarUserInfo-status"
+            >
+              <span
+                class="fas fa-fw"
+                :class="getStatusIcon(ownCharacter.status)"
+              ></span>
               {{ l('status.' + ownCharacter.status) }}
             </a>
           </div>
@@ -77,7 +85,7 @@
               :title="l('pager.notes')"
             >
               <i class="fa-regular fa-envelope fa-fw"></i>
-              <span class="userInfo-pager-text text-muted"> 3 </span>
+              <span class="badge badge-primary badge-pill">3</span>
             </a>
             <a
               href="#"
@@ -86,8 +94,7 @@
               :title="l('pager.messages')"
             >
               <i class="fa-regular fa-bell fa-fw"></i>
-
-              <span class="userInfo-pager-text text-muted"> 3561 </span>
+              <span class="badge badge-primary badge-pill">3561</span>
             </a>
           </div>
         </div>
@@ -101,134 +108,142 @@
         </div>
         -->
       </div>
-      <div style="padding-top: 8px" class="list-group conversation-nav">
-        <a
-          :class="getClasses(conversations.consoleTab)"
-          href="#"
-          @click.prevent="conversations.consoleTab.show()"
-          class="list-group-item list-group-item-action"
-        >
-          {{ conversations.consoleTab.name }}
-        </a>
-      </div>
+      <div id="conversations" class="hidden-scrollbar">
+        <div style="padding-top: 8px" class="list-group conversation-nav">
+          <a
+            :class="getClasses(conversations.consoleTab)"
+            href="#"
+            @click.prevent="conversations.consoleTab.show()"
+            class="list-group-item list-group-item-action"
+          >
+            {{ conversations.consoleTab.name }}
+          </a>
+        </div>
 
-      <div style="clear: both" class="conversationList-header d-flex">
-        <a href="#" @click.prevent="showAddPmPartner()" class="btn flex-grow-1">
-          {{ l('chat.pms') }}</a
-        >
+        <div style="clear: both" class="conversationList-header d-flex">
+          <a
+            href="#"
+            @click.prevent="showAddPmPartner()"
+            class="btn flex-grow-1"
+          >
+            {{ l('chat.pms') }}</a
+          >
 
-        <a href="#" @click.prevent="showSearch()" class="btn"
-          ><span class="fas fa-fw fa-search"></span>
-        </a>
-        <a href="#" @click.prevent="showRecent()" class="btn"
-          ><span class="fas fa-fw fa-history"></span> </a
-        ><a
-          :class="{
-            glowing:
-              conversations.privateConversations.length === 0 && privateCanGlow
-          }"
-          href="#"
-          @click.prevent="showQuickJump()"
-          class="btn"
-          ><span class="fas fa-fw fa-shuffle"></span
-        ></a>
-      </div>
-      <div class="list-group conversation-nav" ref="privateConversations">
-        <a
-          v-for="conversation in conversations.privateConversations"
-          href="#"
-          @click.prevent="conversation.show()"
-          :class="getClasses(conversation)"
-          :data-character="conversation.character.name"
-          data-touch="false"
-          class="list-group-item list-group-item-action item-private"
-          :key="conversation.key"
-          @click.middle.prevent.stop="conversation.close()"
-        >
-          <img
-            :src="characterImage(conversation.character.name)"
-            v-if="showAvatars"
-          />
-          <div class="name">
-            <span>{{ conversation.character.name }}</span>
-            <div style="line-height: 0; display: flex">
+          <a href="#" @click.prevent="showSearch()" class="btn"
+            ><span class="fas fa-fw fa-search"></span>
+          </a>
+          <a href="#" @click.prevent="showRecent()" class="btn"
+            ><span class="fas fa-fw fa-history"></span> </a
+          ><a
+            :class="{
+              glowing:
+                conversations.privateConversations.length === 0 &&
+                privateCanGlow
+            }"
+            href="#"
+            @click.prevent="showQuickJump()"
+            class="btn"
+            ><span class="fas fa-fw fa-shuffle"></span
+          ></a>
+        </div>
+        <div class="list-group conversation-nav" ref="privateConversations">
+          <a
+            v-for="conversation in conversations.privateConversations"
+            href="#"
+            @click.prevent="conversation.show()"
+            :class="getClasses(conversation)"
+            :data-character="conversation.character.name"
+            data-touch="false"
+            class="list-group-item list-group-item-action item-private"
+            :key="conversation.key"
+            @click.middle.prevent.stop="conversation.close()"
+          >
+            <img
+              :src="characterImage(conversation.character.name)"
+              v-if="showAvatars"
+            />
+            <div class="name">
+              <span>{{ conversation.character.name }}</span>
+              <div style="line-height: 0; display: flex">
+                <span
+                  class="fas fa-reply"
+                  v-show="needsReply(conversation)"
+                ></span>
+                <span
+                  class="online-status"
+                  :class="getOnlineStatusIconClasses(conversation)"
+                ></span>
+                <span style="flex: 1"></span>
+                <span
+                  class="pin fas fa-thumbtack"
+                  :class="{ active: conversation.isPinned }"
+                  @click="conversation.isPinned = !conversation.isPinned"
+                  :aria-label="l('chat.pinTab')"
+                ></span>
+                <span
+                  class="fas fa-times leave"
+                  @click.stop="conversation.close()"
+                  :aria-label="l('chat.closeTab')"
+                ></span>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <div style="clear: both" class="conversationList-header d-flex">
+          <a href="#" @click.prevent="showChannels()" class="btn flex-grow-1">
+            {{ l('chat.channels') }}</a
+          >
+
+          <a href="#" @click.prevent="showRecent()" class="btn"
+            ><span class="fas fa-fw fa-history"></span> </a
+          ><a
+            href="#"
+            @click.prevent="showChannels()"
+            class="btn"
+            :class="{
+              glowing:
+                conversations.channelConversations.length === 0 &&
+                channelCanGlow
+            }"
+            ><span class="fas fa-fw fa-plus"></span
+          ></a>
+        </div>
+
+        <div class="list-group conversation-nav" ref="channelConversations">
+          <a
+            v-for="conversation in conversations.channelConversations"
+            href="#"
+            @click.prevent="conversation.show()"
+            :class="getClasses(conversation)"
+            class="list-group-item list-group-item-action item-channel"
+            :key="conversation.key"
+            @click.middle.prevent.stop="conversation.close()"
+          >
+            <span class="name">{{ conversation.name }}</span>
+            <span>
               <span
-                class="fas fa-reply"
-                v-show="needsReply(conversation)"
+                v-if="conversation.hasAutomatedAds()"
+                class="fas fa-ad"
+                :class="{ active: conversation.isSendingAutomatedAds() }"
+                aria-label="Toggle ads"
+                @click.stop="conversation.toggleAutomatedAds()"
               ></span>
-              <span
-                class="online-status"
-                :class="getOnlineStatusIconClasses(conversation)"
-              ></span>
-              <span style="flex: 1"></span>
               <span
                 class="pin fas fa-thumbtack"
                 :class="{ active: conversation.isPinned }"
-                @click="conversation.isPinned = !conversation.isPinned"
                 :aria-label="l('chat.pinTab')"
+                @click.stop="conversation.isPinned = !conversation.isPinned"
+                @mousedown.prevent
               ></span>
               <span
                 class="fas fa-times leave"
                 @click.stop="conversation.close()"
                 :aria-label="l('chat.closeTab')"
               ></span>
-            </div>
-          </div>
-        </a>
-      </div>
-
-      <div style="clear: both" class="conversationList-header d-flex">
-        <a href="#" @click.prevent="showChannels()" class="btn flex-grow-1">
-          {{ l('chat.channels') }}</a
-        >
-
-        <a href="#" @click.prevent="showRecent()" class="btn"
-          ><span class="fas fa-fw fa-history"></span> </a
-        ><a
-          href="#"
-          @click.prevent="showChannels()"
-          class="btn"
-          :class="{
-            glowing:
-              conversations.channelConversations.length === 0 && channelCanGlow
-          }"
-          ><span class="fas fa-fw fa-plus"></span
-        ></a>
-      </div>
-
-      <div class="list-group conversation-nav" ref="channelConversations">
-        <a
-          v-for="conversation in conversations.channelConversations"
-          href="#"
-          @click.prevent="conversation.show()"
-          :class="getClasses(conversation)"
-          class="list-group-item list-group-item-action item-channel"
-          :key="conversation.key"
-          @click.middle.prevent.stop="conversation.close()"
-        >
-          <span class="name">{{ conversation.name }}</span>
-          <span>
-            <span
-              v-if="conversation.hasAutomatedAds()"
-              class="fas fa-ad"
-              :class="{ active: conversation.isSendingAutomatedAds() }"
-              aria-label="Toggle ads"
-              @click.stop="conversation.toggleAutomatedAds()"
-            ></span>
-            <span
-              class="pin fas fa-thumbtack"
-              :class="{ active: conversation.isPinned }"
-              :aria-label="l('chat.pinTab')"
-              @click.stop="conversation.isPinned = !conversation.isPinned"
-              @mousedown.prevent
-            ></span>
-            <span
-              class="fas fa-times leave"
-              @click.stop="conversation.close()"
-              :aria-label="l('chat.closeTab')"
-            ></span>
-          </span>
-        </a>
+            </span>
+          </a>
+        </div>
       </div>
     </sidebar>
     <div style="display: flex; flex-direction: column; flex: 1; min-width: 0">
@@ -802,6 +817,17 @@
   }
   #sidebarUserInfo {
     padding-bottom: 7px;
+    flex-shrink: 0;
+    .sidebarUserInfo-status {
+      opacity: 0.7;
+    }
+    .sidebarUserInfo-name:hover a,
+    .sidebarUserInfo-status:hover {
+      text-decoration: none;
+      color: var(--black);
+      opacity: 1;
+      transition: 0.2s;
+    }
   }
 
   .userInfo-buttons-container {
@@ -818,7 +844,7 @@
       padding: 5px 3px 5px 3px;
       min-width: 55px;
       text-align: center;
-      font-size: 1.4em;
+      font-size: 1.3em;
       display: inline-block;
       border-radius: 6px;
       transition: 0.2s;
@@ -993,7 +1019,7 @@
       }
 
       .body {
-        display: block;
+        display: flex;
       }
 
       .expander {
