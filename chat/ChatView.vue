@@ -13,29 +13,27 @@
           style="min-height: 65px; overflow: auto"
           class="sidebarUserInfo-character"
         >
-          <img
-            :src="characterImage(ownCharacter.name)"
-            id="userInfo-avatar"
-            v-if="showAvatars"
-            style="width: 60px; height: 60px; margin-right: 5px; float: left"
-          />
-          <div class="sidebarUserInfo-user">
+          <a
+            :href="ownCharacterLink"
+            role="button"
+            :aria-label="ownCharacter.name + '\'s avatar'"
+          >
+            <img
+              :src="characterImage(ownCharacter.name)"
+              id="userInfo-avatar"
+              v-if="showAvatars"
+              style="width: 60px; height: 60px; margin-right: 5px; float: left"
+            />
+          </a>
+          <div @click.prevent="showStatus()" class="sidebarUserInfo-user">
             <h5 style="margin: 0; line-height: 1" class="sidebarUserInfo-name">
-              <a target="_blank" :href="ownCharacterLink">{{
-                ownCharacter.name
-              }}</a>
+              {{ ownCharacter.name }}
             </h5>
-            <a
-              href="#"
-              @click.prevent="showStatus()"
-              class="sidebarUserInfo-status"
-            >
-              <span
-                class="fas fa-fw"
-                :class="getStatusIcon(ownCharacter.status)"
-              ></span>
-              {{ l('status.' + ownCharacter.status) }}
-            </a>
+            <span
+              class="fas fa-fw"
+              :class="getStatusIcon(ownCharacter.status)"
+            ></span>
+            {{ l('status.' + ownCharacter.status) }}
           </div>
         </div>
         <div>
@@ -789,6 +787,15 @@
   .sidebarUserInfo-user {
     max-width: 70%;
     overflow-x: hidden;
+    padding: 6px 5px 6px 5px;
+    border-radius: 8px;
+    transition: 0.2s;
+    &:hover,
+    &:active {
+      text-decoration: none;
+      background-color: var(--secondary);
+      cursor: pointer;
+    }
   }
   .sidebarUserInfo-name {
     overflow-x: hidden;
