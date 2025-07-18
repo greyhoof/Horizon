@@ -77,26 +77,9 @@
               <i class="fa-solid fa-sign-out-alt fa-fw"></i>
             </a>
           </div>
-          <div class="userInfo-buttons-container">
-            <a
-              href="#"
-              role="button"
-              class="userInfo-button-item"
-              :title="l('pager.notes')"
-            >
-              <i class="fa-regular fa-envelope fa-fw"></i>
-              <span class="badge badge-primary badge-pill">3</span>
-            </a>
-            <a
-              href="#"
-              role="button"
-              class="userInfo-button-item"
-              :title="l('pager.messages')"
-            >
-              <i class="fa-regular fa-bell fa-fw"></i>
-              <span class="badge badge-primary badge-pill">3561</span>
-            </a>
-          </div>
+          <note-status
+            v-if="coreState.settings.risingShowUnreadOfflineCount"
+          ></note-status>
         </div>
 
         <!--
@@ -298,9 +281,6 @@
     <recent-conversations ref="recentDialog"></recent-conversations>
     <image-preview ref="imagePreview"></image-preview>
     <add-pm-partner ref="addPmPartnerDialog"></add-pm-partner>
-    <note-status
-      v-if="coreState.settings.risingShowUnreadOfflineCount"
-    ></note-status>
 
     <modal
       :buttons="false"
