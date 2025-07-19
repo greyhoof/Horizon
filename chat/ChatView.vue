@@ -550,9 +550,9 @@
           );
         }
       } else if (
-        getKey(e) === Keys.KeyP &&
+        getKey(e) === Keys.KeyT &&
         this.isControlOrCommand(e) &&
-        e.shiftKey &&
+        !e.shiftKey &&
         !e.altKey
       ) {
         e.preventDefault();

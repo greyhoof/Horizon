@@ -359,8 +359,7 @@ function onReady(): void {
             click: (_m: electron.MenuItem, w: electron.BrowserWindow) => {
               if (hasCompletedUpgrades) browserWindows.openTab(w);
             },
-            id: 'newTab',
-            accelerator: 'CmdOrCtrl+t'
+            id: 'newTab'
           },
           {
             label: l('action.preferences'),
