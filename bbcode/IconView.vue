@@ -2,6 +2,7 @@
   <a
     :href="`${Utils.siteDomain}c/${character.name}`"
     target="_blank"
+    :data-character="character.name"
     @mouseover.prevent="show()"
     @mouseenter.prevent="show()"
     @mouseleave.prevent="dismiss()"
