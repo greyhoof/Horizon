@@ -784,63 +784,7 @@
   body {
     user-select: none;
   }
-  .sidebarUserInfo-user {
-    max-width: 70%;
-    overflow-x: hidden;
-    padding: 6px 5px 6px 5px;
-    border-radius: 8px;
-    transition: 0.2s;
-    &:hover,
-    &:active {
-      text-decoration: none;
-      background-color: var(--secondary);
-      cursor: pointer;
-    }
-  }
-  .sidebarUserInfo-name {
-    overflow-x: hidden;
-    overflow-y: clip;
-    text-overflow: ellipsis;
-  }
-  #sidebarUserInfo {
-    padding-bottom: 7px;
-    flex-shrink: 0;
-    .sidebarUserInfo-status {
-      opacity: 0.7;
-    }
-    .sidebarUserInfo-name:hover a,
-    .sidebarUserInfo-status:hover {
-      text-decoration: none;
-      color: var(--black);
-      opacity: 1;
-      transition: 0.2s;
-    }
-  }
 
-  .userInfo-buttons-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    .userInfo-button-item {
-      &:hover,
-      &:active {
-        text-decoration: none;
-        background-color: var(--secondary);
-      }
-      flex: auto;
-      padding: 5px 3px 5px 3px;
-      min-width: 55px;
-      text-align: center;
-      font-size: 1.3em;
-      display: inline-block;
-      border-radius: 6px;
-      transition: 0.2s;
-      .userInfo-pager-text {
-        font-size: 1rem;
-        color: var(--gray-dark);
-      }
-    }
-  }
   .bbcode,
   .message,
   .profile-viewer {
