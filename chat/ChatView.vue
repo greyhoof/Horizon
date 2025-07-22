@@ -939,6 +939,7 @@
       margin-top: 10px;
       .btn {
         display: block;
+        font-weight: 600;
       }
     }
     @media (min-width: breakpoint-min(md)) {

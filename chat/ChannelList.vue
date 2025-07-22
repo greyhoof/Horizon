@@ -5,6 +5,7 @@
     @open="opened"
     @close="closed"
     dialog-class="w-100 channel-list"
+    iconClass="fas fa-hashtag"
   >
     <div style="display: flex; flex-direction: column">
       <tabs

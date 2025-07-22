@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="shadow-sm">
     <div
       id="userMenu"
       class="list-group bg-solid-text"
@@ -502,9 +502,6 @@
 
   #userMenu {
     border-radius: 15px;
-    box-shadow: 6px 9px 19px 0px rgba(16, 16, 16, 0.54);
-    -webkit-box-shadow: 6px 9px 19px 0px rgba(16, 16, 16, 0.54);
-    -moz-box-shadow: 6px 9px 19px 0px rgba(16, 16, 16, 0.54);
     max-width: 265px;
   }
 

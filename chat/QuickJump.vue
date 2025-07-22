@@ -2,7 +2,7 @@
   <div class="quick-jump-overlay" v-show="visible" @click="hide">
     <div class="quick-jump-container bg-light" @click.stop>
       <div class="quick-jump-header">
-        <span class="fas fa-search"></span>
+        <span class="fas fa-shuffle"></span>
         <span>{{ l('quickJump.title') }}</span>
       </div>
       <input
@@ -331,10 +331,6 @@
     padding-top: 10vh;
 
     .quick-jump-container {
-      border-radius: 12px;
-      box-shadow:
-        0 20px 60px rgba(0, 0, 0, 0.3),
-        0 8px 25px rgba(0, 0, 0, 0.15);
       width: 90%;
       max-width: 600px;
       overflow: hidden;

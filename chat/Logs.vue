@@ -1,6 +1,7 @@
 <template>
   <modal
     :buttons="false"
+    iconClass="fa-solid fa-book"
     ref="dialog"
     @open="onOpen"
     @close="onClose"
