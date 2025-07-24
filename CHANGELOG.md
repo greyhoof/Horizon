@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 # [Releases]
 
-## [1.32.3] - 2025-07-17
+## [1.32.3] - 2025-07-24
 
 ### Added
 
@@ -36,6 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `[eicon]` tags inside tags like `[sub]` and `[heading]` in the profile viewer and guestbook posts. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/8cd8ab81c08da933ff693efaa5beb8870bc37ccc)
   - `[icon]` and `[eicon]` tags not showing up in the mini profile preview on the right. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/234744902793775731427c0e882521a23e63309b)
   - Thank you for the diligent work, @BootsieWootsie!!
+- Fixes the right click menu for characters closing when you click a spoiler tag in somebody's status. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/c49f8de0b48aad3ebbdac3d9e5da47aafcea61b2)
 - Fixes the profile viewer not showing new inlines when it's being refreshed due to a cache expiry. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/e228ee32d4daab3220c4c43bf1bbb9d25aa9cbce)
 - Fixed some cases where HQ avatars wouldn't parse if they were in the same line as another `[url]` tag on your profile. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/9a7d6bb4a790504335a5c95cfbf1fec0438abbbe)
 - Fixes the tray icon's "Quit" option only closing windows instead of actually exiting the app. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/52bbabda7649ef2314a8195fe1a8ede28ac983d8)
