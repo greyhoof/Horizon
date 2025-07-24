@@ -357,7 +357,8 @@
       while (node !== document.body) {
         if (
           (e.type !== 'click' && node === this.$refs['menu']) ||
-          node.id === 'userMenuStatus'
+          node.id === 'userMenuStatus' ||
+          node.className === 'spoiler-tag'
         )
           return;
         if (

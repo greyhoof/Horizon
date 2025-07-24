@@ -163,6 +163,7 @@ export class CoreBBCodeParser extends BBCodeParser {
         const link = parser.createElement('a');
         const content = parser.createElement('span');
         link.href = '#';
+        link.className = 'spoiler-tag';
         link.onclick = e => {
           const target = e.target as HTMLElement;
           target.parentElement!.replaceChild(content, target);
