@@ -139,6 +139,7 @@ export namespace Conversation {
     readonly joinMessages: Setting;
     readonly defaultHighlights: boolean;
     readonly adSettings: AdSettings;
+    readonly horizonHighlightUsers: ReadonlyArray<string>;
   }
 
   export interface AdSettings {
@@ -291,6 +292,7 @@ export namespace Settings {
     readonly horizonGenderMarkerOrigColor: boolean;
     readonly horizonChangeOfflineColor: boolean;
     readonly horizonNotifyFriendSignIn: boolean;
+    readonly horizonHighlightUsers: ReadonlyArray<string>;
 
     readonly horizonCacheDraftMessages: boolean;
     readonly horizonSaveDraftMessagesToDiskTimer: number;

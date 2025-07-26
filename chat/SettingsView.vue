@@ -171,6 +171,17 @@
         />
       </div>
       <div class="form-group">
+        <label class="control-label" for="horizonHighlightUsers">{{
+          l('settings.highlightUsers')
+        }}</label>
+        <input
+          id="highlightUsers"
+          class="form-control"
+          v-model="horizonHighlightUsers"
+        />
+      </div>
+
+      <div class="form-group">
         <label class="control-label" for="eventMessages">
           <input type="checkbox" id="eventMessages" v-model="eventMessages" />
           {{ l('settings.eventMessages') }}
@@ -754,6 +765,7 @@
     horizonGenderMarkerOrigColor!: boolean;
     horizonChangeOfflineColor!: boolean;
     horizonNotifyFriendSignIn!: boolean;
+    horizonHighlightUsers!: string;
 
     horizonCacheDraftMessages!: boolean;
     horizonSaveDraftMessagesToDiskTimer!: string;
@@ -819,6 +831,7 @@
         settings.horizonSaveDraftMessagesToDiskTimer.toString();
 
       this.horizonNotifyFriendSignIn = settings.horizonNotifyFriendSignIn;
+      this.horizonHighlightUsers = settings.horizonHighlightUsers.join(',');
       this.risingFilter = settings.risingFilter;
 
       this.risingAvailableThemes = fs
@@ -929,7 +942,10 @@
         horizonGenderMarkerOrigColor: this.horizonGenderMarkerOrigColor,
         horizonChangeOfflineColor: this.horizonChangeOfflineColor,
         horizonNotifyFriendSignIn: this.horizonNotifyFriendSignIn,
-
+        horizonHighlightUsers: this.horizonHighlightUsers
+          .split(',')
+          .map(x => x.trim())
+          .filter(x => x.length),
         horizonCacheDraftMessages: this.horizonCacheDraftMessages,
         horizonSaveDraftMessagesToDiskTimer:
           diskDraftTimer === null
