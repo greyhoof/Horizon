@@ -1,71 +1,74 @@
 <template>
-  <div class="quick-jump-overlay" v-show="visible" @click="hide">
-    <div class="quick-jump-container bg-light" @click.stop>
-      <div class="quick-jump-header">
-        <span class="fas fa-shuffle"></span>
-        <span>{{ l('quickJump.title') }}</span>
-      </div>
-      <input
-        ref="searchInput"
-        v-model="searchQuery"
-        :placeholder="l('quickJump.placeholder')"
-        class="quick-jump-input form-control"
-        @keydown="onKeyDown"
-        @input="onInput"
-      />
-      <div class="quick-jump-results" v-show="filteredResults.length > 0">
-        <div
-          v-for="(result, index) in filteredResults"
-          :key="result.key"
-          :class="[
-            'quick-jump-result',
-            { 'selected border-left': index === selectedIndex }
-          ]"
-          @click="selectResult(result)"
-          @mouseenter="selectedIndex = index"
-        >
-          <span class="result-icon">
-            <span
-              v-if="result.type === 'channel'"
-              class="fas fa-hashtag"
-            ></span>
-            <span
-              v-else-if="result.type === 'private'"
-              class="far fa-user-circle"
-            ></span>
-            <span v-else class="fas fa-home"></span>
-          </span>
-          <span class="result-name"
-            >{{ result.name }}
-            <span v-show="hasMentions(result)" class="badge badge-warning"
-              >!</span
-            ></span
-          >
-          <span class="result-description" v-if="result.description">
-            {{ result.description }}
-          </span>
+  <div v-show="visible">
+    <div class="quick-jump-overlay" @click="hide">
+      <div class="quick-jump-container bg-light" @click.stop>
+        <div class="quick-jump-header">
+          <span class="fas fa-shuffle"></span>
+          <span>{{ l('quickJump.title') }}</span>
         </div>
-      </div>
-      <div
-        class="quick-jump-footer"
-        v-show="filteredResults.length === 0 && searchQuery.length > 0"
-      >
-        <span>{{ l('quickJump.noResults') }}</span>
+        <input
+          ref="searchInput"
+          v-model="searchQuery"
+          :placeholder="l('quickJump.placeholder')"
+          class="quick-jump-input form-control"
+          @keydown="onKeyDown"
+          @input="onInput"
+        />
+        <div class="quick-jump-results" v-show="filteredResults.length > 0">
+          <div
+            v-for="(result, index) in filteredResults"
+            :key="result.key"
+            :class="[
+              'quick-jump-result',
+              { 'selected border-left': index === selectedIndex }
+            ]"
+            @click="selectResult(result)"
+            @mouseenter="selectedIndex = index"
+          >
+            <span class="result-icon">
+              <span
+                v-if="result.type === 'channel'"
+                class="fas fa-hashtag"
+              ></span>
+              <span
+                v-else-if="result.type === 'private'"
+                class="far fa-user-circle"
+              ></span>
+              <span v-else class="fas fa-home"></span>
+            </span>
+            <span class="result-name"
+              >{{ result.name }}
+              <span v-show="hasMentions(result)" class="badge badge-warning"
+                >!</span
+              ></span
+            >
+            <span class="result-description" v-if="result.description">
+              {{ result.description }}
+            </span>
+          </div>
+        </div>
         <div
-          class="quick-jump-new-conversation border"
-          :class="{ selected: selectedIndex === -1 }"
-          @click="openNewConversation"
-          @mouseenter="selectedIndex = -1"
+          class="quick-jump-footer"
+          v-show="filteredResults.length === 0 && searchQuery.length > 0"
         >
-          <span class="result-icon">
-            <span class="fas fa-plus"></span>
-          </span>
-          <span class="result-name">{{
-            l('quickJump.openNewConversation', searchQuery)
-          }}</span>
+          <span>{{ l('quickJump.noResults') }}</span>
+          <div
+            class="quick-jump-new-conversation border"
+            :class="{ selected: selectedIndex === -1 }"
+            @click="openNewConversation"
+            @mouseenter="selectedIndex = -1"
+          >
+            <span class="result-icon">
+              <span class="fas fa-plus"></span>
+            </span>
+            <span class="result-name">{{
+              l('quickJump.openNewConversation', searchQuery)
+            }}</span>
+          </div>
         </div>
       </div>
     </div>
+    <div @click="hide" class="show modal-backdrop"></div>
   </div>
 </template>
 
@@ -324,7 +327,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 9999;
+    z-index: 1050;
     display: flex;
     align-items: flex-start;
     justify-content: center;
