@@ -68,6 +68,16 @@
       />
     </div>
     <div class="form-group">
+      <label class="control-label" :for="'highlightUsers' + conversation.key">{{
+        l('settings.highlightUsers.conversation')
+      }}</label>
+      <input
+        :id="'highlightUsers' + conversation.key"
+        class="form-control"
+        v-model="horizonHighlightUsers"
+      />
+    </div>
+    <div class="form-group">
       <label class="control-label" :for="'joinMessages' + conversation.key">{{
         l('settings.joinMessages')
       }}</label>
@@ -108,6 +118,7 @@
     notify!: Conversation.Setting;
     highlight!: Conversation.Setting;
     highlightWords!: string;
+    horizonHighlightUsers!: string;
     joinMessages!: Conversation.Setting;
     defaultHighlights!: boolean;
 
@@ -118,6 +129,7 @@
       this.highlightWords = settings.highlightWords.join(',');
       this.joinMessages = settings.joinMessages;
       this.defaultHighlights = settings.defaultHighlights;
+      this.horizonHighlightUsers = settings.horizonHighlightUsers.join(',');
     }
 
     submit(): void {
@@ -128,6 +140,11 @@
           .split(',')
           .map(x => x.trim())
           .filter(x => x.length > 0),
+        horizonHighlightUsers: this.horizonHighlightUsers
+          .split(',')
+          .map(x => x.trim())
+          .filter(x => x.length > 0),
+
         joinMessages: this.joinMessages,
         defaultHighlights: this.defaultHighlights,
         adSettings: this.conversation.settings.adSettings

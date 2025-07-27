@@ -186,6 +186,10 @@ Are you sure?`,
   'settings.disallowedTags': 'Disallowed BBCode tags (comma-separated)',
   'settings.highlight': 'Notify for messages containing your name',
   'settings.highlightWords': 'Custom highlight notify words (comma-separated)',
+  'settings.highlightUsers':
+    'Notify when the following characters send a message in a channel (comma-separated)',
+  'settings.highlightUsers.conversation':
+    'Notify when the following characters send a message (comma-separated)',
   'settings.showAvatars': 'Show character avatars',
   'settings.animatedEicons': 'Animate [eicon]s',
   'settings.idleTimer': 'Idle timer (minutes, clear to disable)',
@@ -342,6 +346,7 @@ Once this process has started, do not interrupt it or your logs will get corrupt
   'events.uptime':
     'Server has been running since {0}, with currently {1} channels and {2} users, a total of {3} accepted connections, and {4} maximum users.',
   'events.highlight': '{0} said "{1}" in {2}',
+  'events.watchedUserPosted': '{0} spoke in {1}',
   'commands.unknown':
     'Unknown command. For a list of valid commands, please click the ? button.',
   'commands.badContext':

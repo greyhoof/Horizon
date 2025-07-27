@@ -81,6 +81,7 @@ export class Settings implements ISettings {
   horizonGenderMarkerOrigColor = false;
   horizonChangeOfflineColor = false;
   horizonNotifyFriendSignIn = false;
+  horizonHighlightUsers: string[] = [];
 
   horizonCacheDraftMessages = true;
   horizonSaveDraftMessagesToDiskTimer = 60;
@@ -152,6 +153,7 @@ export class ConversationSettings implements Conversation.Settings {
     randomOrder: false,
     lastAdTimestamp: 0
   };
+  horizonHighlightUsers: string[] = [];
 }
 
 function pad(num: number): string | number {
