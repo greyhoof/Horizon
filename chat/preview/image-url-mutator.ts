@@ -196,6 +196,10 @@ export class ImageUrlMutator {
       }
     );
 
+    //The Imgur URL mutation stuff has been (temporarily?) disabled, because their API has changed to such a degree,
+    //that it would require us to deal with refresh tokens, for which we do not have the infrastructure in place to synchronize between clients.
+    //Having an embed of the actual page like this is an acceptable alternative.
+    /*
     this.add(
       /^https?:\/\/((m|www).)?imgur.(com|io)\/gallery\/([a-zA-Z0-9]+)/,
       async (url: string, match: RegExpMatchArray): Promise<string> => {
@@ -298,12 +302,14 @@ export class ImageUrlMutator {
       }
     );
 
+    */
+
     // Load large thumbnail instead of the full size picture when possible
-    this.add(
+    /*this.add(
       ImageUrlMutator.IMGUR_IMAGE_URL_REGEX,
       async (_url: string, match: RegExpMatchArray) =>
         this.getOptimizedImgUrlFromMatch(match)
-    );
+    );*/
   }
 
   getOptimizedImgUrlFromMatch(match: RegExpMatchArray): string {
