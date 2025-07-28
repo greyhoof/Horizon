@@ -70,6 +70,10 @@
     get shouldShowMarker(): boolean {
       return core.state.settings.horizonShowGenderMarker;
     }
+
+    setTab(key: string) {
+      this.selectedTab = key;
+    }
   }
 </script>
 

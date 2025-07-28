@@ -176,7 +176,7 @@
             {{ l('chat.channels') }}</a
           >
 
-          <a href="#" @click.prevent="showRecent()" class="btn"
+          <a href="#" @click.prevent="showRecent(true)" class="btn"
             ><span class="fas fa-fw fa-history"></span> </a
           ><a
             href="#"
@@ -690,8 +690,13 @@
       (<CharacterSearch>this.$refs['searchDialog']).show();
     }
 
-    showRecent(): void {
+    showRecent(showChannels?: boolean): void {
       (<RecentConversations>this.$refs['recentDialog']).show();
+
+      //Not particularly elegant, but it allows us to open the second tab without changing other function calls
+      (<RecentConversations>this.$refs['recentDialog']).setTab(
+        showChannels ? '1' : '0'
+      );
     }
 
     showChannels(): void {
