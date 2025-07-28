@@ -4,7 +4,8 @@
     @submit="submit"
     ref="dialog"
     @open="load()"
-    dialogClass="w-100"
+    id="conversationAdSettings"
+    dialogClass="modal-70"
     :buttonText="l('conversationSettings.save')"
   >
     <div class="phased-out-warning">
@@ -165,7 +166,7 @@
 </script>
 
 <style lang="scss">
-  .w-100 {
+  #conversationAdSettings.w-100 {
     min-width: 70%;
   }
 

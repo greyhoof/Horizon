@@ -52,7 +52,7 @@
               role="button"
               class="userInfo-button-item"
               :title="l('admgr.open')"
-              @click.prevent="showAdCenter()"
+              @click.prevent="showAdLauncher()"
             >
               <i class="fa-solid fa-rectangle-ad fa-fw"></i>
             </a>

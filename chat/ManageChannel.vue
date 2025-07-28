@@ -4,7 +4,7 @@
     :action="l('manageChannel.action', channel.name)"
     :buttonText="l('manageChannel.submit')"
     @submit="submit"
-    dialogClass="w-100 modal-lg"
+    dialogClass="modal-70"
     @open="onOpen"
   >
     <div

@@ -5,7 +5,7 @@
     @submit="submit"
     @open="load()"
     id="settings"
-    dialogClass="w-100"
+    dialogClass="modal-70"
     iconClass="fas fa-user-gear"
   >
     <tabs
