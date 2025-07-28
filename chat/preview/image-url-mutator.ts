@@ -44,7 +44,7 @@ export class ImageUrlMutator {
         const userId = result.data.author_unique_id;
         const videoId = result.data.embed_product_id;
 
-        return `https://www.tiktokstalk.com/user/${userId}/${videoId}/`;
+        return `https://picuki.com/media/${videoId}`;
       }
     );
 
