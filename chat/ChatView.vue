@@ -280,17 +280,6 @@
     <image-preview ref="imagePreview"></image-preview>
     <add-pm-partner ref="addPmPartnerDialog"></add-pm-partner>
 
-    <modal
-      :buttons="false"
-      ref="profileAnalysis"
-      dialogClass="profile-analysis"
-    >
-      <profile-analysis></profile-analysis>
-      <template slot="title">
-        {{ ownCharacter.name }}
-        <a class="btn" @click="showProfileAnalyzer"><i class="fa fa-sync" /></a>
-      </template>
-    </modal>
     <quick-jump ref="quickJump"></quick-jump>
   </div>
 </template>
@@ -326,7 +315,6 @@
   import AdCenterDialog from './ads/AdCenter.vue';
   import AdLauncherDialog from './ads/AdLauncher.vue';
   import Modal from '../components/Modal.vue';
-  import ProfileAnalysis from '../learn/recommend/ProfileAnalysis.vue';
   import QuickJump from './QuickJump.vue';
 
   const unreadClasses = {
@@ -353,7 +341,6 @@
       adCenter: AdCenterDialog,
       adLauncher: AdLauncherDialog,
       modal: Modal,
-      'profile-analysis': ProfileAnalysis,
       'quick-jump': QuickJump
     }
   })

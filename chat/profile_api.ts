@@ -75,6 +75,7 @@ async function executeCharacterData(
     CharacterInfo & {
       badges: string[];
       customs_first: boolean;
+      is_self: boolean;
       character_list: { id: number; name: string }[];
       current_user: { inline_mode: number; animated_icons: boolean };
       custom_kinks: {
@@ -122,7 +123,7 @@ async function executeCharacterData(
   Utils.settings.animateEicons = core.state.settings.animatedEicons;
 
   const charData = {
-    is_self: false,
+    is_self: data.is_self,
     character: {
       id: data.id,
       name: data.name,

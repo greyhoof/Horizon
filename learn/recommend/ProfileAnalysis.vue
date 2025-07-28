@@ -1,5 +1,32 @@
 <template>
-  <div class="profile-analysis-wrapper" ref="profileAnalysisWrapper">
+  <div
+    id="match-report"
+    :class="{ 'match-report': true, minimized: isMinimized }"
+    class="profile-analysis-wrapper"
+    ref="profileAnalysisWrapper"
+  >
+    <a class="minimize-btn" @click.prevent="toggleMinimize()"
+      ><i
+        :class="{ fa: true, 'fa-plus': isMinimized, 'fa-minus': !isMinimized }"
+      ></i
+    ></a>
+    <div class="alert alert-info" role="alert">
+      <h4 class="alert-heading">Work in progress!</h4>
+      <p>
+        This version of the profile analysis is due for a rework. Our intention
+        is for it to work as more of an explanation of how the matcher sees your
+        profile, which things you'd match well (or poorly) with, etc.
+      </p>
+      <p>
+        For now, if this thing gets in the way, you can click the
+        <b>-</b> button on the top right to close it.
+      </p>
+      <hr />
+      <p class="mb-0">
+        As we develop this update more and more, it'll get done. Please hold on
+        for now though.
+      </p>
+    </div>
     <div v-if="!analyzing && !recommendations.length">
       <h3>Looking good!</h3>
       <p>
@@ -44,7 +71,7 @@
   </div>
 </template>
 <script lang="ts">
-  import { Component } from '@f-list/vue-ts';
+  import { Component, Hook, Prop } from '@f-list/vue-ts';
   import Vue from 'vue';
   import core from '../../chat/core';
   import {
@@ -59,13 +86,33 @@
     recommendations: ProfileRecommendation[] = [];
     analyzing = false;
 
+    isMinimized = false;
+
+    @Prop({ required: true })
+    readonly characterName: string;
+
+    @Prop({ required: true })
+    readonly characterId: number;
+    @Prop({ required: true })
+    @Hook('beforeMount')
+    async beforeMount(): Promise<void> {
+      this.isMinimized = !!(await core.settingsStore.get(
+        'hideProfileComparisonSummary'
+      ));
+    }
+
+    @Hook('mounted')
+    async onMounted(): void {
+      this.analyze();
+    }
+
     async analyze() {
       this.analyzing = true;
       this.recommendations = [];
 
       const char = await methods.characterData(
-        core.characters.ownProfile.character.name,
-        core.characters.ownProfile.character.id,
+        this.characterName,
+        this.characterId,
         true
       );
       const profile = new CharacterAnalysis(char.character);
@@ -74,6 +121,15 @@
       this.recommendations = await analyzer.analyze();
 
       this.analyzing = false;
+    }
+
+    async toggleMinimize(): Promise<void> {
+      this.isMinimized = !this.isMinimized;
+
+      await core.settingsStore.set(
+        'hideProfileComparisonSummary',
+        this.isMinimized
+      );
     }
   }
 </script>
