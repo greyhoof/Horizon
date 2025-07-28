@@ -25,15 +25,7 @@
           @mouseenter="selectedIndex = index"
         >
           <span class="result-icon">
-            <span
-              v-if="result.type === 'channel'"
-              class="fas fa-hashtag"
-            ></span>
-            <span
-              v-else-if="result.type === 'private'"
-              class="far fa-user-circle"
-            ></span>
-            <span v-else class="fas fa-home"></span>
+            <span :class="getResultIcon(result)"></span>
           </span>
           <span class="result-name"
             >{{ result.name }}
@@ -81,7 +73,7 @@
   interface SearchResult {
     key: string;
     name: string;
-    type: 'channel' | 'private' | 'console';
+    type: 'channel' | 'private' | 'friend' | 'bookmark' | 'recent' | 'console';
     conversation?: Conversation;
     description?: string;
   }
@@ -101,12 +93,7 @@
 
       const query = this.searchQuery.toLowerCase();
       return this.allResults
-        .filter(
-          result =>
-            result.name.toLowerCase().includes(query) ||
-            (result.description &&
-              result.description.toLowerCase().includes(query))
-        )
+        .filter(result => result.name.toLowerCase().includes(query))
         .slice(0, 10); // Limit to 10 results
     }
 
@@ -163,6 +150,58 @@
         });
       }
 
+      //we filter: active conversations
+      for (const friend of core.characters.friends
+        .slice()
+        .filter(x => core.conversations.getPrivate(x, true) === undefined)) {
+        results.push({
+          key: friend.name,
+          name: friend.name,
+          type: 'friend',
+          description: l('user.friend')
+        });
+      }
+
+      //we filter: online friends, and active conversations
+      for (const bookmark of core.characters.bookmarks
+        .slice()
+        .filter(x => core.characters.friends.indexOf(x) === -1)
+        .filter(x => core.conversations.getPrivate(x, true) === undefined)) {
+        results.push({
+          key: bookmark.name,
+          name: bookmark.name,
+          type: 'bookmark',
+          description: l('user.bookmark')
+        });
+      }
+
+      //We filter: online friends, online bookmarks, and active conversations
+      for (const recent of core.conversations.recent
+        .slice()
+        .filter(
+          x =>
+            !core.characters.bookmarks.some(
+              bookmark => bookmark.name === x.character
+            )
+        )
+        .filter(
+          x =>
+            !core.characters.friends.some(friend => friend.name === x.character)
+        )
+        .filter(
+          x =>
+            core.conversations.getPrivate(
+              core.characters.get(x.character),
+              true
+            ) === undefined
+        )) {
+        results.push({
+          key: recent.character,
+          name: recent.character,
+          type: 'recent',
+          description: l('quickJump.recent')
+        });
+      }
       // Sort by recent activity (unread first, then by last message time)
       results.sort((a, b) => {
         if (!a.conversation || !b.conversation) return 0;
@@ -283,6 +322,11 @@
     selectResult(result: SearchResult): void {
       if (result.conversation) {
         result.conversation.show();
+      } else {
+        //We don't have a conversation for this result, but since one was selected we open it
+        const character = core.characters.get(result.name);
+        const conversation = core.conversations.getPrivate(character);
+        conversation.show();
       }
       this.hide();
     }
@@ -305,6 +349,25 @@
       conversation.show();
 
       this.hide();
+    }
+
+    getResultIcon(result: SearchResult) {
+      switch (result.type) {
+        case 'console':
+          return 'fas fa-home';
+        case 'private':
+          return 'fas fa-comment';
+        case 'channel':
+          return 'fas fa-hashtag';
+        case 'friend':
+          return 'fas fa-user-group';
+        case 'bookmark':
+          return 'fas fa-bookmark';
+        case 'recent':
+          return 'fas fa-clock-rotate-left';
+        default:
+          return 'fas fa-comment';
+      }
     }
 
     @Watch('visible')
@@ -363,7 +426,6 @@
       }
 
       .quick-jump-results {
-        max-height: 400px;
         overflow-y: auto;
 
         .quick-jump-result {

@@ -127,6 +127,7 @@ const strings: { [key: string]: string | undefined } = {
   'user.ignore': 'Ignore',
   'user.unignore': 'Unignore',
   'user.hide': 'Hide ads',
+  'user.friend': 'Friend',
   'user.unhide': 'Unhide ads',
   'user.memo': 'View memo',
   'user.memo.action': 'Update memo',
@@ -579,6 +580,7 @@ Any existing FChat 3.0 data for this character will be overwritten.`,
   'quickJump.consoleDescription': 'Console tab',
   'quickJump.privateConversation': 'Private conversation',
   'quickJump.channel': 'Channel',
+  'quickJump.recent': 'Recent conversation',
   'quickJump.members': 'members'
 };
 
