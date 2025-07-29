@@ -4,6 +4,7 @@
     :action="'Delete character ' + name"
     :disabled="deleting"
     @submit.prevent="deleteCharacter()"
+    iconClass="fas fa-user-slash"
   >
     Are you sure you want to permanently delete {{ name }}?<br />
     Character deletion cannot be undone for any reason.

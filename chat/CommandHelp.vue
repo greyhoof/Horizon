@@ -4,6 +4,7 @@
     :buttons="false"
     :action="l('commands.help')"
     id="command-help"
+    iconClass="fas fa-question"
   >
     <div style="overflow: auto">
       <div v-for="command in filteredCommands">

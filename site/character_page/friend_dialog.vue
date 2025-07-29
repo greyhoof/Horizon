@@ -3,6 +3,7 @@
     :action="'Friends for ' + name"
     :buttons="false"
     dialog-class="modal-dialog-centered modal-lg"
+    iconClass="fas fa-user-group"
   >
     <div v-show="loading" class="alert alert-info">
       Loading friend information.

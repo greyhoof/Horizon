@@ -5,6 +5,7 @@
     @close="onClose"
     @submit="save"
     dialog-class="modal-lg modal-dialog-centered"
+    iconClass="fas fa-note-sticky"
   >
     <div class="form-group" v-if="editing">
       <textarea

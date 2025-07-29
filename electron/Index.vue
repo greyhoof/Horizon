@@ -210,6 +210,7 @@
       ref="fixLogsModal"
       @submit="fixLogs"
       buttonClass="btn-danger"
+      iconClass="fas fa-file-half-dashed"
     >
       <span style="white-space: pre-wrap">{{ l('fixLogs.text') }}</span>
       <div class="form-group">

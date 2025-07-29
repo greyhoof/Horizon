@@ -11,9 +11,10 @@
       <div class="modal-dialog modal-xl" style="height: 100vh">
         <div class="modal-content" style="height: 100vh">
           <div class="modal-header">
-            <h4 class="modal-title" style="-webkit-app-region: drag">
+            <h5 class="modal-title" style="-webkit-app-region: drag">
+              <i class="fa-solid fa-fw fa-gear"></i>
               {{ l('settings.action') }}
-            </h4>
+            </h5>
             <button
               type="button"
               class="close"
@@ -350,22 +351,25 @@
                 </label>
               </div>
             </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                @click.stop="close()"
-              >
-                Close
-              </button>
-              <button
-                type="button"
-                class="btn btn-primary"
-                @click.stop="submit()"
-              >
-                Save changes
-              </button>
-            </div>
+          </div>
+          <div
+            style="padding: 0.5rem 0.75rem 1rem 0.75rem"
+            class="modal-footer"
+          >
+            <button
+              type="button"
+              class="btn btn-secondary"
+              @click.stop="close()"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click.stop="submit()"
+            >
+              Save changes
+            </button>
           </div>
         </div>
       </div>
@@ -575,6 +579,10 @@
   .modal-body .modal-footer {
     height: 52px;
     min-height: 52px;
+  }
+
+  .modal-footer {
+    padding-bottom: 1rem;
   }
 
   .modal-body .nav-tabs-scroll {

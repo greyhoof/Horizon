@@ -4,6 +4,7 @@
     :action="'Duplicate character' + name"
     :disabled="duplicating || checking"
     @submit.prevent="duplicate()"
+    iconClass="fas fa-clone"
   >
     <p>
       This will duplicate the character, kinks, infotags, customs, subkinks and

@@ -8,6 +8,7 @@
     dialogClass="w-100"
     class="adLauncher"
     :buttonText="'Start Posting Ads'"
+    iconClass="fas fa-rectangle-ad"
   >
     <div v-if="hasAds()">
       <h5>Ad Tags</h5>

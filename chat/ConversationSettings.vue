@@ -6,6 +6,7 @@
     @open="load()"
     dialogClass="w-100"
     :buttonText="l('conversationSettings.save')"
+    iconClass="fas fa-gear"
   >
     <div class="form-group">
       <label class="control-label" :for="'notify' + conversation.key">{{

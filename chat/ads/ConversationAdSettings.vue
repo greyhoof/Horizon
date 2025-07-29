@@ -7,6 +7,7 @@
     id="conversationAdSettings"
     dialogClass="modal-70"
     :buttonText="l('conversationSettings.save')"
+    iconClass="fas fa-rectangle-ad"
   >
     <div class="phased-out-warning">
       <h4>Prepare to Move</h4>

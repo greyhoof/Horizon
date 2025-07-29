@@ -4,6 +4,7 @@
     @submit.prevent="submit()"
     :disabled="submitting"
     dialogClass="modal-lg"
+    iconClass="fas fa-triangle-exclamation"
   >
     <div class="alert alert-danger" v-show="error">{{ error }}</div>
     <div ref="caption"></div>

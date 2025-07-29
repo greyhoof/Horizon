@@ -5,6 +5,7 @@
     @submit="submit"
     dialogClass="ads-dialog"
     buttonText="Open"
+    iconClass="fas fa-user-plus"
   >
     <div>
       <input

@@ -6,6 +6,7 @@
     @open="load"
     dialogClass="modal-70"
     :buttonText="'Save'"
+    iconClass="fas fa-file-pen"
   >
     <div class="form-group ad-list" v-for="(ad, index) in ads">
       <label :for="'adm-content-' + index" class="control-label"

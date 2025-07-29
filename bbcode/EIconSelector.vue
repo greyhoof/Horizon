@@ -5,6 +5,7 @@
     :buttons="false"
     @close="close"
     dialogClass="eicon-selector big"
+    iconClass="fas fa-face-smile"
   >
     <div class="eicon-selector-ui">
       <div
