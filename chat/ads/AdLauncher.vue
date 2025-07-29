@@ -12,7 +12,7 @@
   >
     <div v-if="hasAds()">
       <h5>Ad Tags</h5>
-      <form style="padding-bottom: 1em">
+      <div style="padding-bottom: 1em">
         <div class="form-group">
           <p>Serve ads that match any one of these tags:</p>
 
@@ -32,7 +32,7 @@
         <button class="btn btn-outline-secondary" @click="openAdEditor()">
           <i class="fa-solid fa-pencil"></i> Edit Ads
         </button>
-      </form>
+      </div>
 
       <h5>Target Channels</h5>
       <div class="form-group">
