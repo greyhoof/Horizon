@@ -408,6 +408,9 @@
             border: none !important;
             background-color: transparent !important;
           }
+          .indentText {
+            padding-left: 0px;
+          }
 
           .character-kinks-block {
             .kink-block-no {
