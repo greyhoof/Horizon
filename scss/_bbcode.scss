@@ -78,6 +78,27 @@ div.indentText {
   padding-left: 5%;
 }
 
+@include media-breakpoint-up(sm) {
+  div.indentText {
+    padding-left: 0%;
+  }
+}
+@include media-breakpoint-up(md) {
+  div.indentText {
+    padding-left: 1%;
+  }
+}
+@include media-breakpoint-up(lg) {
+  div.indentText {
+    padding-left: 2%;
+  }
+}
+@include media-breakpoint-up(xl) {
+  div.indentText {
+    padding-left: 5%;
+  }
+}
+
 .character-avatar {
   display: inline;
   height: 100px;
