@@ -5,7 +5,8 @@
     @submit="submit"
     @open="load()"
     id="settings"
-    dialogClass="w-100"
+    dialogClass="modal-70"
+    iconClass="fas fa-user-gear"
   >
     <tabs
       style="flex-shrink: 0; margin-bottom: 10px"

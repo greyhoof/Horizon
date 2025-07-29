@@ -10,21 +10,30 @@
     :buttonText="'Start Posting Ads'"
   >
     <div v-if="hasAds()">
-      <h4>Ad Tags</h4>
-      <div class="form-group">
-        <p>Serve ads that match any one of these tags:</p>
+      <h5>Ad Tags</h5>
+      <form style="padding-bottom: 1em">
+        <div class="form-group">
+          <p>Serve ads that match any one of these tags:</p>
 
-        <label
-          class="control-label"
-          :for="`adr-tag-${index}`"
-          v-for="(tag, index) in tags"
-        >
-          <input type="checkbox" v-model="tag.value" :id="`adr-tag-${index}`" />
-          {{ tag.title }}
-        </label>
-      </div>
+          <label
+            class="control-label"
+            :for="`adr-tag-${index}`"
+            v-for="(tag, index) in tags"
+          >
+            <input
+              type="checkbox"
+              v-model="tag.value"
+              :id="`adr-tag-${index}`"
+            />
+            {{ tag.title }}
+          </label>
+        </div>
+        <button class="btn btn-outline-secondary" @click="openAdEditor()">
+          <i class="fa-solid fa-pencil"></i> Edit Ads
+        </button>
+      </form>
 
-      <h4>Target Channels</h4>
+      <h5>Target Channels</h5>
       <div class="form-group">
         <p>Serve ads on these channels:</p>
 
@@ -56,7 +65,7 @@
         </label>
       </div>
 
-      <h4>Post Order</h4>
+      <h5>Post Order</h5>
       <div class="form-group">
         <label class="control-label" for="adOrderRandom">
           <input
@@ -78,7 +87,7 @@
         </label>
       </div>
 
-      <h4>Campaign</h4>
+      <h5>Campaign</h5>
       <div class="form-group">
         <label class="control-label" for="timeoutMinutes"> Timeout </label>
 
@@ -98,12 +107,12 @@
       </p>
     </div>
     <div v-else>
-      <h4>No Ads to Post!</h4>
+      <h5>No Ads to Post!</h5>
 
       <p>
         Use the
         <button class="btn btn-outline-secondary" @click="openAdEditor()">
-          Ad Editor
+          <i class="fa-solid fa-pencil"></i> Ad Editor
         </button>
         to create some ads first, then return here to post them.
       </p>

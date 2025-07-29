@@ -5,7 +5,8 @@
     buttonText="Select"
     @open="onMounted()"
     @submit="selectStatus"
-    dialogClass="w-100 modal-lg"
+    dialogClass="w-100 modal-70"
+    iconClass="fa-solid fa-clock-rotate-left"
   >
     <form class="status-picker" v-if="history.length > 0">
       <div

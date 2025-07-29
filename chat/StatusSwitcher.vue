@@ -3,7 +3,8 @@
     :action="l('chat.setStatus')"
     @submit="setStatus"
     @close="reset"
-    dialogClass="w-100 modal-lg statusEditor"
+    dialogClass="w-100 modal-70 statusEditor"
+    :iconClass="getStatusIcon(status)"
   >
     <div class="form-group" id="statusSelector">
       <label class="control-label">{{ l('chat.setStatus.status') }}</label>

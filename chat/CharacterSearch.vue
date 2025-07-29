@@ -2,9 +2,10 @@
   <modal
     :action="l('characterSearch.action')"
     @submit.prevent="submit()"
-    dialogClass="w-100"
+    dialogClass="modal-70"
     :buttonText="state === 'results' ? l('characterSearch.again') : undefined"
     class="character-search"
+    iconClass="fas fa-magnifying-glass"
   >
     <div v-if="options && state === 'search'">
       <div v-show="error" class="alert alert-danger">{{ error }}</div>

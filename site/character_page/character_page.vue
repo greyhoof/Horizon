@@ -107,10 +107,18 @@
             <div class="card-body">
               <div class="tab-content">
                 <div role="tabpanel" v-show="tab === '0'" id="overview">
-                  <match-report
-                    :characterMatch="characterMatch"
-                    v-if="shouldShowMatch()"
-                  ></match-report>
+                  <template v-if="shouldShowMatch()">
+                    <profile-analysis
+                      :characterName="character.character.name"
+                      :characterId="character.character.id"
+                      v-if="character.is_self"
+                    >
+                    </profile-analysis>
+                    <match-report
+                      :characterMatch="characterMatch"
+                      v-else
+                    ></match-report>
+                  </template>
 
                   <div
                     style="margin-bottom: 10px"
@@ -217,6 +225,7 @@
   import core from '../../chat/core';
   import { Matcher, MatchReport } from '../../learn/matcher';
   import MatchReportView from './match-report.vue';
+  import ProfileAnalysis from '../../learn/recommend/ProfileAnalysis.vue';
   import { CharacterImage, SimpleCharacter } from '../../interfaces';
 
   const CHARACTER_CACHE_EXPIRE = 7 * 24 * 60 * 60 * 1000; // 7 days (milliseconds)
@@ -241,6 +250,7 @@
       'character-kinks': CharacterKinksView,
       'character-recon': ReconView,
       'match-report': MatchReportView,
+      'profile-analysis': ProfileAnalysis,
       bbcode: BBCodeView(standardParser)
     }
   })
@@ -896,6 +906,9 @@
       .minimize-btn {
         opacity: 0.6;
       }
+    }
+    &.profile-analysis-wrapper {
+      display: block;
     }
 
     h3 {

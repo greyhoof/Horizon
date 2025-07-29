@@ -2,6 +2,7 @@
   <modal
     :buttons="false"
     :action="l('chat.recentConversations')"
+    iconClass="fas fa-clock-rotate-left"
     dialogClass="w-100 modal-lg"
   >
     <tabs
@@ -68,6 +69,10 @@
 
     get shouldShowMarker(): boolean {
       return core.state.settings.horizonShowGenderMarker;
+    }
+
+    setTab(key: string) {
+      this.selectedTab = key;
     }
   }
 </script>

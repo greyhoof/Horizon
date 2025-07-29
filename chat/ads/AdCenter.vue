@@ -4,7 +4,7 @@
     @submit="submit"
     ref="dialog"
     @open="load"
-    dialogClass="w-100"
+    dialogClass="modal-70"
     :buttonText="'Save'"
   >
     <div class="form-group ad-list" v-for="(ad, index) in ads">
@@ -131,10 +131,6 @@
 
   .ad-list .bbcode-toolbar .eicon-selector {
     top: 30px !important;
-  }
-
-  .w-100 {
-    min-width: 70%;
   }
 
   .form-group.ad-list {
