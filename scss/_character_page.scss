@@ -50,7 +50,7 @@
 .infotags {
   > .infotag-group {
     .infotag-title {
-      font-size: $h4-font-size;
+      font-size: $h5-font-size;
     }
   }
 }
@@ -88,6 +88,12 @@
 
   .subkink-list.closed {
     display: none;
+  }
+
+  .custom-kink-icon {
+    position: absolute;
+    right: 0.2em;
+    top: 0.5em;
   }
 
   &.subkink {

@@ -413,7 +413,7 @@ $genders: (
 .profile-viewer {
   width: 98%;
   max-width: 98%;
-  .modal-content {
+  & > .modal-content {
     height: 100%;
   }
 }
