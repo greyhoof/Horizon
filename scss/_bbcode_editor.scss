@@ -4,6 +4,7 @@
     &:focus {
       box-shadow: 0 0 0 ($input-btn-focus-width / 2) $input-btn-focus-color;
     }
+    resize: none;
   }
 }
 

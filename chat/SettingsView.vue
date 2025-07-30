@@ -626,7 +626,7 @@
         <editor
           v-model="risingFilter.autoReplyCustomMessage"
           :hasToolbar="true"
-          class="form-control"
+          :classes="'form-control'"
           rows="5"
           :disabled="!risingFilter.autoReplyCustom || !risingFilter.autoReply"
           placeholder="Put your custom message for automatic replies here"

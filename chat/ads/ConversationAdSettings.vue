@@ -58,8 +58,8 @@
       <editor
         :id="'ad' + conversation.key + '-' + index"
         v-model="ads[index]"
+        :classes="'form-control'"
         :hasToolbar="true"
-        class="form-control"
         :maxlength="core.connection.vars.lfrp_max"
       >
       </editor>

@@ -29,7 +29,7 @@
         :id="'adm-content-' + index"
         v-model="ad.content"
         :hasToolbar="true"
-        class="form-control"
+        :classes="'form-control'"
         :maxlength="core.connection.vars.lfrp_max"
         :disabled="ad.disabled"
       >
@@ -179,7 +179,6 @@
     }
 
     .vue-input-tag-wrapper {
-      margin: 0.375rem 0.75rem;
       width: auto;
       height: auto;
       padding-bottom: 0;

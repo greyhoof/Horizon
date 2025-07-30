@@ -538,6 +538,10 @@
     }
   }
 
+  .bbcode-editor {
+    resize: none;
+  }
+
   .bbcode-toolbar {
     .toolbar-buttons {
       .btn.toggled {
