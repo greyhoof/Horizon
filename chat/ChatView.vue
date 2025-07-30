@@ -102,18 +102,24 @@
         </div>
 
         <div style="clear: both" class="conversationList-header d-flex">
+          <span class="flex-grow-1">
+            <a href="#" @click.prevent="showAddPmPartner()" class="btn">
+              {{ l('chat.pms') }}</a
+            >
+          </span>
+
           <a
             href="#"
-            @click.prevent="showAddPmPartner()"
-            class="btn flex-grow-1"
-          >
-            {{ l('chat.pms') }}</a
-          >
-
-          <a href="#" @click.prevent="showSearch()" class="btn"
+            @click.prevent="showSearch()"
+            :title="l('characterSearch.open')"
+            class="btn"
             ><span class="fas fa-fw fa-search"></span>
           </a>
-          <a href="#" @click.prevent="showRecent()" class="btn"
+          <a
+            href="#"
+            @click.prevent="showRecent()"
+            :title="l('chat.recentConversations')"
+            class="btn"
             ><span class="fas fa-fw fa-history"></span> </a
           ><a
             :class="{
@@ -123,6 +129,7 @@
             }"
             href="#"
             @click.prevent="showQuickJump()"
+            :title="l('quickJump.action')"
             class="btn"
             ><span class="fas fa-fw fa-shuffle"></span
           ></a>
@@ -172,16 +179,23 @@
         </div>
 
         <div style="clear: both" class="conversationList-header d-flex">
-          <a href="#" @click.prevent="showChannels()" class="btn flex-grow-1">
-            {{ l('chat.channels') }}</a
-          >
+          <span class="flex-grow-1">
+            <a href="#" @click.prevent="showChannels()" class="btn">
+              {{ l('chat.channels') }}</a
+            >
+          </span>
 
-          <a href="#" @click.prevent="showRecent(true)" class="btn"
+          <a
+            href="#"
+            @click.prevent="showRecent(true)"
+            class="btn"
+            :title="l('chat.recentConversations')"
             ><span class="fas fa-fw fa-history"></span> </a
           ><a
             href="#"
             @click.prevent="showChannels()"
             class="btn"
+            :title="l('chat.channelJoin')"
             :class="{
               glowing:
                 conversations.channelConversations.length === 0 &&
@@ -930,7 +944,6 @@
       display: block;
       margin-top: 10px;
       .btn {
-        display: block;
         font-weight: 600;
       }
     }
