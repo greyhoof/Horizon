@@ -242,6 +242,11 @@ Current log location: {1}`,
   'settings.browserOptionBrowse': 'Browse',
   'settings.browserOptionSave': 'Save',
   'settings.browserOptionReset': 'Reset to default',
+  'settings.customCss': 'Custom user stylesheet (Experimental)',
+  'settings.customCss.enabled': 'Use custom CSS',
+  'settings.customCss.css': 'Custom CSS',
+  'settings.customCss.warning':
+    "Warning: Don't enter anything in here from people you do not fully trust.",
   'settings.risingDisableWindowsHighContrast':
     'Disable Windows high-contrast mode',
   'settings.system': 'System',

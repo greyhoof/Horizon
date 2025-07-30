@@ -177,6 +177,7 @@
     view: Electron.BrowserView;
     hasNew: boolean;
     avatarUrl?: string;
+    insertedCssKey?: string;
   }
 
   // console.log(require('./build/tray.png').default);
@@ -304,6 +305,30 @@
           // tab.avatarUrl = url;
         }
       );
+      electron.ipcRenderer.on(
+        'user-css-updated',
+        async (
+          _e: Electron.IpcRendererEvent,
+          styleSheet: string,
+          useCustomCSS: boolean
+        ) => {
+          for (const tab of this.tabs) {
+            //We always clear the existing CSS, either because we need to inject a new stylesheet, or because we don't want any CSS anymore
+            if (tab.insertedCssKey) {
+              await tab.view.webContents.removeInsertedCSS(tab.insertedCssKey);
+            }
+            if (useCustomCSS) {
+              tab.insertedCssKey = await tab.view.webContents.insertCSS(
+                `html {${this.settings.horizonCustomCss}}`,
+                {
+                  cssOrigin: 'author'
+                }
+              );
+            }
+          }
+        }
+      );
+
       electron.ipcRenderer.on(
         'disconnect',
         (_e: Electron.IpcRendererEvent, id: number) => {
@@ -534,6 +559,17 @@
       log.debug('init.window.tab.add.load-index.complete', indexUrl);
 
       tab.view.setBounds(getWindowBounds());
+
+      if (this.settings.horizonCustomCssEnabled) {
+        tab.insertedCssKey = await tab.view.webContents.insertCSS(
+          `html {${this.settings.horizonCustomCss}}`,
+          {
+            cssOrigin: 'author'
+          }
+        );
+        log.debug('init.window.tab.add.cssInjected');
+      }
+
       this.lockTab = false;
 
       log.debug('init.window.tab.add.done');

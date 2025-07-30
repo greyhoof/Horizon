@@ -634,9 +634,20 @@ function onReady(): void {
     (_e, _options: GeneralSettings) => {
       log.info('main.settings.update.message', _options);
       if (_options) {
+        let newCss =
+          settings.horizonCustomCssEnabled !==
+            _options.horizonCustomCssEnabled ||
+          settings.horizonCustomCss !== _options.horizonCustomCss;
         Object.assign(settings, _options);
         //Now we save it to a file
         setGeneralSettings(_options);
+        //No need to bother with an expensive operation if we don't change anything related to CSS settings
+        if (newCss) {
+          browserWindows.updateCustomCssAllWindows(
+            settings.horizonCustomCss,
+            settings.horizonCustomCssEnabled
+          );
+        }
       }
     }
   );

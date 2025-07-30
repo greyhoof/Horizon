@@ -349,6 +349,34 @@
                     l('settings.browserOptionArgumentsHelp')
                   }}</small>
                 </label>
+                <h5>
+                  {{ l('settings.customCss') }}
+                </h5>
+
+                <div class="form-group">
+                  <label class="control-label" for="customCssEnabled">
+                    <input
+                      type="checkbox"
+                      id="customCss"
+                      v-model="settings.horizonCustomCssEnabled"
+                    />
+                    {{ l('settings.customCss.enabled') }}
+                  </label>
+
+                  <label for="customCss" class="control-label label-full"
+                    >{{ l('settings.customCss.css') }}
+                    <textarea
+                      class="form-control textarea-code"
+                      id="customCss"
+                      v-model="settings.horizonCustomCss"
+                      :disabled="!settings.horizonCustomCssEnabled"
+                      rows="3"
+                    ></textarea>
+                    <small class="form-text text-warning">{{
+                      l('settings.customCss.warning')
+                    }}</small>
+                  </label>
+                </div>
               </div>
             </div>
           </div>
@@ -573,6 +601,10 @@
     height: 100%;
     display: flex;
     flex-flow: column;
+  }
+
+  textarea.textarea-code {
+    font-family: monospace;
   }
 
   /*This override exists because we allow the user to resize the window, which potentially resizes the footer otherwise*/
