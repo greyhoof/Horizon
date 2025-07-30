@@ -51,10 +51,10 @@
       </div>
     </div>
     <div class="form-row mt-3" :class="{ highlighting: !!highlightGroup }">
-      <div class="col-sm-6 col-lg-3 kink-block-favorite">
+      <div class="col-sm-6 col-lg-3 kink-block-favorite kink-block">
         <div class="card bg-light">
-          <div class="card-header">
-            <h4>Favorites</h4>
+          <div class="card-header border-bottom border-info">
+            <h5>Favorites</h5>
           </div>
           <div class="card-body">
             <kink
@@ -68,10 +68,10 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-6 col-lg-3 kink-block-yes">
+      <div class="col-sm-6 col-lg-3 kink-block-yes kink-block">
         <div class="card bg-light">
-          <div class="card-header">
-            <h4>Yes</h4>
+          <div class="card-header border-bottom border-success">
+            <h5>Yes</h5>
           </div>
           <div class="card-body">
             <kink
@@ -85,10 +85,10 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-6 col-lg-3 kink-block-maybe">
+      <div class="col-sm-6 col-lg-3 kink-block-maybe kink-block">
         <div class="card bg-light">
-          <div class="card-header">
-            <h4>Maybe</h4>
+          <div class="card-header border-bottom border-warning">
+            <h5>Maybe</h5>
           </div>
           <div class="card-body">
             <kink
@@ -102,10 +102,10 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-6 col-lg-3 kink-block-no">
+      <div class="col-sm-6 col-lg-3 kink-block-no kink-block">
         <div class="card bg-light">
-          <div class="card-header">
-            <h4>No</h4>
+          <div class="card-header border-bottom border-danger">
+            <h5>No</h5>
           </div>
           <div class="card-body">
             <kink

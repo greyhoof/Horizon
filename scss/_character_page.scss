@@ -77,6 +77,12 @@
   }
 }
 
+.kink-block {
+  & .card-header {
+    padding: 0.4em 0.5em 0.4em 0.5em;
+  }
+}
+
 .character-kink {
   position: relative;
   .subkink-list {
