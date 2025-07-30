@@ -22,19 +22,17 @@
         class="row justify-content-between flex-wrap character-links-block"
       >
         <template v-if="character.is_self">
-          <a
-            :href="editUrl"
-            class="edit-link btn btn-outline-secondary col-3 col-md-6"
+          <a :href="editUrl" class="edit-link btn btn-outline-secondary col-3"
             ><i class="fa fa-fw fa-pencil-alt"></i
           ></a>
           <a
             @click="showDelete"
-            class="delete-link btn btn-outline-danger col-3 col-md-6"
+            class="delete-link btn btn-outline-danger col-3"
             ><i class="fa fa-fw fa-trash"></i
           ></a>
           <a
             @click="showDuplicate()"
-            class="duplicate-link btn btn-outline-secondary col-3 col-md-6"
+            class="duplicate-link btn btn-outline-secondary col-3"
             ><i class="fa fa-fw fa-copy"></i
           ></a>
         </template>
@@ -48,7 +46,7 @@
             <a
               @click.prevent="toggleBookmark()"
               href="#"
-              class="btn col-3 col-md-6"
+              class="btn col-3"
               :class="{
                 'btn-outline-success': character.bookmarked,
                 'btn-outline-secondary': !character.bookmarked
@@ -71,14 +69,14 @@
           <a
             href="#"
             @click.prevent="showFriends()"
-            class="friend-link btn btn-outline-secondary col-3 col-md-6"
+            class="friend-link btn btn-outline-secondary col-3"
             ><i class="fa fa-fw fa-user-plus"></i
           ></a>
           <a
             href="#"
             v-if="!oldApi"
             @click.prevent="showReport()"
-            class="report-link btn btn-outline-warning col-3 col-md-6"
+            class="report-link btn btn-outline-warning col-3"
           >
             <i class="fa fa-fw fa-exclamation-triangle"></i
           ></a>
@@ -86,13 +84,13 @@
         <a
           href="#"
           @click.prevent="showMemo()"
-          class="memo-link btn btn-outline-secondary col-3 col-md-6"
+          class="memo-link btn btn-outline-secondary col-3"
           ><i class="far fa-sticky-note fa-fw"></i
         ></a>
         <a
           v-if="authenticated && !character.is_self"
           :href="noteUrl"
-          class="character-page-note-link btn-outline-secondary col-3 col-md-6 btn"
+          class="character-page-note-link btn-outline-secondary col-3 btn"
           style="padding: 0 4px"
         >
           <i class="far fa-envelope fa-fw"></i
