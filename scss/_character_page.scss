@@ -137,8 +137,10 @@
 
 #character-page-sidebar {
   height: 100%;
-  .btn {
+  .character-links-block .btn {
     padding: 2px 4px;
+    font-size: larger;
+    border: none;
   }
 }
 
