@@ -1,0 +1,52 @@
+.purpleText,
+.purpleNameText {
+  @include text-outline(#306);
+}
+
+html {
+  body {
+    font-family: 'Verdana', helvetica, 'Arial', 'sans-serif';
+  }
+
+  input.form-control,
+  input.form-control:hover,
+  input.form-control:focus,
+  input.form-control:active {
+    all: unset !important;
+    display: inline-block;
+    background-color: #fff !important;
+    color: #000 !important;
+  }
+}
+* {
+  &::-webkit-scrollbar {
+    display: none; // Hides the custom scrollbar
+  }
+
+  // Optionally, you can also reset the scrollbar track and thumb
+  &::-webkit-scrollbar-track {
+    background: none; // Resets the track to default
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: none; // Resets the thumb to default
+  }
+
+  .hidden-scrollbar {
+    &::-webkit-scrollbar {
+      display: initial; // Hides the custom scrollbar
+      width: 12px;
+    }
+
+    // Optionally, you can also reset the scrollbar track and thumb
+    &::-webkit-scrollbar-track {
+      background: initial; // Resets the track to default
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: initial; // Resets the thumb to default
+    }
+  }
+}
+
+$blue-color: #06f;

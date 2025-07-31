@@ -193,6 +193,7 @@ export class StandardBBCodeParser extends CoreBBCodeParser {
             });
           }
           body.style.height = `${body.scrollHeight}px`;
+          headerText.className = `card-header bbcode-collapse-header bbcode-collapse-header-${isCollapsed ? 'up' : 'down'}`;
           icon.className = `fas fa-chevron-${isCollapsed ? 'up' : 'down'}`;
         });
         parent.appendChild(outer);
