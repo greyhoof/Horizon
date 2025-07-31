@@ -7,16 +7,17 @@
     @mouseover.stop="showTooltip = true"
     @mouseout.stop="showTooltip = false"
   >
-    <i
+    <span class="kink-name">{{ kink.name }}</span
+    ><i
       v-show="kink.hasSubkinks"
-      class="fa"
+      class="fa custom-kink-icon"
+      style="float: right"
       :class="{ 'fa-minus': !listClosed, 'fa-plus': listClosed }"
     ></i>
     <i
       v-show="!kink.hasSubkinks && kink.isCustom"
       class="far custom-kink-icon"
     ></i>
-    <span class="kink-name">{{ kink.name }}</span>
     <span class="kink-custom-desc" v-if="kink.isCustom && expandedCustom">{{
       kink.description
     }}</span>

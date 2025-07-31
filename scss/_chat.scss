@@ -29,6 +29,20 @@
 .has-new {
   background-color: theme-color-level('danger', 4) !important;
 }
+@keyframes throb {
+  0% {
+    background-color: $body-bg;
+  }
+  65% {
+    background-color: $gray-200;
+  }
+  100% {
+    background-color: $body-bg;
+  }
+}
+.throbber {
+  animation: throb 2s infinite;
+}
 
 .overlay-disable {
   position: absolute;
@@ -399,6 +413,9 @@ $genders: (
 .profile-viewer {
   width: 98%;
   max-width: 98%;
+  & > .modal-content {
+    height: 100%;
+  }
 }
 
 #window-tabs {

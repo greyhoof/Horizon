@@ -5,29 +5,38 @@
     @touchstart="contextMenu"
     @touchend="contextMenu"
   >
-    <div class="compare-highlight-block d-flex justify-content-between">
-      <div class="expand-custom-kinks-block form-inline">
+    <div class="compare-highlight-block row justify-content-between">
+      <div class="expand-custom-kinks-block col-12 col-lg-4 col-xl-2">
         <button
-          class="btn btn-primary"
+          class="btn btn-primary form-control"
           @click="toggleExpandedCustomKinks"
           :disabled="loading"
         >
-          {{ expandedCustoms ? 'Collapse' : 'Expand' }} Custom Kinks
+          <i
+            class="fa-solid"
+            :class="expandedCustoms ? 'fa-chevron-up' : 'fa-chevron-down'"
+          ></i>
+          {{ expandedCustoms ? 'Collapse' : 'Expand' }}
         </button>
       </div>
 
-      <div v-if="shared.authenticated" class="quick-compare-block form-inline">
+      <div
+        v-if="shared.authenticated"
+        class="input-group quick-compare-block col-12 col-lg-4 col-xl-3"
+      >
         <character-select v-model="characterToCompare"></character-select>
-        <button
-          class="btn btn-outline-secondary"
-          @click="compareKinks()"
-          :disabled="loading || !characterToCompare"
-        >
-          {{ compareButtonText }}
-        </button>
+        <div class="input-group-append">
+          <button
+            class="btn btn-outline-secondary"
+            @click="compareKinks()"
+            :disabled="loading || !characterToCompare"
+          >
+            {{ compareButtonText }}
+          </button>
+        </div>
       </div>
 
-      <div class="form-inline">
+      <div class="col-12 col-lg-4 col-xl-2">
         <select v-model="highlightGroup" class="form-control">
           <option :value="undefined">None</option>
           <option
@@ -42,10 +51,10 @@
       </div>
     </div>
     <div class="form-row mt-3" :class="{ highlighting: !!highlightGroup }">
-      <div class="col-sm-6 col-lg-3 kink-block-favorite">
+      <div class="col-sm-6 col-lg-3 kink-block-favorite kink-block">
         <div class="card bg-light">
-          <div class="card-header">
-            <h4>Favorites</h4>
+          <div class="card-header border-bottom border-info">
+            <h5>Favorites</h5>
           </div>
           <div class="card-body">
             <kink
@@ -59,10 +68,10 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-6 col-lg-3 kink-block-yes">
+      <div class="col-sm-6 col-lg-3 kink-block-yes kink-block">
         <div class="card bg-light">
-          <div class="card-header">
-            <h4>Yes</h4>
+          <div class="card-header border-bottom border-success">
+            <h5>Yes</h5>
           </div>
           <div class="card-body">
             <kink
@@ -76,10 +85,10 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-6 col-lg-3 kink-block-maybe">
+      <div class="col-sm-6 col-lg-3 kink-block-maybe kink-block">
         <div class="card bg-light">
-          <div class="card-header">
-            <h4>Maybe</h4>
+          <div class="card-header border-bottom border-warning">
+            <h5>Maybe</h5>
           </div>
           <div class="card-body">
             <kink
@@ -93,10 +102,10 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-6 col-lg-3 kink-block-no">
+      <div class="col-sm-6 col-lg-3 kink-block-no kink-block">
         <div class="card bg-light">
-          <div class="card-header">
-            <h4>No</h4>
+          <div class="card-header border-bottom border-danger">
+            <h5>No</h5>
           </div>
           <div class="card-body">
             <kink

@@ -1,7 +1,7 @@
 <template>
   <div class="infotags row">
     <div
-      class="infotag-group col-sm-3"
+      class="infotag-group col-sm-6 col-lg-3"
       v-for="group in groups"
       :key="group.id"
       style="margin-top: 5px"

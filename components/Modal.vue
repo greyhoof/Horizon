@@ -33,7 +33,7 @@
           </div>
           <div
             class="modal-body hidden-scrollbar"
-            style="overflow: auto; -webkit-overflow-scrolling: auto"
+            style="overflow-x: auto; -webkit-overflow-scrolling: auto"
             tabindex="-1"
           >
             <slot></slot>
