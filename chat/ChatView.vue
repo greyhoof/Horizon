@@ -241,7 +241,15 @@
         </div>
       </div>
     </sidebar>
-    <div style="display: flex; flex-direction: column; flex: 1; min-width: 0">
+    <div
+      style="
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-width: 0;
+        padding-bottom: 10px;
+      "
+    >
       <div id="quick-switcher" class="list-group">
         <a
           :class="getClasses(conversations.consoleTab)"

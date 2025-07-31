@@ -2,7 +2,7 @@
   <div
     @mouseover="onMouseOver"
     id="page"
-    style="position: relative; padding: 5px 10px 10px"
+    style="position: relative; padding-top: 5px"
     :class="getThemeClass()"
     @auxclick.prevent
     @click.middle="unpinUrlPreview"
