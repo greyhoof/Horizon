@@ -1,11 +1,7 @@
 <template>
   <div id="character-page-sidebar" class="card bg-light">
     <div class="card-body">
-      <img
-        :src="getAvatarUrl()"
-        class="character-avatar"
-        style="width: 100%; height: auto"
-      />
+      <img :src="getAvatarUrl()" class="character-page-avatar" />
 
       <div v-if="character.character.title" class="character-title">
         {{ character.character.title }}
