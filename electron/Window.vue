@@ -652,9 +652,6 @@
         padding: 2px 10px;
         height: 100%;
         align-items: center;
-        &:first-child {
-          border-top-left-radius: 0;
-        }
       }
 
       img {

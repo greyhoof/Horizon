@@ -66,6 +66,34 @@ input:checked {
   border-color: $primary;
 }
 
+.nav {
+  margin-bottom: 0.1rem;
+}
+
+.nav-tabs .nav-link {
+  border-top-right-radius: 0.7rem;
+  border-top-left-radius: 0.7rem;
+  border-bottom: 1px solid $gray-300;
+}
+
+#window-tabs .nav-tabs .nav-link.active {
+  border-bottom: 1px solid $body-bg;
+}
+
+.nav-tabs .nav-link.active {
+  background: none;
+  border-bottom: none;
+}
+
+.nav-tabs li:first-child a {
+  //border-left: 0;
+  border-top-left-radius: 0;
+}
+
+.nav-tabs {
+  border-bottom: none;
+}
+
 @font-face {
   font-family: 'OpenMoji';
   //The url is checked from the theme file, so we have to use this absolutely bonkers relative path.

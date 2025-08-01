@@ -1090,6 +1090,9 @@
     background: var(--headerBackgroundMaskColor) !important;
   }
 
+  .card-header.character-card-header {
+    border-bottom: 1px solid transparent;
+  }
   .character-description .bbcode {
     white-space: pre-line !important;
 
