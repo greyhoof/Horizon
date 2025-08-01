@@ -21,16 +21,18 @@
           <a :href="editUrl" class="edit-link btn btn-outline-secondary col-3"
             ><i class="fa fa-fw fa-pencil-alt"></i
           ></a>
-          <a
+          <button
             @click="showDelete"
             class="delete-link btn btn-outline-danger col-3"
-            ><i class="fa fa-fw fa-trash"></i
-          ></a>
-          <a
+          >
+            <i class="fa fa-fw fa-trash"></i>
+          </button>
+          <button
             @click="showDuplicate()"
             class="duplicate-link btn btn-outline-secondary col-3"
-            ><i class="fa fa-fw fa-copy"></i
-          ></a>
+          >
+            <i class="fa fa-fw fa-copy"></i>
+          </button>
         </template>
         <template v-else>
           <template
@@ -39,7 +41,7 @@
               character.settings.block_bookmarks !== true
             "
           >
-            <a
+            <button
               @click.prevent="toggleBookmark()"
               href="#"
               class="btn col-3"
@@ -55,34 +57,36 @@
                   'far fa-bookmark': !character.bookmarked
                 }"
               ></i>
-            </a>
+            </button>
             <span
               v-if="character.settings.block_bookmarks"
               class="prevents-bookmarks"
               >!</span
             >
           </template>
-          <a
+          <button
             href="#"
             @click.prevent="showFriends()"
             class="friend-link btn btn-outline-secondary col-3"
-            ><i class="fa fa-fw fa-user-plus"></i
-          ></a>
-          <a
+          >
+            <i class="fa fa-fw fa-user-plus"></i>
+          </button>
+          <button
             href="#"
             v-if="!oldApi"
             @click.prevent="showReport()"
             class="report-link btn btn-outline-warning col-3"
           >
-            <i class="fa fa-fw fa-exclamation-triangle"></i
-          ></a>
+            <i class="fa fa-fw fa-exclamation-triangle"></i>
+          </button>
         </template>
-        <a
+        <button
           href="#"
           @click.prevent="showMemo()"
           class="memo-link btn btn-outline-secondary col-3"
-          ><i class="far fa-sticky-note fa-fw"></i
-        ></a>
+        >
+          <i class="far fa-sticky-note fa-fw"></i>
+        </button>
         <a
           v-if="authenticated && !character.is_self"
           :href="noteUrl"
