@@ -76,6 +76,17 @@ input:checked {
   border-bottom: 1px solid $gray-300;
 }
 
+.nav.nav-tabs .nav-link {
+  font-weight: 600;
+}
+
+.nav-tab-spacer {
+  display: flex;
+  flex: 1 0 0px;
+  border-bottom: 1px solid $gray-300;
+  margin-bottom: -1px;
+}
+
 #window-tabs .nav-tabs .nav-link.active {
   border-bottom: 1px solid $body-bg;
 }

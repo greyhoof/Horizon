@@ -31,9 +31,7 @@ const Tabs = Vue.extend({
       'div',
       { staticClass: `nav-tabs-scroll ${this.fullWidth ? 'nav-fill' : ''}` },
       [
-        createElement(
-          'ul',
-          { staticClass: 'nav nav-tabs' },
+        createElement('ul', { staticClass: 'nav nav-tabs' }, [
           keys.map(key =>
             createElement('li', { staticClass: 'nav-item' }, [
               createElement(
@@ -47,8 +45,9 @@ const Tabs = Vue.extend({
                 [children[key]!]
               )
             ])
-          )
-        )
+          ),
+          createElement('div', { staticClass: 'nav-tab-spacer' })
+        ])
       ]
     );
   }
