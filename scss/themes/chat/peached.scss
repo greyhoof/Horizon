@@ -19,6 +19,14 @@ body,
     rgba(245, 235, 235, 1) 100%
   );
 }
+
+.sidebar {
+  background-color: rgba($body-bg, 0.4);
+}
+
+.message-own {
+  background-color: rgba($gray-200, 0.3);
+}
 #window-tabs .nav-tabs .nav-link.active {
   background-color: #efddd6;
   border-bottom-color: #efddd6;
