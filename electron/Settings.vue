@@ -30,6 +30,7 @@
             <tabs
               style="flex-shrink: 0; margin-bottom: 10px"
               v-model="selectedTab"
+              :fullWidth="true"
               :tabs="[
                 l('settings.tabs.general'),
                 l('settings.tabs.look'),

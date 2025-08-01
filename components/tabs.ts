@@ -2,10 +2,11 @@ import Vue, { CreateElement, VNode } from 'vue';
 
 //tslint:disable-next-line:variable-name
 const Tabs = Vue.extend({
-  props: ['value', 'tabs'],
+  props: ['value', 'tabs', 'fullWidth'],
   render(
     this: Vue & {
       readonly value?: string;
+      readonly fullWidth: boolean;
       _v?: string;
       selected?: string;
       tabs: { readonly [key: string]: string };
@@ -26,26 +27,30 @@ const Tabs = Vue.extend({
       this.$emit('input', (this._v = keys[0]));
     if (this.selected !== this._v && children[this.selected!] !== undefined)
       this.$emit('input', (this._v = this.selected));
-    return createElement('div', { staticClass: 'nav-tabs-scroll' }, [
-      createElement(
-        'ul',
-        { staticClass: 'nav nav-tabs' },
-        keys.map(key =>
-          createElement('li', { staticClass: 'nav-item' }, [
-            createElement(
-              'a',
-              {
-                attrs: { href: '#' },
-                staticClass: 'nav-link',
-                class: { active: this._v === key },
-                on: { click: () => this.$emit('input', key) }
-              },
-              [children[key]!]
-            )
-          ])
+    return createElement(
+      'div',
+      { staticClass: `nav-tabs-scroll ${this.fullWidth ? 'nav-fill' : ''}` },
+      [
+        createElement(
+          'ul',
+          { staticClass: 'nav nav-tabs' },
+          keys.map(key =>
+            createElement('li', { staticClass: 'nav-item' }, [
+              createElement(
+                'a',
+                {
+                  attrs: { href: '#' },
+                  staticClass: 'nav-link',
+                  class: { active: this._v === key },
+                  on: { click: () => this.$emit('input', key) }
+                },
+                [children[key]!]
+              )
+            ])
+          )
         )
-      )
-    ]);
+      ]
+    );
   }
 });
 

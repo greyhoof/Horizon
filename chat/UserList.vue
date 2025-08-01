@@ -8,6 +8,7 @@
   >
     <tabs
       style="flex-shrink: 0"
+      :fullWidth="true"
       :tabs="
         channel
           ? { 0: l('users.friends'), 1: l('users.members') }
