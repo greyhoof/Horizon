@@ -42,6 +42,8 @@ export class GeneralSettings {
   browserPath = '';
   browserArgs = '%s';
   zoomLevel = 0.0;
+  horizonCustomCss: string = '';
+  horizonCustomCssEnabled: boolean = false;
   horizonVanillaTextColors: boolean = true;
 }
 

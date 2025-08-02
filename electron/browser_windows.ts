@@ -37,6 +37,12 @@ const tabMap: { [key: string]: electron.WebContents } = {};
 const newMessagesMap: { [id: number]: boolean } = {};
 
 /**
+ * Used to track the injected CSS per key value. Inserting CSS returns a key value that can later be used to remove the value.
+ * @internal
+ */
+const windowCssKeyMap: { [id: number]: string } = {};
+
+/**
  * Tray icon path.
  * @internal
  */
@@ -248,6 +254,18 @@ export function createMainWindow(
     delete newMessagesMap[window.id];
   });
 
+  window.webContents.on('did-finish-load', async () => {
+    if (settings.horizonCustomCssEnabled) {
+      const key = await window.webContents.insertCSS(
+        `html {${settings.horizonCustomCss}}`,
+        {
+          cssOrigin: 'author'
+        }
+      );
+      windowCssKeyMap[window.id] = key;
+    }
+  });
+
   updateSupportedLanguages(
     electron.session.defaultSession.availableSpellCheckerLanguages
   );
@@ -374,6 +392,26 @@ export function setUpWebContents(
   webContents.setWindowOpenHandler(({ url }) => {
     openLinkExternally(new Event('link'), url);
     return { action: 'deny' };
+  });
+}
+
+export async function updateCustomCssAllWindows(
+  styleSheet: string,
+  useCustomCss: boolean
+) {
+  electron.BrowserWindow.getAllWindows().forEach(async window => {
+    if (windowCssKeyMap[window.id]) {
+      await window.webContents.removeInsertedCSS(windowCssKeyMap[window.id]);
+      delete windowCssKeyMap[window.id];
+    }
+    if (useCustomCss) {
+      let key = await window.webContents.insertCSS(` html { ${styleSheet} }`, {
+        cssOrigin: 'author'
+      });
+      windowCssKeyMap[window.id] = key;
+    }
+
+    window.webContents.send('user-css-updated', styleSheet, useCustomCss);
   });
 }
 
