@@ -80,7 +80,7 @@
         id="windowButtons"
         class="btn-group"
       >
-        <span class="btn btn-light">
+        <span @click.stop="openSettingsMenu()" class="btn btn-light">
           <i class="fa fa-cog"> </i>
         </span>
 
