@@ -1,11 +1,12 @@
-.purpleText,
-.purpleNameText {
-  @include text-outline(#306);
-}
+.vanillaTextColors {
+  .purpleText,
+  .purpleNameText {
+    @include text-outline(#306);
+  }
 
-.blackText,
-.blackNameText {
-  @include text-outline($gray-600);
+  .blackText,
+  .blackNameText {
+    @include text-outline($gray-600);
+  }
 }
-
 $blue-color: #06f;

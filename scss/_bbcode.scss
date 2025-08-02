@@ -46,6 +46,56 @@
   color: $black-color;
 }
 
+.vanillaTextColors {
+  .redText {
+    color: #f00;
+  }
+
+  .blueText {
+    color: #00f;
+  }
+
+  .greenText {
+    color: #0f0;
+  }
+
+  .yellowText {
+    color: #ff0;
+  }
+
+  .cyanText {
+    color: #0ff;
+  }
+
+  .purpleText {
+    color: #93f;
+  }
+
+  .brownText {
+    color: #8a6d3b;
+  }
+
+  .pinkText {
+    color: #f9c;
+  }
+
+  .grayText {
+    color: #ccc;
+  }
+
+  .orangeText {
+    color: #f60;
+  }
+
+  .whiteText {
+    color: #fff;
+  }
+
+  .blackText {
+    color: #000;
+  }
+}
+
 span.bigText {
   font-size: 1.4em;
 }

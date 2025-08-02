@@ -14,10 +14,10 @@ $yellow-color: $dracula-yellow;
 $purple-color: $dracula-purple;
 $cyan-color: $dracula-cyan;
 $white-color: $dracula-foreground;
-$black-color: #000;
+$black-color: $dracula-comment;
 $brown-color: #8a6d3b;
 $pink-color: $dracula-pink;
-$gray-color: #ccc;
+$gray-color: $gray-600;
 $orange-color: $dracula-orange;
 // Apply variables to theme.
 @import '../chat';
@@ -86,7 +86,7 @@ $genders: (
 }
 
 .message-own {
-  background-color: $gray-100;
+  background-color: rgba($gray-200, 0.3);
 }
 
 .colorblindMode {

@@ -42,6 +42,7 @@ export class GeneralSettings {
   browserPath = '';
   browserArgs = '%s';
   zoomLevel = 0.0;
+  horizonVanillaTextColors: boolean = true;
 }
 
 // //tslint:disable

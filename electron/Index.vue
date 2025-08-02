@@ -778,6 +778,8 @@
         return {
           [`theme-${core.state.settings.risingCharacterTheme || this.settings.theme}`]: true,
           colorblindMode: core.state.settings.risingColorblindMode,
+          vanillaTextColors:
+            core.state.generalSettings?.horizonVanillaTextColors,
           disableWindowsHighContrast:
             core.state.generalSettings?.risingDisableWindowsHighContrast ||
             false

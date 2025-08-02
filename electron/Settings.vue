@@ -111,9 +111,15 @@
 
                 <div class="form-group">
                   <label class="control-label" for="themeVanillaBbcode">
-                    <input type="checkbox" disabled id="themeVanillaBbcode" />
-                    {{ l('settings.theme.vanillaBbcode') }}
-                  </label>
+                    <input
+                      v-model="settings.horizonVanillaTextColors"
+                      type="checkbox"
+                      id="themeVanillaBbcode"
+                    />
+                    {{ l('settings.theme.vanillaBbcode') }} </label
+                  ><small class="form-text text-muted">{{
+                    l('settings.theme.vanillaBbcode.legibilityNote')
+                  }}</small>
                 </div>
 
                 <h5>
