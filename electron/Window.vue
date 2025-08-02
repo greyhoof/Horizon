@@ -12,7 +12,7 @@
     >
       <h4 style="padding: 2px 0">{{ l('title') }}</h4>
       <div class="btn btn-light" @click="openMenu" id="settings">
-        <i class="fa fa-cog"></i>
+        <i class="fas fa-bars"></i>
       </div>
       <div
         class="btn btn-outline-success"
@@ -77,9 +77,13 @@
           justify-content: flex-end;
           -webkit-app-region: drag;
         "
-        class="btn-group"
         id="windowButtons"
+        class="btn-group"
       >
+        <span class="btn btn-light">
+          <i class="fa fa-cog"> </i>
+        </span>
+
         <i
           class="far fa-window-minimize btn btn-light"
           @click.stop="minimize()"
@@ -596,6 +600,11 @@
       electron.ipcRenderer.send('open-update-changelog', this.updateVersion);
     }
 
+    openSettingsMenu(): void {
+      log.debug('settings clicked');
+      electron.ipcRenderer.send('open-settings-menu');
+    }
+
     getThemeClass() {
       // console.log('getThemeClassWindow', this.settings?.risingDisableWindowsHighContrast);
 
@@ -641,7 +650,8 @@
       flex-grow: 0;
     }
 
-    .btn-default {
+    .btn-default,
+    .btn-light:not(:hover) {
       background: transparent;
     }
 

@@ -212,6 +212,7 @@ Are you sure?`,
   'settings.theme.sync': 'Sync with system theme (coming soon)',
   'settings.theme.sync.light': 'Light mode theme',
   'settings.theme.sync.dark': 'Dark mode theme',
+  'settings.theme.vanillaBbcode': 'Use vanilla BBCode colors (coming soon)',
   'settings.profileViewer': 'Use profile viewer',
   'settings.logDir': 'Change log location',
   'settings.logDir.confirm': `Do you want to set your log location to {0}?

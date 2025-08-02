@@ -528,6 +528,13 @@ function onReady(): void {
       );
     }
   );
+  electron.ipcMain.on('open-settings-menu', (_event: IpcMainEvent) => {
+    browserWindows.createSettingsWindow(
+      settings,
+      true,
+      electron.BrowserWindow.getFocusedWindow()!
+    );
+  });
 
   electron.ipcMain.on(
     'save-login',

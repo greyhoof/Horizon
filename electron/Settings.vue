@@ -109,6 +109,13 @@
                   </label>
                 </div>
 
+                <div class="form-group">
+                  <label class="control-label" for="themeVanillaBbcode">
+                    <input type="checkbox" disabled id="themeVanillaBbcode" />
+                    {{ l('settings.theme.vanillaBbcode') }}
+                  </label>
+                </div>
+
                 <h5>
                   {{ l('settings.spellcheck.language') }}
                 </h5>
