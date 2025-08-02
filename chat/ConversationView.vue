@@ -77,7 +77,7 @@
         <div style="flex: 1">
           <span
             v-show="conversation.channel.id.substr(0, 4) !== 'adh-'"
-            class="fa fa-star"
+            class="fa fa-fw fa-star"
             :title="l('channel.official')"
             style="margin-right: 5px; vertical-align: sub"
           ></span>
@@ -223,7 +223,14 @@
       </div>
     </div>
     <div v-else class="header" style="display: flex; align-items: center">
-      <h4>{{ l('chat.consoleTab') }}</h4>
+      <i
+        style="margin-right: 5px; vertical-align: sub"
+        class="fa-solid fa-fw fa-house"
+      ></i>
+      <h5 style="margin: 0; display: inline; vertical-align: middle">
+        {{ l('chat.consoleTab') }}
+      </h5>
+
       <a href="#" @click.prevent="showLogs()" class="btn">
         <span class="fa fa-file-alt"></span>
         <span class="btn-text">{{ l('logs.title') }}</span>

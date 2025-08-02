@@ -814,7 +814,7 @@
   .list-group.conversation-nav {
     //padding-top: 8px;
     .fas.active {
-      color: #02a002;
+      color: var(--success);
     }
 
     .list-group-item {
@@ -822,8 +822,6 @@
       display: flex;
       align-items: center;
       border-right: 0;
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
       .name {
         flex: 1;
         overflow: hidden;
@@ -835,6 +833,9 @@
         padding: 0 3px;
         &:last-child {
           padding-right: 0;
+        }
+        &:hover:not(.active) {
+          color: var(--dark);
         }
       }
       &.item-private {

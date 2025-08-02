@@ -130,7 +130,7 @@ const strings: { [key: string]: string | undefined } = {
   'user.hide': 'Hide ads',
   'user.friend': 'Friend',
   'user.unhide': 'Unhide ads',
-  'user.memo': 'View memo',
+  'user.memo': 'Edit memo',
   'user.memo.action': 'Update memo',
   'user.report': 'Report user',
   'user.channelKick': 'Kick from channel',
