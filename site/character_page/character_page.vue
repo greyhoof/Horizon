@@ -1,11 +1,30 @@
 <template>
   <div class="row character-page" id="pageBody" ref="pageBody">
-    <div class="col-12" style="min-height: 0">
-      <div class="alert alert-info" v-show="loading">
-        Loading character information.
-      </div>
-      <div class="alert alert-danger" v-show="error">{{ error }}</div>
+    <div class="col-md-4 col-lg-3 col-xl-2" v-if="loading || !character">
+      <div
+        class="card characterpage-placeholder"
+        :class="loading ? 'throbber' : 'bg-light'"
+      ></div>
     </div>
+    <div
+      class="col-md-8 col-lg-9 col-xl-10"
+      style="padding-left: 0px"
+      v-if="loading || !character"
+    >
+      <div style="min-height: 0">
+        <div class="alert alert-info" v-show="loading">
+          Loading character information.
+        </div>
+        <div class="alert alert-danger" v-show="error">{{ error }}</div>
+      </div>
+
+      <div
+        class="card characterpage-placeholder"
+        :class="loading ? 'throbber' : 'bg-light'"
+        style="height: 90%"
+      ></div>
+    </div>
+
     <div
       class="col-md-4 col-lg-3 col-xl-2"
       v-if="
@@ -606,6 +625,9 @@
 </script>
 
 <style lang="scss">
+  #pageBody {
+    height: 100%;
+  }
   .compare-highlight-block {
     margin-bottom: 3px;
 
@@ -613,7 +635,9 @@
       margin-left: 2px;
     }
   }
-
+  .characterpage-placeholder {
+    height: 100%;
+  }
   .character-kinks-block {
     i.fa {
       margin-right: 0.25rem;
@@ -1066,6 +1090,9 @@
     background: var(--headerBackgroundMaskColor) !important;
   }
 
+  .card-header.character-card-header {
+    border-bottom: 1px solid transparent;
+  }
   .character-description .bbcode {
     white-space: pre-line !important;
 

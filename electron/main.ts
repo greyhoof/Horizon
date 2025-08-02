@@ -46,7 +46,7 @@ import { defaultHost, GeneralSettings } from './common';
 import MenuItemConstructorOptions = electron.MenuItemConstructorOptions;
 import * as _ from 'lodash';
 import { AdCoordinatorHost } from '../chat/ads/ad-coordinator-host';
-import { IpcMainEvent } from 'electron';
+import { IpcMainEvent, session } from 'electron';
 import Axios from 'axios';
 import * as browserWindows from './browser_windows';
 import * as remoteMain from '@electron/remote/main';
@@ -223,7 +223,12 @@ function onReady(): void {
   app.on('open-file', () => {
     browserWindows.createMainWindow(settings, shouldImportSettings, baseDir);
   });
-
+  //Block automatic downloads in the image previewer.
+  //It's in its own partitioned session, so we can't use session.defaultSession here
+  const ses = session.fromPartition('persist:adblocked');
+  ses.on('will-download', (event, item, webContents) => {
+    event.preventDefault();
+  });
   if (
     settings.version !== app.getVersion() &&
     process.env.NODE_ENV !== 'development'
@@ -523,6 +528,13 @@ function onReady(): void {
       );
     }
   );
+  electron.ipcMain.on('open-settings-menu', (_event: IpcMainEvent) => {
+    browserWindows.createSettingsWindow(
+      settings,
+      true,
+      electron.BrowserWindow.getFocusedWindow()!
+    );
+  });
 
   electron.ipcMain.on(
     'save-login',

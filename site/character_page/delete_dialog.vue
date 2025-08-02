@@ -2,8 +2,9 @@
   <modal
     id="deleteDialog"
     :action="'Delete character ' + name"
-    :disabled="deleting"
+    :disabled="true"
     @submit.prevent="deleteCharacter()"
+    buttonClass="btn-danger"
     iconClass="fas fa-user-slash"
   >
     Are you sure you want to permanently delete {{ name }}?<br />

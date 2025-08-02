@@ -11,6 +11,7 @@
     <tabs
       style="flex-shrink: 0; margin-bottom: 10px"
       v-model="selectedTab"
+      :fullWidth="true"
       :tabs="[
         l('settings.tabs.general'),
         l('settings.tabs.notifications'),
@@ -626,7 +627,7 @@
         <editor
           v-model="risingFilter.autoReplyCustomMessage"
           :hasToolbar="true"
-          class="form-control"
+          :classes="'form-control'"
           rows="5"
           :disabled="!risingFilter.autoReplyCustom || !risingFilter.autoReply"
           placeholder="Put your custom message for automatic replies here"

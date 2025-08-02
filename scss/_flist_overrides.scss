@@ -19,6 +19,11 @@ hr {
   overflow: hidden;
 }
 
+.window-modal {
+  .modal-content {
+    border-radius: 0px;
+  }
+}
 .modal-body {
   background-color: $scoreReportBg;
 }
@@ -64,6 +69,45 @@ $theme-is-dark: false !default;
 input:checked {
   accent-color: $primary;
   border-color: $primary;
+}
+
+.nav {
+  margin-bottom: 0.1rem;
+}
+
+.nav-tabs .nav-link {
+  border-top-right-radius: 0.7rem;
+  border-top-left-radius: 0.7rem;
+  border-bottom: 1px solid $gray-300;
+}
+
+.nav.nav-tabs .nav-link {
+  font-weight: 600;
+}
+
+.nav-tab-spacer {
+  display: flex;
+  flex: 1 0 0px;
+  border-bottom: 1px solid $gray-300;
+  margin-bottom: -1px;
+}
+
+#window-tabs .nav-tabs .nav-link.active {
+  border-bottom: 1px solid $body-bg;
+}
+
+.nav-tabs .nav-link.active {
+  background: none;
+  border-bottom: none;
+}
+
+.nav-tabs li:first-child a {
+  //border-left: 0;
+  border-top-left-radius: 0;
+}
+
+.nav-tabs {
+  border-bottom: none;
 }
 
 @font-face {

@@ -1,8 +1,10 @@
 @use 'sass:color';
 
 $warning: #e09d3e;
-$gray-100: #e5e5e5 !default;
-$gray-200: #cccccc !default;
+$gray-base: #ffede5 !default;
+//$gray-100: color.scale($gray-base, $lightness: -10%);
+$gray-100: #ffede5 !default;
+$gray-200: color.scale($gray-base, $lightness: -20%);
 $gray-300: #b2b2b2 !default;
 $gray-400: #999999 !default;
 $gray-500: #7f7f7f !default;
@@ -13,9 +15,10 @@ $gray-900: #191919 !default;
 $black: #000000 !default;
 $secondary: $gray-400;
 
-$body-bg: $gray-100;
 $text-muted: $gray-500;
 $modal-content-bg: color.adjust($gray-100, $lightness: 5%);
+
+$body-bg: $gray-base;
 
 $gray-color: $gray-400;
 $white-color: $gray-400;
@@ -25,6 +28,8 @@ $yellow-color: #bcab17;
 $pink-color: #da1677;
 $green-color: #036603;
 $primary: #e26f2e;
+$primary: #ffe5b4;
+$secondary: #cc5803;
 
 $link-color: $gray-800;
 $link-hover-color: $black;

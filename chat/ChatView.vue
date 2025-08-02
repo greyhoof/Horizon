@@ -102,18 +102,24 @@
         </div>
 
         <div style="clear: both" class="conversationList-header d-flex">
+          <span class="flex-grow-1">
+            <a href="#" @click.prevent="showAddPmPartner()" class="btn">
+              {{ l('chat.pms') }}</a
+            >
+          </span>
+
           <a
             href="#"
-            @click.prevent="showAddPmPartner()"
-            class="btn flex-grow-1"
-          >
-            {{ l('chat.pms') }}</a
-          >
-
-          <a href="#" @click.prevent="showSearch()" class="btn"
+            @click.prevent="showSearch()"
+            :title="l('characterSearch.open')"
+            class="btn"
             ><span class="fas fa-fw fa-search"></span>
           </a>
-          <a href="#" @click.prevent="showRecent()" class="btn"
+          <a
+            href="#"
+            @click.prevent="showRecent()"
+            :title="l('chat.recentConversations')"
+            class="btn"
             ><span class="fas fa-fw fa-history"></span> </a
           ><a
             :class="{
@@ -123,6 +129,7 @@
             }"
             href="#"
             @click.prevent="showQuickJump()"
+            :title="l('quickJump.action')"
             class="btn"
             ><span class="fas fa-fw fa-shuffle"></span
           ></a>
@@ -172,16 +179,23 @@
         </div>
 
         <div style="clear: both" class="conversationList-header d-flex">
-          <a href="#" @click.prevent="showChannels()" class="btn flex-grow-1">
-            {{ l('chat.channels') }}</a
-          >
+          <span class="flex-grow-1">
+            <a href="#" @click.prevent="showChannels()" class="btn">
+              {{ l('chat.channels') }}</a
+            >
+          </span>
 
-          <a href="#" @click.prevent="showRecent(true)" class="btn"
+          <a
+            href="#"
+            @click.prevent="showRecent(true)"
+            class="btn"
+            :title="l('chat.recentConversations')"
             ><span class="fas fa-fw fa-history"></span> </a
           ><a
             href="#"
             @click.prevent="showChannels()"
             class="btn"
+            :title="l('chat.channelJoin')"
             :class="{
               glowing:
                 conversations.channelConversations.length === 0 &&
@@ -227,7 +241,15 @@
         </div>
       </div>
     </sidebar>
-    <div style="display: flex; flex-direction: column; flex: 1; min-width: 0">
+    <div
+      style="
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-width: 0;
+        padding-bottom: 10px;
+      "
+    >
       <div id="quick-switcher" class="list-group">
         <a
           :class="getClasses(conversations.consoleTab)"
@@ -792,7 +814,7 @@
   .list-group.conversation-nav {
     //padding-top: 8px;
     .fas.active {
-      color: #02a002;
+      color: var(--success);
     }
 
     .list-group-item {
@@ -800,8 +822,6 @@
       display: flex;
       align-items: center;
       border-right: 0;
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
       .name {
         flex: 1;
         overflow: hidden;
@@ -813,6 +833,9 @@
         padding: 0 3px;
         &:last-child {
           padding-right: 0;
+        }
+        &:hover:not(.active) {
+          color: var(--dark);
         }
       }
       &.item-private {
@@ -930,7 +953,6 @@
       display: block;
       margin-top: 10px;
       .btn {
-        display: block;
         font-weight: 600;
       }
     }

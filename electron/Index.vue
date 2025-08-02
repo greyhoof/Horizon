@@ -2,7 +2,7 @@
   <div
     @mouseover="onMouseOver"
     id="page"
-    style="position: relative; padding: 5px 10px 10px"
+    style="position: relative; padding-top: 5px; overflow: clip"
     :class="getThemeClass()"
     @auxclick.prevent
     @click.middle="unpinUrlPreview"
@@ -778,6 +778,8 @@
         return {
           [`theme-${core.state.settings.risingCharacterTheme || this.settings.theme}`]: true,
           colorblindMode: core.state.settings.risingColorblindMode,
+          vanillaTextColors:
+            core.state.generalSettings?.horizonVanillaTextColors,
           disableWindowsHighContrast:
             core.state.generalSettings?.risingDisableWindowsHighContrast ||
             false

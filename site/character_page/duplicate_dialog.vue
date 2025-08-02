@@ -1,8 +1,8 @@
 <template>
   <modal
     id="duplicateDialog"
-    :action="'Duplicate character' + name"
-    :disabled="duplicating || checking"
+    :action="'Duplicate character ' + name"
+    :disabled="true"
     @submit.prevent="duplicate()"
     iconClass="fas fa-clone"
   >

@@ -11,6 +11,7 @@
       <tabs
         style="flex-shrink: 0"
         :tabs="[l('channelList.public'), l('channelList.private')]"
+        :fullWidth="true"
         v-model="tab"
       ></tabs>
       <div style="display: flex; flex-direction: column">

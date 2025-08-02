@@ -30,6 +30,7 @@
             <tabs
               style="flex-shrink: 0; margin-bottom: 10px"
               v-model="selectedTab"
+              :fullWidth="true"
               :tabs="[
                 l('settings.tabs.general'),
                 l('settings.tabs.look'),
@@ -106,6 +107,19 @@
                       </template>
                     </filterable-select>
                   </label>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label" for="themeVanillaBbcode">
+                    <input
+                      v-model="settings.horizonVanillaTextColors"
+                      type="checkbox"
+                      id="themeVanillaBbcode"
+                    />
+                    {{ l('settings.theme.vanillaBbcode') }} </label
+                  ><small class="form-text text-muted">{{
+                    l('settings.theme.vanillaBbcode.legibilityNote')
+                  }}</small>
                 </div>
 
                 <h5>

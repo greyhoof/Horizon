@@ -37,8 +37,9 @@
             />
             <div class="btn-group search-buttons">
               <div
-                class="btn expressions"
+                class="btn btn-light expressions"
                 @click.prevent.stop="searchWithString('category:favorites')"
+                :class="{ active: search === 'category:favorites' }"
                 title="Favorites"
                 role="button"
                 tabindex="0"
@@ -47,8 +48,9 @@
               </div>
 
               <div
-                class="btn expressions"
+                class="btn btn-light expressions"
                 @click.prevent.stop="searchWithString('category:expressions')"
+                :class="{ active: search === 'category:expressions' }"
                 title="Expressions"
                 role="button"
                 tabindex="0"
@@ -57,8 +59,9 @@
               </div>
 
               <div
-                class="btn sexual"
+                class="btn btn-light sexual"
                 @click.prevent.stop="searchWithString('category:sexual')"
+                :class="{ active: search === 'category:sexual' }"
                 title="Sexual"
                 role="button"
                 tabindex="0"
@@ -67,8 +70,9 @@
               </div>
 
               <div
-                class="btn bubbles"
+                class="btn btn-light bubbles"
                 @click.prevent.stop="searchWithString('category:bubbles')"
+                :class="{ active: search === 'category:bubbles' }"
                 title="Speech bubbles"
                 role="button"
                 tabindex="0"
@@ -77,8 +81,9 @@
               </div>
 
               <div
-                class="btn actions"
+                class="btn btn-light actions"
                 @click.prevent.stop="searchWithString('category:symbols')"
+                :class="{ active: search === 'category:symbols' }"
                 title="Symbols"
                 role="button"
                 tabindex="0"
@@ -87,8 +92,9 @@
               </div>
 
               <div
-                class="btn memes"
+                class="btn btn-light memes"
                 @click.prevent.stop="searchWithString('category:memes')"
+                :class="{ active: search === 'category:memes' }"
                 title="Memes"
                 role="button"
                 tabindex="0"
@@ -97,8 +103,9 @@
               </div>
 
               <div
-                class="btn random"
+                class="btn btn-light random"
                 @click.prevent.stop="searchWithString('category:random')"
+                :class="{ active: search === 'category:random' }"
                 title="Random"
                 role="button"
                 tabindex="0"
@@ -107,7 +114,7 @@
               </div>
 
               <div
-                class="btn refresh"
+                class="btn btn-light refresh"
                 @click.prevent.stop="refreshIcons()"
                 title="Refresh eicons data"
                 role="button"
@@ -247,14 +254,11 @@
             'coolemoji',
             'coughing emoji',
             'flushedemoji',
-            'eyerollemoji',
-            'cryinglaughing',
             'grinning emoji',
             'party emoji',
             'pensiveemoji',
             'lipbite emoji',
             'nauseous emoji',
-            'angryemoji',
             'love2',
             'clapemoji',
             'heart eyes',
@@ -297,12 +301,80 @@
             'lip_bite',
             'twittersob',
             'confused01',
-            'blushiedash',
             'brogstare',
             'brucegrin',
             'onefortheteam',
             'ellesogood',
-            'speaknoevil'
+            'speaknoevil',
+            'react0',
+            'react1',
+            'react10',
+            'react11',
+            'react12',
+            'react13',
+            'react14',
+            'react15',
+            'react16',
+            'react17',
+            'react18',
+            'react19',
+            'react2',
+            'react20',
+            'react21',
+            'react22',
+            'react23',
+            'react24',
+            'react25',
+            'react26',
+            'react27',
+            'react28',
+            'react29',
+            'react2b',
+            'react3',
+            'react30',
+            'react31',
+            'react32',
+            'react33',
+            'react333',
+            'react34',
+            'react35',
+            'react36',
+            'react37',
+            'react38',
+            'react39',
+            'react4',
+            'react40',
+            'react41',
+            'react42',
+            'react43',
+            'react44',
+            'react45',
+            'react46',
+            'react47',
+            'react48',
+            'react49',
+            'react4nomouthzoomedin',
+            'react5',
+            'react50',
+            'react50-1',
+            'react51',
+            'react52',
+            'react53',
+            'react54',
+            'react55',
+            'react56',
+            'react57',
+            'react59',
+            'react6',
+            'react60',
+            'react61',
+            'react62',
+            'react63',
+            'react64',
+            'react65',
+            'react666',
+            'react7',
+            'react8'
           ];
 
         case 'symbols':
@@ -336,13 +408,11 @@
             'pentagramo',
             'sexsymbol',
             'idnd1',
-            'instagram',
             'twitterlogo',
             'snapchaticon',
             'tiktok',
             'twitchlogo',
             'discord',
-            'uber',
             'google',
             'nvidia',
             'playstation',
@@ -360,19 +430,14 @@
             'seven',
             'eight',
             '9ball',
-            'discordeye',
             'streamlive',
-            'check mark',
-            'x mark',
             'question mark',
-            'lubimark',
             'questget',
             'music',
             'cam',
             'speaker emoji',
             'laptop',
             'naughtyfood',
-            'open2',
             'dont look away',
             'milkcartonreal'
           ];
@@ -406,13 +471,10 @@
             'imastepfordwife',
             'ahegaoalert2',
             'buttslutbb',
-            'notgayoranything',
             'onlyfans',
             'horsecockneed',
             'crimes',
-            'breed143',
             'nagagross',
-            'willrim',
             'muskslut',
             '4lewdbubble',
             'shimathatlewd',
@@ -453,7 +515,6 @@
             'request denied',
             'goodboy0',
             'goodending',
-            'milky2',
             'howbadcanibe',
             'gwanna',
             'spitinmouth',
@@ -465,14 +526,11 @@
             'kissspink',
             'paytonkiss',
             'coralbutt4',
-            'capstrip',
             'pinkundress',
             'collaredpet',
             'jhab1',
-            'caninelover',
             'pole',
             'rorobutt2',
-            'fingerlick',
             'lapgrind',
             'jackthighs',
             'a condom',
@@ -482,7 +540,6 @@
             'realahegao4',
             'influencerhater',
             'gagged2',
-            'ballsack3',
             'fingerblast3',
             'sloppy01',
             'sybian',
@@ -493,7 +550,6 @@
             'fingersucc',
             'cmontakeit',
             'jessi flash',
-            'poju-butt',
             'cheegrope2',
             'patr1',
             'ahega01 2',
@@ -505,7 +561,6 @@
             'bbctitjob6',
             'appreciativetease',
             'bimbowhisper',
-            'subj3',
             'salivashare',
             'ballsworship3',
             'wolfsknot2',
@@ -516,15 +571,11 @@
             'horsedick11',
             'knotknotknot',
             'g4ebulge',
-            'blackadamrough',
             'knotdog',
             'flaunt',
-            'cummiefj',
             'lovetosuck',
             'worship',
             'hopelessly in love',
-            'cockloveeee',
-            'donglove',
             'knotjob2',
             'cummz',
             'every drop',
@@ -535,7 +586,6 @@
             'swallowit',
             'realahegao4',
             'gayicon2',
-            'slut4',
             'hossspurties2',
             'cumringgag',
             'jillbimbogiffell2'
@@ -572,7 +622,6 @@
             'kermitbusiness',
             'goodbye',
             'rickle',
-            'shiamagic',
             'oag'
           ];
 
@@ -692,8 +741,8 @@
             position: relative;
 
             &:hover {
-              background-color: var(--secondary) !important;
-              border: solid 1px var(--gray-dark) !important;
+              background-color: var(--light) !important;
+              border: solid 1px var(--light) !important;
 
               .favorite-toggle {
                 visibility: visible !important;

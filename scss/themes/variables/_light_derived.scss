@@ -1,4 +1,6 @@
-.whiteText,
-.whiteNameText {
-  @include text-outline($gray-600);
+.vanillaTextColors {
+  .whiteText,
+  .whiteNameText {
+    @include text-outline($gray-600);
+  }
 }
