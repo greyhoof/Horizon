@@ -37,8 +37,9 @@
             />
             <div class="btn-group search-buttons">
               <div
-                class="btn expressions"
+                class="btn btn-light expressions"
                 @click.prevent.stop="searchWithString('category:favorites')"
+                :class="{ active: search === 'category:favorites' }"
                 title="Favorites"
                 role="button"
                 tabindex="0"
@@ -47,8 +48,9 @@
               </div>
 
               <div
-                class="btn expressions"
+                class="btn btn-light expressions"
                 @click.prevent.stop="searchWithString('category:expressions')"
+                :class="{ active: search === 'category:expressions' }"
                 title="Expressions"
                 role="button"
                 tabindex="0"
@@ -57,8 +59,9 @@
               </div>
 
               <div
-                class="btn sexual"
+                class="btn btn-light sexual"
                 @click.prevent.stop="searchWithString('category:sexual')"
+                :class="{ active: search === 'category:sexual' }"
                 title="Sexual"
                 role="button"
                 tabindex="0"
@@ -67,8 +70,9 @@
               </div>
 
               <div
-                class="btn bubbles"
+                class="btn btn-light bubbles"
                 @click.prevent.stop="searchWithString('category:bubbles')"
+                :class="{ active: search === 'category:bubbles' }"
                 title="Speech bubbles"
                 role="button"
                 tabindex="0"
@@ -77,8 +81,9 @@
               </div>
 
               <div
-                class="btn actions"
+                class="btn btn-light actions"
                 @click.prevent.stop="searchWithString('category:symbols')"
+                :class="{ active: search === 'category:symbols' }"
                 title="Symbols"
                 role="button"
                 tabindex="0"
@@ -87,8 +92,9 @@
               </div>
 
               <div
-                class="btn memes"
+                class="btn btn-light memes"
                 @click.prevent.stop="searchWithString('category:memes')"
+                :class="{ active: search === 'category:memes' }"
                 title="Memes"
                 role="button"
                 tabindex="0"
@@ -97,8 +103,9 @@
               </div>
 
               <div
-                class="btn random"
+                class="btn btn-light random"
                 @click.prevent.stop="searchWithString('category:random')"
+                :class="{ active: search === 'category:random' }"
                 title="Random"
                 role="button"
                 tabindex="0"
@@ -107,7 +114,7 @@
               </div>
 
               <div
-                class="btn refresh"
+                class="btn btn-light refresh"
                 @click.prevent.stop="refreshIcons()"
                 title="Refresh eicons data"
                 role="button"
@@ -692,8 +699,8 @@
             position: relative;
 
             &:hover {
-              background-color: var(--secondary) !important;
-              border: solid 1px var(--gray-dark) !important;
+              background-color: var(--light) !important;
+              border: solid 1px var(--light) !important;
 
               .favorite-toggle {
                 visibility: visible !important;
