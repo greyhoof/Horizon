@@ -44,7 +44,7 @@ export class GeneralSettings {
   zoomLevel = 0.0;
   horizonCustomCss: string = '';
   horizonCustomCssEnabled: boolean = false;
-  horizonVanillaTextColors: boolean = true;
+  horizonVanillaTextColors: boolean = false;
 }
 
 // //tslint:disable
