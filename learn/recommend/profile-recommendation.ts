@@ -4,8 +4,10 @@ import Axios from 'axios';
 import { CharacterAnalysis, Matcher } from '../matcher';
 import {
   FurryPreference,
+  Gender,
   Kink,
   mammalSpecies,
+  Scoring,
   Species
 } from '../matcher-types';
 import { characterImage } from '../../chat/common';
@@ -55,6 +57,7 @@ export class ProfileRecommendationAnalyzer {
     await this.checkHqPortrait();
 
     this.checkMissingProperties();
+    this.checkGenderPreferences();
     this.checkSpeciesPreferences();
     this.checkKinkCounts();
     this.checkCustomKinks();
@@ -340,12 +343,66 @@ export class ProfileRecommendationAnalyzer {
     if (p.gender === null) {
       this.add(
         'GENDER',
-        ProfileRecommendationLevel.CRITICAL,
-        'Enter gender',
-        "Specifying your character's gender will help matching you with other players",
-        'https://wiki.f-list.net/Guide:_Character_Profiles#General_Details'
+        ProfileRecommendationLevel.INFO,
+        'No gender',
+        'Characters with no defined gender are treated the same way as if you had selected the genderloss option.'
       );
     }
+  }
+
+  protected checkGenderPreferences(): void {
+    const p = this.profile;
+    const c = this.profile.character;
+    const matches: string[] = [];
+    const weakMatches: string[] = [];
+    const weakMismatches: string[] = [];
+    const mismatches: string[] = [];
+    const neutral: string[] = [];
+    Object.values(Gender)
+      .filter(value => typeof value === 'number')
+      .forEach(genderValue => {
+        let score: Scoring = Scoring.NEUTRAL;
+        let kinkPref = Matcher.getKinkGenderPreference(
+          c,
+          genderValue as Gender
+        );
+        if (kinkPref === null) {
+          score = Matcher.scoreOrientationByGender(
+            p.gender,
+            p.orientation,
+            genderValue as Gender
+          ).score;
+        } else {
+          score = Matcher.formatKinkScore(
+            kinkPref,
+            genderValue.toString()
+          ).score;
+        }
+        const genderName = `${genderValue !== Gender.None ? Gender[genderValue].toLowerCase() : 'genderless'}`;
+        switch (score) {
+          case Scoring.MATCH:
+            matches.push(genderName);
+            break;
+          case Scoring.WEAK_MATCH:
+            weakMatches.push(genderName);
+            break;
+          case Scoring.NEUTRAL:
+            neutral.push(genderName);
+            break;
+          case Scoring.WEAK_MISMATCH:
+            weakMismatches.push(genderName);
+            break;
+          case Scoring.MISMATCH:
+            mismatches.push(genderName);
+            break;
+        }
+      });
+    this.add(
+      'GENDERPREFS',
+      ProfileRecommendationLevel.INFO,
+      'Your gender preferences',
+      `Loves: ${matches} \n Likes: ${weakMatches} \n Hesitant: ${weakMismatches} \n Dislike: ${mismatches}\ Unsure: ${neutral}`
+    );
   }
 
   protected checkSpeciesPreferences(): void {
