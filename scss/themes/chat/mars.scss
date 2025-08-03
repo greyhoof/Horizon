@@ -1,0 +1,114 @@
+@use 'sass:color';
+@import '~bootstrap/scss/functions';
+@import '../../functions';
+@import '../variables/mars_variables';
+@import '~bootstrap/scss/variables';
+@import '../../flist_derived';
+@import '../variables/default_derived';
+
+$red-color: $mars-red;
+$green-color: $mars-green;
+$blue-color: $mars-blue;
+$yellow-color: $mars-yellow;
+$purple-color: $mars-purple;
+$cyan-color: $mars-cyan;
+$white-color: $gray-800;
+$black-color: #554c86;
+$brown-color: $mars-brown;
+$pink-color: $mars-pink;
+$gray-color: #b3b3b9;
+$orange-color: $mars-orange;
+
+// Apply variables to theme.
+@import '../chat';
+
+body,
+.modal-body {
+  background: #3f2d2c;
+  background: linear-gradient(
+    153deg,
+    rgba(63, 45, 44, 1) 20%,
+    rgba(31, 20, 21, 1) 100%
+  );
+}
+
+.sidebar {
+  background-color: rgba($body-bg, 0.4);
+}
+
+.message-own {
+  background-color: rgba($gray-200, 0.3);
+}
+* {
+  &::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 2px $card-border-color;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.8);
+    background-color: $gray-300;
+    &:hover {
+      background-color: $gray-500;
+    }
+
+    &:active {
+      background-color: $gray-700;
+    }
+  }
+}
+
+.colorblindMode {
+  @import '../colorblind';
+  @import '../../rising';
+
+  @each $varName, $value in $risingVariables {
+    --#{$varName}: #{$value};
+  }
+}
+
+:root {
+  color-scheme: light;
+}
+
+$genders: (
+  'shemale': $mars-magenta,
+  'herm': $mars-purple,
+  'none': $black-color,
+  'female': $mars-pink,
+  'male': $mars-blue,
+  'male-herm': $mars-cyan,
+  'transgender': $mars-orange,
+  'cunt-boy': $mars-green
+);
+
+@each $gender, $color in $genders {
+  .gender-#{$gender} {
+    color: $color;
+  }
+
+  .message-event .gender-#{$gender} {
+    color: color.scale($color, $lightness: 5%);
+  }
+}
+
+//@import "../../util/accecss";
+//
+//@include accecss(
+//  'html body',
+//  false,
+//  false,
+//  tritanopia
+//);
+
+// deuteranomaly
+// protanomaly
+// protanopia
+// deuteranopia
+// tritanomaly
+// tritanopia
