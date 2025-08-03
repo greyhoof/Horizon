@@ -170,7 +170,9 @@
       ref="memo"
       :disabled="memoLoading"
       @submit="updateMemo"
+      buttonText="Save and Close"
       dialogClass="w-100"
+      iconClass="fas fa-note-sticky"
     >
       <div style="float: right; text-align: right">
         {{ getByteLength(memo) }} / 1000
