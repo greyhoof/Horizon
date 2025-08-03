@@ -10,6 +10,10 @@ hr {
 .modal-dialog.modal-70 {
   min-width: 70%;
 }
+.card {
+  border-bottom-right-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+}
 
 .quick-jump-overlay .quick-jump-container,
 .modal-content {
@@ -30,7 +34,7 @@ hr {
 
 .modal-header {
   padding: 0.5rem 1rem 0.5rem 1rem;
-  border-bottom: none;
+  border-bottom: 1px solid $card-border-color;
 }
 
 .modal-footer {
@@ -101,9 +105,16 @@ input:checked {
   border-bottom: none;
 }
 
-.nav-tabs li:first-child a {
-  //border-left: 0;
-  border-top-left-radius: 0;
+.nav-tabs li {
+  a {
+    border-top-left-radius: 0.4rem;
+    border-top-right-radius: 0.4rem;
+  }
+
+  &:first-child a {
+    //border-left: 0;
+    border-top-left-radius: 0;
+  }
 }
 
 .nav-tabs {
