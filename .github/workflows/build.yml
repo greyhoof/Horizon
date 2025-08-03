@@ -82,7 +82,6 @@ jobs:
           # ! Execute macOS build script
           chmod +x electron/release-scripts/macos.sh
           electron/release-scripts/macos.sh "$RELEASE_VERSION" "$GITHUB_WORKSPACE/release_artifacts/macos/$RELEASE_VERSION"
-          # fixme: Ensure compatibility with the latest macOS versions
 
       - name: Run Build Script (Windows)
         if: matrix.os == 'windows-latest'
