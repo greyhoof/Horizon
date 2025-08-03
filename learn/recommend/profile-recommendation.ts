@@ -65,6 +65,7 @@ export class ProfileRecommendationAnalyzer {
     this.checkImages();
     this.checkInlineImage();
     this.checkDescriptionLength();
+    this.checkAnthroOrHuman();
 
     return this.recommendations;
   }
@@ -97,7 +98,7 @@ export class ProfileRecommendationAnalyzer {
     if (!profileUrl) {
       this.add(
         `ADD_HQ_AVATAR`,
-        ProfileRecommendationLevel.CRITICAL,
+        ProfileRecommendationLevel.NOTE,
         'Add a high-quality portrait',
         'Profiles with a high-quality portraits stand out in chats with other Horizon users.',
         'https://horizn.moe/docs/guides/colors-and-avatars.html'
@@ -177,7 +178,7 @@ export class ProfileRecommendationAnalyzer {
         if (kink) {
           accum.total += 1;
 
-          if (kink.description) {
+          if (kink.description && kink.description.trim().length > 0) {
             accum.filled += 1;
           }
         }
@@ -268,6 +269,13 @@ export class ProfileRecommendationAnalyzer {
         'Specifying the age of your character will improve your matches with other players.',
         'https://wiki.f-list.net/Guide:_Character_Profiles#General_Details'
       );
+    } else {
+      this.add(
+        'AGE',
+        ProfileRecommendationLevel.INFO,
+        'Age',
+        `The matcher thinks you are ${p.age} years old.`
+      );
     }
 
     if (p.orientation === null) {
@@ -287,6 +295,13 @@ export class ProfileRecommendationAnalyzer {
         'Enter species',
         "Specifying the species of your character – even if it's 'human' – will improve your matches with other players.",
         'https://wiki.f-list.net/Guide:_Character_Profiles#General_Details'
+      );
+    } else {
+      this.add(
+        'SPECIES',
+        ProfileRecommendationLevel.INFO,
+        'Species',
+        `The matcher has identified your species as: ${Species[p.species].toString()}`
       );
     }
 
@@ -350,6 +365,27 @@ export class ProfileRecommendationAnalyzer {
     }
   }
 
+  protected checkAnthroOrHuman(): void {
+    let kind = 'unknown';
+    if (this.profile.isHuman) {
+      if (this.profile.isAnthro) {
+        kind = 'kemonimimi';
+      } else {
+        kind = 'human(oid)';
+      }
+    } else if (this.profile.isAnthro) {
+      kind = 'furry';
+    }
+    this.add(
+      'ANTHROHUMAN',
+      kind === 'unknown'
+        ? ProfileRecommendationLevel.CRITICAL
+        : ProfileRecommendationLevel.INFO,
+      'Furry/ human scale',
+      `For the human/ furry preference, the matcher will count you as: ${kind}.`
+    );
+  }
+
   protected checkGenderPreferences(): void {
     const p = this.profile;
     const c = this.profile.character;
@@ -399,7 +435,9 @@ export class ProfileRecommendationAnalyzer {
       });
     this.add(
       'GENDERPREFS',
-      ProfileRecommendationLevel.INFO,
+      neutral.length > 0
+        ? ProfileRecommendationLevel.NOTE
+        : ProfileRecommendationLevel.INFO,
       'Your gender preferences',
       `Loves: ${matches} \n Likes: ${weakMatches} \n Hesitant: ${weakMismatches} \n Dislike: ${mismatches}\ Unsure: ${neutral}`
     );
