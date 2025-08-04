@@ -152,7 +152,7 @@ export class StandardBBCodeParser extends CoreBBCodeParser {
           //return null;
         }
         const outer = parser.createElement('div');
-        outer.className = 'card bg-light bbcode-collapse';
+        outer.className = 'card bg-light bbcode-collapse collapsed';
         const headerText = parser.createElement('div');
         headerText.className = 'card-header bbcode-collapse-header';
         const icon = parser.createElement('i');
@@ -181,6 +181,7 @@ export class StandardBBCodeParser extends CoreBBCodeParser {
         body.appendChild(inner);
         let timeout: number;
         headerText.addEventListener('click', () => {
+          //???
           const isCollapsed = parseInt(body.style.height!, 10) === 0;
           if (isCollapsed)
             timeout = window.setTimeout(() => (body.style.height = ''), 200);
@@ -193,6 +194,7 @@ export class StandardBBCodeParser extends CoreBBCodeParser {
             });
           }
           body.style.height = `${body.scrollHeight}px`;
+          outer.className = `card bg-light bbcode-collapse ${!isCollapsed ? 'collapsed' : ''}`;
           headerText.className = `card-header bbcode-collapse-header bbcode-collapse-header-${isCollapsed ? 'up' : 'down'}`;
           icon.className = `fas fa-chevron-${isCollapsed ? 'up' : 'down'}`;
         });

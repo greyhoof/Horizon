@@ -10,7 +10,7 @@ hr {
 .modal-dialog.modal-70 {
   min-width: 70%;
 }
-.card {
+.card:not(.collapsed) {
   border-bottom-right-radius: 1rem;
   border-bottom-left-radius: 1rem;
 }
