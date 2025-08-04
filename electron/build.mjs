@@ -259,10 +259,10 @@ async function runNativeBuild(opts, targetKey) {
     }))
   );
 
-  // * Electron Builder configuration - use correct platform property name
+  // * Electron Builder configuration (ProductName MUST be Horizon!)
   const config = {
     appId: 'com.fchat.horizon',
-    productName: 'F-Chat Horizon',
+    productName: 'Horizon',
     artifactName: '${productName}-${version}-${os}-${arch}.${ext}',
     directories: { output: outDir },
     files: ['dist/**/*', 'node_modules/**/*', 'package.json'],
