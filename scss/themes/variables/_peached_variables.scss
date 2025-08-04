@@ -69,12 +69,16 @@ $scoreStandoutWeakMismatchBorderColor: #c18f02;
 $scoreStandoutWeakMismatchBgColor: rgba(208, 188, 0, 0);
 $scoreStandoutMismatchBorderColor: #a01a1a;
 
-$characterImageWrapperBg: rgba(0, 0, 0, 0.2);
+$characterImageWrapperBg: rgba(0, 0, 0, 0.08);
 $characterGuestbookPostBg: rgba(0, 0, 0, 0.08);
 $characterGuestbookPostBorderColor: rgba(0, 0, 0, 0.06);
 $characterGuestbookReplyBg: rgba(0, 0, 0, 0.05);
 $characterGuestbookTimestampFg: rgba(0, 0, 0, 0.4);
-$characterKinkCustomColor: #0072ec;
+$characterKinkCustomColor: color.adjust(
+  $secondary,
+  $lightness: 10%,
+  $saturation: 15%
+);
 $characterKinkCustomBorderColor: rgba(0, 0, 0, 0.1);
 $characterKinkStockColor: #444444;
 $characterKinkStockHighlightedColor: #333333;
