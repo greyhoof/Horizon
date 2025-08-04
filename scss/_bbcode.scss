@@ -47,7 +47,8 @@
 }
 
 .vanillaTextColors {
-  .redText {
+  .redText,
+  .redNameText {
     color: #f00;
   }
 
@@ -55,7 +56,8 @@
     background-color: #f00;
   }
 
-  .blueText {
+  .blueText,
+  .blueNameText {
     color: #00f;
   }
 
@@ -63,7 +65,8 @@
     background-color: #00f;
   }
 
-  .greenText {
+  .greenText,
+  .greenNameText {
     color: #0f0;
   }
 
@@ -71,7 +74,8 @@
     background-color: #0f0;
   }
 
-  .yellowText {
+  .yellowText,
+  .yellowNameText {
     color: #ff0;
   }
 
@@ -79,14 +83,16 @@
     background-color: #ff0;
   }
 
-  .cyanText {
+  .cyanText,
+  .cyanNameText {
     color: #0ff;
   }
   .bbcode-toolbar .color-selector .btn.text-color.cyan {
     background-color: #0ff;
   }
 
-  .purpleText {
+  .purpleText,
+  .purpleNameText {
     color: #93f;
   }
 
@@ -94,7 +100,8 @@
     background-color: #93f;
   }
 
-  .brownText {
+  .brownText,
+  .brownNameText {
     color: #8a6d3b;
   }
 
@@ -102,7 +109,8 @@
     background-color: #8a6d3b;
   }
 
-  .pinkText {
+  .pinkText,
+  .pinkNameText {
     color: #f9c;
   }
 
@@ -110,7 +118,8 @@
     background-color: #f9c;
   }
 
-  .grayText {
+  .grayText,
+  .grayNameText {
     color: #ccc;
   }
 
@@ -125,7 +134,8 @@
     background-color: #f60;
   }
 
-  .whiteText {
+  .whiteText,
+  .whiteNameText {
     color: #fff;
   }
 
@@ -133,7 +143,8 @@
     background-color: #fff;
   }
 
-  .blackText {
+  .blackText,
+  .blackNameText {
     color: #000;
   }
   .bbcode-toolbar .color-selector .btn.text-color.black {

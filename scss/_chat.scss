@@ -403,7 +403,7 @@ $genders: (
     )
 {
   .#{$colorName}NameText {
-    color: $colorValue !important;
+    color: $colorValue;
   }
 }
 
