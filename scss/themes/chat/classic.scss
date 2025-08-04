@@ -123,6 +123,24 @@ div.bbcode-editor > div.bbcode-editor-text-area.bg-light {
   }
 }
 
+#window-tabs {
+  .hasNew {
+    background: -webkit-linear-gradient(top, #797e5c 0%, #797e5c 100%);
+    &:hover {
+      background: -webkit-linear-gradient(
+        top,
+        #85752b 1%,
+        #85752b 53%,
+        #6f5e04 80%,
+        #797e5c 100%
+      );
+    }
+  }
+  .tab:not(.active):not(:hover) {
+    opacity: 1;
+  }
+}
+
 .list-group-item {
   background: -webkit-linear-gradient(top, #23598e 0%, #1b446f 100%);
   color: $black;
