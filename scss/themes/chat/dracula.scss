@@ -85,7 +85,7 @@ $genders: (
   }
 }
 
-.message-own {
+.message-own:not(.message-warn) {
   background-color: rgba($gray-200, 0.3);
 }
 

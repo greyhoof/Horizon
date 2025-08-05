@@ -24,7 +24,7 @@ body,
   background-color: rgba($body-bg, 0.4);
 }
 
-.message-own {
+.message-own:not(.message-warn) {
   background-color: rgba($gray-200, 0.3);
 }
 #window-tabs .nav-tabs .nav-link.active {
