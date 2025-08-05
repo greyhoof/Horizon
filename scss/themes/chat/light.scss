@@ -44,6 +44,25 @@
     --#{$varName}: #{$value};
   }
 }
+.list-group-item-warning {
+  background-color: theme-color-level('warning', -3);
+  border-color: theme-color-level('warning', -3);
+  //color: color-yiq(theme-color('warning'));
+  color: theme-color-level('warning', 6);
+  &:hover {
+    background-color: theme-color-level('warning', -4);
+  }
+}
+
+.list-group-item-danger {
+  background-color: theme-color-level('danger', -3);
+  border-color: theme-color-level('danger', -3);
+  //color: color-yiq(theme-color('warning'));
+  color: theme-color-level('danger', 6);
+  &:hover {
+    background-color: theme-color-level('danger', -4);
+  }
+}
 
 :root {
   color-scheme: light;

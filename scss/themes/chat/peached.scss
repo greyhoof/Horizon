@@ -58,21 +58,23 @@ body,
 .character-card-header {
   background: $body-bg !important;
 }
-.btn-primary,
-.btn-primary:hover,
-.btn-primary:active,
-.btn-primary:focus,
-.list-group-item.active,
-.quick-jump-result.selected,
-.btn-primary:not(:disabled):not(.disabled):active,
-.badge-warning,
-.list-group.conversation-nav
-  .list-group-item.item-private.active
-  .online-status,
-.badge-primary,
-.nav-pills .nav-link.active,
-.nav-pills .show > .nav-link {
-  color: $black;
+.list-group-item-warning {
+  background-color: theme-color-level('warning', -3);
+  border-color: theme-color-level('warning', -3);
+  //color: color-yiq(theme-color('warning'));
+  color: theme-color-level('warning', 6);
+  &:hover {
+    background-color: theme-color-level('warning', -4);
+  }
+}
+
+.list-group-item-danger {
+  background-color: theme-color-level('danger', -3);
+  border-color: theme-color-level('danger', -3);
+  color: theme-color-level('danger', 6);
+  &:hover {
+    background-color: theme-color-level('danger', -4);
+  }
 }
 
 .quick-jump-result.selected {
