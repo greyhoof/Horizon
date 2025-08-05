@@ -4,9 +4,9 @@ import core from './core';
 import { Conversation, Notifications as Interface } from './interfaces';
 
 const codecs: { [key: string]: string } = {
+  ogg: 'ogg',
   mpeg: 'mp3',
-  wav: 'wav',
-  ogg: 'ogg'
+  wav: 'wav'
 };
 
 export default class Notifications implements Interface {
