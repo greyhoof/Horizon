@@ -15,6 +15,12 @@ $gray-800: color.scale($gray-base, $lightness: 80%);
 $gray-900: color.scale($gray-base, $lightness: 90%);
 $black: #fff;
 
+// YIQ contrast settings
+$yiq-contrasted-threshold: 150;
+$yiq-text-light: $black;
+$yiq-text-dark: $gray-base;
+$component-active-color: $yiq-text-light;
+
 // Theme and brand colors
 $primary: #003399;
 $secondary: $gray-300;
@@ -38,9 +44,6 @@ $dropdown-bg: $gray-200;
 $modal-backdrop-bg: $white;
 $modal-content-bg: $gray-200;
 $modal-header-border-color: $gray-200;
-
-// Fix YIQ(automatic text contrast) preferring black over white on dark themes.
-$yiq-text-light: $gray-800;
 
 // Reduce default padding slightly between columns in grids.
 $grid-gutter-width: 20px;

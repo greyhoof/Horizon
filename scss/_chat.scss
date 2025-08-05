@@ -1,5 +1,15 @@
 @use 'sass:color';
 
+// Global contrast overrides for active states
+.list-group-item.active,
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link,
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active {
+  color: color-yiq(theme-color('primary'));
+}
+
 .bg-solid-text {
   background: $text-background-color;
 }

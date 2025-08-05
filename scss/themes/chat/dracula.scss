@@ -1,8 +1,8 @@
 @use 'sass:color';
-@import '~bootstrap/scss/functions';
-@import '../../functions';
 @import '../variables/dracula_variables';
+@import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
+@import '../../functions';
 @import '../../flist_derived';
 @import '../variables/dracula_derived';
 
@@ -61,20 +61,6 @@ $genders: (
   'cunt-boy': $dracula-green
 );
 
-.btn-primary,
-.btn-primary:hover,
-.btn-primary:active,
-.btn-primary:focus,
-.list-group-item.active,
-.quick-jump-result.selected,
-.btn-primary:not(:disabled):not(.disabled):active,
-.badge-warning,
-.list-group.conversation-nav
-  .list-group-item.item-private.active
-  .online-status,
-.badge-primary {
-  color: $dracula-bg;
-}
 @each $gender, $color in $genders {
   .gender-#{$gender} {
     color: $color;

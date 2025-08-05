@@ -38,6 +38,24 @@
 @import '../flist_overrides';
 @import '../rising';
 
+// Global YIQ contrast overrides for Bootstrap components
+.list-group-item.active {
+  color: color-yiq(theme-color('primary'));
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+  color: color-yiq(theme-color('primary'));
+}
+
+.btn {
+  @each $color, $value in $theme-colors {
+    &.btn-#{$color} {
+      color: color-yiq($value);
+    }
+  }
+}
+
 :root {
   @each $varName, $value in $risingVariables {
     --#{$varName}: #{$value};

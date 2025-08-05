@@ -29,7 +29,12 @@ $gray-800: color.scale($gray-base, $lightness: 80%);
 $gray-900: color.scale($gray-base, $lightness: 90%);
 $black: $dracula-foreground;
 
-// Theme and brand colors
+$yiq-contrasted-threshold: 150;
+
+$yiq-text-light: $dracula-foreground; // Light text for dark buttons
+$yiq-text-dark: $dracula-bg; // Dark text for light buttons
+$component-active-color: $yiq-text-light;
+
 $primary: $dracula-purple;
 $secondary: $gray-400;
 $success: $dracula-green;
@@ -52,9 +57,6 @@ $dropdown-divider-bg: $gray-100;
 $modal-backdrop-bg: $white;
 $modal-content-bg: $gray-100;
 $modal-header-border-color: $gray-200;
-
-// Fix YIQ(automatic text contrast) preferring black over white on dark themes.
-$yiq-text-light: $black;
 
 // Reduce default padding slightly between columns in grids.
 $grid-gutter-width: 20px;

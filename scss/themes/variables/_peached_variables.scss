@@ -1,8 +1,8 @@
 @use 'sass:color';
 
-$warning: #e09d3e;
-$gray-base: #ffede5 !default;
-//$gray-100: color.scale($gray-base, $lightness: -10%);
+// Base colors
+$white: #ffffff;
+$gray-base: #ffede5;
 $gray-100: #ffede5 !default;
 $gray-200: color.scale($gray-base, $lightness: -20%);
 $gray-300: #b2b2b2 !default;
@@ -13,13 +13,14 @@ $gray-700: #4c4c4c !default;
 $gray-800: #333333 !default;
 $gray-900: #191919 !default;
 $black: #000000 !default;
-$secondary: $gray-400;
 
-$text-muted: $gray-500;
-$modal-content-bg: color.adjust($gray-100, $lightness: 5%);
+// YIQ contrast settings
+$yiq-contrasted-threshold: 150;
+$yiq-text-light: $white;
+$yiq-text-dark: $black;
+$component-active-color: $yiq-text-dark;
 
-$body-bg: $gray-base;
-
+// Theme colors
 $gray-color: $gray-400;
 $white-color: $gray-400;
 $black-color: $gray-900;
@@ -30,6 +31,10 @@ $green-color: #036603;
 $primary: #e26f2e;
 $primary: #ffe5b4;
 $secondary: #cc5803;
+
+// Core page elements
+$body-bg: $gray-base;
+$text-muted: $gray-500;
 
 $link-color: $gray-800;
 $link-hover-color: $black;
