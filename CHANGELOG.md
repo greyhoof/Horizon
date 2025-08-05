@@ -5,6 +5,88 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html). You can also read it on our [website](https://fchat-horizon.github.io/docs/changelog.html).
 
+# Unreleased 
+
+## 1.33.0 [2025-08-XX]
+
+### Added
+
+- UI/ UX rework and refresh. Since there are too many changes to list in here, please see below for a full list and explanation.
+- Added a global setting for custom CSS styles. Consider it experimental for now though. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/7c929d3b6a76976dc82f3a124de65f96fb3764f2)
+- Statuses can now be set for a specific time, returning you to your initial status once the time runs out. [Commit]
+- Added a keyboard shortcut (Ctrl/ Cmd + Shift + P) to quickly toggle between previewing your messages. [Commit]
+- Added a (character-wide) setting to notify you when specific users post in a public room. This setting can be set for all rooms, or only specific ones. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/421e1722b44359a701da109a54929d0fb283736f)
+- Added a new global setting to always display vanilla text colours, regardless of theme. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/488e8048d91e90347e360945aee1bb276ef6b500)
+  - When we say "vanilla", we mean the way they looked in 3.0. Not any changes we may have done afterwards.
+- Added three new themes: "Classic", "Peached" and "Mars". [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/73a85d41cb80834bfd464ffdfb51a7365d6deafb) [Commit] [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/c895cdf2d7d1fa0888ddc563464685035620eabe)
+- The side bars can now be resized by dragging their inner borders. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/a9857cf40b9762273be50896fb86158263a289d0)
+- Added a new build system. Too many changes to list, but go read [electron/README.md](./electron/README.md) for information on building electron binaries, now. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/8f79f8e60e2ec01a63dbde495db12c9948b636a8)
+  - **As a result of this change:**
+  - We now support RPMs! 🎊
+  - Linux armv7l builds are also supported now as well, but must be manually built.
+  - You can now build windows binaries from linux (and possibly macos, too).
+  - Documentation changes
+
+### Fixed
+
+- Fixed preview embeds that'd prompt a browser to save a file instead of displaying an image (like Discord .mp4 links) showing a save dialog. They now show nothing at all. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/344313250112c999f4d2c5b8243bd88ab09626a7)
+- Fixed TikTok preview embeds. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/f8d20b1c1824c2a4354709336c76cee5de3b2cf1)
+- Sort of fixed Imgur previews. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/548ad15ba4804f292ec4610ee9667e84458a13c9)
+- Fixed some cases where the chatbox would resize erratically around the end of a line, especially if typing narrow characters like exclamation points or the letter "i". [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/72fdfe8c0232571e9ef0c81f0bc28f7c7fbb61ed)
+- Fixed some issues with the tab switch shortcut not working right after creating a new tab. [Commit]
+- Fixed a whole bunch of formatting issues with BBCode for profiles not matching the website's profile page, mostly related to ``[sub]``/ ``[sup]``, ``[big]``/ ``[small]`` and ``[heading]`` tags. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/c33c56d342f7f969019ca452e5245e64c1937255)
+
+### Changed
+
+- The quick jumper (Ctrl/ Cmd + T) now also shows recent conversations, bookmarks and friends. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/49b76e617189be1f3ad3131db6f6ca2cc08ac28f)
+- The profile analyser now shows information about how the matcher interprets your character (like species, what genders it thinks you'd prefer, etc) rather than just telling you which things you still have to fill in. [Commit]
+- Notification sounds now use the higher quality .ogg variants that were already in the code (where available). [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/57a78e056b8cb1b3dc8b26528b9bc912ab4fd856)
+
+### UI Changes overview
+
+- Generic UI elements like tabs, "cards" (used to denote specific floating sections like the parts on the profile viewer, or the sign in screen) and tabs have been given a facelift. So that we're not just using the vanilla, out of the box Bootstrap styles.
+  - The general idea was to go for a more "consistent" look, so that both our custom components and stock ones blend together more. We also figured that they could do with a little eyecandy without compromising on visual clarity.
+  - Other changes to those elements, like with tabs, were done for extra visual polish. Tabs now always match the colour of their contents and have no seams, window modal dialogs no longer take up unnecessary width and have a cute little icon :)
+- Various elements now use a "hidden", slim scroll bar that only shows up when you move your mouse cursor over them. [Commit]
+- _Many_ tiny little nitpicks and inconsistencies addressed.
+- The "User Menu" right click menu has been given a little facelift too, and should also look a lot nicer for people with very long, unbroken names. [Commit]
+- The sidebar has been slimmed down: buttons have been put in place of action links, and the ones related to conversations have been moved to their relevant lists. [Commit]
+  - The note/ messages counters have been integrated into the sidebar too, instead of displaying as a toast dialog on the bottom.
+  - All buttons and functions should still be accessible from within a single click though. Aside from the "Edit ads" button, which has been moved to the Ad Launcher, and the Profile Analyser. Which is now no longer a separate window but has been integrated into the profile viewer for your own characters.
+  - It should overall feel a bit more familiar to people using modern chat programs.
+- BBCode colours for white, gray and black have been changed in all light/ dark themes to match the way the site renders them, for legibility. Almost all other colours have been changed in the light theme too, since they were incredibly difficult to read. [Commit]
+  - Since this removes the "glow" effect that black text has in certain theme and was used for certain cool effects, the setting for bbcode colours mentioned above also adds the glow back to those colours.
+- The light theme has (mostly) been fixed throughout and is now up to par with the dark themes. [Commit]
+- Improved visual consistency with the Eicon Picker's UI elements and the rest of the app's. [Commit]
+- The profile viewer has been significantly polished too.
+  - The side bar's buttons have been updated to match the look used for other buttons throughout the app. 
+  - Looking at your own character(s) now shows (preliminary!) buttons similar to the website. You can also see your private friends lists now.
+  - The dialog for editing a memo has been changed to match the one in the user right click menu.
+  - The profile analyser is now displayed on your own profile instead, inside the collapsible box used for match results on others' profiles.
+  - The window will no longer shift around depending on whether or not a profile is loading/ unavailable, smaller or full size. This also includes a nice little loading animation (please do not look up what they're called).
+  - Massively nested ``[indent]`` tags, used to create a padding effect, no longer have their contents completely squashed on narrower screen sizes.
+  - Various elements (such as the buttons above the kink list, the "Info" tab's contents and the sidebar's contents now scale properly at various screen sizes.
+  - Dropdown items and the kink lists have been slimmed down a bit. The kink lists now have a bit of a coloured flair similar to the website's profile page.
+- Buttons on the window's title bar now blend in better with the background. 
+  - On platforms that have a button for the app menu, a specific button was added to directly open the settings. The app menu button has been given a different icon to better show off its purpose.
+- Text contrast has been fixed so it's applied globally across the appropriate elements (like buttons). [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/8480f9ce4469ca2ef5e0a8e0e9e9b6a12c30cade)
+  - This also fixes some cases where theme colours weren't being applied properly to some elements (like conversation lists in the Dracula theme).
+
+### Removed
+
+- Extra, unused CHANGELOG.md in `electron/CHANGELOG.md` [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/8d97fb9aef01638b1d89324e3aa62d0690d9a842)
+
+### Merged pull requests
+
+- https://github.com/Fchat-Horizon/Horizon/pull/285 by @little-voice 
+- https://github.com/Fchat-Horizon/Horizon/pull/298 by @little-voice 
+- https://github.com/Fchat-Horizon/Horizon/pull/290 by @FatCatClient 
+- https://github.com/Fchat-Horizon/Horizon/pull/300 by @DerEchteDimenzio
+- https://github.com/Fchat-Horizon/Horizon/pull/317 by @FatCatClient 
+- https://github.com/Fchat-Horizon/Horizon/pull/311 by @DerEchteDimenzio
+- https://github.com/Fchat-Horizon/Horizon/pull/312 by @DerEchteDimenzio
+
+
 # [Releases]
 
 ## [1.32.3] - 2025-07-24
