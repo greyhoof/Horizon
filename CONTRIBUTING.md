@@ -59,16 +59,11 @@ pnpm start
 >
 > Please read the [electron-builder](https://www.electron.build/multi-platform-build.html) wiki for more info. If you're a kickass electron dev, please make a pull request to fix this.
 
-Read [the package.json](/electron/package.json), or you will be lost.
-
-```
-cd electron
-pnpm build:osname
-```
+Read [the electron README.md](./electron/README.md) for more info.
 
 #### Mobile
 
-Mobile builds are currently unsupported, but if you're up to the challange, _maybe you can fix it?_
+Mobile builds are currently unsupported, but if you're up to the challenge, _maybe you can fix it?_
 
 Look at the `mobile` directory for more info. For `android`, we recommend you use android studio to make your life more pleasent.
 
