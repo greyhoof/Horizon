@@ -25,18 +25,20 @@
               style="width: 60px; height: 60px; margin-right: 5px; float: left"
             />
           </a>
-          <div @click.prevent="showStatus()" class="sidebarUserInfo-user">
-            <h5
-              style="margin: 0; line-height: 0.85"
-              class="sidebarUserInfo-name"
-            >
+          <div
+            @click.prevent="showStatus()"
+            class="sidebarUserInfo-user d-flex flex-column"
+          >
+            <h5 style="margin: 0" class="sidebarUserInfo-name p-2">
               {{ ownCharacter.name }}
             </h5>
-            <span
-              class="fas fa-fw"
-              :class="getStatusIcon(ownCharacter.status)"
-            ></span>
-            {{ l('status.' + ownCharacter.status) }}
+            <span class="p-2">
+              <i
+                class="fas fa-fw"
+                :class="getStatusIcon(ownCharacter.status)"
+              ></i>
+              {{ l('status.' + ownCharacter.status) }}
+            </span>
           </div>
         </div>
         <div>
