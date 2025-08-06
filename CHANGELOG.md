@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Linux armv7l builds are also supported now as well, but must be manually built.
   - You can now build windows binaries from linux (and possibly macos, too).
   - Documentation changes
+- New Wilted Rose theme [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/50e9a0cd2623b9bc945d67f16e83ba47228e1b08)
 
 ### Fixed
 
@@ -35,6 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed some cases where the chatbox would resize erratically around the end of a line, especially if typing narrow characters like exclamation points or the letter "i". [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/72fdfe8c0232571e9ef0c81f0bc28f7c7fbb61ed)
 - Fixed some issues with the tab switch shortcut not working right after creating a new tab. [Commit]
 - Fixed a whole bunch of formatting issues with BBCode for profiles not matching the website's profile page, mostly related to `[sub]`/ `[sup]`, `[big]`/ `[small]` and `[heading]` tags. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/c33c56d342f7f969019ca452e5245e64c1937255)
+- Husky no longer errors when a file name has a space [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/8c4a34d4feabdb4f293dc4f923a9d27afa27a3c2)
 
 ### Changed
 
@@ -42,7 +44,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The profile analyser now shows information about how the matcher interprets your character (like species, what genders it thinks you'd prefer, etc) rather than just telling you which things you still have to fill in. [Commit]
 - Notification sounds now use the higher quality .ogg variants that were already in the code (where available). [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/57a78e056b8cb1b3dc8b26528b9bc912ab4fd856)
 - About page now has a link to contributors.md and additional maintainers, as well as a cute little heart animation. <3 [[Commit]]()
-- Cleaned up about page code slightly, made it auto-size to the content height. [[Commit]]()
+- Facelift given to the about page, made it auto-size to the content height. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/0f55dc886b2182ccc6c59d263f74ec27f45a2fd9)
+  - Added gradient to about page for _style_~ [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/df019f928dbaf67d1f09e6a6f656b2f866e8fca9)
+- Contributors moved to [README.md](./README.md), with a pretty icon list. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/be35719732e16808bf030cdca458aaed1812abf0)
+- Theme names are now auto-spaced and capitalized [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/8a84e4494b832a16ad4852345ec2b803573533ff)
 
 ### UI Changes overview
 
