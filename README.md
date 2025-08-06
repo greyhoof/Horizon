@@ -249,6 +249,6 @@ Please read [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 # Credits
 
-- _CodingWithAnxiety_, Project Maintainer
-- _kawinski_, Assigned Project Nerd (Aka, helps with project direction.)
-- _FatCatClient_, (Temporary) co-owner.
+<a href="https://github.com/Fchat-Horizon/Horizon/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Fchat-Horizon/Horizon" />
+</a>
