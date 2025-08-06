@@ -21,12 +21,6 @@
         margin: 0 auto;
       }
 
-      .app-logo {
-        width: 80px;
-        height: 80px;
-        margin-bottom: 10px;
-      }
-
       h1 {
         margin: 0 0 5px 0;
         font-size: 18px;
@@ -76,11 +70,43 @@
           transform: scale(1);
         }
       }
+
+      .image-bg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        background-image: linear-gradient(-2deg, #1b0f30 5%, #a0487e 19%, #ffa978 79%);
+        z-index: -1;
+        filter: blur(20px)
+      }
+
+      .image-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 120px;
+        height: 120px;
+        margin: 0 auto 10px auto;
+      }
+
+      .app-logo {
+        width: 80px;
+        height: 80px;
+        z-index: 1;
+      }
     </style>
   </head>
   <body>
     <div class="container">
-      <img alt="Horizon Logo" class="app-logo" />
+      <div class="image-container">
+        <div class="image-bg"></div>
+        <img alt="Horizon Logo" class="app-logo" />
+      </div>
       <h1>Horizon</h1>
       <p>A modern F-Chat client</p>
 
