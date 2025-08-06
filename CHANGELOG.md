@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html). You can also read it on our [website](https://fchat-horizon.github.io/docs/changelog.html).
 
-# Unreleased 
+# Unreleased
 
 ## 1.33.0 [2025-08-XX]
 
@@ -34,13 +34,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Sort of fixed Imgur previews. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/548ad15ba4804f292ec4610ee9667e84458a13c9)
 - Fixed some cases where the chatbox would resize erratically around the end of a line, especially if typing narrow characters like exclamation points or the letter "i". [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/72fdfe8c0232571e9ef0c81f0bc28f7c7fbb61ed)
 - Fixed some issues with the tab switch shortcut not working right after creating a new tab. [Commit]
-- Fixed a whole bunch of formatting issues with BBCode for profiles not matching the website's profile page, mostly related to ``[sub]``/ ``[sup]``, ``[big]``/ ``[small]`` and ``[heading]`` tags. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/c33c56d342f7f969019ca452e5245e64c1937255)
+- Fixed a whole bunch of formatting issues with BBCode for profiles not matching the website's profile page, mostly related to `[sub]`/ `[sup]`, `[big]`/ `[small]` and `[heading]` tags. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/c33c56d342f7f969019ca452e5245e64c1937255)
 
 ### Changed
 
 - The quick jumper (Ctrl/ Cmd + T) now also shows recent conversations, bookmarks and friends. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/49b76e617189be1f3ad3131db6f6ca2cc08ac28f)
 - The profile analyser now shows information about how the matcher interprets your character (like species, what genders it thinks you'd prefer, etc) rather than just telling you which things you still have to fill in. [Commit]
 - Notification sounds now use the higher quality .ogg variants that were already in the code (where available). [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/57a78e056b8cb1b3dc8b26528b9bc912ab4fd856)
+- About page now has a link to contributors.md and additional maintainers, as well as a cute little heart animation. <3 [[Commit]]()
+- Cleaned up about page code slightly, made it auto-size to the content height. [[Commit]]()
 
 ### UI Changes overview
 
@@ -59,15 +61,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The light theme has (mostly) been fixed throughout and is now up to par with the dark themes. [Commit]
 - Improved visual consistency with the Eicon Picker's UI elements and the rest of the app's. [Commit]
 - The profile viewer has been significantly polished too.
-  - The side bar's buttons have been updated to match the look used for other buttons throughout the app. 
+  - The side bar's buttons have been updated to match the look used for other buttons throughout the app.
   - Looking at your own character(s) now shows (preliminary!) buttons similar to the website. You can also see your private friends lists now.
   - The dialog for editing a memo has been changed to match the one in the user right click menu.
   - The profile analyser is now displayed on your own profile instead, inside the collapsible box used for match results on others' profiles.
   - The window will no longer shift around depending on whether or not a profile is loading/ unavailable, smaller or full size. This also includes a nice little loading animation (please do not look up what they're called).
-  - Massively nested ``[indent]`` tags, used to create a padding effect, no longer have their contents completely squashed on narrower screen sizes.
+  - Massively nested `[indent]` tags, used to create a padding effect, no longer have their contents completely squashed on narrower screen sizes.
   - Various elements (such as the buttons above the kink list, the "Info" tab's contents and the sidebar's contents now scale properly at various screen sizes.
   - Dropdown items and the kink lists have been slimmed down a bit. The kink lists now have a bit of a coloured flair similar to the website's profile page.
-- Buttons on the window's title bar now blend in better with the background. 
+- Buttons on the window's title bar now blend in better with the background.
   - On platforms that have a button for the app menu, a specific button was added to directly open the settings. The app menu button has been given a different icon to better show off its purpose.
 - Text contrast has been fixed so it's applied globally across the appropriate elements (like buttons). [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/8480f9ce4469ca2ef5e0a8e0e9e9b6a12c30cade)
   - This also fixes some cases where theme colours weren't being applied properly to some elements (like conversation lists in the Dracula theme).
@@ -78,14 +80,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Merged pull requests
 
-- https://github.com/Fchat-Horizon/Horizon/pull/285 by @little-voice 
-- https://github.com/Fchat-Horizon/Horizon/pull/298 by @little-voice 
-- https://github.com/Fchat-Horizon/Horizon/pull/290 by @FatCatClient 
+- https://github.com/Fchat-Horizon/Horizon/pull/285 by @little-voice
+- https://github.com/Fchat-Horizon/Horizon/pull/298 by @little-voice
+- https://github.com/Fchat-Horizon/Horizon/pull/290 by @FatCatClient
 - https://github.com/Fchat-Horizon/Horizon/pull/300 by @DerEchteDimenzio
-- https://github.com/Fchat-Horizon/Horizon/pull/317 by @FatCatClient 
+- https://github.com/Fchat-Horizon/Horizon/pull/317 by @FatCatClient
 - https://github.com/Fchat-Horizon/Horizon/pull/311 by @DerEchteDimenzio
 - https://github.com/Fchat-Horizon/Horizon/pull/312 by @DerEchteDimenzio
-
 
 # [Releases]
 

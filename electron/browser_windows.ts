@@ -658,18 +658,20 @@ export function createChangelogWindow(
 export function createAboutWindow(
   parentWindow: electron.BrowserWindow
 ): electron.BrowserWindow {
+  const icon = process.platform === 'win32' ? winIcon : pngIcon;
+  
   const about = new electron.BrowserWindow({
     width: 400,
-    height: 400,
+    height: 400, // Initial height
     center: true,
     resizable: false,
     minimizable: false,
-    useContentSize: process.platform === 'win32',
-    alwaysOnTop: true,
-    modal: false,
+    useContentSize: process.platform === 'win32', // Important for Windows
+    modal: true,
     parent: parentWindow,
     autoHideMenuBar: true,
-    icon: process.platform === 'win32' ? winIcon : pngIcon,
+    show: false,
+    icon,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false
@@ -678,30 +680,57 @@ export function createAboutWindow(
 
   remoteMain.enable(about.webContents);
 
-  // Make links open in external browser
+  // Handle external links
   about.webContents.setWindowOpenHandler(({ url }) => {
     electron.shell.openExternal(url);
     return { action: 'deny' };
   });
 
-  // Get package.json version and pass it to the renderer
-  const packageInfo = require('../package.json');
+  // Set package version
+  process.env.npm_package_version = require('../package.json').version;
 
-  // Set environment variable for package version that the renderer can access
-  process.env.npm_package_version = packageInfo.version;
-
-  // Load the about HTML file
+  // Load the HTML file
   about.loadFile(path.join(__dirname, 'about.html'));
 
-  about.webContents.on('dom-ready', () => {
-    // The following ensures proper path encoding for Windows paths too
-    const iconPath = process.platform === 'win32' ? winIcon : pngIcon;
-    const encodedPath = 'file://' + iconPath.replace(/\\/g, '/');
-
+  // Adjust height to content and show window
+  about.webContents.once('dom-ready', () => {
+    // Set icon path - use the icon directly as it's already a full path
+    const iconPath = 'file://' + icon.replace(/\\/g, '/');
+    
+    // Calculate content height and set icon
     about.webContents.executeJavaScript(`
-      document.querySelector('.app-logo').src = "${encodedPath}";
-      console.log("Updated icon path to: ${encodedPath}");
-    `);
+      // Sets icon
+      const logo = document.querySelector('.app-logo');
+      if (logo) logo.src = '${iconPath}';
+      
+      // Return height of content for window sizing
+      const container = document.querySelector('.container');
+      container ? container.scrollHeight + 60 : 400;
+    `)
+    .then((height: number) => {
+      // Constrain height to reasonable bounds
+      const finalHeight = Math.min(Math.max(height, 350), 600);
+      
+      // Platform-specific sizing
+      if (process.platform === 'win32') {
+        about.setContentSize(400, finalHeight);
+      } else {
+        about.setSize(400, finalHeight);
+      }
+      
+      about.center();
+      about.show();
+    })
+    .catch(() => {
+      // Fallback if calculation fails
+      if (process.platform === 'win32') {
+        about.setContentSize(400, 400);
+      } else {
+        about.setSize(400, 400);
+      }
+      about.center();
+      about.show();
+    });
   });
 
   return about;
