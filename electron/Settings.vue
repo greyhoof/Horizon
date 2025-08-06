@@ -103,7 +103,7 @@
                       :title="l('settings.theme')"
                     >
                       <template slot-scope="s">
-                        {{ s.option }}
+                        {{ capitalizeThemeName(s.option) }}
                       </template>
                     </filterable-select>
                   </label>
@@ -510,6 +510,13 @@
       return lang in knownLanguageNames
         ? `${(knownLanguageNames as any)[lang]} (${lang})`
         : lang;
+    }
+
+    capitalizeThemeName(themeName: string): string {
+      return themeName
+        .split(/[\s-_]+/) // Split on spaces, hyphens, or underscores
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(' ');
     }
 
     close(): void {
