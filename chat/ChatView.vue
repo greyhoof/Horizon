@@ -26,7 +26,10 @@
             />
           </a>
           <div @click.prevent="showStatus()" class="sidebarUserInfo-user">
-            <h5 style="margin: 0; line-height: 1" class="sidebarUserInfo-name">
+            <h5
+              style="margin: 0; line-height: 0.85"
+              class="sidebarUserInfo-name"
+            >
               {{ ownCharacter.name }}
             </h5>
             <span

@@ -1,0 +1,102 @@
+@use 'sass:color';
+@import '../../functions';
+@import '~bootstrap/scss/functions';
+@import '../variables/rose_variables';
+@import '~bootstrap/scss/variables';
+@import '../../flist_derived';
+@import '../variables/rose_derived';
+
+$red-color: $rose-red;
+$green-color: $rose-green;
+$blue-color: $rose-blue;
+$yellow-color: $rose-yellow;
+$purple-color: $rose-purple;
+$cyan-color: $rose-cyan;
+$white-color: $gray-800;
+$black-color: #2f2128;
+$brown-color: $rose-brown;
+$pink-color: $rose-pink;
+$gray-color: #898689;
+$orange-color: $rose-orange;
+@import '../chat';
+
+body,
+.modal-body {
+  background: #1b181b;
+  background: linear-gradient(
+    153deg,
+    rgba(27, 24, 27, 1) 20%,
+    rgba(20, 18, 20, 1) 100%
+  );
+}
+
+.sidebar {
+  background-color: rgba($body-bg, 0.4);
+}
+
+.message-own:not(.message-warn) {
+  background-color: rgba($gray-200, 0.3);
+}
+
+.list-group-item-danger {
+  color: theme-color-level('danger', -9);
+  background-color: theme-color-level('danger', -7);
+}
+
+* {
+  &::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 2px $card-border-color;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.8);
+    background-color: $gray-300;
+    &:hover {
+      background-color: $gray-500;
+    }
+
+    &:active {
+      background-color: $gray-700;
+    }
+  }
+}
+
+.colorblindMode {
+  @import '../colorblind';
+  @import '../../rising';
+
+  @each $varName, $value in $risingVariables {
+    --#{$varName}: #{$value};
+  }
+}
+
+:root {
+  color-scheme: dark;
+}
+
+$genders: (
+  'shemale': $rose-magenta,
+  'herm': $rose-purple,
+  'none': color.scale($black-color, $lightness: 40%),
+  'female': $rose-pink,
+  'male': $rose-blue,
+  'male-herm': $rose-cyan,
+  'transgender': $rose-orange,
+  'cunt-boy': $rose-green
+);
+
+@each $gender, $color in $genders {
+  .gender-#{$gender} {
+    color: $color;
+  }
+
+  .message-event .gender-#{$gender} {
+    color: color.scale($color, $lightness: 5%);
+  }
+}

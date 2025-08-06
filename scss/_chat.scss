@@ -243,9 +243,11 @@
   }
 }
 .sidebarUserInfo-name {
-  overflow-x: hidden;
-  overflow-y: clip;
+  overflow-x: visible;
+  overflow-y: visible;
   text-overflow: ellipsis;
+
+  font-weight: 600;
 }
 #sidebarUserInfo {
   padding-bottom: 7px;
