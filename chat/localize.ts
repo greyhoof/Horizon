@@ -140,6 +140,17 @@ const strings: { [key: string]: string | undefined } = {
   'users.bookmarks': 'Bookmarks',
   'users.members': 'Members',
   'users.memberCount': '{0} Members',
+  'userProfile.edit': 'Edit character',
+
+  'userProfile.': 'Edit character',
+  'userProfile.delete': 'Delete character',
+  'userProfile.duplicate': 'Duplicate character',
+  'userProfile.bookmark': 'Bookmark character',
+  'userProfile.memo': 'Update character memo',
+  'userProfile.unbookmark': 'Unbookmark character',
+  'userProfile.unbookmarkable': 'This user does not wish to be bookmarked.',
+  'userProfile.showFriends': 'Show friends',
+  'userProfile.sendNote': 'Send note',
   'chat.report': 'Alert Staff',
   'chat.report.description': `[color=red]Before you alert the moderators, PLEASE READ:[/color]
 If you're just having personal trouble with someone, right-click their name and ignore them.

@@ -21,17 +21,22 @@
         class="row justify-content-between flex-wrap character-links-block"
       >
         <template v-if="character.is_self">
-          <a :href="editUrl" class="edit-link btn btn-outline-secondary col-3"
+          <a
+            :href="editUrl"
+            :title="l('userProfile.edit')"
+            class="edit-link btn btn-outline-secondary col-3"
             ><i class="fa fa-fw fa-pencil-alt"></i
           ></a>
           <button
             @click="showDelete"
+            :title="l('userProfile.delete')"
             class="delete-link btn btn-outline-danger col-3"
           >
             <i class="fa fa-fw fa-trash"></i>
           </button>
           <button
             @click="showDuplicate()"
+            :title="l('userProfile.duplicate')"
             class="duplicate-link btn btn-outline-secondary col-3"
           >
             <i class="fa fa-fw fa-copy"></i>
@@ -48,6 +53,13 @@
               @click.prevent="toggleBookmark()"
               href="#"
               class="btn col-3"
+              :title="
+                l(
+                  character.bookmarked
+                    ? 'userProfile.bookmark'
+                    : 'userProfile.unbookmark'
+                )
+              "
               :class="{
                 'btn-outline-success': character.bookmarked,
                 'btn-outline-secondary': !character.bookmarked
@@ -61,15 +73,21 @@
                 }"
               ></i>
             </button>
-            <span
+
+            <button
+              href="#"
+              class="btn col-3"
+              disabled
               v-if="character.settings.block_bookmarks"
-              class="prevents-bookmarks"
-              >!</span
+              :title="l('userProfile.unbookmarkable')"
             >
+              <i class="fa-solid fa-exclamation"></i>
+            </button>
           </template>
           <button
             href="#"
             @click.prevent="showFriends()"
+            :title="l('userProfile.showFriends')"
             class="friend-link btn btn-outline-secondary col-3"
           >
             <i class="fa fa-fw fa-user-plus"></i>
@@ -78,6 +96,7 @@
             href="#"
             v-if="!oldApi"
             @click.prevent="showReport()"
+            :title="l('userProfile.report')"
             class="report-link btn btn-outline-warning col-3"
           >
             <i class="fa fa-fw fa-exclamation-triangle"></i>
@@ -86,6 +105,7 @@
         <button
           href="#"
           @click.prevent="showMemo()"
+          :title="l('userProfile.memo')"
           class="memo-link btn btn-outline-secondary col-3"
         >
           <i class="far fa-sticky-note fa-fw"></i>
@@ -93,6 +113,7 @@
         <a
           v-if="authenticated && !character.is_self"
           :href="noteUrl"
+          :title="l('userProfile.sendNote')"
           class="character-page-note-link btn-outline-secondary col-3 btn"
           style="padding: 0 4px"
         >
