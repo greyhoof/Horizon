@@ -29,7 +29,10 @@
             @click.prevent="showStatus()"
             class="sidebarUserInfo-user d-flex flex-column"
           >
-            <h5 style="margin: 0" class="sidebarUserInfo-name p-2">
+            <h5
+              style="margin: 0; line-height: 1.65rem"
+              class="sidebarUserInfo-name p-2"
+            >
               {{ ownCharacter.name }}
             </h5>
             <span class="p-2">

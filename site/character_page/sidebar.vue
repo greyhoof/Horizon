@@ -174,13 +174,19 @@
       </div>
 
       <div class="character-list-block" v-if="character.character_list">
-        <div v-for="listCharacter in character.character_list">
-          <img
-            :src="avatarUrl(listCharacter.name)"
-            class="character-avatar icon"
-            style="margin-right: 5px"
-          />
-          <character-link :character="listCharacter.name"></character-link>
+        <div
+          class="row align-items-center"
+          v-for="listCharacter in character.character_list"
+        >
+          <div class="col col-auto">
+            <img
+              :src="avatarUrl(listCharacter.name)"
+              class="character-avatar icon"
+            />
+          </div>
+          <div class="col">
+            <character-link :character="listCharacter.name"></character-link>
+          </div>
         </div>
       </div>
     </div>
