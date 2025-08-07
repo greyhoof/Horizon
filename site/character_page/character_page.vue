@@ -900,8 +900,6 @@
   }
 
   .match-report {
-    display: flex;
-    flex-direction: row;
     background-color: var(--scoreReportBg);
     /* width: 100%; */
     margin-top: -1.2rem;
@@ -954,19 +952,6 @@
     }
 
     .scores {
-      float: left;
-      flex: 1;
-      margin: 0;
-      max-width: 25rem;
-
-      &.you {
-        margin-right: 1rem;
-      }
-
-      &.them {
-        margin-left: 1rem;
-      }
-
       .species {
         display: inline-block;
         color: var(--characterInfotagColor);
@@ -994,11 +979,8 @@
     }
 
     .vs {
-      margin-left: 1rem;
-      margin-right: 1rem;
       text-align: center;
       font-size: 5rem;
-      line-height: 0;
       color: rgba(255, 255, 255, 0.3);
       margin-top: auto;
       margin-bottom: auto;
