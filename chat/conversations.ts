@@ -1120,7 +1120,7 @@ export default function (this: any): Interfaces.State {
     const message = createMessage(
       MessageType.Message,
       char,
-      decodeHTML(data.message),
+      decodeHTML(data.message.trimEnd()),
       time
     );
 
@@ -1142,7 +1142,7 @@ export default function (this: any): Interfaces.State {
     const message = createMessage(
       MessageType.Message,
       char,
-      decodeHTML(data.message),
+      decodeHTML(data.message.trimEnd()),
       time
     );
 
