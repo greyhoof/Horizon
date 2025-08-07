@@ -900,7 +900,7 @@
     }
 
     .list-group-item-danger:not(.active) {
-      color: inherit;
+      color: color-yiq(theme-color('danger'));
     }
   }
 
@@ -948,7 +948,7 @@
     }
 
     .list-group-item-danger:not(.active) {
-      color: inherit;
+      color: color-yiq(theme-color('danger'));
     }
   }
 

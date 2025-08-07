@@ -305,6 +305,12 @@
 .message-warn {
   background-color: theme-color('danger');
   color: color-yiq(theme-color('danger'));
+  .bbcode {
+    .whiteText,
+    .blackText {
+      color: color-yiq(theme-color('danger'));
+    }
+  }
 }
 
 .messages {
