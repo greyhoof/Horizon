@@ -230,8 +230,11 @@
     }
 
     runSearch() {
-      const s = this.search.toLowerCase();
-
+      let s = this.search.toLowerCase();
+      const bbcodeMatch = s.match(/^\[eicon\](.*?)\[\/eicon\]\s*$/i);
+      if (bbcodeMatch) {
+        s = bbcodeMatch[1].trim();
+      }
       if (s.startsWith('category:')) {
         const category = s.substring(9).trim();
 
