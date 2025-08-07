@@ -15,7 +15,7 @@ $purple-color: $dracula-purple;
 $cyan-color: $dracula-cyan;
 $white-color: $dracula-foreground;
 $black-color: $dracula-comment;
-$brown-color: #8a6d3b;
+$brown-color: #b89383;
 $pink-color: $dracula-pink;
 $gray-color: $gray-600;
 $orange-color: $dracula-orange;
@@ -97,6 +97,10 @@ $genders: (
 .user-bookmark,
 .message-event .user-bookmark {
   color: $dracula-green;
+}
+
+.message-highlight {
+  background-color: color.scale(theme-color-level('success', -8), $alpha: -60%);
 }
 
 :root {
