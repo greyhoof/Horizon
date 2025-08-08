@@ -218,7 +218,7 @@
     padding: 5px 3px 5px 3px;
     min-width: 55px;
     text-align: center;
-    font-size: 1.3em;
+    font-size: 1.15rem;
     display: inline-block;
     border-radius: 6px;
     transition: 0.2s;
@@ -464,12 +464,14 @@ $genders: (
   }
 }
 
-.list-group-item {
-  border: 0px;
-}
-
-.list-group-item + .list-group-item.active {
-  margin-top: 0px;
+.list-group.conversation-nav .list-group-item {
+  margin: 1px 0px 1px 0px;
+  border-radius: inherit;
+  //@each $color, $value in $theme-colors {
+  //&.list-group-item-#{$color} {
+  //color: color-yiq($value);
+  //}
+  //}
 }
 
 .logs-fab {

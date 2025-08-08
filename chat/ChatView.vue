@@ -112,7 +112,7 @@
         <div style="clear: both" class="conversationList-header d-flex">
           <span class="flex-grow-1">
             <a href="#" @click.prevent="showAddPmPartner()" class="btn">
-              {{ l('chat.pms') }}</a
+              {{ l('chat.pms.short') }}</a
             >
           </span>
 
@@ -829,7 +829,6 @@
       padding: 5px;
       display: flex;
       align-items: center;
-      border-right: 0;
       .name {
         flex: 1;
         overflow: hidden;

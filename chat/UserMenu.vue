@@ -5,7 +5,13 @@
       class="list-group bg-solid-text"
       :style="position"
       v-if="character && showContextMenu"
-      style="position: fixed; display: block; min-width: 220px; z-index: 1100"
+      style="
+        position: fixed;
+        margin: 10px 10px 5px;
+        display: block;
+        min-width: 220px;
+        z-index: 1100;
+      "
       ref="menu"
     >
       <div

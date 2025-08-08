@@ -10,9 +10,17 @@ hr {
 .modal-dialog.modal-70 {
   min-width: 70%;
 }
-.card:not(.collapsed) {
+.card {
+  border-radius: 0.7em;
+}
+.kink-block .card {
+  border-radius: initial;
   border-bottom-right-radius: 1rem;
   border-bottom-left-radius: 1rem;
+}
+
+.list-group-item {
+  border: 0px;
 }
 
 .quick-jump-overlay .quick-jump-container,

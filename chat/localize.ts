@@ -79,6 +79,7 @@ const strings: { [key: string]: string | undefined } = {
   'chat.menu': 'Menu',
   'chat.channels': 'Channels',
   'chat.pms': 'Private messages',
+  'chat.pms.short': 'PMs',
   'chat.consoleTab': 'Console',
   'chat.pinTab': 'Pin this tab',
   'chat.closeTab': 'Close this tab',

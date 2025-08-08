@@ -638,6 +638,9 @@
   .characterpage-placeholder {
     height: 100%;
   }
+  .kink-block .card-header {
+    border-bottom-width: 3px !important;
+  }
   .character-kinks-block {
     i.fa {
       margin-right: 0.25rem;
