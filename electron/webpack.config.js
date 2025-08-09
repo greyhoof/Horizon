@@ -124,6 +124,7 @@ const mainConfig = {
         { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader' },
         {
           test: /\.(wav|mp3|ogg)$/,
+          exclude: /sound-themes/,
           loader: 'file-loader',
           options: { name: 'sounds/[name].[ext]' }
         },
@@ -234,6 +235,13 @@ const mainConfig = {
               .replace(/\\/g, '/'),
             to: path.join('assets'),
             context: path.resolve(__dirname, '..', 'assets')
+          },
+          {
+            from: path
+              .resolve(__dirname, '..', 'chat', 'sound-themes', '**', '*')
+              .replace(/\\/g, '/'),
+            to: path.join('sound-themes'),
+            context: path.resolve(__dirname, '..', 'chat', 'sound-themes')
           },
           {
             from: path.join(__dirname, 'package.json'),

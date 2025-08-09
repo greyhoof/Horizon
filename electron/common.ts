@@ -45,6 +45,7 @@ export class GeneralSettings {
   horizonCustomCss: string = '';
   horizonCustomCssEnabled: boolean = false;
   horizonVanillaTextColors: boolean = false;
+  soundTheme = 'default';
 }
 
 // //tslint:disable
