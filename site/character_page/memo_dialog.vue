@@ -7,7 +7,7 @@
     dialog-class="w-100 modal-dialog-centered"
     iconClass="fas fa-note-sticky"
   >
-    <div class="form-group">
+    <div class="mb-3">
       <textarea
         v-model="message"
         maxlength="1000"

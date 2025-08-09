@@ -21,13 +21,13 @@
         ></span>
       </div>
     </template>
-    <div class="form-group row" style="flex-shrink: 0" v-show="showFilters">
+    <div class="mb-3 row" style="flex-shrink: 0" v-show="showFilters">
       <label for="character" class="col-sm-2 col-form-label">{{
         l('logs.character')
       }}</label>
       <div :class="canZip ? 'col-sm-8 col-10 col-xl-9' : 'col-sm-10'">
         <select
-          class="form-control"
+          class="form-select"
           v-model="selectedCharacter"
           id="character"
           @change="loadCharacter"
@@ -46,7 +46,7 @@
         </button>
       </div>
     </div>
-    <div class="form-group row" style="flex-shrink: 0" v-show="showFilters">
+    <div class="mb-3 row" style="flex-shrink: 0" v-show="showFilters">
       <label class="col-sm-2 col-form-label">{{
         l('logs.conversation')
       }}</label>
@@ -76,13 +76,13 @@
         </button>
       </div>
     </div>
-    <div class="form-group row" style="flex-shrink: 0" v-show="showFilters">
+    <div class="mb-3 row" style="flex-shrink: 0" v-show="showFilters">
       <label for="date" class="col-sm-2 col-form-label">{{
         l('logs.date')
       }}</label>
       <div class="col-sm-8 col-10 col-xl-9">
         <select
-          class="form-control"
+          class="form-select"
           v-model="selectedDate"
           id="date"
           @change="loadMessages"

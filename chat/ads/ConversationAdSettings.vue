@@ -31,14 +31,14 @@
       </p>
     </div>
 
-    <div class="form-group">
+    <div class="mb-3">
       <label class="control-label" for="randomOrder">
         <input type="checkbox" v-model="randomOrder" id="randomOrder" />
         Serve ads in random order
       </label>
     </div>
 
-    <div class="form-group ad-list" v-for="(ad, index) in ads">
+    <div class="mb-3 ad-list" v-for="(ad, index) in ads">
       <label :for="'ad' + conversation.key + '-' + index" class="control-label"
         >Ad #{{ index + 1 }}
         <a v-if="index > 0" @click="moveAdUp(index)" title="Move Up"

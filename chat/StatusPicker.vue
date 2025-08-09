@@ -10,7 +10,7 @@
   >
     <form class="status-picker" v-if="history.length > 0">
       <div
-        class="form-row"
+        class="row"
         v-for="(historicStatus, index) in history"
         :class="{ 'selected-row': index === selectedStatus }"
       >
@@ -33,7 +33,7 @@
               class="fas"
               :class="{ 'fa-check-circle': index === selectedStatus }"
           /></span>
-          <label class="custom-control-label" :for="'history_status_' + index">
+          <label class="form-check-label" :for="'history_status_' + index">
             <bbcode :text="historicStatus"></bbcode>
           </label>
           <span class="content-action" @click="removeStatusHistoryEntry(index)"

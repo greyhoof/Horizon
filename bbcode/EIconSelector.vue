@@ -14,7 +14,7 @@
       >
         <strong>Loading...</strong>
         <div
-          class="spinner-border ml-auto"
+          class="spinner-border ms-auto"
           role="status"
           aria-hidden="true"
         ></div>

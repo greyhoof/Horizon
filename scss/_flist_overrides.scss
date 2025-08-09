@@ -204,12 +204,3 @@ $font-family-base:
 body {
   font-family: $font-family-base;
 }
-// HACK: Bootstrap offers no way to override these by default, and they are SUPER bright.
-// The level numbers have been changed to make them work for dark themes.
-@if $theme-is-dark {
-  @each $color, $value in $theme-colors {
-    @include table-row-variant($color, theme-color-level($color, 5));
-  }
-}
-
-@include table-row-variant(active, $table-active-bg);

@@ -6,7 +6,7 @@
     dialogClass="w-100 modal-70 statusEditor"
     :iconClass="getStatusIcon(status)"
   >
-    <div class="form-group" id="statusSelector">
+    <div class="mb-3" id="statusSelector">
       <label class="control-label">{{ l('chat.setStatus.status') }}</label>
       <dropdown linkClass="custom-select">
         <span slot="title"
@@ -24,7 +24,7 @@
         </a>
       </dropdown>
     </div>
-    <div class="form-group">
+    <div class="mb-3">
       <label class="control-label">{{ l('chat.setStatus.message') }}</label>
       <editor id="text" v-model="text" classes="form-control" maxlength="255">
         <div class="bbcode-editor-controls">
@@ -32,7 +32,7 @@
         </div>
       </editor>
     </div>
-    <div class="form-group">
+    <div class="mb-3">
       <button
         type="button"
         @click="showStatusPicker"

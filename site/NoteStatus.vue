@@ -14,7 +14,9 @@
         :class="`status-report ${report.type} ${report.count > 0 && report.count !== report.dismissedCount ? 'active' : ''}`"
       >
         <i :class="getIconClass(report)"></i>
-        <span class="badge badge-primary badge-pill">{{ report.count }}</span>
+        <span class="badge text-bg-primary rounded-pill">{{
+          report.count
+        }}</span>
       </a>
 
       <!--This was part of the original design, where the NoteStatus component floated on the bottom left

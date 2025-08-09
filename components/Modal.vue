@@ -23,7 +23,7 @@
             </h5>
             <button
               type="button"
-              class="close"
+              class="btn-close"
               @click="hide"
               aria-label="Close"
               v-show="!keepOpen"

@@ -76,7 +76,7 @@
       </div>
       <button
         type="button"
-        class="close"
+        class="btn-close"
         aria-label="Close"
         style="margin-left: 10px"
         @click="showToolbar = false"

@@ -33,7 +33,7 @@
         </div>
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="disallowedTags">{{
           l('settings.disallowedTags')
         }}</label>
@@ -43,7 +43,7 @@
           v-model="disallowedTags"
         />
       </div>
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="clickOpensMessage">
           <input
             type="checkbox"
@@ -53,31 +53,31 @@
           {{ l('settings.clickOpensMessage') }}
         </label>
       </div>
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="enterSend">
           <input type="checkbox" id="enterSend" v-model="enterSend" />
           {{ l('settings.enterSend') }}
         </label>
       </div>
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="showAvatars">
           <input type="checkbox" id="showAvatars" v-model="showAvatars" />
           {{ l('settings.showAvatars') }}
         </label>
       </div>
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="colorBookmarks">
           <input type="checkbox" id="colorBookmarks" v-model="colorBookmarks" />
           {{ l('settings.colorBookmarks') }}
         </label>
       </div>
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="animatedEicons">
           <input type="checkbox" id="animatedEicons" v-model="animatedEicons" />
           {{ l('settings.animatedEicons') }}
         </label>
       </div>
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="idleTimer">{{
           l('settings.idleTimer')
         }}</label>
@@ -90,7 +90,7 @@
           max="1440"
         />
       </div>
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="messageSeparators">
           <input
             type="checkbox"
@@ -100,25 +100,25 @@
           {{ l('settings.messageSeparators') }}
         </label>
       </div>
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="bbCodeBar">
           <input type="checkbox" id="bbCodeBar" v-model="bbCodeBar" />
           {{ l('settings.bbCodeBar') }}
         </label>
       </div>
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="logMessages">
           <input type="checkbox" id="logMessages" v-model="logMessages" />
           {{ l('settings.logMessages') }}
         </label>
       </div>
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="logAds">
           <input type="checkbox" id="logAds" v-model="logAds" />
           {{ l('settings.logAds') }}
         </label>
       </div>
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="fontSize">{{
           l('settings.fontSize')
         }}</label>
@@ -133,13 +133,13 @@
       </div>
     </div>
     <div v-show="selectedTab === '1'">
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="playSound">
           <input type="checkbox" id="playSound" v-model="playSound" />
           {{ l('settings.playSound') }}
         </label>
       </div>
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="alwaysNotify">
           <input
             type="checkbox"
@@ -150,19 +150,19 @@
           {{ l('settings.alwaysNotify') }}
         </label>
       </div>
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="notifications">
           <input type="checkbox" id="notifications" v-model="notifications" />
           {{ l('settings.notifications') }}
         </label>
       </div>
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="highlight">
           <input type="checkbox" id="highlight" v-model="highlight" />
           {{ l('settings.highlight') }}
         </label>
       </div>
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="highlightWords">{{
           l('settings.highlightWords')
         }}</label>
@@ -172,7 +172,7 @@
           v-model="highlightWords"
         />
       </div>
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="horizonHighlightUsers">{{
           l('settings.highlightUsers')
         }}</label>
@@ -183,19 +183,19 @@
         />
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="eventMessages">
           <input type="checkbox" id="eventMessages" v-model="eventMessages" />
           {{ l('settings.eventMessages') }}
         </label>
       </div>
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="joinMessages">
           <input type="checkbox" id="joinMessages" v-model="joinMessages" />
           {{ l('settings.joinMessages') }}
         </label>
       </div>
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="showNeedsReply">
           <input type="checkbox" id="showNeedsReply" v-model="showNeedsReply" />
           {{ l('settings.showNeedsReply') }}
@@ -205,7 +205,7 @@
     <div v-show="selectedTab === '2'">
       <h5>Matching</h5>
 
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="risingAdScore">
           <input type="checkbox" id="risingAdScore" v-model="risingAdScore" />
           Colorize ads, profiles, and names of compatible and incompatible
@@ -213,7 +213,7 @@
         </label>
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="risingComparisonInUserMenu">
           <input
             type="checkbox"
@@ -224,7 +224,7 @@
         </label>
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="risingComparisonInSearch">
           <input
             type="checkbox"
@@ -235,7 +235,7 @@
         </label>
       </div>
 
-      <!--            <div class="form-group">-->
+      <!--            <div class="mb-3">-->
       <!--                <label class="control-label" for="hideProfileComparisonSummary">-->
       <!--                    <input type="checkbox" id="hideProfileComparisonSummary" :checked="!hideProfileComparisonSummary" @input="hideProfileComparisonSummary = !$event.target.checked"/>-->
       <!--                    Show quick match results at the top of the character profile-->
@@ -244,7 +244,7 @@
 
       <h5>Preview</h5>
 
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="risingLinkPreview">
           <input
             type="checkbox"
@@ -255,7 +255,7 @@
         </label>
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="risingCharacterPreview">
           <input
             type="checkbox"
@@ -268,7 +268,7 @@
 
       <h5>Profile</h5>
 
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="risingAutoCompareKinks">
           <input
             type="checkbox"
@@ -279,7 +279,7 @@
         </label>
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="risingAutoExpandCustomKinks">
           <input
             type="checkbox"
@@ -292,7 +292,7 @@
 
       <h5>Draft Messages</h5>
 
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="horizonCacheDraftMessages">
           <input
             type="checkbox"
@@ -303,7 +303,7 @@
         </label>
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="horizonSaveDraftMessagesToDiskTimer">
           {{ l('settings.horizonSaveDraftMessagesToDiskTimer') }}
         </label>
@@ -319,7 +319,7 @@
 
       <h5>Misc</h5>
 
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="risingShowUnreadOfflineCount">
           <input
             type="checkbox"
@@ -329,7 +329,7 @@
           Show unread note and offline message counts at the bottom right corner
         </label>
       </div>
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="horizonNotifyFriendSignIn">
           <input
             type="checkbox"
@@ -339,7 +339,7 @@
           Notify when friends or bookmarks sign in.
         </label>
       </div>
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="risingColorblindMode">
           <input
             type="checkbox"
@@ -350,7 +350,7 @@
         </label>
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="risingShowPortraitNearInput">
           <input
             type="checkbox"
@@ -361,7 +361,7 @@
         </label>
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="risingShowPortraitInMessage">
           <input
             type="checkbox"
@@ -372,7 +372,7 @@
         </label>
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="risingShowHighQualityPortraits">
           <input
             type="checkbox"
@@ -383,7 +383,7 @@
         </label>
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="horizonShowCustomCharacterColors">
           <input
             type="checkbox"
@@ -394,7 +394,7 @@
         </label>
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="horizonShowGenderMarker">
           <input
             type="checkbox"
@@ -405,7 +405,7 @@
         </label>
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="horizonGenderMarkerOrigColor">
           <input
             type="checkbox"
@@ -420,7 +420,7 @@
         </label>
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="horizonChangeOfflineColor">
           <input
             type="checkbox"
@@ -431,12 +431,12 @@
         </label>
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="risingCharacterTheme">
           Override UI theme (for this character only)
           <select
             id="risingCharacterTheme"
-            class="form-control"
+            class="form-select"
             v-model="risingCharacterTheme"
             style="flex: 1; margin-right: 10px"
           >
@@ -467,7 +467,7 @@
 
       <h5>Visibility</h5>
 
-      <div class="form-group filters">
+      <div class="mb-3 filters">
         <label class="control-label" for="risingFilter.hideAds">
           <input
             type="checkbox"
@@ -538,7 +538,7 @@
         </label>
       </div>
 
-      <div class="form-group filters">
+      <div class="mb-3 filters">
         <label class="control-label" for="risingFilter.penalizeMatches">
           <input
             type="checkbox"
@@ -559,9 +559,9 @@
       </div>
 
       <h5>Character Age Match</h5>
-      <div class="form-group">Leave empty for no limit.</div>
+      <div class="mb-3">Leave empty for no limit.</div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="risingFilter.minAge"
           >Characters younger than (years)</label
         >
@@ -586,7 +586,7 @@
       </div>
 
       <h5>Type Match</h5>
-      <div class="form-group filters">
+      <div class="mb-3 filters">
         <label
           class="control-label"
           :for="'risingFilter.smartFilters.' + key"
@@ -603,7 +603,7 @@
       </div>
 
       <h5>Automatic Replies</h5>
-      <div class="form-group filters">
+      <div class="mb-3 filters">
         <label class="control-label" for="risingFilter.autoReply">
           <input
             type="checkbox"
@@ -635,7 +635,7 @@
         >
         </editor>
 
-        <div class="form-group">
+        <div class="mb-3">
           You will still see messages unless you have the "Hide private channel
           messages" option above selected. Even then, if they send a second
           message it will bypass the restriction and show you their message.
@@ -644,13 +644,13 @@
       </div>
 
       <h5>Exception List</h5>
-      <div class="form-group">
+      <div class="mb-3">
         Filters and automatic replies are not applied to these character names.
         Separate names with a linefeed. Friends and bookmarked characters bypass
         filtering automatically.
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <textarea
           class="form-control"
           :value="getExceptionList()"
@@ -677,7 +677,7 @@
       <div style="display: flex; padding-top: 10px">
         <select
           id="import"
-          class="form-control"
+          class="form-select"
           v-model="importCharacter"
           style="flex: 1; margin-right: 10px"
         >

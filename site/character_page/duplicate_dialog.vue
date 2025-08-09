@@ -11,7 +11,7 @@
       images. Guestbook entries, friends, groups, and bookmarks are not
       duplicated.
     </p>
-    <div class="form-row mb-2">
+    <div class="row mb-2">
       <form-group-inputgroup
         class="col-12"
         :errors="errors"

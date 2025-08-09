@@ -20,7 +20,7 @@
             </h4>
             <button
               type="button"
-              class="close"
+              class="btn-close"
               aria-label="Close"
               v-if="!isMac"
               @click.stop="close()"

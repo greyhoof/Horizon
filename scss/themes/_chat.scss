@@ -1,3 +1,7 @@
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/variables-dark';
+@import '~bootstrap/scss/maps';
 @import '~bootstrap/scss/mixins';
 @import '~bootstrap/scss/root';
 @import '~bootstrap/scss/reboot';
@@ -9,8 +13,6 @@
 @import '~bootstrap/scss/transitions';
 @import '~bootstrap/scss/dropdown';
 @import '~bootstrap/scss/button-group';
-@import '~bootstrap/scss/input-group';
-@import '~bootstrap/scss/custom-forms';
 @import '~bootstrap/scss/nav';
 @import '~bootstrap/scss/card';
 @import '~bootstrap/scss/pagination';
@@ -21,13 +23,7 @@
 @import '~bootstrap/scss/modal';
 @import '~bootstrap/scss/popover';
 @import '~bootstrap/scss/badge';
-@import '~bootstrap/scss/utilities/background';
-@import '~bootstrap/scss/utilities/borders';
-@import '~bootstrap/scss/utilities/display';
-@import '~bootstrap/scss/utilities/flex';
-@import '~bootstrap/scss/utilities/sizing';
-@import '~bootstrap/scss/utilities/shadows';
-@import '~bootstrap/scss/utilities/text';
+@import '~bootstrap/scss/utilities';
 
 @import '../core';
 @import '../chat';
@@ -64,7 +60,7 @@
 
 * {
   &::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 8px $card-border-color;
+    box-shadow: inset 0 0 8px var(--bs-border-color);
     border-radius: 10px;
   }
 

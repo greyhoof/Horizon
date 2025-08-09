@@ -31,7 +31,7 @@
 
             <span class="result-name"
               >{{ result.name }}
-              <span v-show="hasMentions(result)" class="badge badge-warning"
+              <span v-show="hasMentions(result)" class="badge text-bg-warning"
                 >!</span
               ></span
             >

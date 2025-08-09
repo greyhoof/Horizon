@@ -149,7 +149,7 @@
             @click.prevent="conversation.show()"
             :class="getClasses(conversation)"
             :data-character="conversation.character.name"
-            data-touch="false"
+            data-bs-touch="false"
             class="list-group-item list-group-item-action item-private"
             :key="conversation.key"
             @click.middle.prevent.stop="conversation.close()"
