@@ -300,6 +300,7 @@ export namespace Settings {
     readonly risingFilter: SmartFilterSettings;
 
     readonly risingCharacterTheme: string | undefined;
+    readonly soundTheme: string;
   }
 }
 

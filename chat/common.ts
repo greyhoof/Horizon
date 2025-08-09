@@ -134,6 +134,7 @@ export class Settings implements ISettings {
   };
 
   risingCharacterTheme = undefined;
+  soundTheme = 'default';
 }
 
 export class AdSettings implements Conversation.AdSettings {

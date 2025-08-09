@@ -172,6 +172,27 @@
                 class="card-body settings-content"
                 style="height: 100%; width: 100%"
               >
+                <h5>{{ l('settings.sounds') }}</h5>
+                <div class="form-group">
+                  <label
+                    class="control-label"
+                    for="soundTheme"
+                    style="width: 20ch"
+                  >
+                    {{ l('settings.soundTheme') }}
+                    <filterable-select
+                      v-model="settings.soundTheme"
+                      :options="availableSoundThemes"
+                      style="flex: 1; margin-right: 10px"
+                      :title="l('settings.soundTheme')"
+                    >
+                      <template slot-scope="s">
+                        {{ capitalizeSoundThemeName(s.option) }}
+                      </template>
+                    </filterable-select>
+                  </label>
+                </div>
+
                 <div class="warning">
                   <h5>{{ l('settings.comingsoon') }}</h5>
                   <hr />
@@ -455,6 +476,7 @@
     browserArgs = '';
     logDirectory = '';
     availableThemes: ReadonlyArray<string> = [];
+    availableSoundThemes: ReadonlyArray<string> = [];
     logLevel: log.LevelOption = false;
     selectedLang: string | string[] | undefined;
     //These are not reactive.
@@ -490,6 +512,10 @@
         .readdirSync(path.join(__dirname, 'themes'))
         .filter(x => x.substr(-4) === '.css')
         .map(x => x.slice(0, -4));
+
+      // Load available sound themes
+      this.loadAvailableSoundThemes();
+
       this.selectedLang = getSafeLanguages(this.settings.spellcheckLang);
       let availableLanguages = getSafeLanguages(
         remote.session.defaultSession.availableSpellCheckerLanguages
@@ -517,6 +543,31 @@
         .split(/[\s-_]+/) // Split on spaces, hyphens, or underscores
         .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
         .join(' ');
+    }
+
+    capitalizeSoundThemeName(themeName: string): string {
+      return this.capitalizeThemeName(themeName);
+    }
+
+    loadAvailableSoundThemes(): void {
+      try {
+        const soundThemesPath = path.join(__dirname, 'sound-themes');
+        this.availableSoundThemes = fs
+          .readdirSync(soundThemesPath, { withFileTypes: true })
+          .filter(dirent => dirent.isDirectory())
+          .map(dirent => dirent.name)
+          .filter(name => {
+            const soundJsonPath = path.join(
+              soundThemesPath,
+              name,
+              'sound.json'
+            );
+            return fs.existsSync(soundJsonPath);
+          });
+      } catch (error) {
+        console.error('Error loading sound themes:', error);
+        this.availableSoundThemes = ['default'];
+      }
     }
 
     close(): void {
