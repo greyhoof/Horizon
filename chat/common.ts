@@ -103,7 +103,7 @@ export class Settings implements ISettings {
       '[sub][color=orange][b][AUTOMATED MESSAGE][/b][/color][/sub]\n' +
       'Sorry, the player of this character is not interested in characters matching your profile.\n' +
       '\n' +
-      '🦄 Need a filter for yourself? Try out [url=https://horizn.moe/]F-Chat Horizon[/url]',
+      '✨ Need a filter for yourself? Try out [url=https://horizn.moe/]F-Chat Horizon[/url]',
     minAge: null,
     maxAge: null,
     smartFilters: {

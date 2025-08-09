@@ -142,11 +142,11 @@
 
       if (core.state.settings.risingAdScore && showMatch && cache) {
         if (
-          cache.match.searchScore >= kinkMatchWeights.unicornThreshold &&
+          cache.match.searchScore >= kinkMatchWeights.perfectThreshold &&
           cache.match.matchScore === Scoring.MATCH
         ) {
-          matchClass = 'match-found unicorn';
-          matchScore = 'unicorn';
+          matchClass = 'match-found perfect';
+          matchScore = 'perfect';
         } else {
           matchClass = `match-found ${Score.getClasses(cache.match.matchScore)}`;
           matchScore = cache.match.matchScore;
@@ -337,8 +337,8 @@
 
     getMatchScoreTitle(score: number | string | null): string {
       switch (score) {
-        case 'unicorn':
-          return 'Unicorn';
+        case 'perfect':
+          return 'Perfect';
 
         case Scoring.MATCH:
           return 'Great';

@@ -1701,7 +1701,7 @@ export class Matcher {
       match.you.you.name === 'YiffBot 4000' ||
       match.you.them.name === 'YiffBot 4000'
     ) {
-      return kinkMatchWeights.unicornThreshold;
+      return kinkMatchWeights.perfectThreshold;
     }
 
     const totalScoreDimensions = match ? Matcher.countScoresTotal(match) : 0;

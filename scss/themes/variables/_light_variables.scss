@@ -37,8 +37,8 @@ $component-active-color: $yiq-text-dark;
 $link-color: $gray-800;
 $link-hover-color: $black;
 // F-List Rising
-$scoreUnicornMatchBg: rgb(0, 173, 173);
-$scoreUnicornMatchFg: rgb(29, 154, 154);
+$scorePerfectMatchBg: rgb(0, 173, 173);
+$scorePerfectMatchFg: rgb(29, 154, 154);
 $scoreMatchBg: rgba(0, 180, 0, 0.65);
 $scoreMatchFg: rgba(0, 133, 0, 0.4);
 $scoreWeakMatchBg: rgba(0, 180, 0, 0.22);
@@ -52,8 +52,8 @@ $scoreMinimizeButtonFg: rgba(255, 255, 255, 0.6);
 $scoreMinimizeButtonBg: rgba(0, 0, 0, 0.1);
 $scoreReportBg: rgba(0, 0, 0, 0.08);
 
-$scoreFadedUnicornMatchBg: adjust-color($scoreUnicornMatchBg, $alpha: -0.6);
-$scoreFadedUnicornMatchFg: adjust-color($scoreUnicornMatchFg, $alpha: -0.6);
+$scoreFadedPerfectMatchBg: adjust-color($scorePerfectMatchBg, $alpha: -0.6);
+$scoreFadedPerfectMatchFg: adjust-color($scorePerfectMatchFg, $alpha: -0.6);
 $scoreFadedMatchBg: adjust-color($scoreMatchBg, $alpha: -0.6);
 $scoreFadedMatchFg: adjust-color($scoreMatchFg, $alpha: -0.6);
 $scoreFadedWeakMatchBg: adjust-color($scoreWeakMatchBg, $alpha: -0.6);

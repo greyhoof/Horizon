@@ -1353,13 +1353,13 @@
       padding-top: 2px;
       padding-bottom: 2px;
 
-      &.unicorn {
-        background-color: var(--scoreUnicornMatchBg);
-        border: 1px solid var(--scoreUnicornMatchFg);
+      &.perfect {
+        background-color: var(--scorePerfectMatchBg);
+        border: 1px solid var(--scorePerfectMatchFg);
         box-shadow: 0 0 5px 0 rgba(255, 255, 255, 0.5);
 
         &::before {
-          content: '🦄';
+          content: '✨';
           padding-right: 3px;
         }
       }

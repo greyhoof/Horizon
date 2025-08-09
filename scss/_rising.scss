@@ -1,6 +1,6 @@
 $risingVariables: (
-  scoreUnicornMatchBg: #{$scoreUnicornMatchBg},
-  scoreUnicornMatchFg: #{$scoreUnicornMatchFg},
+  scorePerfectMatchBg: #{$scorePerfectMatchBg},
+  scorePerfectMatchFg: #{$scorePerfectMatchFg},
   scoreMatchBg: #{$scoreMatchBg},
   scoreMatchFg: #{$scoreMatchFg},
   scoreWeakMatchBg: #{$scoreWeakMatchBg},
@@ -30,8 +30,8 @@ $risingVariables: (
       $color: $scoreMismatchBg,
       $alpha: 0.25
     ),
-  scoreFadedUnicornMatchBg: #{$scoreFadedUnicornMatchBg},
-  scoreFadedUnicornMatchFg: #{$scoreFadedUnicornMatchFg},
+  scoreFadedPerfectMatchBg: #{$scoreFadedPerfectMatchBg},
+  scoreFadedPerfectMatchFg: #{$scoreFadedPerfectMatchFg},
   scoreFadedMatchBg: #{$scoreFadedMatchBg},
   scoreFadedMatchFg: #{$scoreFadedMatchFg},
   scoreFadedWeakMatchBg: #{$scoreFadedWeakMatchBg},

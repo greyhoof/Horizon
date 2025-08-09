@@ -65,8 +65,8 @@ $text-background-color: $gray-100;
 $text-background-color-disabled: $gray-200;
 
 // F-List Rising
-$scoreUnicornMatchBg: rgb(0, 173, 173);
-$scoreUnicornMatchFg: rgb(29, 154, 154);
+$scorePerfectMatchBg: rgb(0, 173, 173);
+$scorePerfectMatchFg: rgb(29, 154, 154);
 $scoreMatchBg: rgb(0, 142, 0);
 $scoreMatchFg: rgb(0, 113, 0);
 $scoreWeakMatchBg: rgb(0, 80, 0);
@@ -80,8 +80,8 @@ $scoreMinimizeButtonFg: rgba(255, 255, 255, 0.7);
 $scoreMinimizeButtonBg: rgba(0, 0, 0, 0.2);
 $scoreReportBg: rgba(0, 0, 0, 0.2);
 
-$scoreFadedUnicornMatchBg: color.scale($scoreUnicornMatchBg, $alpha: -60%);
-$scoreFadedUnicornMatchFg: color.scale($scoreUnicornMatchFg, $alpha: -60%);
+$scoreFadedPerfectMatchBg: color.scale($scorePerfectMatchBg, $alpha: -60%);
+$scoreFadedPerfectMatchFg: color.scale($scorePerfectMatchFg, $alpha: -60%);
 $scoreFadedMatchBg: color.scale($scoreMatchBg, $alpha: -60%);
 $scoreFadedMatchFg: color.scale($scoreMatchFg, $alpha: -60%);
 $scoreFadedWeakMatchBg: color.scale($scoreWeakMatchBg, $alpha: -60%);
