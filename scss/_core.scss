@@ -3,6 +3,26 @@
 @forward 'abstracts/functions';
 @forward 'abstracts/mixins';
 
+// Define bg-light using theme's light color variable
+.bg-light {
+  background-color: $light !important;
+}
+
+// Form spacing adjustments to match Bootstrap 4 spacing
+.mb-3 {
+  margin-bottom: 1rem !important;
+}
+
+// Remove margin from last form group in card bodies
+.card-body > .mb-3:last-child {
+  margin-bottom: 0 !important;
+}
+
+label {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+
 .flash-messages-fixed {
   top: 0px;
   left: auto;
@@ -34,10 +54,12 @@
 
 .character-menu-item {
   width: 250px;
+
   .character-link {
     display: inline-block;
     padding-right: 0;
   }
+
   .character-edit-link {
     margin-left: auto;
     padding: 3px 20px 2px 0;
