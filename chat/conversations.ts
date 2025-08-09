@@ -87,6 +87,10 @@ abstract class Conversation implements Interfaces.Conversation {
     this.adManager = new AdManager(this);
     core.cache.conversationDraftCache.loadCache();
   }
+  markRead(): void {
+    this.lastRead = this.messages[this.messages.length - 1];
+    this.unread = Interfaces.UnreadState.None;
+  }
 
   get settings(): Interfaces.Settings {
     //tslint:disable-next-line:strict-boolean-expressions

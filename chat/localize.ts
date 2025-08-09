@@ -18,6 +18,7 @@ const strings: { [key: string]: string | undefined } = {
   'action.updateAvailable': 'UPDATE AVAILABLE',
   'action.update': 'Quit and download update',
   'action.preferences': 'Preferences',
+  'action.markAsRead': 'Mark all as read',
   'action.cancel': 'Cancel',
   'admgr.open': 'Ad Center',
   'admgr.postingBegins': 'Posting beings in {0}m {1}s',

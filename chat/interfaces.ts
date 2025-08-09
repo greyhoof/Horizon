@@ -171,6 +171,7 @@ export namespace Conversation {
     loadLastSent(): void;
     show(): void;
     loadMore(): boolean;
+    markRead(): void;
   }
 }
 

@@ -195,6 +195,12 @@
 
           <a
             href="#"
+            @click.prevent="markAllAsRead()"
+            class="btn"
+            :title="l('action.markAsRead')"
+            ><span class="fas fa-fw fa-list-check"></span> </a
+          ><a
+            href="#"
             @click.prevent="showRecent(true)"
             class="btn"
             :title="l('chat.recentConversations')"
@@ -726,6 +732,14 @@
       //Not particularly elegant, but it allows us to open the second tab without changing other function calls
       (<RecentConversations>this.$refs['recentDialog']).setTab(
         showChannels ? '1' : '0'
+      );
+    }
+
+    markAllAsRead(): void {
+      this.conversations.channelConversations.forEach(
+        (conversation: Conversation.ChannelConversation) => {
+          conversation.markRead();
+        }
       );
     }
 
