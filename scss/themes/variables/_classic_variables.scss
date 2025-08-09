@@ -41,8 +41,9 @@ $modal-backdrop-bg: $white;
 $modal-content-bg: $gray-200;
 $modal-header-border-color: $gray-300;
 
-// Fix YIQ(automatic text contrast) preferring black over white on dark themes.
-$yiq-text-light: $black;
+// Bootstrap 5 contrast colors
+$light-color: $black;
+$dark-color: $gray-base;
 
 // Reduce default padding slightly between columns in grids.
 $grid-gutter-width: 20px;

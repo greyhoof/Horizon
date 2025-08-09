@@ -29,11 +29,10 @@ $gray-800: color.scale($gray-base, $lightness: 80%);
 $gray-900: color.scale($gray-base, $lightness: 90%);
 $black: $dracula-foreground;
 
-$yiq-contrasted-threshold: 150;
-
-$yiq-text-light: $dracula-foreground; // Light text for dark buttons
-$yiq-text-dark: $dracula-bg; // Dark text for light buttons
-$component-active-color: $yiq-text-light;
+// Bootstrap 5 contrast colors
+$light-color: $dracula-foreground;
+$dark-color: $dracula-bg;
+$component-active-color: $light-color;
 
 $primary: $dracula-purple;
 $secondary: $gray-400;

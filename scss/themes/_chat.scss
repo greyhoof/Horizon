@@ -24,6 +24,8 @@
 @import '~bootstrap/scss/popover';
 @import '~bootstrap/scss/badge';
 @import '~bootstrap/scss/utilities';
+@import '~bootstrap/scss/utilities/api';
+@import '~bootstrap/scss/helpers/color-bg';
 
 @import '../core';
 @import '../chat';
@@ -34,20 +36,28 @@
 @import '../flist_overrides';
 @import '../rising';
 
-// Global YIQ contrast overrides for Bootstrap components
+// Color contrast overrides for Bootstrap components
 .list-group-item.active {
-  color: color-yiq(theme-color('primary'));
+  color: color-contrast($primary);
 }
 
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
-  color: color-yiq(theme-color('primary'));
+  color: color-contrast($primary);
 }
 
 .btn {
   @each $color, $value in $theme-colors {
     &.btn-#{$color} {
-      color: color-yiq($value);
+      color: color-contrast($value);
+    }
+  }
+}
+
+.badge {
+  @each $color, $value in $theme-colors {
+    &.text-bg-#{$color} {
+      color: color-contrast($value);
     }
   }
 }

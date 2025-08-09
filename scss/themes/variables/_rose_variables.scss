@@ -13,10 +13,10 @@ $gray-800: #f7f3f7;
 $gray-900: color.scale($gray-base, $lightness: 90%);
 $black: #f7f3f7;
 
-$yiq-contrasted-threshold: 150;
-$yiq-text-light: $black;
-$yiq-text-dark: $gray-base;
-$component-active-color: $yiq-text-light;
+// Bootstrap 5 contrast colors
+$light-color: $black;
+$dark-color: $gray-base;
+$component-active-color: $light-color;
 
 $rose-red: #ff3b30;
 $rose-green: #91ebaf;
