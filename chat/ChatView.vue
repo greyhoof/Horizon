@@ -31,11 +31,11 @@
           >
             <h5
               style="margin: 0; line-height: 1.65rem"
-              class="sidebarUserInfo-name p-2"
+              class="sidebarUserInfo-name"
             >
               {{ ownCharacter.name }}
             </h5>
-            <span class="p-2">
+            <span>
               <i
                 class="fas fa-fw"
                 :class="getStatusIcon(ownCharacter.status)"
