@@ -14,6 +14,7 @@ import { IpcMainEvent, session } from 'electron';
 import Axios from 'axios';
 import * as browserWindows from './browser_windows';
 import * as remoteMain from '@electron/remote/main';
+import { MenuItem } from 'electron/main';
 // Module to control application life.
 const app = electron.app;
 
@@ -296,7 +297,26 @@ function onReady(): void {
       { role: 'toggleDevTools' },
       { type: 'separator' }
     );
-
+  const windowItem = {
+    label: l('window'),
+    role: 'window',
+    submenu: [
+      {
+        label: l('navigation.nextTab'),
+        accelerator: 'Ctrl+Tab',
+        click: (_m: MenuItem, w: electron.BrowserWindow) => {
+          w.webContents.send('switch-tab');
+        }
+      },
+      {
+        label: l('navigation.previousTab'),
+        accelerator: 'Ctrl+Shift+Tab',
+        click: (_m: MenuItem, w: electron.BrowserWindow) => {
+          w.webContents.send('previous-tab');
+        }
+      }
+    ]
+  };
   //tslint:disable-next-line:no-floating-promises
 
   electron.Menu.setApplicationMenu(
@@ -393,9 +413,7 @@ function onReady(): void {
         ] as MenuItemConstructorOptions[]
       },
       viewItem,
-      ...(process.platform === 'darwin'
-        ? [{ role: 'windowMenu' } as electron.MenuItem]
-        : []),
+      ...(process.platform === 'darwin' ? [windowItem] : []),
       {
         label: `&${l('help')}`,
         submenu: [
@@ -444,49 +462,53 @@ function onReady(): void {
           }
         ] as MenuItemConstructorOptions[]
       },
-      {
-        label: l('navigation'),
-        // This sub-menu is intentionally hidden - we only use it as a way to enable keyboard shortcuts
-        visible: false,
-        submenu: [
-          {
-            id: 'nextTab',
-            accelerator: 'Ctrl+Tab',
-            label: l('navigation.nextTab'),
-            click: (_m, w) => {
-              w instanceof electron.BrowserWindow &&
-                w.webContents.send('switch-tab');
+      ...(process.platform !== 'darwin'
+        ? [
+            {
+              label: l('navigation'),
+              // This sub-menu is intentionally hidden - we only use it as a way to enable keyboard shortcuts
+              visible: true,
+              submenu: [
+                {
+                  id: 'nextTab',
+                  accelerator: 'Ctrl+Tab',
+                  label: l('navigation.nextTab'),
+                  click: (_m, w) => {
+                    w instanceof electron.BrowserWindow &&
+                      w.webContents.send('switch-tab');
+                  }
+                },
+                {
+                  id: 'nextTabAlt',
+                  accelerator: 'CmdOrCtrl+PageDown',
+                  label: l('navigation.nextTab'),
+                  click: (_m, w) => {
+                    w instanceof electron.BrowserWindow &&
+                      w.webContents.send('switch-tab');
+                  }
+                },
+                {
+                  id: 'previousTab',
+                  accelerator: 'Ctrl+Shift+Tab',
+                  label: l('navigation.previousTab'),
+                  click: (_m, w) => {
+                    w instanceof electron.BrowserWindow &&
+                      w.webContents.send('previous-tab');
+                  }
+                },
+                {
+                  id: 'previousTabAlt',
+                  accelerator: 'CmdOrCtrl+PageUp',
+                  label: l('navigation.previousTab'),
+                  click: (_m, w) => {
+                    w instanceof electron.BrowserWindow &&
+                      w.webContents.send('previous-tab');
+                  }
+                }
+              ]
             }
-          },
-          {
-            id: 'nextTabAlt',
-            accelerator: 'CmdOrCtrl+PageDown',
-            label: l('navigation.nextTab'),
-            click: (_m, w) => {
-              w instanceof electron.BrowserWindow &&
-                w.webContents.send('switch-tab');
-            }
-          },
-          {
-            id: 'previousTab',
-            accelerator: 'Ctrl+Shift+Tab',
-            label: l('navigation.previousTab'),
-            click: (_m, w) => {
-              w instanceof electron.BrowserWindow &&
-                w.webContents.send('previous-tab');
-            }
-          },
-          {
-            id: 'previousTabAlt',
-            accelerator: 'CmdOrCtrl+PageUp',
-            label: l('navigation.previousTab'),
-            click: (_m, w) => {
-              w instanceof electron.BrowserWindow &&
-                w.webContents.send('previous-tab');
-            }
-          }
-        ]
-      }
+          ]
+        : [])
     ])
   );
 

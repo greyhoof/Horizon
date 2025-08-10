@@ -353,11 +353,7 @@ function toggleWindowSpecificMenuItems(active: boolean) {
     'showProfile',
     'newTab',
     'zoomOut',
-    'zoomIn',
-    'nextTab',
-    'nextTabAlt',
-    'previousTab',
-    'previousTabAlt'
+    'zoomIn'
   ];
 
   if (appMenu) {
