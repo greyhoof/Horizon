@@ -405,7 +405,8 @@
                       id="customCss"
                       v-model="settings.horizonCustomCss"
                       :disabled="!settings.horizonCustomCssEnabled"
-                      rows="3"
+                      :rows="countLines(settings.horizonCustomCss) + 3"
+                      @keydown.tab.prevent="handleTab"
                     ></textarea>
                     <small class="form-text text-warning">{{
                       l('settings.customCss.warning')
@@ -648,6 +649,43 @@
     ): boolean {
       return filter.test(languageEntry.name);
     }
+
+    countLines(text: string): number {
+      let pointer = 0;
+      for (let i = 0; i < text.length; i += 1) {
+        switch (text[i]) {
+          case '\r':
+            pointer += 1;
+            if (text[i + 1] === '\n') {
+              i += 1;
+            }
+            break;
+          case '\n':
+            pointer += 1;
+            if (text[i + 1] === '\r') {
+              i += 1;
+            }
+            break;
+        }
+      }
+      return pointer;
+    }
+
+    handleTab(e: KeyboardEvent): void {
+      const target = e.target as HTMLTextAreaElement;
+      const start = target.selectionStart;
+      const end = target.selectionEnd;
+
+      // Get the current value and insert tab at cursor position
+      const value = target.value;
+      this.settings.horizonCustomCss =
+        value.substring(0, start) + '\t' + value.substring(end);
+
+      // Move cursor after tab
+      this.$nextTick(() => {
+        target.selectionStart = target.selectionEnd = start + 1;
+      });
+    }
   }
 </script>
 
@@ -677,6 +715,7 @@
 
   textarea.textarea-code {
     font-family: monospace;
+    resize: none;
   }
 
   /*This override exists because we allow the user to resize the window, which potentially resizes the footer otherwise*/
