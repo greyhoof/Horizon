@@ -309,7 +309,9 @@ export function createMainWindow(
   window.on('closed', () => windows.splice(windows.indexOf(window), 1));
   window.once('ready-to-show', () => {
     window.show();
-    if (lastState.maximized) window.maximize();
+    if (lastState.maximized) {
+      window.maximize();
+    }
   });
 
   //On MacOS, the app menu is not bound to any windows, so some options need to be manually toggled. An app can be "active" without any focused windows.
@@ -345,14 +347,24 @@ export function createMainWindow(
  * @internal
  */
 function toggleWindowSpecificMenuItems(active: boolean) {
-  let appMenu = app.applicationMenu;
+  const appMenu = app.applicationMenu;
+  const toggleableIds = [
+    'fixLogs',
+    'showProfile',
+    'newTab',
+    'zoomOut',
+    'zoomIn',
+    'nextTab',
+    'nextTabAlt',
+    'previousTab',
+    'previousTabAlt'
+  ];
+
   if (appMenu) {
-    ['fixLogs', 'showProfile', 'newTab', 'zoomOut', 'zoomIn'].forEach(
-      itemId => {
-        var item = appMenu!.getMenuItemById(itemId);
-        if (item) item.enabled = active;
-      }
-    );
+    toggleableIds.forEach(itemId => {
+      var item = appMenu!.getMenuItemById(itemId);
+      if (item) item.enabled = active;
+    });
   }
 }
 
