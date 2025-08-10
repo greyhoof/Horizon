@@ -659,7 +659,7 @@ export function createAboutWindow(
   parentWindow: electron.BrowserWindow
 ): electron.BrowserWindow {
   const icon = process.platform === 'win32' ? winIcon : pngIcon;
-  
+
   const about = new electron.BrowserWindow({
     width: 400,
     height: 400, // Initial height
@@ -696,9 +696,11 @@ export function createAboutWindow(
   about.webContents.once('dom-ready', () => {
     // Set icon path - use the icon directly as it's already a full path
     const iconPath = 'file://' + icon.replace(/\\/g, '/');
-    
+
     // Calculate content height and set icon
-    about.webContents.executeJavaScript(`
+    about.webContents
+      .executeJavaScript(
+        `
       // Sets icon
       const logo = document.querySelector('.app-logo');
       if (logo) logo.src = '${iconPath}';
@@ -706,31 +708,32 @@ export function createAboutWindow(
       // Return height of content for window sizing
       const container = document.querySelector('.container');
       container ? container.scrollHeight + 60 : 400;
-    `)
-    .then((height: number) => {
-      // Constrain height to reasonable bounds
-      const finalHeight = Math.min(Math.max(height, 350), 600);
-      
-      // Platform-specific sizing
-      if (process.platform === 'win32') {
-        about.setContentSize(400, finalHeight);
-      } else {
-        about.setSize(400, finalHeight);
-      }
-      
-      about.center();
-      about.show();
-    })
-    .catch(() => {
-      // Fallback if calculation fails
-      if (process.platform === 'win32') {
-        about.setContentSize(400, 400);
-      } else {
-        about.setSize(400, 400);
-      }
-      about.center();
-      about.show();
-    });
+    `
+      )
+      .then((height: number) => {
+        // Constrain height to reasonable bounds
+        const finalHeight = Math.min(Math.max(height, 350), 600);
+
+        // Platform-specific sizing
+        if (process.platform === 'win32') {
+          about.setContentSize(400, finalHeight);
+        } else {
+          about.setSize(400, finalHeight);
+        }
+
+        about.center();
+        about.show();
+      })
+      .catch(() => {
+        // Fallback if calculation fails
+        if (process.platform === 'win32') {
+          about.setContentSize(400, 400);
+        } else {
+          about.setSize(400, 400);
+        }
+        about.center();
+        about.show();
+      });
   });
 
   return about;
