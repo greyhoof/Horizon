@@ -3,7 +3,7 @@
   "version": "1.33.0-dev2",
   "author": "The F-List Team and Horizon Contributors",
   "description": "A heavily modded FChat 3.0 client for F-List, continued from Rising",
-  "license": "MIT",
+  "license": "GPL-3.0-or-later",
   "main": "main.js",
   "devDependencies": {
     "@electron/remote": "^2.1.2",
