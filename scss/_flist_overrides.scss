@@ -54,6 +54,12 @@ a {
   padding: 0.5rem 0.75rem 0.5rem 0.75rem;
 }
 
+.modal-header .btn-close {
+  --bs-btn-close-bg: none;
+  font-size: 1em;
+  margin-bottom: 0px;
+}
+
 .card-title {
   font-weight: bold;
 }

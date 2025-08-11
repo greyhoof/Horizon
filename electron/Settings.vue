@@ -15,7 +15,7 @@
               <i class="fa-solid fa-fw fa-gear"></i>
               {{ l('settings.action') }}
             </h5>
-            <button
+            <a
               type="button"
               class="btn-close"
               aria-label="Close"
@@ -24,7 +24,7 @@
               z-
             >
               <span class="fas fa-times"></span>
-            </button>
+            </a>
           </div>
           <div class="modal-body">
             <tabs

@@ -193,14 +193,14 @@
             @click="prevProfile"
             :disabled="!prevProfileAvailable()"
           >
-            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-left fa-lg"></i>
           </button>
           <button
             class="btn"
             @click="nextProfile"
             :disabled="!nextProfileAvailable()"
           >
-            <i class="fas fa-arrow-right"></i>
+            <i class="fas fa-arrow-right fa-lg"></i>
           </button>
         </div>
       </template>
@@ -911,9 +911,12 @@
 
       .profile-title-right {
         float: right;
-        top: -7px;
+        top: 0px;
         right: 0;
         position: absolute;
+        .btn {
+          border: none;
+        }
       }
 
       .status-text {
