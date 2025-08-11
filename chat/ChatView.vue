@@ -862,23 +862,23 @@
         /*}*/
 
         .offline {
-          color: var(--text-muted);
+          color: var(--bs-tertiary-color);
         }
 
         .online {
-          color: var(--success);
+          color: var(--bs-success);
         }
 
         .away {
-          color: var(--warning);
+          color: var(--bs-warning);
         }
         .dnd {
-          color: var(--danger);
+          color: var(--bs-danger);
         }
 
         .fa-comment,
         .fa-comment-dots {
-          color: var(--black);
+          color: inherit;
         }
 
         /*.fa-eye {*/
@@ -896,10 +896,6 @@
       &:last-child img {
         border-bottom-left-radius: 4px;
       }
-    }
-
-    .list-group-item-danger:not(.active) {
-      color: color-yiq(theme-color('danger'));
     }
   }
 

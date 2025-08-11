@@ -466,7 +466,7 @@ $genders: (
 
 .list-group.conversation-nav .list-group-item {
   margin: 1px 0px 1px 0px;
-  border-radius: inherit;
+  border-radius: 4px;
   //@each $color, $value in $theme-colors {
   //&.list-group-item-#{$color} {
   //color: color-yiq($value);

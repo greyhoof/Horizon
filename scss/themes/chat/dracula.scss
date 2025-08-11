@@ -84,15 +84,6 @@ $genders: (
   }
 }
 
-.list-group-item-warning {
-  background-color: shift-color($warning, -5);
-  border-color: shift-color($warning, -5);
-  color: shift-color($warning, 6);
-  &:hover {
-    background-color: shift-color($warning, -6);
-  }
-}
-
 .user-bookmark,
 .message-event .user-bookmark {
   color: $dracula-green;

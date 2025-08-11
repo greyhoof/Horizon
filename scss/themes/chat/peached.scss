@@ -58,22 +58,37 @@ body,
 .character-card-header {
   background: $body-bg !important;
 }
-.list-group-item-warning {
-  background-color: theme-color-level('warning', -3);
-  border-color: theme-color-level('warning', -3);
-  //color: color-yiq(theme-color('warning'));
-  color: theme-color-level('warning', 6);
+
+// Custom muted warning/danger colors
+$warning-bg-subtle-custom: mix($warning, $white, 55%);
+$danger-bg-subtle-custom: mix($danger, $white, 55%);
+
+:root {
+  --bs-warning-bg-subtle: #{$warning-bg-subtle-custom};
+  --bs-danger-bg-subtle: #{$danger-bg-subtle-custom};
+}
+
+.list-group-item-action.list-group-item-warning {
+  --bs-list-group-bg: var(--bs-warning-bg-subtle);
+  --bs-list-group-border-color: var(--bs-warning-border-subtle);
+  --bs-list-group-color: var(--bs-warning-text-emphasis);
+
   &:hover {
-    background-color: theme-color-level('warning', -4);
+    background-color: color-mix(
+      in srgb,
+      var(--bs-warning-bg-subtle) 90%,
+      black
+    );
   }
 }
 
-.list-group-item-danger {
-  background-color: theme-color-level('danger', -3);
-  border-color: theme-color-level('danger', -3);
-  color: theme-color-level('danger', 6);
+.list-group-item-action.list-group-item-danger {
+  --bs-list-group-bg: var(--bs-danger-bg-subtle);
+  --bs-list-group-border-color: var(--bs-danger-border-subtle);
+  --bs-list-group-color: var(--bs-danger-text-emphasis);
+
   &:hover {
-    background-color: theme-color-level('danger', -4);
+    background-color: color-mix(in srgb, var(--bs-danger-bg-subtle) 90%, black);
   }
 }
 
