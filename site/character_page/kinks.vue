@@ -25,15 +25,13 @@
         class="input-group quick-compare-block col-12 col-lg-4 col-xl-3"
       >
         <character-select v-model="characterToCompare"></character-select>
-        <div class="input-group-append">
-          <button
-            class="btn btn-outline-secondary"
-            @click="compareKinks()"
-            :disabled="loading || !characterToCompare"
-          >
-            {{ compareButtonText }}
-          </button>
-        </div>
+        <button
+          class="btn btn-outline-secondary"
+          @click="compareKinks()"
+          :disabled="loading || !characterToCompare"
+        >
+          {{ compareButtonText }}
+        </button>
       </div>
 
       <div class="col-12 col-lg-4 col-xl-2">

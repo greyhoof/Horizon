@@ -26,7 +26,7 @@
           slot-scope="props"
           :class="props.cls"
         />
-        <div slot="button" class="input-group-append">
+        <div slot="button">
           <button
             type="button"
             class="btn btn-secondary"

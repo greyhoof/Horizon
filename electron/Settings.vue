@@ -209,15 +209,12 @@
                         @click="browseForLogDir()"
                         v-model="settings.logDirectory"
                       />
-
-                      <div class="input-group-append">
-                        <button
-                          class="btn btn-outline-secondary"
-                          @click="browseForLogDir()"
-                        >
-                          <span class="far fa-fw fa-folder-open"></span>
-                        </button>
-                      </div></div
+                      <button
+                        class="btn btn-outline-secondary"
+                        @click="browseForLogDir()"
+                      >
+                        <span class="far fa-fw fa-folder-open"></span>
+                      </button></div
                   ></label>
                 </div>
                 <h5>{{ l('settings.behavior.window') }}</h5>
@@ -331,23 +328,18 @@
                       id="browserPath"
                       v-model="settings.browserPath"
                     />
-
-                    <div class="input-group-append">
-                      <button
-                        class="btn btn-outline-secondary"
-                        @click.prevent.stop="browseForPath()"
-                      >
-                        <span class="far fa-fw fa-folder-open"></span>
-                      </button>
-                      <button
-                        class="btn btn-outline-danger"
-                        @click.prevent.stop="browserReset()"
-                      >
-                        <span
-                          class="fa-solid fa-fw fa-arrow-rotate-right"
-                        ></span>
-                      </button>
-                    </div></div
+                    <button
+                      class="btn btn-outline-secondary"
+                      @click.prevent.stop="browseForPath()"
+                    >
+                      <span class="far fa-fw fa-folder-open"></span>
+                    </button>
+                    <button
+                      class="btn btn-outline-danger"
+                      @click.prevent.stop="browserReset()"
+                    >
+                      <span class="fa-solid fa-fw fa-arrow-rotate-right"></span>
+                    </button></div
                 ></label>
 
                 <label class="control-label label-full" for="browserArgs">

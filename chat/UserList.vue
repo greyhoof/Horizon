@@ -79,11 +79,9 @@
         </div>
       </div>
       <div class="input-group" style="margin-top: 5px; flex-shrink: 0">
-        <div class="input-group-prepend">
-          <div class="input-group-text">
-            <span class="fas fa-search"></span>
-          </div>
-        </div>
+        <span class="input-group-text">
+          <span class="fas fa-search"></span>
+        </span>
         <input
           class="form-control"
           v-model="filter"
