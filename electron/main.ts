@@ -297,22 +297,26 @@ function onReady(): void {
       { role: 'toggleDevTools' },
       { type: 'separator' }
     );
-  const windowItem = {
+  const windowItem: MenuItemConstructorOptions = {
     label: l('window'),
     role: 'window',
     submenu: [
       {
         label: l('navigation.nextTab'),
         accelerator: 'Ctrl+Tab',
-        click: (_m: MenuItem, w: electron.BrowserWindow) => {
-          w.webContents.send('switch-tab');
+        click: (_m: MenuItem, window: electron.BrowserWindow | undefined) => {
+          if (window) {
+            window.webContents.send('switch-tab');
+          }
         }
       },
       {
         label: l('navigation.previousTab'),
         accelerator: 'Ctrl+Shift+Tab',
-        click: (_m: MenuItem, w: electron.BrowserWindow) => {
-          w.webContents.send('previous-tab');
+        click: (_m: MenuItem, window: electron.BrowserWindow | undefined) => {
+          if (window) {
+            window.webContents.send('previous-tab');
+          }
         }
       }
     ]
@@ -463,51 +467,70 @@ function onReady(): void {
         ] as MenuItemConstructorOptions[]
       },
       ...(process.platform !== 'darwin'
-        ? [
+        ? ([
             {
               label: l('navigation'),
-              // This sub-menu is intentionally hidden - we only use it as a way to enable keyboard shortcuts
-              visible: true,
+              visible: false,
               submenu: [
                 {
                   id: 'nextTab',
                   accelerator: 'Ctrl+Tab',
                   label: l('navigation.nextTab'),
-                  click: (_m, w) => {
-                    w instanceof electron.BrowserWindow &&
-                      w.webContents.send('switch-tab');
+                  click: (
+                    _menuItem: electron.MenuItem,
+                    browserWindow: electron.BrowserWindow | undefined,
+                    _event: KeyboardEvent
+                  ) => {
+                    if (browserWindow) {
+                      browserWindow.webContents.send('switch-tab');
+                    }
                   }
-                },
+                } as MenuItemConstructorOptions,
                 {
                   id: 'nextTabAlt',
                   accelerator: 'CmdOrCtrl+PageDown',
                   label: l('navigation.nextTab'),
-                  click: (_m, w) => {
-                    w instanceof electron.BrowserWindow &&
-                      w.webContents.send('switch-tab');
+                  click: (
+                    _menuItem: electron.MenuItem,
+                    browserWindow: electron.BrowserWindow | undefined,
+                    _event: KeyboardEvent
+                  ) => {
+                    if (browserWindow) {
+                      browserWindow.webContents.send('switch-tab');
+                    }
                   }
-                },
+                } as MenuItemConstructorOptions,
                 {
                   id: 'previousTab',
                   accelerator: 'Ctrl+Shift+Tab',
                   label: l('navigation.previousTab'),
-                  click: (_m, w) => {
-                    w instanceof electron.BrowserWindow &&
-                      w.webContents.send('previous-tab');
+                  click: (
+                    _menuItem: electron.MenuItem,
+                    browserWindow: electron.BrowserWindow | undefined,
+                    _event: KeyboardEvent
+                  ) => {
+                    if (browserWindow) {
+                      browserWindow.webContents.send('previous-tab');
+                    }
                   }
-                },
+                } as MenuItemConstructorOptions,
                 {
                   id: 'previousTabAlt',
                   accelerator: 'CmdOrCtrl+PageUp',
                   label: l('navigation.previousTab'),
-                  click: (_m, w) => {
-                    w instanceof electron.BrowserWindow &&
-                      w.webContents.send('previous-tab');
+                  click: (
+                    _menuItem: electron.MenuItem,
+                    browserWindow: electron.BrowserWindow | undefined,
+                    _event: KeyboardEvent
+                  ) => {
+                    if (browserWindow) {
+                      browserWindow.webContents.send('previous-tab');
+                    }
                   }
-                }
-              ]
-            }
-          ]
+                } as MenuItemConstructorOptions
+              ] as MenuItemConstructorOptions[]
+            } as MenuItemConstructorOptions
+          ] as MenuItemConstructorOptions[])
         : [])
     ])
   );
