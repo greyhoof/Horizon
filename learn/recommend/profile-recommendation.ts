@@ -8,7 +8,8 @@ import {
   Kink,
   mammalSpecies,
   Scoring,
-  Species
+  Species,
+  TagId
 } from '../matcher-types';
 import { characterImage } from '../../chat/common';
 import { ProfileCache } from '../profile-cache';
@@ -100,7 +101,7 @@ export class ProfileRecommendationAnalyzer {
         `ADD_HQ_AVATAR`,
         ProfileRecommendationLevel.NOTE,
         'Add a high-quality portrait',
-        'Profiles with a high-quality portraits stand out in chats with other Horizon users.',
+        'Profiles with a high-quality portrait stand out in chats with other Horizon users.',
         'https://horizn.moe/docs/guides/colors-and-avatars.html'
       );
     } else if (!ProfileCache.isSafeRisingPortraitURL(profileUrl)) {
@@ -262,11 +263,15 @@ export class ProfileRecommendationAnalyzer {
     const p = this.profile;
 
     if (p.age === null) {
+      let isUnparsable =
+        this.profile.character.infotags[TagId.Age]?.string !== undefined;
       this.add(
         'AGE',
-        ProfileRecommendationLevel.CRITICAL,
-        'Enter age',
-        'Specifying the age of your character will improve your matches with other players.',
+        ProfileRecommendationLevel.NOTE,
+        isUnparsable ? 'Hard to parse age' : 'Enter age',
+        isUnparsable
+          ? 'The matcher could not parse your age. This could mean less accurate results for age-related preferences.'
+          : 'Specifying the age of your character will improve your matches with other players.',
         'https://wiki.f-list.net/Guide:_Character_Profiles#General_Details'
       );
     } else {
