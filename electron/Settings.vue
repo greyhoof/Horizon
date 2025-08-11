@@ -710,7 +710,7 @@
   }
 
   .warning {
-    border: 1px solid var(--warning);
+    border: 1px solid var(--bs-warning);
     padding: 10px;
     margin-bottom: 20px;
     border-radius: 3px;

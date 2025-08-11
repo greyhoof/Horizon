@@ -1063,11 +1063,11 @@
     }
   }
   #settings .warning {
-    border: 1px solid var(--warning);
+    border: 1px solid var(--bs-warning);
   }
 
   #settings .info {
-    border: 1px solid var(--info);
+    border: 1px solid var(--bs-info);
   }
 
   #settings .bbcode-preview {
