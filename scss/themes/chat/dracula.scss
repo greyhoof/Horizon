@@ -1,8 +1,8 @@
 @use 'sass:color';
-@import '../variables/dracula_variables';
 @import '~bootstrap/scss/functions';
-@import '~bootstrap/scss/variables';
 @import '../../functions';
+@import '../variables/dracula_variables';
+@import '~bootstrap/scss/variables';
 @import '../../flist_derived';
 @import '../variables/dracula_derived';
 
