@@ -120,7 +120,7 @@ input:checked {
 
 .nav-tabs .nav-link.active {
   background: none;
-  border-bottom: none;
+  border-bottom: 1px solid transparent;
 }
 
 .nav-tabs li {
