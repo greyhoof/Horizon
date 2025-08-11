@@ -4,7 +4,10 @@
     :class="{ 'match-report': true, minimized: isMinimized }"
     v-if="haveScores(characterMatch.you) || haveScores(characterMatch.them)"
   >
-    <a class="minimize-btn" @click.prevent="toggleMinimize()"
+    <a
+      class="minimize-btn btn"
+      :class="isMinimized ? 'btn-outline-secondary' : 'btn-secondary'"
+      @click.prevent="toggleMinimize()"
       ><i
         :class="{ fa: true, 'fa-plus': isMinimized, 'fa-minus': !isMinimized }"
       ></i

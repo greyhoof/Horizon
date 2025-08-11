@@ -927,10 +927,6 @@
       .scores {
         display: none;
       }
-
-      .minimize-btn {
-        opacity: 0.6;
-      }
     }
     &.profile-analysis-wrapper {
       display: block;
@@ -944,12 +940,9 @@
       position: absolute;
       display: block;
       right: 0.5rem;
-      background-color: var(--scoreMinimizeButtonBg);
       padding: 0.4rem;
       padding-top: 0.2rem;
       padding-bottom: 0.2rem;
-      font-size: 0.8rem;
-      color: var(--scoreMinimizeButtonFg);
       border-radius: 4px;
       z-index: 1000;
     }
