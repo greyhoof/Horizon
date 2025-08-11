@@ -87,15 +87,15 @@
           <i class="fa fa-cog"> </i>
         </span>
 
-        <i
-          class="far fa-window-minimize btn btn-light"
-          @click.stop="minimize()"
-        ></i>
-        <i
-          class="far btn btn-light"
-          :class="'fa-window-' + (isMaximized ? 'restore' : 'maximize')"
-          @click="maximize()"
-        ></i>
+        <span class="btn btn-light" @click.stop="minimize()">
+          <i class="far fa-window-minimize"></i>
+        </span>
+        <span class="btn btn-light" @click="maximize()">
+          <i
+            class="far"
+            :class="'fa-window-' + (isMaximized ? 'restore' : 'maximize')"
+          ></i>
+        </span>
         <span class="btn btn-light" @click.stop="close()">
           <i class="fa fa-times fa-lg"></i>
         </span>
