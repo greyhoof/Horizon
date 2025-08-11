@@ -12,21 +12,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - UI/ UX rework and refresh. Since there are too many changes to list in here, please see below for a full list and explanation.
+- Horizon is now licensed under the GNU Public License v3 instead of the MIT license.
+- Added sound themes for customizing your notification sounds. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/a7967bc72ae895a5e941a59f57a12b50be5845ea)
+  - Want to create your own, or even submit it for release with Horizon? Check this page on our wiki!
 - Added a global setting for custom CSS styles. Consider it experimental for now though. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/7c929d3b6a76976dc82f3a124de65f96fb3764f2)
-- Statuses can now be set for a specific time, returning you to your initial status once the time runs out. [Commit]
-- Added a keyboard shortcut (Ctrl/ Cmd + Shift + P) to quickly toggle between previewing your messages. [Commit]
+- The channels list now has a button to quickly mark all channels as read. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/3d7260295ed740834db85baab9f5cc336564f4e8)
 - Added a (character-wide) setting to notify you when specific users post in a public room. This setting can be set for all rooms, or only specific ones. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/421e1722b44359a701da109a54929d0fb283736f)
 - Added a new global setting to always display vanilla text colours, regardless of theme. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/488e8048d91e90347e360945aee1bb276ef6b500)
   - When we say "vanilla", we mean the way they looked in 3.0. Not any changes we may have done afterwards.
-- Added three new themes: "Classic", "Peached" and "Mars". [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/73a85d41cb80834bfd464ffdfb51a7365d6deafb) [Commit] [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/c895cdf2d7d1fa0888ddc563464685035620eabe)
+- Added four new themes: "Wilted Rose", "Classic", "Peached" and "Mars". [Commit] [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/73a85d41cb80834bfd464ffdfb51a7365d6deafb) [Commit] [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/c895cdf2d7d1fa0888ddc563464685035620eabe)
 - The side bars can now be resized by dragging their inner borders. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/a9857cf40b9762273be50896fb86158263a289d0)
-- Added a new build system. Too many changes to list, but go read [electron/README.md](./electron/README.md) for information on building electron binaries, now. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/8f79f8e60e2ec01a63dbde495db12c9948b636a8)
-  - **As a result of this change:**
-  - We now support RPMs! 🎊
-  - Linux armv7l builds are also supported now as well, but must be manually built.
-  - You can now build windows binaries from linux (and possibly macos, too).
-  - Documentation changes
-- New Wilted Rose theme [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/50e9a0cd2623b9bc945d67f16e83ba47228e1b08)
+- Added a new build system. Too many changes to list, but go read electron/README.md for information on building electron binaries, now.
+  - As a result of this change:
+    - We now support RPMs! 🎊
+    - Linux armv7l builds are also supported now as well, but must be manually built.
+    - You can now build windows binaries from linux (and possibly macos, too).
+    - Documentation changes
 
 ### Fixed
 
@@ -34,20 +35,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed TikTok preview embeds. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/f8d20b1c1824c2a4354709336c76cee5de3b2cf1)
 - Sort of fixed Imgur previews. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/548ad15ba4804f292ec4610ee9667e84458a13c9)
 - Fixed some cases where the chatbox would resize erratically around the end of a line, especially if typing narrow characters like exclamation points or the letter "i". [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/72fdfe8c0232571e9ef0c81f0bc28f7c7fbb61ed)
-- Fixed some issues with the tab switch shortcut not working right after creating a new tab. [Commit]
+- Fixed some issues with the tab switch shortcut not working right after creating a new tab. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/c932f5ebc976a666d516c0d25655da7011a913d2)
 - Fixed a whole bunch of formatting issues with BBCode for profiles not matching the website's profile page, mostly related to `[sub]`/ `[sup]`, `[big]`/ `[small]` and `[heading]` tags. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/c33c56d342f7f969019ca452e5245e64c1937255)
-- Husky no longer errors when a file name has a space [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/8c4a34d4feabdb4f293dc4f923a9d27afa27a3c2)
 
 ### Changed
 
+- _La Chasse à la licorne_ 🦄 - "Unicorn" matches are now simply called "Perfect" matches, to get the point across clearer. Some other stray Rising-era references have also been altered to match. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/86de04f6050f8c4de516335e64320741942f7fd5)
 - The quick jumper (Ctrl/ Cmd + T) now also shows recent conversations, bookmarks and friends. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/49b76e617189be1f3ad3131db6f6ca2cc08ac28f)
 - The profile analyser now shows information about how the matcher interprets your character (like species, what genders it thinks you'd prefer, etc) rather than just telling you which things you still have to fill in. [Commit]
 - Notification sounds now use the higher quality .ogg variants that were already in the code (where available). [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/57a78e056b8cb1b3dc8b26528b9bc912ab4fd856)
-- About page now has a link to contributors.md and additional maintainers, as well as a cute little heart animation. <3 [[Commit]]()
-- Facelift given to the about page, made it auto-size to the content height. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/0f55dc886b2182ccc6c59d263f74ec27f45a2fd9)
-  - Added gradient to about page for _style_~ [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/df019f928dbaf67d1f09e6a6f656b2f866e8fca9)
-- Contributors moved to [README.md](./README.md), with a pretty icon list. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/be35719732e16808bf030cdca458aaed1812abf0)
-- Theme names are now auto-spaced and capitalized [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/8a84e4494b832a16ad4852345ec2b803573533ff)
+
+### Development
+
+- Upgraded to Bootstrap 5.3 from Bootstrap 4. [Commit]
 
 ### UI Changes overview
 
