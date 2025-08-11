@@ -8,7 +8,7 @@
   >
     <div class="mb-3" id="statusSelector">
       <label class="control-label">{{ l('chat.setStatus.status') }}</label>
-      <dropdown linkClass="custom-select">
+      <dropdown linkClass="form-select">
         <span slot="title"
           ><span class="fa fa-fw" :class="getStatusIcon(status)"></span
           >{{ l('status.' + status) }}</span

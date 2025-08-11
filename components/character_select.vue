@@ -1,5 +1,5 @@
 <template>
-  <select :value="value" @change="emit">
+  <select :value="value" @change="emit" class="form-select">
     <option v-for="character in characters" :value="character.id">
       {{ character.name }}
     </option>
