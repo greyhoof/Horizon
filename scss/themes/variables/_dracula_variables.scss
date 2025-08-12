@@ -66,6 +66,7 @@ $input-color: $black;
 $custom-select-bg: $gray-100;
 $form-check-input-checked-bg-color: $primary;
 
+$form-check-input-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path fill='none' stroke='#{$white}' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/></svg>");
 // List groups
 $list-group-bg: $gray-100;
 $list-group-hover-bg: $gray-200;
