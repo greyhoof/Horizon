@@ -262,16 +262,6 @@
         ><i class="fas fa-times"></i
       ></a>
     </div>
-    <!--
-    Fuck me, dude. How much yiffbot shit do I have to remove?
-
-     <div class="yiffbot-controls" v-if="isYiffBot()">
-      <div class="btn-group">
-        <div class="btn btn-sm btn-outline-secondary" @click="onYiffBotContinuePost">#continue</div>
-        <div class="btn btn-sm btn-outline-secondary" @click="onYiffBotRetryPost">#retry</div>
-      </div>
-    </div>
-     -->
     <div class="auto-ads" v-show="isAutopostingAds()">
       <h4>{{ l('admgr.activeHeader') }}</h4>
       <div class="update">{{ adAutoPostUpdate }}</div>
@@ -1117,41 +1107,6 @@
       return member !== undefined && member.rank > Channel.Rank.Member;
     }
   }
-  // ALERT: YIFFBOT FUNCTIONALITY IS ON THE CHOPPING BLOCK!
-  // **     Yiffbot was banned from F-List, and as such, most
-  //        of it's functionality no longer remains. Given that,
-  //        features related to it are SUBJECT FOR DELETION!
-  //        Sowwwy...
-  // //     isYiffBot(): boolean {
-  // //       if (!this.isPrivate(this.conversation)) {
-  // //         return false;
-  // //       }
-
-  // //       return this.conversation.character.name === 'YiffBot 4000';
-  // //     }
-
-  // //     async onYiffBotContinuePost(): Promise<void> {
-  // //       if (!this.isPrivate(this.conversation)) {
-  // //         return;
-  // //       }
-
-  // //       const conv = <Conversation.PrivateConversation>this.conversation;
-
-  // //       await conv.sendMessageEx('#continue');
-  // //       await this.messageAdded(this.conversation.messages as Message[]);
-  // //     }
-
-  // //     async onYiffBotRetryPost(): Promise<void> {
-  // //       if (!this.isPrivate(this.conversation)) {
-  // //         return;
-  // //       }
-
-  // //       const conv = <Conversation.PrivateConversation>this.conversation;
-
-  // //       await conv.sendMessageEx('#retry');
-  // //       await this.messageAdded(this.conversation.messages as Message[]);
-  // //     }
-  // //   }
 </script>
 
 <style lang="scss">
@@ -1498,13 +1453,5 @@
     margin-top: 0;
     min-width: 1.2em;
     max-width: 1.2em;
-  }
-
-  .yiffbot-controls {
-    .btn-group {
-      margin-left: 70px;
-      margin-top: 10px;
-      margin-bottom: 10px;
-    }
   }
 </style>

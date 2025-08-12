@@ -860,12 +860,6 @@ export async function testSmartFilterForPrivateMessage(
 
   if (
     cachedProfile &&
-    // ALERT: YIFFBOT FUNCTIONALITY IS ON THE CHOPPING BLOCK!
-    // **     Yiffbot was banned from F-List, and as such, most
-    //        of it's functionality no longer remains. Given that,
-    //        features related to it are SUBJECT FOR DELETION!
-    //        Sowwwy...
-    // cachedProfile.character.character.name !== 'YiffBot 4000' &&
     cachedProfile.match.isFiltered &&
     core.state.settings.risingFilter.autoReply &&
     !cachedProfile.match.autoResponded
@@ -934,12 +928,6 @@ export async function testSmartFilterForPrivateMessage(
 
   if (
     cachedProfile &&
-    // ALERT: YIFFBOT FUNCTIONALITY IS ON THE CHOPPING BLOCK!
-    // **     Yiffbot was banned from F-List, and as such, most
-    //        of it's functionality no longer remains. Given that,
-    //        features related to it are SUBJECT FOR DELETION!
-    //        Sowwwy...
-    // // cachedProfile.character.character.name !== 'YiffBot 4000' &&
     cachedProfile.match.isFiltered &&
     core.state.settings.risingFilter.hidePrivateMessages &&
     firstTime // subsequent messages bypass this filter on purpose

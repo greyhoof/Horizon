@@ -20,9 +20,6 @@ import { GeneralSettings } from '../electron/common';
 import { SiteSession } from '../site/site-session';
 import _ from 'lodash';
 
-// sucks fur u, yiffbot
-// // import { initYiffbot4000Integration } from '../learn/yiffbot';
-
 function createBBCodeParser(): BBCodeParser {
   const parser = new BBCodeParser();
   for (const tag of state.settings.disallowedTags) parser.removeTag(tag);
@@ -141,8 +138,6 @@ export function init(
         await data.settingsStore.set('hiddenUsers', newValue);
     }
   );
-  // boom (shotgun reloading sound)
-  // // initYiffbot4000Integration();
 
   connection.onEvent('connecting', async () => {
     await data.reloadSettings();
