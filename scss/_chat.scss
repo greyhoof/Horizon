@@ -363,7 +363,7 @@
 }
 
 .message-highlight {
-  background-color: theme-color-level('success', -8);
+  background-color: color.scale($color: $success, $alpha: -50%);
 }
 
 .message-action .bbcode {
