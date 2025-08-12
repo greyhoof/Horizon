@@ -662,7 +662,7 @@
         min-width: 200px;
         margin-bottom: 0;
         padding-bottom: 0;
-
+        position: absolute;
         opacity: 1;
       }
 

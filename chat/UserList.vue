@@ -378,7 +378,7 @@
       }
 
       .row.character-page {
-        display: block;
+        display: flex;
         margin-right: 0;
         margin-left: 0;
 
