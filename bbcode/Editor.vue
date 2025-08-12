@@ -548,15 +548,21 @@
     }
 
     .color-selector {
-      max-width: 145px;
+      max-width: 150px;
       top: -57px;
       left: 94px;
       line-height: 1;
       z-index: 1000;
       background-color: var(--bs-body-bg);
+      position: absolute;
+
+      .popover-body {
+        padding: 0px;
+      }
 
       .btn-group {
         display: block;
+        margin: 10px 13px 10px 13px;
       }
 
       .btn {
