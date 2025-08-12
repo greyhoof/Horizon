@@ -80,9 +80,7 @@
         aria-label="Close"
         style="margin-left: 10px"
         @click="showToolbar = false"
-      >
-        &times;
-      </button>
+      ></button>
     </div>
     <div
       class="bbcode-editor-text-area bg-light"
@@ -545,7 +543,7 @@
   .bbcode-toolbar {
     .toolbar-buttons {
       .btn.toggled {
-        background-color: var(--secondary) !important;
+        background-color: var(--bs-secondary) !important;
       }
     }
 
@@ -555,7 +553,7 @@
       left: 94px;
       line-height: 1;
       z-index: 1000;
-      background-color: var(--input-bg);
+      background-color: var(--bs-body-bg);
 
       .btn-group {
         display: block;
@@ -568,7 +566,7 @@
           padding: 0 !important;
           margin-right: -1px !important;
           margin-bottom: -1px !important;
-          border: 1px solid var(--secondary);
+          border: 1px solid var(--bs-secondary);
           width: 1.3rem;
           height: 1.3rem;
 
@@ -577,7 +575,7 @@
           }
 
           &:hover {
-            border-color: var(--gray-dark) !important;
+            border-color: var(--bs-gray-800) !important;
           }
 
           &.red {
