@@ -438,12 +438,12 @@
           position: relative;
 
           &:hover {
-            background-color: var(--primary);
+            background-color: var(--bs-primary);
             color: var(--textColor);
           }
 
           &.selected {
-            background-color: var(--primary);
+            background-color: var(--bs-primary);
             padding-left: 12px;
             font-weight: 600;
           }
@@ -502,7 +502,7 @@
           &.selected {
             padding-left: 12px;
             font-weight: 600;
-            background-color: var(--primary);
+            background-color: var(--bs-primary);
             opacity: 1;
           }
 

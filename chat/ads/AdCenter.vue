@@ -155,7 +155,7 @@
       padding: 5px;
       border-radius: 0 5px 5px 5px;
       background: var(--input-bg);
-      border-color: var(--secondary);
+      border-color: var(--bs-secondary);
     }
 
     .bbcode-editor {

@@ -343,7 +343,7 @@
 
     .profile {
       .profile-button {
-        border: 1px var(--secondary) solid;
+        border: 1px var(--bs-secondary) solid;
         padding-top: 0.25rem;
         padding-bottom: 0.25rem;
         min-height: 2rem;

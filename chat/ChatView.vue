@@ -822,7 +822,7 @@
   .list-group.conversation-nav {
     //padding-top: 8px;
     .fas.active {
-      color: var(--success);
+      color: var(--bs-success);
     }
 
     .list-group-item {
@@ -842,7 +842,7 @@
           padding-right: 0;
         }
         &:hover:not(.active) {
-          color: var(--dark);
+          color: var(--bs-dark);
         }
       }
       &.item-private {
@@ -941,10 +941,6 @@
       font-size: 2em;
       height: 30px;
     }
-
-    .list-group-item-danger:not(.active) {
-      color: color-yiq(theme-color('danger'));
-    }
   }
 
   #sidebar {
@@ -982,7 +978,7 @@
       margin-top: 3px;
 
       span {
-        color: var(--danger);
+        color: var(--bs-danger);
         cursor: pointer;
 
         &:hover {

@@ -64,6 +64,14 @@
   }
 }
 
+.list-group-item-danger:not(.active) {
+  &:hover,
+  &:focus {
+    color: color-contrast($danger);
+  }
+  color: color-contrast($danger);
+}
+
 .list-group-action.list-group-item {
   &:hover,
   &:focus {
