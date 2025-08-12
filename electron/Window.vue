@@ -742,10 +742,7 @@
     }
 
     #window-tabs {
-      h4 {
-        margin: 0 15px 0 77px;
-      }
-
+      padding-left: 77px;
       .btn,
       li a {
         padding-top: 6px;
