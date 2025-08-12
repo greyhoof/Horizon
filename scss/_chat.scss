@@ -446,8 +446,7 @@ $genders: (
   .hasNew {
     background-color: theme-color-level('warning', -2);
     border-color: theme-color-level('warning', -4);
-    //color: color-yiq(theme-color('warning'));
-    color: theme-color-level('warning', 8);
+    color: color-contrast($warning);
     &:hover {
       background-color: theme-color-level('warning', -4);
     }
