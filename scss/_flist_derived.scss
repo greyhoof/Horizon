@@ -66,7 +66,7 @@ select {
   -moz-appearance: none;
 }
 
-a.btn {
+a.btn:not(.btn-outline-secondary) {
   color: $link-color;
 
   &:hover {
