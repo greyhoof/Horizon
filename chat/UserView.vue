@@ -155,7 +155,7 @@
 
       if (core.state.settings.risingAdScore && showMatch && cache) {
         if (
-          cache.match.searchScore >= kinkMatchWeights.unicornThreshold &&
+          cache.match.searchScore >= kinkMatchWeights.perfectThreshold &&
           cache.match.matchScore === Scoring.MATCH
         ) {
           matchClass = 'match-found perfect';

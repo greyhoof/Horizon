@@ -1776,7 +1776,7 @@ export const kinkMatchWeights = {
   // logBase: 10,
   weakMismatchThreshold: 16,
   weakMatchThreshold: 16,
-  unicornThreshold: 9
+  perfectThreshold: 9
 };
 
 export const kinkMatchScoreMap = {
