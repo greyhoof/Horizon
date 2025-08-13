@@ -139,17 +139,13 @@
     if (core.connection.character) {
       const cache =
         (showMatch && core.state.settings.risingAdScore) ||
-        core.state.settings.risingFilter.showFilterIcon ||
-        core.state.settings.horizonShowCustomCharacterColors
+        core.state.settings.risingFilter.showFilterIcon
           ? core.cache.profileCache.getSync(character.name)
           : undefined;
 
       // undefined == not interested
       // null == no cache hit
-      if (
-        cache === null &&
-        (showMatch || core.state.settings.horizonShowCustomCharacterColors)
-      ) {
+      if (cache === null && showMatch) {
         void core.cache.addProfile(character.name);
       }
 
