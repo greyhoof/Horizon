@@ -265,6 +265,9 @@
       electron.ipcRenderer.on('fix-logs', () =>
         this.activeTab!.view.webContents.send('fix-logs')
       );
+      electron.ipcRenderer.on('ui-test', () =>
+        this.activeTab!.view.webContents.send('ui-test')
+      );
       electron.ipcRenderer.on('quit', () => this.destroyAllTabs());
       electron.ipcRenderer.on('reopen-profile', () =>
         this.activeTab!.view.webContents.send('reopen-profile')

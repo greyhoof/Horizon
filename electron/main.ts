@@ -463,6 +463,14 @@ function onReady(): void {
               openURLExternally(
                 'https://wiki.f-list.net/How_to_Report_a_User#In_chat'
               )
+          },
+          {
+            label: 'Test UI items',
+            click: (_m, window: electron.BrowserWindow, _e: KeyboardEvent) => {
+              window.webContents.send('ui-test');
+            },
+            id: 'uiTest',
+            visible: process.env.NODE_ENV !== 'production'
           }
         ] as MenuItemConstructorOptions[]
       },

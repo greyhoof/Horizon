@@ -257,6 +257,7 @@
     </modal>
 
     <logs ref="logsDialog"></logs>
+    <ui-test ref="uiTestDialog" v-if="isDevMode"> </ui-test>
   </div>
 </template>
 
@@ -278,6 +279,7 @@
   import core /*, { init as initCore }*/ from '../chat/core';
   import l from '../chat/localize';
   import Logs from '../chat/Logs.vue';
+  import UITest from '../chat/UITest.vue';
   import Socket from '../chat/WebSocket';
   import Modal from '../components/Modal.vue';
   import { SimpleCharacter } from '../interfaces';
@@ -363,6 +365,7 @@
       modal: Modal,
       characterPage: CharacterPage,
       logs: Logs,
+      'ui-test': UITest,
       'word-definition': WordDefinition,
       BBCodeTester: BBCodeTester,
       bbcode: BBCodeView(core.bbCodeParser),
@@ -393,6 +396,7 @@
 
     profileNameHistory: string[] = [];
     profilePointer = 0;
+    isDevMode: boolean = process.env.NODE_ENV !== 'production';
 
     async startAndUpgradeCache(): Promise<void> {
       log.debug('init.chat.cache.start');
@@ -502,6 +506,10 @@
         this.fixCharacters = await core.settingsStore.getAvailableCharacters();
         this.fixCharacter = this.fixCharacters[0];
         (<Modal>this.$refs['fixLogsModal']).show();
+      });
+
+      electron.ipcRenderer.on('ui-test', () => {
+        this.showUiTest();
       });
 
       electron.ipcRenderer.on('update-zoom', (_e, zoomLevel) => {
@@ -817,6 +825,10 @@
 
     showLogs(): void {
       (<Logs>this.$refs['logsDialog']).show();
+    }
+
+    showUiTest(): void {
+      (<UITest>this.$refs['uiTestDialog']).show();
     }
 
     async openDefinitionWithDictionary(): Promise<void> {
