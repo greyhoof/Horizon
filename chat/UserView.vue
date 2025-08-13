@@ -130,19 +130,23 @@
     if (core.connection.character) {
       const cache =
         (showMatch && core.state.settings.risingAdScore) ||
-        core.state.settings.risingFilter.showFilterIcon
+        core.state.settings.risingFilter.showFilterIcon ||
+        core.state.settings.horizonShowCustomCharacterColors
           ? core.cache.profileCache.getSync(character.name)
           : undefined;
 
       // undefined == not interested
       // null == no cache hit
-      if (cache === null && showMatch) {
+      if (
+        cache === null &&
+        (showMatch || core.state.settings.horizonShowCustomCharacterColors)
+      ) {
         void core.cache.addProfile(character.name);
       }
 
       if (core.state.settings.risingAdScore && showMatch && cache) {
         if (
-          cache.match.searchScore >= kinkMatchWeights.perfectThreshold &&
+          cache.match.searchScore >= kinkMatchWeights.unicornThreshold &&
           cache.match.matchScore === Scoring.MATCH
         ) {
           matchClass = 'match-found perfect';
