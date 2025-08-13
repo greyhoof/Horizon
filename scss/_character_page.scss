@@ -46,6 +46,13 @@
       border: 2px dashed $character-badge-subscriber-border;
       font-weight: bold;
     }
+
+    &.character-badge-maintainer {
+      background-color: theme-color-bg('success');
+      border: 1px solid theme-color-border('success');
+      color: theme-color-level('success', 8);
+      font-weight: bold;
+    }
   }
 }
 

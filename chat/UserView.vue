@@ -17,7 +17,8 @@
     ></span
     ><span v-if="!!statusClass" :class="statusClass"></span
     ><span v-if="!!rankIcon" :class="rankIcon"></span
-    ><span v-if="!!smartFilterIcon" :class="smartFilterIcon"></span
+    ><span v-if="!!devIcon" :class="devIcon"></span>
+    <span v-if="!!smartFilterIcon" :class="smartFilterIcon"></span
     >{{ character.name
     }}<span v-if="!!matchClass" :class="matchClass">{{
       getMatchScoreTitle(matchScore)
@@ -34,6 +35,7 @@
   import { EventBus } from './preview/event-bus';
   import { kinkMatchWeights, Scoring } from '../learn/matcher-types';
   import { characterImage } from './common';
+  import { isHorizonDev } from './profile_api';
 
   export function getStatusIcon(status: Character.Status): string {
     switch (status) {
@@ -86,6 +88,7 @@
 
   export interface StatusClasses {
     rankIcon: string | null;
+    devIcon: string | null;
     smartFilterIcon: string | null;
     genderClass: string | null;
     statusClass: string | null;
@@ -103,6 +106,7 @@
     showMatch: boolean
   ): StatusClasses {
     let rankIcon: string | null = null;
+    let devIcon: string | null = null;
     let statusClass = null;
     let matchClass = null;
     let matchScore = null;
@@ -122,6 +126,11 @@
               ? 'fa fa-shield-alt'
               : 'fa fa-star'
             : null;
+    }
+
+    // Check for dev badge
+    if (isHorizonDev(character.name)) {
+      devIcon = 'fa fa-wrench';
     }
 
     if (showStatus || character.status === 'crown')
@@ -201,6 +210,7 @@
     return {
       genderClass: genderClass ? `user-gender ${genderClass}` : null,
       rankIcon: rankIcon ? `user-rank ${rankIcon}` : null,
+      devIcon: devIcon ? `user-dev ${devIcon}` : null,
       statusClass: statusClass ? `user-status ${statusClass}` : null,
       matchClass,
       matchScore,
@@ -241,6 +251,7 @@
     userClass = '';
 
     rankIcon: string | null = null;
+    devIcon: string | null = null;
     smartFilterIcon: string | null = null;
     genderClass: string | null = null;
     statusClass: string | null = null;
@@ -328,6 +339,7 @@
       );
 
       this.rankIcon = res.rankIcon;
+      this.devIcon = res.devIcon;
       this.smartFilterIcon = res.smartFilterIcon;
       this.genderClass = res.genderClass;
       this.statusClass = res.statusClass;

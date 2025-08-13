@@ -19,6 +19,7 @@ import { AdCenter } from './ads/ad-center';
 import { GeneralSettings } from '../electron/common';
 import { SiteSession } from '../site/site-session';
 import _ from 'lodash';
+import { preloadTeamData } from './profile_api';
 
 function createBBCodeParser(): BBCodeParser {
   const parser = new BBCodeParser();
@@ -142,6 +143,7 @@ export function init(
   connection.onEvent('connecting', async () => {
     await data.reloadSettings();
     data.bbCodeParser = createBBCodeParser();
+    preloadTeamData().catch(() => {});
   });
 }
 

@@ -1294,6 +1294,11 @@
       margin-right: 2px;
     }
 
+    .user-dev {
+      font-size: 80%;
+      margin-right: 2px;
+    }
+
     .match-found {
       margin-left: 3px;
       padding-left: 2px;
