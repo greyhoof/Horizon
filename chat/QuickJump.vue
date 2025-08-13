@@ -391,7 +391,8 @@
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 1050;
+    //1 above the bootstrap 5 modal z-index (which used to be 1040)
+    z-index: 1051;
     display: flex;
     align-items: flex-start;
     justify-content: center;
