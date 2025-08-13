@@ -303,12 +303,12 @@
 }
 
 .message-warn {
-  background-color: theme-color('danger');
-  color: color-yiq(theme-color('danger'));
+  background-color: $danger;
+  color: color-contrast($danger);
   .bbcode {
     .whiteText,
     .blackText {
-      color: color-yiq(theme-color('danger'));
+      color: color-contrast($danger);
     }
   }
 }
