@@ -336,6 +336,7 @@
         chanop: 'fa fa-star',
         helpdesk: 'fa fa-user',
         developer: 'fa fa-terminal',
+        maintainer: 'fa fa-wrench',
         'subscription.lifetime': 'fa fa-certificate'
       };
       return badgeName in classMap ? classMap[badgeName] : '';
@@ -349,6 +350,7 @@
         chanop: 'Channel Moderator',
         helpdesk: 'Helpdesk',
         developer: 'Developer',
+        maintainer: 'Horizon Maintainer',
         'subscription.lifetime': 'Lifetime Subscriber',
         'subscription.other': 'Subscriber'
       };

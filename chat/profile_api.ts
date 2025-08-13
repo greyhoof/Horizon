@@ -39,6 +39,23 @@ import * as Utils from '../site/utils';
 import core from './core';
 import { EventBus } from './preview/event-bus';
 
+let horizonDevs: string[] = [];
+
+export function isHorizonDev(characterName: string): boolean {
+  return horizonDevs.includes(characterName);
+}
+export async function preloadTeamData(): Promise<void> {
+  try {
+    const response = await fetch(
+      'https://raw.githubusercontent.com/Fchat-Horizon/Horizon/refs/heads/team/team.json'
+    );
+    if (response.ok) {
+      const data = await response.json();
+      horizonDevs = data.devs?.maintainers || [];
+    }
+  } catch (error) {}
+}
+
 const parserSettings = {
   siteDomain: 'https://www.f-list.net/',
   staticDomain: 'https://static.f-list.net/',
@@ -122,6 +139,14 @@ async function executeCharacterData(
   Utils.settings.inlineDisplayMode = data.current_user.inline_mode;
   Utils.settings.animateEicons = core.state.settings.animatedEicons;
 
+  // Add maintainer badge for Horizon developers
+  const badges = [...data.badges];
+  if (isHorizonDev(data.name)) {
+    if (!badges.includes('maintainer')) {
+      badges.push('maintainer');
+    }
+  }
+
   const charData = {
     is_self: data.is_self,
     character: {
@@ -143,7 +168,7 @@ async function executeCharacterData(
     },
     memo: data.memo,
     character_list: data.character_list,
-    badges: data.badges,
+    badges: badges,
     settings: data.settings,
     bookmarked: core.characters.get(data.name).isBookmarked,
     self_staff: false
