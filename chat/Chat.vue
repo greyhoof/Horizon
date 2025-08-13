@@ -27,7 +27,7 @@
       </h3>
       <div class="card-body">
         <h4 class="card-title">{{ l('login.selectCharacter') }}</h4>
-        <select v-model="selectedCharacter" class="form-control custom-select">
+        <select v-model="selectedCharacter" class="form-select form-select">
           <option v-for="character in ownCharacters" :value="character">
             {{ character.name }}
           </option>

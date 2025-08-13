@@ -506,7 +506,7 @@
     overflow: hidden;
     opacity: 0.95;
     border-radius: 0 5px 5px 5px;
-    border: 1px solid var(--secondary);
+    border: 1px solid var(--bs-secondary);
 
     .perfect {
       margin-left: 8px;

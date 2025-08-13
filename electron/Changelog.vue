@@ -20,7 +20,7 @@
             </h4>
             <button
               type="button"
-              class="close"
+              class="btn-close"
               aria-label="Close"
               v-if="!isMac"
               @click.stop="close()"
@@ -262,21 +262,21 @@
   }
 
   .markdown-alert-important {
-    border-color: var(--primary);
+    border-color: var(--bs-primary);
   }
 
   .markdown-alert-note {
-    border-color: var(--secondary);
+    border-color: var(--bs-secondary);
   }
 
   .markdown-alert-tip {
-    border-color: var(--info);
+    border-color: var(--bs-info);
   }
   .markdown-alert-caution {
-    border-color: var(--danger);
+    border-color: var(--bs-danger);
   }
   .markdown-alert-warning {
-    border-color: var(--warning);
+    border-color: var(--bs-warning);
   } /*This override exists because we allow the user to resize the window, which potentially resizes the footer otherwise*/
   .modal-body .modal-footer {
     height: 52px;

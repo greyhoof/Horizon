@@ -363,7 +363,7 @@
 }
 
 .message-highlight {
-  background-color: theme-color-level('success', -8);
+  background-color: color.scale($color: $success, $alpha: -50%);
 }
 
 .message-action .bbcode {
@@ -446,8 +446,7 @@ $genders: (
   .hasNew {
     background-color: theme-color-level('warning', -2);
     border-color: theme-color-level('warning', -4);
-    //color: color-yiq(theme-color('warning'));
-    color: theme-color-level('warning', 8);
+    color: color-contrast($warning);
     &:hover {
       background-color: theme-color-level('warning', -4);
     }
@@ -466,7 +465,7 @@ $genders: (
 
 .list-group.conversation-nav .list-group-item {
   margin: 1px 0px 1px 0px;
-  border-radius: inherit;
+  border-radius: 4px;
   //@each $color, $value in $theme-colors {
   //&.list-group-item-#{$color} {
   //color: color-yiq($value);

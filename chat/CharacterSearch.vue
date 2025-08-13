@@ -832,7 +832,7 @@
       margin-bottom: 0;
       padding-top: 0;
       padding-bottom: 0;
-      background-color: var(--secondary);
+      background-color: var(--bs-secondary);
 
       &:hover {
         background-color: var(--blue);

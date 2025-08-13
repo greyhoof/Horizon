@@ -237,9 +237,9 @@
       </a>
     </div>
     <div class="search input-group" v-show="showSearch">
-      <div class="input-group-prepend">
-        <div class="input-group-text"><span class="fas fa-search"></span></div>
-      </div>
+      <span class="input-group-text">
+        <span class="fas fa-search"></span>
+      </span>
       <input
         v-model="searchInput"
         @keydown.esc="hideSearch()"

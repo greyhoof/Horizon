@@ -33,7 +33,7 @@
         </div>
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="disallowedTags">{{
           l('settings.disallowedTags')
         }}</label>
@@ -43,41 +43,72 @@
           v-model="disallowedTags"
         />
       </div>
-      <div class="form-group">
-        <label class="control-label" for="clickOpensMessage">
+      <div class="mb-3">
+        <div class="form-check">
           <input
+            class="form-check-input"
             type="checkbox"
             id="clickOpensMessage"
             v-model="clickOpensMessage"
           />
-          {{ l('settings.clickOpensMessage') }}
-        </label>
+          <label class="form-check-label" for="clickOpensMessage">
+            {{ l('settings.clickOpensMessage') }}
+          </label>
+        </div>
       </div>
-      <div class="form-group">
-        <label class="control-label" for="enterSend">
-          <input type="checkbox" id="enterSend" v-model="enterSend" />
-          {{ l('settings.enterSend') }}
-        </label>
+      <div class="mb-3">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="enterSend"
+            v-model="enterSend"
+          />
+          <label class="form-check-label" for="enterSend">
+            {{ l('settings.enterSend') }}
+          </label>
+        </div>
       </div>
-      <div class="form-group">
-        <label class="control-label" for="showAvatars">
-          <input type="checkbox" id="showAvatars" v-model="showAvatars" />
-          {{ l('settings.showAvatars') }}
-        </label>
+      <div class="mb-3">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="showAvatars"
+            v-model="showAvatars"
+          />
+          <label class="form-check-label" for="showAvatars">
+            {{ l('settings.showAvatars') }}
+          </label>
+        </div>
       </div>
-      <div class="form-group">
-        <label class="control-label" for="colorBookmarks">
-          <input type="checkbox" id="colorBookmarks" v-model="colorBookmarks" />
-          {{ l('settings.colorBookmarks') }}
-        </label>
+      <div class="mb-3">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="colorBookmarks"
+            v-model="colorBookmarks"
+          />
+          <label class="form-check-label" for="colorBookmarks">
+            {{ l('settings.colorBookmarks') }}
+          </label>
+        </div>
       </div>
-      <div class="form-group">
-        <label class="control-label" for="animatedEicons">
-          <input type="checkbox" id="animatedEicons" v-model="animatedEicons" />
-          {{ l('settings.animatedEicons') }}
-        </label>
+      <div class="mb-3">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="animatedEicons"
+            v-model="animatedEicons"
+          />
+          <label class="form-check-label" for="animatedEicons">
+            {{ l('settings.animatedEicons') }}
+          </label>
+        </div>
       </div>
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="idleTimer">{{
           l('settings.idleTimer')
         }}</label>
@@ -90,35 +121,59 @@
           max="1440"
         />
       </div>
-      <div class="form-group">
-        <label class="control-label" for="messageSeparators">
+      <div class="mb-3">
+        <div class="form-check">
           <input
+            class="form-check-input"
             type="checkbox"
             id="messageSeparators"
             v-model="messageSeparators"
           />
-          {{ l('settings.messageSeparators') }}
-        </label>
+          <label class="form-check-label" for="messageSeparators">
+            {{ l('settings.messageSeparators') }}
+          </label>
+        </div>
       </div>
-      <div class="form-group">
-        <label class="control-label" for="bbCodeBar">
-          <input type="checkbox" id="bbCodeBar" v-model="bbCodeBar" />
-          {{ l('settings.bbCodeBar') }}
-        </label>
+      <div class="mb-3">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="bbCodeBar"
+            v-model="bbCodeBar"
+          />
+          <label class="form-check-label" for="bbCodeBar">
+            {{ l('settings.bbCodeBar') }}
+          </label>
+        </div>
       </div>
-      <div class="form-group">
-        <label class="control-label" for="logMessages">
-          <input type="checkbox" id="logMessages" v-model="logMessages" />
-          {{ l('settings.logMessages') }}
-        </label>
+      <div class="mb-3">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="logMessages"
+            v-model="logMessages"
+          />
+          <label class="form-check-label" for="logMessages">
+            {{ l('settings.logMessages') }}
+          </label>
+        </div>
       </div>
-      <div class="form-group">
-        <label class="control-label" for="logAds">
-          <input type="checkbox" id="logAds" v-model="logAds" />
-          {{ l('settings.logAds') }}
-        </label>
+      <div class="mb-3">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="logAds"
+            v-model="logAds"
+          />
+          <label class="form-check-label" for="logAds">
+            {{ l('settings.logAds') }}
+          </label>
+        </div>
       </div>
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="fontSize">{{
           l('settings.fontSize')
         }}</label>
@@ -133,36 +188,60 @@
       </div>
     </div>
     <div v-show="selectedTab === '1'">
-      <div class="form-group">
-        <label class="control-label" for="playSound">
-          <input type="checkbox" id="playSound" v-model="playSound" />
-          {{ l('settings.playSound') }}
-        </label>
-      </div>
-      <div class="form-group">
-        <label class="control-label" for="alwaysNotify">
+      <div class="mb-3">
+        <div class="form-check">
           <input
+            class="form-check-input"
+            type="checkbox"
+            id="playSound"
+            v-model="playSound"
+          />
+          <label class="form-check-label" for="playSound">
+            {{ l('settings.playSound') }}
+          </label>
+        </div>
+      </div>
+      <div class="mb-3">
+        <div class="form-check">
+          <input
+            class="form-check-input"
             type="checkbox"
             id="alwaysNotify"
             v-model="alwaysNotify"
             :disabled="!playSound"
           />
-          {{ l('settings.alwaysNotify') }}
-        </label>
+          <label class="form-check-label" for="alwaysNotify">
+            {{ l('settings.alwaysNotify') }}
+          </label>
+        </div>
       </div>
-      <div class="form-group">
-        <label class="control-label" for="notifications">
-          <input type="checkbox" id="notifications" v-model="notifications" />
-          {{ l('settings.notifications') }}
-        </label>
+      <div class="mb-3">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="notifications"
+            v-model="notifications"
+          />
+          <label class="form-check-label" for="notifications">
+            {{ l('settings.notifications') }}
+          </label>
+        </div>
       </div>
-      <div class="form-group">
-        <label class="control-label" for="highlight">
-          <input type="checkbox" id="highlight" v-model="highlight" />
-          {{ l('settings.highlight') }}
-        </label>
+      <div class="mb-3">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="highlight"
+            v-model="highlight"
+          />
+          <label class="form-check-label" for="highlight">
+            {{ l('settings.highlight') }}
+          </label>
+        </div>
       </div>
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="highlightWords">{{
           l('settings.highlightWords')
         }}</label>
@@ -172,7 +251,7 @@
           v-model="highlightWords"
         />
       </div>
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="horizonHighlightUsers">{{
           l('settings.highlightUsers')
         }}</label>
@@ -183,59 +262,93 @@
         />
       </div>
 
-      <div class="form-group">
-        <label class="control-label" for="eventMessages">
-          <input type="checkbox" id="eventMessages" v-model="eventMessages" />
-          {{ l('settings.eventMessages') }}
-        </label>
+      <div class="mb-3">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="eventMessages"
+            v-model="eventMessages"
+          />
+          <label class="form-check-label" for="eventMessages">
+            {{ l('settings.eventMessages') }}
+          </label>
+        </div>
       </div>
-      <div class="form-group">
-        <label class="control-label" for="joinMessages">
-          <input type="checkbox" id="joinMessages" v-model="joinMessages" />
-          {{ l('settings.joinMessages') }}
-        </label>
+      <div class="mb-3">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="joinMessages"
+            v-model="joinMessages"
+          />
+          <label class="form-check-label" for="joinMessages">
+            {{ l('settings.joinMessages') }}
+          </label>
+        </div>
       </div>
-      <div class="form-group">
-        <label class="control-label" for="showNeedsReply">
-          <input type="checkbox" id="showNeedsReply" v-model="showNeedsReply" />
-          {{ l('settings.showNeedsReply') }}
-        </label>
+      <div class="mb-3">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="showNeedsReply"
+            v-model="showNeedsReply"
+          />
+          <label class="form-check-label" for="showNeedsReply">
+            {{ l('settings.showNeedsReply') }}
+          </label>
+        </div>
       </div>
     </div>
     <div v-show="selectedTab === '2'">
       <h5>Matching</h5>
 
-      <div class="form-group">
-        <label class="control-label" for="risingAdScore">
-          <input type="checkbox" id="risingAdScore" v-model="risingAdScore" />
-          Colorize ads, profiles, and names of compatible and incompatible
-          characters
-        </label>
+      <div class="mb-3">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="risingAdScore"
+            v-model="risingAdScore"
+          />
+          <label class="form-check-label" for="risingAdScore">
+            Colorize ads, profiles, and names of compatible and incompatible
+            characters
+          </label>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label class="control-label" for="risingComparisonInUserMenu">
+      <div class="mb-3">
+        <div class="form-check">
           <input
+            class="form-check-input"
             type="checkbox"
             id="risingComparisonInUserMenu"
             v-model="risingComparisonInUserMenu"
           />
-          Show quick match results in the right click character menu
-        </label>
+          <label class="form-check-label" for="risingComparisonInUserMenu">
+            Show quick match results in the right click character menu
+          </label>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label class="control-label" for="risingComparisonInSearch">
+      <div class="mb-3">
+        <div class="form-check">
           <input
+            class="form-check-input"
             type="checkbox"
             id="risingComparisonInSearch"
             v-model="risingComparisonInSearch"
           />
-          Show quick match results in the search results
-        </label>
+          <label class="form-check-label" for="risingComparisonInSearch">
+            Show quick match results in the search results
+          </label>
+        </div>
       </div>
 
-      <!--            <div class="form-group">-->
+      <!--            <div class="mb-3">-->
       <!--                <label class="control-label" for="hideProfileComparisonSummary">-->
       <!--                    <input type="checkbox" id="hideProfileComparisonSummary" :checked="!hideProfileComparisonSummary" @input="hideProfileComparisonSummary = !$event.target.checked"/>-->
       <!--                    Show quick match results at the top of the character profile-->
@@ -244,66 +357,81 @@
 
       <h5>Preview</h5>
 
-      <div class="form-group">
-        <label class="control-label" for="risingLinkPreview">
+      <div class="mb-3">
+        <div class="form-check">
           <input
+            class="form-check-input"
             type="checkbox"
             id="risingLinkPreview"
             v-model="risingLinkPreview"
           />
-          Show a link/image preview when the mouse hovers over a link
-        </label>
+          <label class="form-check-label" for="risingLinkPreview">
+            Show a link/image preview when the mouse hovers over a link
+          </label>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label class="control-label" for="risingCharacterPreview">
+      <div class="mb-3">
+        <div class="form-check">
           <input
+            class="form-check-input"
             type="checkbox"
             id="risingCharacterPreview"
             v-model="risingCharacterPreview"
           />
-          Show a character preview when the mouse hovers over a character name
-        </label>
+          <label class="form-check-label" for="risingCharacterPreview">
+            Show a character preview when the mouse hovers over a character name
+          </label>
+        </div>
       </div>
 
       <h5>Profile</h5>
 
-      <div class="form-group">
-        <label class="control-label" for="risingAutoCompareKinks">
+      <div class="mb-3">
+        <div class="form-check">
           <input
+            class="form-check-input"
             type="checkbox"
             id="risingAutoCompareKinks"
             v-model="risingAutoCompareKinks"
           />
-          Automatically compare kinks when viewing a character profile
-        </label>
+          <label class="form-check-label" for="risingAutoCompareKinks">
+            Automatically compare kinks when viewing a character profile
+          </label>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label class="control-label" for="risingAutoExpandCustomKinks">
+      <div class="mb-3">
+        <div class="form-check">
           <input
+            class="form-check-input"
             type="checkbox"
             id="risingAutoExpandCustomKinks"
             v-model="risingAutoExpandCustomKinks"
           />
-          Automatically expand custom kinks
-        </label>
+          <label class="form-check-label" for="risingAutoExpandCustomKinks">
+            Automatically expand custom kinks
+          </label>
+        </div>
       </div>
 
       <h5>Draft Messages</h5>
 
-      <div class="form-group">
-        <label class="control-label" for="horizonCacheDraftMessages">
+      <div class="mb-3">
+        <div class="form-check">
           <input
+            class="form-check-input"
             type="checkbox"
             id="horizonCacheDraftMessages"
             v-model="horizonCacheDraftMessages"
           />
-          {{ l('settings.horizonCacheDraftMessages') }}
-        </label>
+          <label class="form-check-label" for="horizonCacheDraftMessages">
+            {{ l('settings.horizonCacheDraftMessages') }}
+          </label>
+        </div>
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="horizonSaveDraftMessagesToDiskTimer">
           {{ l('settings.horizonSaveDraftMessagesToDiskTimer') }}
         </label>
@@ -319,95 +447,124 @@
 
       <h5>Misc</h5>
 
-      <div class="form-group">
-        <label class="control-label" for="risingShowUnreadOfflineCount">
+      <div class="mb-3">
+        <div class="form-check">
           <input
+            class="form-check-input"
             type="checkbox"
             id="risingShowUnreadOfflineCount"
             v-model="risingShowUnreadOfflineCount"
           />
-          Show unread note and offline message counts at the bottom right corner
-        </label>
+          <label class="form-check-label" for="risingShowUnreadOfflineCount">
+            Show unread note and offline message counts at the bottom right
+            corner
+          </label>
+        </div>
       </div>
-      <div class="form-group">
-        <label class="control-label" for="horizonNotifyFriendSignIn">
+      <div class="mb-3">
+        <div class="form-check">
           <input
+            class="form-check-input"
             type="checkbox"
             id="horizonNotifyFriendSignIn"
             v-model="horizonNotifyFriendSignIn"
           />
-          Notify when friends or bookmarks sign in.
-        </label>
+          <label class="form-check-label" for="horizonNotifyFriendSignIn">
+            Notify when friends or bookmarks sign in.
+          </label>
+        </div>
       </div>
-      <div class="form-group">
-        <label class="control-label" for="risingColorblindMode">
+      <div class="mb-3">
+        <div class="form-check">
           <input
+            class="form-check-input"
             type="checkbox"
             id="risingColorblindMode"
             v-model="risingColorblindMode"
           />
-          Colorblind mode
-        </label>
+          <label class="form-check-label" for="risingColorblindMode">
+            Colorblind mode
+          </label>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label class="control-label" for="risingShowPortraitNearInput">
+      <div class="mb-3">
+        <div class="form-check">
           <input
+            class="form-check-input"
             type="checkbox"
             id="risingShowPortraitNearInput"
             v-model="risingShowPortraitNearInput"
           />
-          Show character portrait by text input
-        </label>
+          <label class="form-check-label" for="risingShowPortraitNearInput">
+            Show character portrait by text input
+          </label>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label class="control-label" for="risingShowPortraitInMessage">
+      <div class="mb-3">
+        <div class="form-check">
           <input
+            class="form-check-input"
             type="checkbox"
             id="risingShowPortraitInMessage"
             v-model="risingShowPortraitInMessage"
           />
-          Show character portrait with each message
-        </label>
+          <label class="form-check-label" for="risingShowPortraitInMessage">
+            Show character portrait with each message
+          </label>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label class="control-label" for="risingShowHighQualityPortraits">
+      <div class="mb-3">
+        <div class="form-check">
           <input
+            class="form-check-input"
             type="checkbox"
             id="risingShowHighQualityPortraits"
             v-model="risingShowHighQualityPortraits"
           />
-          Show high-quality portraits
-        </label>
+          <label class="form-check-label" for="risingShowHighQualityPortraits">
+            Show high-quality portraits
+          </label>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label class="control-label" for="horizonShowCustomCharacterColors">
+      <div class="mb-3">
+        <div class="form-check">
           <input
+            class="form-check-input"
             type="checkbox"
             id="horizonShowCustomCharacterColors"
             v-model="horizonShowCustomCharacterColors"
           />
-          Show custom character name colors
-        </label>
+          <label
+            class="form-check-label"
+            for="horizonShowCustomCharacterColors"
+          >
+            Show custom character name colors
+          </label>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label class="control-label" for="horizonShowGenderMarker">
+      <div class="mb-3">
+        <div class="form-check">
           <input
+            class="form-check-input"
             type="checkbox"
             id="horizonShowGenderMarker"
             v-model="horizonShowGenderMarker"
           />
-          Show a gender icon on everyone
-        </label>
+          <label class="form-check-label" for="horizonShowGenderMarker">
+            Show a gender icon on everyone
+          </label>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label class="control-label" for="horizonGenderMarkerOrigColor">
+      <div class="mb-3">
+        <div class="form-check">
           <input
+            class="form-check-input"
             type="checkbox"
             id="horizonGenderMarkerOrigColor"
             v-model="horizonGenderMarkerOrigColor"
@@ -415,28 +572,33 @@
               !horizonShowGenderMarker || !horizonShowCustomCharacterColors
             "
           />
-          Make gender icon use the original gender color instead of the custom
-          name color
-        </label>
+          <label class="form-check-label" for="horizonGenderMarkerOrigColor">
+            Make gender icon use the original gender color instead of the custom
+            name color
+          </label>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label class="control-label" for="horizonChangeOfflineColor">
+      <div class="mb-3">
+        <div class="form-check">
           <input
+            class="form-check-input"
             type="checkbox"
             id="horizonChangeOfflineColor"
             v-model="horizonChangeOfflineColor"
           />
-          Make color in chat change to grey when a user goes offline
-        </label>
+          <label class="form-check-label" for="horizonChangeOfflineColor">
+            Make color in chat change to grey when a user goes offline
+          </label>
+        </div>
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="risingCharacterTheme">
           Override UI theme (for this character only)
           <select
             id="risingCharacterTheme"
-            class="form-control"
+            class="form-select"
             v-model="risingCharacterTheme"
             style="flex: 1; margin-right: 10px"
           >
@@ -467,101 +629,131 @@
 
       <h5>Visibility</h5>
 
-      <div class="form-group filters">
-        <label class="control-label" for="risingFilter.hideAds">
+      <div class="mb-3 filters">
+        <div class="form-check">
           <input
+            class="form-check-input"
             type="checkbox"
             id="risingFilter.hideAds"
             v-model="risingFilter.hideAds"
           />
-          Hide <b>ads</b> from matching characters
-        </label>
+          <label class="form-check-label" for="risingFilter.hideAds">
+            Hide <b>ads</b> from matching characters
+          </label>
+        </div>
 
-        <label class="control-label" for="risingFilter.hideSearchResults">
+        <div class="form-check">
           <input
+            class="form-check-input"
             type="checkbox"
             id="risingFilter.hideSearchResults"
             v-model="risingFilter.hideSearchResults"
           />
-          Hide matching characters from <b>search results</b>
-        </label>
+          <label class="form-check-label" for="risingFilter.hideSearchResults">
+            Hide matching characters from <b>search results</b>
+          </label>
+        </div>
 
-        <label class="control-label" for="risingFilter.hideChannelMembers">
+        <div class="form-check">
           <input
+            class="form-check-input"
             type="checkbox"
             id="risingFilter.hideChannelMembers"
             v-model="risingFilter.hideChannelMembers"
           />
-          Hide matching characters from <b>channel members lists</b>
-        </label>
+          <label class="form-check-label" for="risingFilter.hideChannelMembers">
+            Hide matching characters from <b>channel members lists</b>
+          </label>
+        </div>
 
-        <label
-          class="control-label"
-          for="risingFilter.hidePublicChannelMessages"
-        >
+        <div class="form-check">
           <input
+            class="form-check-input"
             type="checkbox"
             id="risingFilter.hidePublicChannelMessages"
             v-model="risingFilter.hidePublicChannelMessages"
           />
-          Hide <b>public channel messages</b> from matching characters
-        </label>
+          <label
+            class="form-check-label"
+            for="risingFilter.hidePublicChannelMessages"
+          >
+            Hide <b>public channel messages</b> from matching characters
+          </label>
+        </div>
 
-        <label
-          class="control-label"
-          for="risingFilter.hidePrivateChannelMessages"
-        >
+        <div class="form-check">
           <input
+            class="form-check-input"
             type="checkbox"
             id="risingFilter.hidePrivateChannelMessages"
             v-model="risingFilter.hidePrivateChannelMessages"
           />
-          Hide <b>private channel messages</b> from matching characters
-        </label>
+          <label
+            class="form-check-label"
+            for="risingFilter.hidePrivateChannelMessages"
+          >
+            Hide <b>private channel messages</b> from matching characters
+          </label>
+        </div>
 
-        <label class="control-label" for="risingFilter.hidePrivateMessages">
+        <div class="form-check">
           <input
+            class="form-check-input"
             type="checkbox"
             id="risingFilter.hidePrivateMessages"
             v-model="risingFilter.hidePrivateMessages"
           />
-          Hide <b>private messages</b> (PMs) from matching characters
-        </label>
+          <label
+            class="form-check-label"
+            for="risingFilter.hidePrivateMessages"
+          >
+            Hide <b>private messages</b> (PMs) from matching characters
+          </label>
+        </div>
 
-        <label class="control-label" for="risingFilter.showFilterIcon">
+        <div class="form-check">
           <input
+            class="form-check-input"
             type="checkbox"
             id="risingFilter.showFilterIcon"
             v-model="risingFilter.showFilterIcon"
           />
-          Show <b>filter icon</b> on matching characters
-        </label>
+          <label class="form-check-label" for="risingFilter.showFilterIcon">
+            Show <b>filter icon</b> on matching characters
+          </label>
+        </div>
       </div>
 
-      <div class="form-group filters">
-        <label class="control-label" for="risingFilter.penalizeMatches">
+      <div class="mb-3 filters">
+        <div class="form-check">
           <input
+            class="form-check-input"
             type="checkbox"
             id="risingFilter.penalizeMatches"
             v-model="risingFilter.penalizeMatches"
           />
-          Penalize <b>match scores</b> for matching characters
-        </label>
+          <label class="form-check-label" for="risingFilter.penalizeMatches">
+            Penalize <b>match scores</b> for matching characters
+          </label>
+        </div>
 
-        <label class="control-label" for="risingFilter.rewardNonMatches">
+        <div class="form-check">
           <input
+            class="form-check-input"
             type="checkbox"
             id="risingFilter.rewardNonMatches"
             v-model="risingFilter.rewardNonMatches"
           />
-          Increase <b>match scores</b> for non-matching characters
-        </label>
+          <label class="form-check-label" for="risingFilter.rewardNonMatches">
+            Increase <b>match scores</b> for non-matching characters
+          </label>
+        </div>
       </div>
 
       <h5>Character Age Match</h5>
-      <div class="form-group">Leave empty for no limit.</div>
+      <div class="mb-3">Leave empty for no limit.</div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="risingFilter.minAge"
           >Characters younger than (years)</label
         >
@@ -586,43 +778,51 @@
       </div>
 
       <h5>Type Match</h5>
-      <div class="form-group filters">
-        <label
-          class="control-label"
-          :for="'risingFilter.smartFilters.' + key"
-          v-for="(value, key) in smartFilterTypes"
-        >
+      <div class="mb-3 filters">
+        <div class="form-check" v-for="(value, key) in smartFilterTypes">
           <input
+            class="form-check-input"
             type="checkbox"
             :id="'risingFilter.smartFilters.' + key"
             v-bind:checked="getSmartFilter(key)"
             @change="v => setSmartFilter(key, v)"
           />
-          {{ value.name }}
-        </label>
+          <label
+            class="form-check-label"
+            :for="'risingFilter.smartFilters.' + key"
+          >
+            {{ value.name }}
+          </label>
+        </div>
       </div>
 
       <h5>Automatic Replies</h5>
-      <div class="form-group filters">
-        <label class="control-label" for="risingFilter.autoReply">
+      <div class="mb-3 filters">
+        <div class="form-check">
           <input
+            class="form-check-input"
             type="checkbox"
             id="risingFilter.autoReply"
             v-model="risingFilter.autoReply"
           />
-          Send an automatic 'no thank you' response to matching characters if
-          they message you
-        </label>
+          <label class="form-check-label" for="risingFilter.autoReply">
+            Send an automatic 'no thank you' response to matching characters if
+            they message you
+          </label>
+        </div>
 
-        <label class="control-label" for="risingFilter.autoReplyCustom">
+        <div class="form-check">
           <input
+            class="form-check-input"
             type="checkbox"
             id="risingFilter.autoReplyCustom"
             v-model="risingFilter.autoReplyCustom"
             :disabled="!risingFilter.autoReply"
           />
-          Use a custom message defined below instead of the default message
-        </label>
+          <label class="form-check-label" for="risingFilter.autoReplyCustom">
+            Use a custom message defined below instead of the default message
+          </label>
+        </div>
 
         <editor
           v-model="risingFilter.autoReplyCustomMessage"
@@ -635,7 +835,7 @@
         >
         </editor>
 
-        <div class="form-group">
+        <div class="mb-3">
           You will still see messages unless you have the "Hide private channel
           messages" option above selected. Even then, if they send a second
           message it will bypass the restriction and show you their message.
@@ -644,13 +844,13 @@
       </div>
 
       <h5>Exception List</h5>
-      <div class="form-group">
+      <div class="mb-3">
         Filters and automatic replies are not applied to these character names.
         Separate names with a linefeed. Friends and bookmarked characters bypass
         filtering automatically.
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <textarea
           class="form-control"
           :value="getExceptionList()"
@@ -677,7 +877,7 @@
       <div style="display: flex; padding-top: 10px">
         <select
           id="import"
-          class="form-control"
+          class="form-select"
           v-model="importCharacter"
           style="flex: 1; margin-right: 10px"
         >
@@ -1063,11 +1263,11 @@
     }
   }
   #settings .warning {
-    border: 1px solid var(--warning);
+    border: 1px solid var(--bs-warning);
   }
 
   #settings .info {
-    border: 1px solid var(--info);
+    border: 1px solid var(--bs-info);
   }
 
   #settings .bbcode-preview {
@@ -1076,7 +1276,7 @@
     padding: 5px;
     border-radius: 0 5px 5px 5px;
     background: var(--input-bg);
-    border-color: var(--secondary);
+    border-color: var(--bs-secondary);
   }
 
   #settings .bbcode-editor {

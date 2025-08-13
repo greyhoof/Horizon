@@ -14,7 +14,7 @@
       >
         <strong>Loading...</strong>
         <div
-          class="spinner-border ml-auto"
+          class="spinner-border ms-auto"
           role="status"
           aria-hidden="true"
         ></div>
@@ -704,7 +704,7 @@
           margin-left: -1px;
 
           .btn {
-            border-bottom: 1px solid var(--secondary);
+            border-bottom: 1px solid var(--bs-secondary);
           }
 
           .expressions {
@@ -744,8 +744,8 @@
             position: relative;
 
             &:hover {
-              background-color: var(--light) !important;
-              border: solid 1px var(--light) !important;
+              background-color: var(--bs-light) !important;
+              border: solid 1px var(--bs-light) !important;
 
               .favorite-toggle {
                 visibility: visible !important;
@@ -763,10 +763,10 @@
               visibility: hidden;
 
               i {
-                color: var(--gray-dark);
+                color: var(--bs-secondary-text-emphasis);
                 opacity: 0.85;
                 -webkit-text-stroke-width: thin;
-                -webkit-text-stroke-color: var(--light);
+                -webkit-text-stroke-color: var(--bs-secondary-color);
 
                 &:hover {
                   opacity: 1;
@@ -777,7 +777,7 @@
                 visibility: visible;
 
                 i {
-                  color: var(--green);
+                  color: var(--bs-success);
                   opacity: 1;
 
                   &:hover {

@@ -25,19 +25,17 @@
         class="input-group quick-compare-block col-12 col-lg-4 col-xl-3"
       >
         <character-select v-model="characterToCompare"></character-select>
-        <div class="input-group-append">
-          <button
-            class="btn btn-outline-secondary"
-            @click="compareKinks()"
-            :disabled="loading || !characterToCompare"
-          >
-            {{ compareButtonText }}
-          </button>
-        </div>
+        <button
+          class="btn btn-outline-secondary"
+          @click="compareKinks()"
+          :disabled="loading || !characterToCompare"
+        >
+          {{ compareButtonText }}
+        </button>
       </div>
 
       <div class="col-12 col-lg-4 col-xl-2">
-        <select v-model="highlightGroup" class="form-control">
+        <select v-model="highlightGroup" class="form-select">
           <option :value="undefined">None</option>
           <option
             v-for="group in kinkGroups"
@@ -50,7 +48,7 @@
         </select>
       </div>
     </div>
-    <div class="form-row mt-3" :class="{ highlighting: !!highlightGroup }">
+    <div class="row mt-3" :class="{ highlighting: !!highlightGroup }">
       <div class="col-sm-6 col-lg-3 kink-block-favorite kink-block">
         <div class="card bg-light">
           <div class="card-header border-bottom border-info">

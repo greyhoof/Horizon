@@ -14,11 +14,10 @@ $gray-800: #333333 !default;
 $gray-900: #191919 !default;
 $black: #000000 !default;
 
-// YIQ contrast settings
-$yiq-contrasted-threshold: 150;
-$yiq-text-light: $white;
-$yiq-text-dark: $black;
-$component-active-color: $yiq-text-dark;
+// Bootstrap 5 contrast colors
+$light-color: $white;
+$dark-color: $black;
+$component-active-color: $dark-color;
 
 // Theme colors
 $gray-color: $gray-400;
@@ -96,3 +95,5 @@ $headerBackgroundMaskColor: #e5e5e5;
 
 $linkForcedColor: #007bff;
 $tabSecondaryFgColor: rgba(0, 0, 0, 0.4);
+
+@import 'theme_level';

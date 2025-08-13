@@ -55,7 +55,7 @@
           <div class="alert alert-danger" v-show="error">
             {{ error }}
           </div>
-          <div class="form-group">
+          <div class="mb-3">
             <label class="control-label" for="account">{{
               l('login.account')
             }}</label>
@@ -67,7 +67,7 @@
               :disabled="loggingIn"
             />
           </div>
-          <div class="form-group">
+          <div class="mb-3">
             <label class="control-label" for="password">{{
               l('login.password')
             }}</label>
@@ -80,7 +80,7 @@
               :disabled="loggingIn"
             />
           </div>
-          <div class="form-group" v-show="showAdvanced">
+          <div class="mb-3" v-show="showAdvanced">
             <label class="control-label" for="host">{{
               l('login.host')
             }}</label>
@@ -116,19 +116,19 @@
               </div>
             </div>
           </div>
-          <div class="form-group">
+          <div class="mb-3">
             <label for="advanced"
               ><input type="checkbox" id="advanced" v-model="showAdvanced" />
               {{ l('login.advanced') }}</label
             >
           </div>
-          <div class="form-group">
+          <div class="mb-3">
             <label for="save"
               ><input type="checkbox" id="save" v-model="saveLogin" />
               {{ l('login.save') }}</label
             >
           </div>
-          <div class="form-group" style="margin: 0; text-align: right">
+          <div class="mb-3" style="margin: 0; text-align: right">
             <button
               class="btn btn-primary"
               @click="login"
@@ -193,14 +193,14 @@
             @click="prevProfile"
             :disabled="!prevProfileAvailable()"
           >
-            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-left fa-lg"></i>
           </button>
           <button
             class="btn"
             @click="nextProfile"
             :disabled="!nextProfileAvailable()"
           >
-            <i class="fas fa-arrow-right"></i>
+            <i class="fas fa-arrow-right fa-lg"></i>
           </button>
         </div>
       </template>
@@ -213,9 +213,9 @@
       iconClass="fas fa-file-half-dashed"
     >
       <span style="white-space: pre-wrap">{{ l('fixLogs.text') }}</span>
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label">{{ l('fixLogs.character') }}</label>
-        <select id="import" class="form-control" v-model="fixCharacter">
+        <select id="import" class="form-select" v-model="fixCharacter">
           <option v-for="character in fixCharacters" :value="character">
             {{ character }}
           </option>
@@ -899,9 +899,12 @@
 
       .profile-title-right {
         float: right;
-        top: -7px;
+        top: 0px;
         right: 0;
         position: absolute;
+        .btn {
+          border: none;
+        }
       }
 
       .status-text {

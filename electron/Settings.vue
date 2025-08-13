@@ -15,16 +15,16 @@
               <i class="fa-solid fa-fw fa-gear"></i>
               {{ l('settings.action') }}
             </h5>
-            <button
+            <a
               type="button"
-              class="close"
+              class="btn-close"
               aria-label="Close"
               v-if="!isMac"
               @click.stop="close()"
               z-
             >
               <span class="fas fa-times"></span>
-            </button>
+            </a>
           </div>
           <div class="modal-body">
             <tabs
@@ -50,7 +50,7 @@
                 <h5>
                   {{ l('settings.updates') }}
                 </h5>
-                <div class="form-group">
+                <div class="mb-3">
                   <label class="control-label" for="updatecheck">
                     <input
                       type="checkbox"
@@ -60,7 +60,7 @@
                     {{ l('settings.updateCheck') }}
                   </label>
                 </div>
-                <div class="form-group" v-if="settings.updateCheck">
+                <div class="mb-3" v-if="settings.updateCheck">
                   <label class="control-label" for="beta">
                     <input type="checkbox" id="beta" v-model="settings.beta" />
                     {{ l('settings.beta') }}
@@ -76,19 +76,19 @@
                 <h5>
                   {{ l('settings.theme') }}
                 </h5>
-                <div class="form-group">
+                <div class="mb-3">
                   <label class="control-label" for="beta">
                     <input type="checkbox" disabled id="themeSystemSync" />
                     {{ l('settings.theme.sync') }}
                   </label>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-3">
                   <label class="control-label" for="theme" style="width: 20ch">
                     {{ l('settings.theme') }}
                     <!--<select
                       id="theme"
-                      class="custom-select"
+                      class="form-select"
                       v-model="settings.theme"
                       style="flex: 1; margin-right: 10px"
                     >
@@ -109,7 +109,7 @@
                   </label>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-3">
                   <label class="control-label" for="themeVanillaBbcode">
                     <input
                       v-model="settings.horizonVanillaTextColors"
@@ -126,7 +126,7 @@
                   {{ l('settings.spellcheck.language') }}
                 </h5>
                 <!--On MacOS, Electron uses the OS' native spell checker as of version 35.2.0 -->
-                <div class="form-group" v-if="!isMac">
+                <div class="mb-3" v-if="!isMac">
                   <label
                     class="control-label"
                     for="spellCheckLang"
@@ -152,12 +152,12 @@
                   </label>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-3">
                   <label class="control-label" for="displayLanguage">
                     {{ l('settings.displayLanguage') }}
                     <select
                       id="displayLanguage"
-                      class="custom-select"
+                      class="form-select"
                       style="flex: 1; margin-right: 10px"
                       disabled
                     >
@@ -206,7 +206,7 @@
                 style="height: 100%; width: 100%"
               >
                 <h5>{{ l('user.profile') }}</h5>
-                <div class="form-group">
+                <div class="mb-3">
                   <label class="control-label" for="profileViewer">
                     <input
                       type="checkbox"
@@ -218,7 +218,7 @@
                 </div>
 
                 <h5>{{ l('settings.behavior.chat') }}</h5>
-                <div class="form-group">
+                <div class="mb-3">
                   <label class="control-label label-full" for="logDir">
                     {{ l('settings.logDir') }}
 
@@ -230,19 +230,16 @@
                         @click="browseForLogDir()"
                         v-model="settings.logDirectory"
                       />
-
-                      <div class="input-group-append">
-                        <button
-                          class="btn btn-outline-secondary"
-                          @click="browseForLogDir()"
-                        >
-                          <span class="far fa-fw fa-folder-open"></span>
-                        </button>
-                      </div></div
+                      <button
+                        class="btn btn-outline-secondary"
+                        @click="browseForLogDir()"
+                      >
+                        <span class="far fa-fw fa-folder-open"></span>
+                      </button></div
                   ></label>
                 </div>
                 <h5>{{ l('settings.behavior.window') }}</h5>
-                <div class="form-group">
+                <div class="mb-3">
                   <label class="control-label" for="closeToTray">
                     <input
                       type="checkbox"
@@ -259,7 +256,7 @@
                 class="card-body settings-content"
                 style="height: 100%; width: 100%"
               >
-                <div class="form-group" v-if="isWindows">
+                <div class="mb-3" v-if="isWindows">
                   <label
                     class="control-label"
                     for="risingDisableWindowsHighContrast"
@@ -287,7 +284,7 @@
                 <h5>
                   {{ l('settings.system') }}
                 </h5>
-                <div class="form-group">
+                <div class="mb-3">
                   <label class="control-label" for="hwAcceleration">
                     <input
                       type="checkbox"
@@ -297,7 +294,7 @@
                     {{ l('settings.hwAcceleration') }}
                   </label>
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                   <!--We do this one slightly differently because we 
                 cannot and will not make ElectronLogger.LogType reactive -->
                   <label class="control-label" for="systemLogLevel">
@@ -305,7 +302,7 @@
                     <div class="input-group">
                       <select
                         id="systemLogLevel"
-                        class="form-control custom-select"
+                        class="form-select form-select"
                         style="flex: 1; margin-right: 10px"
                         v-model="settings.risingSystemLogLevel"
                       >
@@ -352,23 +349,18 @@
                       id="browserPath"
                       v-model="settings.browserPath"
                     />
-
-                    <div class="input-group-append">
-                      <button
-                        class="btn btn-outline-secondary"
-                        @click.prevent.stop="browseForPath()"
-                      >
-                        <span class="far fa-fw fa-folder-open"></span>
-                      </button>
-                      <button
-                        class="btn btn-outline-danger"
-                        @click.prevent.stop="browserReset()"
-                      >
-                        <span
-                          class="fa-solid fa-fw fa-arrow-rotate-right"
-                        ></span>
-                      </button>
-                    </div></div
+                    <button
+                      class="btn btn-outline-secondary"
+                      @click.prevent.stop="browseForPath()"
+                    >
+                      <span class="far fa-fw fa-folder-open"></span>
+                    </button>
+                    <button
+                      class="btn btn-outline-danger"
+                      @click.prevent.stop="browserReset()"
+                    >
+                      <span class="fa-solid fa-fw fa-arrow-rotate-right"></span>
+                    </button></div
                 ></label>
 
                 <label class="control-label label-full" for="browserArgs">
@@ -388,7 +380,7 @@
                   {{ l('settings.customCss') }}
                 </h5>
 
-                <div class="form-group">
+                <div class="mb-3">
                   <label class="control-label" for="customCssEnabled">
                     <input
                       type="checkbox"
@@ -808,7 +800,7 @@
   }
 
   .warning {
-    border: 1px solid var(--warning);
+    border: 1px solid var(--bs-warning);
     padding: 10px;
     margin-bottom: 20px;
     border-radius: 3px;

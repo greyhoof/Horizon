@@ -5,9 +5,9 @@
     :disabled="!dataValid || submitting"
     @submit.prevent="submitReport()"
   >
-    <div class="form-group">
+    <div class="mb-3">
       <label>Type</label>
-      <select v-model="type" class="form-control">
+      <select v-model="type" class="form-select">
         <option>None</option>
         <option value="profile">Profile Violation</option>
         <option value="name_request">Name Request</option>
@@ -16,9 +16,9 @@
       </select>
     </div>
     <div v-if="type !== 'takedown'">
-      <div class="form-group" v-if="type === 'profile'">
+      <div class="mb-3" v-if="type === 'profile'">
         <label>Violation Type</label>
-        <select v-model="violation" class="form-control">
+        <select v-model="violation" class="form-select">
           <option>Real life images on underage character</option>
           <option>Real life animal images on sexual character</option>
           <option>Amateur/farmed real life images</option>
@@ -29,11 +29,11 @@
           <option>Other</option>
         </select>
       </div>
-      <div class="form-group">
+      <div class="mb-3">
         <label>Your Character</label>
         <character-select v-model="ourCharacter"></character-select>
       </div>
-      <div class="form-group">
+      <div class="mb-3">
         <label>Reason/Message</label>
         <bbcode-editor
           v-model="message"

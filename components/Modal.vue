@@ -21,15 +21,15 @@
               <i v-if="iconClass" :class="iconClass" class="fa-fw"></i>
               <slot name="title">{{ action }}</slot>
             </h5>
-            <button
+            <a
               type="button"
-              class="close"
+              class="btn-close btn"
               @click="hide"
               aria-label="Close"
               v-show="!keepOpen"
             >
-              &times;
-            </button>
+              <i class="fa fa-times fa-lg"></i>
+            </a>
           </div>
           <div
             class="modal-body hidden-scrollbar"

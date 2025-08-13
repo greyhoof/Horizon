@@ -31,11 +31,11 @@
           >
             <h5
               style="margin: 0; line-height: 1.65rem"
-              class="sidebarUserInfo-name p-2"
+              class="sidebarUserInfo-name"
             >
               {{ ownCharacter.name }}
             </h5>
-            <span class="p-2">
+            <span>
               <i
                 class="fas fa-fw"
                 :class="getStatusIcon(ownCharacter.status)"
@@ -149,7 +149,7 @@
             @click.prevent="conversation.show()"
             :class="getClasses(conversation)"
             :data-character="conversation.character.name"
-            data-touch="false"
+            data-bs-touch="false"
             class="list-group-item list-group-item-action item-private"
             :key="conversation.key"
             @click.middle.prevent.stop="conversation.close()"
@@ -836,7 +836,7 @@
   .list-group.conversation-nav {
     //padding-top: 8px;
     .fas.active {
-      color: var(--success);
+      color: var(--bs-success);
     }
 
     .list-group-item {
@@ -856,7 +856,7 @@
           padding-right: 0;
         }
         &:hover:not(.active) {
-          color: var(--dark);
+          color: var(--bs-dark);
         }
       }
       &.item-private {
@@ -876,23 +876,23 @@
         /*}*/
 
         .offline {
-          color: var(--text-muted);
+          color: var(--bs-tertiary-color);
         }
 
         .online {
-          color: var(--success);
+          color: var(--bs-success);
         }
 
         .away {
-          color: var(--warning);
+          color: var(--bs-warning);
         }
         .dnd {
-          color: var(--danger);
+          color: var(--bs-danger);
         }
 
         .fa-comment,
         .fa-comment-dots {
-          color: var(--black);
+          color: inherit;
         }
 
         /*.fa-eye {*/
@@ -910,10 +910,6 @@
       &:last-child img {
         border-bottom-left-radius: 4px;
       }
-    }
-
-    .list-group-item-danger:not(.active) {
-      color: color-yiq(theme-color('danger'));
     }
   }
 
@@ -959,10 +955,6 @@
       font-size: 2em;
       height: 30px;
     }
-
-    .list-group-item-danger:not(.active) {
-      color: color-yiq(theme-color('danger'));
-    }
   }
 
   #sidebar {
@@ -1000,7 +992,7 @@
       margin-top: 3px;
 
       span {
-        color: var(--danger);
+        color: var(--bs-danger);
         cursor: pointer;
 
         &:hover {

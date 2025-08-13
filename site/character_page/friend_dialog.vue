@@ -100,7 +100,7 @@
           <h4>Request Friendship</h4>
         </div>
         <div class="card-body">
-          <div class="form-inline">
+          <div class="d-flex align-items-center">
             <label class="control-label" for="friendRequestCharacter"
               >Character:
             </label>

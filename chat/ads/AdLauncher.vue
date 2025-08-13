@@ -13,7 +13,7 @@
     <div v-if="hasAds()">
       <h5>Ad Tags</h5>
       <div style="padding-bottom: 1em">
-        <div class="form-group">
+        <div class="mb-3">
           <p>Serve ads that match any one of these tags:</p>
 
           <label
@@ -35,7 +35,7 @@
       </div>
 
       <h5>Target Channels</h5>
-      <div class="form-group">
+      <div class="mb-3">
         <p>Serve ads on these channels:</p>
 
         <p v-if="channels.length === 0">
@@ -67,7 +67,7 @@
       </div>
 
       <h5>Post Order</h5>
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="adOrderRandom">
           <input
             type="radio"
@@ -89,11 +89,11 @@
       </div>
 
       <h5>Campaign</h5>
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label" for="timeoutMinutes"> Timeout </label>
 
         <select
-          class="form-control"
+          class="form-select"
           v-model="timeoutMinutes"
           id="timeoutMinutes"
         >

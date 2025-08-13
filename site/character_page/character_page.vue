@@ -3,6 +3,7 @@
     <div class="col-md-4 col-lg-3 col-xl-2" v-if="loading || !character">
       <div
         class="card characterpage-placeholder"
+        style="height: 100%"
         :class="loading ? 'throbber' : 'bg-light'"
       ></div>
     </div>
@@ -627,8 +628,13 @@
   .compare-highlight-block {
     margin-bottom: 3px;
 
-    .quick-compare-block button {
-      margin-left: 2px;
+    .quick-compare-block {
+      & button {
+        margin-left: 2px;
+      }
+      &.input-group {
+        width: initial;
+      }
     }
   }
   .characterpage-placeholder {
@@ -652,7 +658,7 @@
         min-width: 200px;
         margin-bottom: 0;
         padding-bottom: 0;
-
+        position: absolute;
         opacity: 1;
       }
 

@@ -28,11 +28,10 @@ $pink-color: #da1677;
 $green-color: #036603;
 $primary: #e26f2e;
 
-// YIQ contrast settings
-$yiq-contrasted-threshold: 150;
-$yiq-text-light: $white;
-$yiq-text-dark: $black;
-$component-active-color: $yiq-text-dark;
+// Bootstrap 5 contrast colors
+$light-color: $black;
+$dark-color: $gray-base;
+$component-active-color: $light-color;
 
 $link-color: $gray-800;
 $link-hover-color: $black;
@@ -90,3 +89,5 @@ $headerBackgroundMaskColor: #e5e5e5;
 
 $linkForcedColor: #007bff;
 $tabSecondaryFgColor: rgba(0, 0, 0, 0.4);
+
+@import 'theme_level';

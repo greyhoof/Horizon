@@ -8,12 +8,12 @@
     :buttonText="l('conversationSettings.save')"
     iconClass="fas fa-gear"
   >
-    <div class="form-group">
+    <div class="mb-3">
       <label class="control-label" :for="'notify' + conversation.key">{{
         l('conversationSettings.notify')
       }}</label>
       <select
-        class="form-control"
+        class="form-select"
         :id="'notify' + conversation.key"
         v-model="notify"
       >
@@ -28,12 +28,12 @@
         </option>
       </select>
     </div>
-    <div class="form-group">
+    <div class="mb-3">
       <label class="control-label" :for="'highlight' + conversation.key">{{
         l('settings.highlight')
       }}</label>
       <select
-        class="form-control"
+        class="form-select"
         :id="'highlight' + conversation.key"
         v-model="highlight"
       >
@@ -48,7 +48,7 @@
         </option>
       </select>
     </div>
-    <div class="form-group">
+    <div class="mb-3">
       <label class="control-label" for="defaultHighlights">
         <input
           type="checkbox"
@@ -58,7 +58,7 @@
         {{ l('settings.defaultHighlights') }}
       </label>
     </div>
-    <div class="form-group">
+    <div class="mb-3">
       <label class="control-label" :for="'highlightWords' + conversation.key">{{
         l('settings.highlightWords')
       }}</label>
@@ -68,7 +68,7 @@
         v-model="highlightWords"
       />
     </div>
-    <div class="form-group">
+    <div class="mb-3">
       <label class="control-label" :for="'highlightUsers' + conversation.key">{{
         l('settings.highlightUsers.conversation')
       }}</label>
@@ -78,12 +78,12 @@
         v-model="horizonHighlightUsers"
       />
     </div>
-    <div class="form-group">
+    <div class="mb-3">
       <label class="control-label" :for="'joinMessages' + conversation.key">{{
         l('settings.joinMessages')
       }}</label>
       <select
-        class="form-control"
+        class="form-select"
         :id="'joinMessages' + conversation.key"
         v-model="joinMessages"
       >

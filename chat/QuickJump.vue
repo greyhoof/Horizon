@@ -31,7 +31,7 @@
 
             <span class="result-name"
               >{{ result.name }}
-              <span v-show="hasMentions(result)" class="badge badge-warning"
+              <span v-show="hasMentions(result)" class="badge text-bg-warning"
                 >!</span
               ></span
             >
@@ -391,7 +391,8 @@
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 1050;
+    //1 above the bootstrap 5 modal z-index (which used to be 1040)
+    z-index: 1051;
     display: flex;
     align-items: flex-start;
     justify-content: center;
@@ -438,12 +439,12 @@
           position: relative;
 
           &:hover {
-            background-color: var(--primary);
+            background-color: var(--bs-primary);
             color: var(--textColor);
           }
 
           &.selected {
-            background-color: var(--primary);
+            background-color: var(--bs-primary);
             padding-left: 12px;
             font-weight: 600;
           }
@@ -502,7 +503,7 @@
           &.selected {
             padding-left: 12px;
             font-weight: 600;
-            background-color: var(--primary);
+            background-color: var(--bs-primary);
             opacity: 1;
           }
 

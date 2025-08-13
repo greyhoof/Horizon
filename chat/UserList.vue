@@ -79,11 +79,9 @@
         </div>
       </div>
       <div class="input-group" style="margin-top: 5px; flex-shrink: 0">
-        <div class="input-group-prepend">
-          <div class="input-group-text">
-            <span class="fas fa-search"></span>
-          </div>
-        </div>
+        <span class="input-group-text">
+          <span class="fas fa-search"></span>
+        </span>
         <input
           class="form-control"
           v-model="filter"
@@ -345,7 +343,7 @@
 
     .profile {
       .profile-button {
-        border: 1px var(--secondary) solid;
+        border: 1px var(--bs-secondary) solid;
         padding-top: 0.25rem;
         padding-bottom: 0.25rem;
         min-height: 2rem;
@@ -380,7 +378,7 @@
       }
 
       .row.character-page {
-        display: block;
+        display: flex;
         margin-right: 0;
         margin-left: 0;
 

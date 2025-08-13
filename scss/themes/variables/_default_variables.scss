@@ -15,11 +15,10 @@ $gray-800: color.scale($gray-base, $lightness: 80%);
 $gray-900: color.scale($gray-base, $lightness: 90%);
 $black: #fff;
 
-// YIQ contrast settings
-$yiq-contrasted-threshold: 150;
-$yiq-text-light: $black;
-$yiq-text-dark: $gray-base;
-$component-active-color: $yiq-text-light;
+// Bootstrap 5 contrast colors
+$light-color: $black;
+$dark-color: $gray-base;
+$component-active-color: $light-color;
 
 // Theme and brand colors
 $primary: #0447af;

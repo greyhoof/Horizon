@@ -16,11 +16,9 @@
       ></tabs>
       <div style="display: flex; flex-direction: column">
         <div class="input-group" style="padding: 10px 0; flex-shrink: 0">
-          <div class="input-group-prepend">
-            <div class="input-group-text">
-              <span class="fas fa-search"></span>
-            </div>
-          </div>
+          <span class="input-group-text">
+            <span class="fas fa-search"></span>
+          </span>
           <input
             class="form-control"
             style="flex: 1; margin-right: 10px"
@@ -76,11 +74,9 @@
           </div>
         </div>
         <div class="input-group" style="padding: 10px 0; flex-shrink: 0">
-          <div class="input-group-prepend">
-            <div class="input-group-text">
-              <span class="fas fa-plus"></span>
-            </div>
-          </div>
+          <span class="input-group-text">
+            <span class="fas fa-plus"></span>
+          </span>
           <input
             class="form-control"
             style="flex: 1; margin-right: 10px"

@@ -3,6 +3,10 @@ hr {
   margin-bottom: 5px;
 }
 
+a {
+  text-decoration: none;
+}
+
 .modal-dialog.modal-wide {
   max-width: 95%;
 }
@@ -48,6 +52,12 @@ hr {
 .modal-footer {
   border-top: none;
   padding: 0.5rem 0.75rem 0.5rem 0.75rem;
+}
+
+.modal-header .btn-close {
+  --bs-btn-close-bg: none;
+  font-size: 1em;
+  margin-bottom: 0px;
 }
 
 .card-title {
@@ -110,7 +120,7 @@ input:checked {
 
 .nav-tabs .nav-link.active {
   background: none;
-  border-bottom: none;
+  border-bottom: 1px solid transparent;
 }
 
 .nav-tabs li {
@@ -127,6 +137,11 @@ input:checked {
 
 .nav-tabs {
   border-bottom: none;
+}
+
+.card-header {
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 0;
 }
 
 @font-face {
@@ -204,12 +219,3 @@ $font-family-base:
 body {
   font-family: $font-family-base;
 }
-// HACK: Bootstrap offers no way to override these by default, and they are SUPER bright.
-// The level numbers have been changed to make them work for dark themes.
-@if $theme-is-dark {
-  @each $color, $value in $theme-colors {
-    @include table-row-variant($color, theme-color-level($color, 5));
-  }
-}
-
-@include table-row-variant(active, $table-active-bg);

@@ -8,15 +8,15 @@
                     <div class="alert alert-danger" v-show="error">
                         {{error}}
                     </div>
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label class="control-label" for="account">{{l('login.account')}}</label>
                         <input class="form-control" id="account" v-model="settings.account" @keypress.enter="login()" :disabled="loggingIn"/>
                     </div>
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label class="control-label" for="password">{{l('login.password')}}</label>
                         <input class="form-control" type="password" id="password" v-model="settings.password" @keypress.enter="login()" :disabled="loggingIn"/>
                     </div>
-                    <div class="form-group" v-show="showAdvanced">
+                    <div class="mb-3" v-show="showAdvanced">
                         <label class="control-label" for="host">{{l('login.host')}}</label>
                         <div class="input-group">
                             <input class="form-control" id="host" v-model="settings.host" @keypress.enter="login()" :disabled="loggingIn"/>
@@ -25,21 +25,21 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label class="control-label" for="theme">{{l('settings.theme')}}</label>
-                        <select class="form-control custom-select" id="theme" v-model="settings.theme">
+                        <select class="form-select form-select" id="theme" v-model="settings.theme">
                             <option>default</option>
                             <option>dark</option>
                             <option>light</option>
                         </select>
                     </div>
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="advanced"><input type="checkbox" id="advanced" v-model="showAdvanced"/> {{l('login.advanced')}}</label>
                     </div>
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="save"><input type="checkbox" id="save" v-model="saveLogin"/> {{l('login.save')}}</label>
                     </div>
-                    <div class="form-group" style="text-align:right">
+                    <div class="mb-3" style="text-align:right">
                         <button class="btn btn-primary" @click="login()" :disabled="loggingIn">
                             {{l(loggingIn ? 'login.working' : 'login.submit')}}
                         </button>

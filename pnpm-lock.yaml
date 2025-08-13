@@ -107,8 +107,8 @@ importers:
         specifier: ~3.7.2
         version: 3.7.2
       bootstrap:
-        specifier: ^4.6.2
-        version: 4.6.2(jquery@3.7.1)(popper.js@1.16.1)
+        specifier: ^5.3.7
+        version: 5.3.7(@popperjs/core@2.11.8)
       copy-webpack-plugin:
         specifier: ^6.4.1
         version: 6.4.1(bluebird@3.7.2)(webpack@5.99.9)
@@ -282,8 +282,8 @@ packages:
     resolution: {integrity: sha512-8OLQgDScAOHXnAz2cV+RfzzNMipuLVBz2biuAJFMV9bfkNf393je3VM8CLkjQodW5+iWsSJdSgSWT6rsZoXHPw==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/types@7.28.1':
-    resolution: {integrity: sha512-x0LvFTekgSX+83TI28Y9wYPUfzrnl2aT5+5QLnO6v7mSJYtEEevuDRN0F0uSHRk1G1IWZC43o00Y0xDDrpBGPQ==}
+  '@babel/types@7.28.2':
+    resolution: {integrity: sha512-ruv7Ae4J5dUYULmeXw1gmb7rYRz57OWCPM57pHojnLq/3Z1CK2lNSLTCVjxVk1F/TZHwOZZrOWi0ur95BbLxNQ==}
     engines: {node: '>=6.9.0'}
 
   '@bufbuild/protobuf@2.5.2':
@@ -554,6 +554,9 @@ packages:
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
+
+  '@popperjs/core@2.11.8':
+    resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
 
   '@remusao/guess-url-type@1.3.0':
     resolution: {integrity: sha512-SNSJGxH5ckvxb3EUHj4DqlAm/bxNxNv2kx/AESZva/9VfcBokwKNS+C4D1lQdWIDM1R3d3UG+xmVzlkNG8CPTQ==}
@@ -1082,11 +1085,10 @@ packages:
     resolution: {integrity: sha512-d0II/GO9uf9lfUHH2BQsjxzRJZBdsjgsBiW4BvhWk/3qoKwQFjIDVN19PfX8F2D/r9PCMTtLWjYVCFrpeYUzsw==}
     deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
 
-  bootstrap@4.6.2:
-    resolution: {integrity: sha512-51Bbp/Uxr9aTuy6ca/8FbFloBUJZLHwnhTcnjIeRn2suQWsWzcuJhGjKDB5eppVte/8oCdOL3VuwxvZDUggwGQ==}
+  bootstrap@5.3.7:
+    resolution: {integrity: sha512-7KgiD8UHjfcPBHEpDNg+zGz8L3LqR3GVwqZiBRFX04a1BCArZOz1r2kjly2HQ0WokqTO0v1nF+QAt8dsW4lKlw==}
     peerDependencies:
-      jquery: 1.9.1 - 3
-      popper.js: ^1.16.1
+      '@popperjs/core': ^2.11.8
 
   bplist-creator@0.0.8:
     resolution: {integrity: sha512-Za9JKzD6fjLC16oX2wsXfc+qBEhJBJB1YPInoAQpMLhDuj5aVOv1baGeIQSq1Fr3OCqzvsoQcSBSwGId/Ja2PA==}
@@ -2321,6 +2323,10 @@ packages:
 
   form-data@4.0.3:
     resolution: {integrity: sha512-qsITQPfmvMOSAdeyZ+12I1c+CKSstAFAwu+97zrnWAbIr5u8wfsExUzCesVLC8NgHuRUqNN4Zy6UPWUTRGslcA==}
+    engines: {node: '>= 6'}
+
+  form-data@4.0.4:
+    resolution: {integrity: sha512-KrGhL9Q4zjj0kiUt5OO4Mr/A/jlI2jDYs5eHBpYHPcBEVSiipAvn2Ko2HnPe20rmcuuvMHNdZFp+4IlGTMF0Ow==}
     engines: {node: '>= 6'}
 
   forwarded@0.2.0:
@@ -3693,10 +3699,6 @@ packages:
   plist@3.1.0:
     resolution: {integrity: sha512-uysumyrvkUX0rX/dEVqt8gC3sTBzd4zoWfLeS29nb53imdaXVvLINYXTI2GNqzaMuvacNx4uJQ8+b3zXR0pkgQ==}
     engines: {node: '>=10.4.0'}
-
-  popper.js@1.16.1:
-    resolution: {integrity: sha512-Wb4p1J4zyFTbM+u6WuO4XstYx4Ky9Cewe4DWrel7B0w6VVICvPwdOpotjzcf6eD8TsckVnIMNONQyPIUFOUbCQ==}
-    deprecated: You can find the new Popper v2 at @popperjs/core, this package is dedicated to the legacy v1
 
   possible-typed-array-names@1.1.0:
     resolution: {integrity: sha512-/+5VFTchJDoVj3bhoqi6UeymcD00DAwb1nJwamzPvHEszJ4FpF6SNNbUbOS8yI56qHzdV8eK0qEfOSiodkTdxg==}
@@ -5179,7 +5181,7 @@ snapshots:
 
   '@babel/parser@7.28.0':
     dependencies:
-      '@babel/types': 7.28.1
+      '@babel/types': 7.28.2
     optional: true
 
   '@babel/runtime@7.27.6': {}
@@ -5189,7 +5191,7 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.27.1
 
-  '@babel/types@7.28.1':
+  '@babel/types@7.28.2':
     dependencies:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.27.1
@@ -5553,6 +5555,8 @@ snapshots:
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
+
+  '@popperjs/core@2.11.8': {}
 
   '@remusao/guess-url-type@1.3.0': {}
 
@@ -6060,7 +6064,7 @@ snapshots:
       ejs: 3.1.10
       electron-builder-squirrel-windows: 25.1.8(bluebird@3.7.2)(dmg-builder@26.0.12)(supports-color@10.0.0)
       electron-publish: 25.1.7(supports-color@10.0.0)
-      form-data: 4.0.3
+      form-data: 4.0.4
       fs-extra: 10.1.0
       hosted-git-info: 4.1.0
       is-ci: 3.0.1
@@ -6334,10 +6338,9 @@ snapshots:
   boolean@3.2.0:
     optional: true
 
-  bootstrap@4.6.2(jquery@3.7.1)(popper.js@1.16.1):
+  bootstrap@5.3.7(@popperjs/core@2.11.8):
     dependencies:
-      jquery: 3.7.1
-      popper.js: 1.16.1
+      '@popperjs/core': 2.11.8
 
   bplist-creator@0.0.8:
     dependencies:
@@ -7848,6 +7851,14 @@ snapshots:
       hasown: 2.0.2
       mime-types: 2.1.35
 
+  form-data@4.0.4:
+    dependencies:
+      asynckit: 0.4.0
+      combined-stream: 1.0.8
+      es-set-tostringtag: 2.1.0
+      hasown: 2.0.2
+      mime-types: 2.1.35
+
   forwarded@0.2.0: {}
 
   fresh@0.5.2: {}
@@ -9304,8 +9315,6 @@ snapshots:
       '@xmldom/xmldom': 0.8.10
       base64-js: 1.5.1
       xmlbuilder: 15.1.1
-
-  popper.js@1.16.1: {}
 
   possible-typed-array-names@1.1.0: {}
 

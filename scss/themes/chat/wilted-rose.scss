@@ -45,7 +45,7 @@ body,
 
 * {
   &::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 2px $card-border-color;
+    box-shadow: inset 0 0 2px var(--bs-border-color);
     border-radius: 10px;
   }
 

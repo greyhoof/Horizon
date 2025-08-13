@@ -147,7 +147,7 @@
         small {
           display: block;
           margin-bottom: 1.2em;
-          color: var(--secondary);
+          color: var(--bs-secondary);
         }
       }
     }
