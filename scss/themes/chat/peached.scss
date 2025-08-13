@@ -68,27 +68,20 @@ $danger-bg-subtle-custom: mix($danger, $white, 55%);
   --bs-danger-bg-subtle: #{$danger-bg-subtle-custom};
 }
 
-.list-group-item-action.list-group-item-warning {
-  --bs-list-group-bg: var(--bs-warning-bg-subtle);
-  --bs-list-group-border-color: var(--bs-warning-border-subtle);
-  --bs-list-group-color: var(--bs-warning-text-emphasis);
+@each $color, $value in $theme-colors {
+  .list-group-item-action.list-group-item-#{$color} {
+    color: var(--bs-#{$color}-text-emphasis);
+    background-color: var(--bs-#{$color}-bg-subtle);
 
-  &:hover {
-    background-color: color-mix(
-      in srgb,
-      var(--bs-warning-bg-subtle) 90%,
-      black
-    );
-  }
-}
-
-.list-group-item-action.list-group-item-danger {
-  --bs-list-group-bg: var(--bs-danger-bg-subtle);
-  --bs-list-group-border-color: var(--bs-danger-border-subtle);
-  --bs-list-group-color: var(--bs-danger-text-emphasis);
-
-  &:hover {
-    background-color: color-mix(in srgb, var(--bs-danger-bg-subtle) 90%, black);
+    &:hover,
+    &:focus {
+      color: var(--bs-#{$color}-text-emphasis);
+      background-color: color-mix(
+        in srgb,
+        var(--bs-#{$color}-bg-subtle) 95%,
+        $black
+      );
+    }
   }
 }
 

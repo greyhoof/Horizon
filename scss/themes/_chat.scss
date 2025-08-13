@@ -50,14 +50,14 @@
 @each $color, $value in $theme-colors {
   .list-group-item-action.list-group-item-#{$color} {
     color: var(--bs-#{$color}-text-emphasis);
-    background-color: var(--bs-#{$color}-bg-subtle);
+    background-color: var(--bs-#{$color}-border-subtle);
 
     &:hover,
     &:focus {
       color: var(--bs-#{$color}-text-emphasis);
       background-color: color-mix(
         in srgb,
-        var(--bs-#{$color}-bg-subtle) 95%,
+        var(--bs-#{$color}-border-subtle) 95%,
         $black
       );
     }
