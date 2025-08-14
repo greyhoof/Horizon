@@ -233,7 +233,7 @@
             <span>
               <span
                 v-if="conversation.hasAutomatedAds()"
-                class="fas fa-ad"
+                class="fas fa-ad ads"
                 :class="{ active: conversation.isSendingAutomatedAds() }"
                 aria-label="Toggle ads"
                 @click.stop="conversation.toggleAutomatedAds()"
@@ -850,7 +850,8 @@
         white-space: nowrap;
       }
       .pin,
-      .leave {
+      .leave,
+      .ads {
         &:hover,
         &:focus {
           color: var(--bs-link-hover-color);

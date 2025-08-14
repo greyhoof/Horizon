@@ -81,9 +81,7 @@
 
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link,
-.list-group.conversation-nav
-  .list-group-item-action.item-private.active
-  .online-status {
+.quick-jump-result.selected {
   color: color-contrast($primary);
 }
 

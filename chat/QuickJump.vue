@@ -418,7 +418,6 @@
         border: none;
         padding: 16px;
         font-size: 16px;
-        color: var(--textColor);
         outline: none;
 
         &::placeholder {
@@ -440,7 +439,6 @@
 
           &:hover {
             background-color: var(--bs-primary);
-            color: var(--textColor);
           }
 
           &.selected {

@@ -20,6 +20,12 @@ body,
   );
 }
 
+.list-group.conversation-nav
+  .list-group-item-action.item-private.active
+  .online-status {
+  color: color-contrast($primary);
+}
+
 .sidebar {
   background-color: rgba($body-bg, 0.4);
 }
