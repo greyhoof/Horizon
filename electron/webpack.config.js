@@ -139,7 +139,26 @@ const mainConfig = {
           use: [
             'vue-style-loader',
             { loader: 'css-loader', options: { esModule: false } },
-            { loader: 'sass-loader', options: { warnRuleAsWarning: false } }
+            {
+              loader: 'sass-loader',
+              options: {
+                warnRuleAsWarning: false,
+                sassOptions: {
+                  quietDeps: true,
+                  // Add any specific codes here; '*' not supported, so rely on custom logger below.
+                  silenceDeprecations: [
+                    'mixed-decls',
+                    'import',
+                    'color-functions',
+                    'global-builtin',
+                    'slash-div',
+                    'function-units'
+                  ],
+                  verbose: false,
+
+                }
+              }
+            }
           ]
         },
         {
@@ -156,7 +175,24 @@ const mainConfig = {
           use: [
             MiniCssExtractPlugin.loader,
             { loader: 'css-loader', options: { esModule: false } },
-            { loader: 'sass-loader', options: { warnRuleAsWarning: false } }
+            {
+              loader: 'sass-loader',
+              options: {
+                warnRuleAsWarning: false,
+                sassOptions: {
+                  quietDeps: true,
+                  silenceDeprecations: [
+                    'mixed-decls',
+                    'import',
+                    'color-functions',
+                    'global-builtin',
+                    'slash-div',
+                    'function-units'
+                  ],
+                  verbose: false,
+                }
+              }
+            }
           ]
         },
         { test: /\.raw\.js$/, loader: 'raw-loader' }
