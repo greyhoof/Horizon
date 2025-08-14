@@ -90,7 +90,78 @@ $genders: (
 }
 
 .message-highlight {
-  background-color: color.scale($success, $alpha: -60%);
+  background-color: color.scale($success, $alpha: -80%);
+  .blackText,
+  .blackNameText,
+  .gender-none {
+    color: #b0beea;
+  }
+  .grayText,
+  .grayNameText {
+    color: #c8cbdf;
+  }
+
+  .gender-herm {
+    color: #c7bde8;
+  }
+}
+
+.message-warn {
+  .blueText,
+  .blueNameText,
+  .gender-male {
+    color: #1a5fa1;
+  }
+  .grayText,
+  .grayNameText,
+  .whiteText,
+  .whiteNameText,
+  .blackText,
+  .blackNameText,
+  .gender-none {
+    color: inherit;
+  }
+
+  .pinkText,
+  .pinkNameText,
+  .gender-female {
+    color: #5f0237;
+  }
+
+  .yellowText,
+  .yellowNameText {
+    color: #6f6406;
+  }
+
+  .orangeText,
+  .orangeNameText,
+  .gender-transgender {
+    color: #833609;
+  }
+
+  .greenText,
+  .greenNameText,
+  .gender-cunt-boy {
+    color: #397849;
+  }
+
+  .brownText,
+  .brownNameText {
+    color: #531b00;
+  }
+
+  .cyanText,
+  .cyanNameText,
+  .gender-male-herm {
+    color: #053e3e;
+  }
+
+  .purpleText,
+  .purpleNameText,
+  .gender-shemale,
+  .gender-herm {
+    color: #5f1ebc;
+  }
 }
 
 :root {

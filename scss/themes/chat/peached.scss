@@ -93,11 +93,11 @@ $genders: (
   'shemale': #6f2dbd,
   'herm': #721817,
   'none': #18314f,
-  'female': #f991cc,
+  'female': $pink-color,
   'male': #3e78b2,
   'male-herm': #2094a9,
   'transgender': #f06543,
-  'cunt-boy': #56c01e
+  'cunt-boy': $green-color
 );
 @each $gender, $color in $genders {
   .gender-#{$gender} {
@@ -106,6 +106,110 @@ $genders: (
 
   .message-event .gender-#{$gender} {
     color: color.scale($color, $lightness: 5%);
+  }
+}
+
+.message-highlight {
+  .blueText,
+  .blueNameText,
+  .gender-male {
+    color: #052d53;
+  }
+  .grayText,
+  .grayNameText,
+  .whiteText,
+  .whiteNameText {
+    color: #312f2f;
+  }
+
+  .yellowText,
+  .yellowNameText {
+    color: #6f6406;
+  }
+
+  .orangeText,
+  .orangeNameText,
+  .gender-transgender {
+    color: #833609;
+  }
+
+  .brownText,
+  .brownNameText {
+    color: #531b00;
+  }
+
+  .cyanText,
+  .cyanNameText,
+  .gender-male-herm {
+    color: #053e3e;
+  }
+}
+
+.message-warn {
+  .pinkText,
+  .pinkNameText,
+  .gender-female {
+    color: #f897c7;
+  }
+
+  .whiteText,
+  .whiteNameText {
+    color: $white;
+  }
+
+  .brownText,
+  .brownNameText {
+    color: #040200;
+  }
+
+  .blueText,
+  .blueNameText,
+  .gender-male {
+    color: #b1d9ff;
+  }
+
+  .yellowText,
+  .yellowNameText {
+    color: #fff6ac;
+  }
+
+  .greenText,
+  .greenNameText,
+  .gender-cunt-boy {
+    color: #9bffa7;
+  }
+
+  .redText,
+  .redNameText,
+  .gender-herm {
+    color: #f9d5c8;
+  }
+
+  .orangeText,
+  .orangeNameText,
+  .brownNameText,
+  .brownText,
+  .gender-transgender {
+    color: #ffdbc6;
+  }
+
+  .purpleText,
+  .purpleNameText,
+  .gender-shemale {
+    color: #e0c8e5;
+  }
+  .blackText,
+  .blackNameText,
+  .grayText,
+  .grayNameText,
+  .gender-none {
+    color: #fff;
+  }
+
+  .cyanText,
+  .cyanNameText,
+  .gender-male-herm {
+    color: #a8dede;
   }
 }
 
