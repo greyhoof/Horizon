@@ -154,8 +154,7 @@ const mainConfig = {
                     'slash-div',
                     'function-units'
                   ],
-                  verbose: false,
-
+                  verbose: false
                 }
               }
             }
@@ -189,7 +188,7 @@ const mainConfig = {
                     'slash-div',
                     'function-units'
                   ],
-                  verbose: false,
+                  verbose: false
                 }
               }
             }
