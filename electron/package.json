@@ -19,7 +19,8 @@
       "**/*"
     ],
     "asarUnpack": [
-      "themes/**/*"
+      "themes/**/*",
+      "sound-themes/**/*"
     ],
     "win": {
       "icon": "build/icon.ico"
