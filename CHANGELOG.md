@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - When we say "vanilla", we mean the way they looked in 3.0. Not any changes we may have done afterwards.
 - Added four new themes: "Wilted Rose", "Classic", "Peached" and "Mars". [Commit] [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/73a85d41cb80834bfd464ffdfb51a7365d6deafb) [Commit] [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/c895cdf2d7d1fa0888ddc563464685035620eabe)
 - The side bars can now be resized by dragging their inner borders. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/a9857cf40b9762273be50896fb86158263a289d0)
+- Developers now have a badge visible in chat. [\[Commit\]](https://github.com/Fchat-Horizon/Horizon/commit/ae001b3117e69defc990ef879e5f7f5564318ea7)
 - Added a new build system. Too many changes to list, but go read electron/README.md for information on building electron binaries, now.
   - As a result of this change:
     - We now support RPMs! 🎊
