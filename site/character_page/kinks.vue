@@ -6,7 +6,7 @@
     @touchend="contextMenu"
   >
     <div class="compare-highlight-block row justify-content-between">
-      <div class="expand-custom-kinks-block col-12 col-lg-4 col-xl-2">
+      <div class="expand-custom-kinks-block col-12 col-lg-3 col-xl-2">
         <button
           class="btn btn-primary form-control"
           @click="toggleExpandedCustomKinks"
@@ -22,7 +22,7 @@
 
       <div
         v-if="shared.authenticated"
-        class="input-group quick-compare-block col-12 col-lg-4 col-xl-3"
+        class="input-group quick-compare-block col-12 col-lg-3 col-xl-3 w-md-100"
       >
         <character-select v-model="characterToCompare"></character-select>
         <button
@@ -34,7 +34,7 @@
         </button>
       </div>
 
-      <div class="col-12 col-lg-4 col-xl-2">
+      <div class="col-12 col-lg-3 col-xl-2">
         <select v-model="highlightGroup" class="form-select">
           <option :value="undefined">None</option>
           <option

@@ -849,14 +849,21 @@
         text-overflow: ellipsis;
         white-space: nowrap;
       }
+      .pin,
+      .leave {
+        &:hover,
+        &:focus {
+          color: var(--bs-link-hover-color);
+          &.active {
+            color: var(--bs-success-text-emphasis);
+          }
+        }
+      }
       .fas {
         font-size: 16px;
         padding: 0 3px;
         &:last-child {
           padding-right: 0;
-        }
-        &:hover:not(.active) {
-          color: var(--bs-dark);
         }
       }
       &.item-private {
