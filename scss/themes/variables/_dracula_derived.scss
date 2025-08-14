@@ -1,6 +1,8 @@
 $blue-color: $blue-color;
 
-.blackText,
-.blackNameText {
-  @include text-outline($gray-600);
+.vanillaTextColors {
+  .blackText,
+  .blackNameText {
+    @include text-outline($gray-600);
+  }
 }

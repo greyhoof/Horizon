@@ -1,3 +1,7 @@
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/variables-dark';
+@import '~bootstrap/scss/maps';
 @import '~bootstrap/scss/mixins';
 @import '~bootstrap/scss/root';
 @import '~bootstrap/scss/reboot';
@@ -9,8 +13,6 @@
 @import '~bootstrap/scss/transitions';
 @import '~bootstrap/scss/dropdown';
 @import '~bootstrap/scss/button-group';
-@import '~bootstrap/scss/input-group';
-@import '~bootstrap/scss/custom-forms';
 @import '~bootstrap/scss/nav';
 @import '~bootstrap/scss/card';
 @import '~bootstrap/scss/pagination';
@@ -21,11 +23,9 @@
 @import '~bootstrap/scss/modal';
 @import '~bootstrap/scss/popover';
 @import '~bootstrap/scss/badge';
-@import '~bootstrap/scss/utilities/background';
-@import '~bootstrap/scss/utilities/borders';
-@import '~bootstrap/scss/utilities/display';
-@import '~bootstrap/scss/utilities/flex';
-@import '~bootstrap/scss/utilities/sizing';
+@import '~bootstrap/scss/utilities';
+@import '~bootstrap/scss/utilities/api';
+@import '~bootstrap/scss/helpers/color-bg';
 
 @import '../core';
 @import '../chat';
@@ -36,7 +36,73 @@
 @import '../flist_overrides';
 @import '../rising';
 
+// Color contrast overrides for Bootstrap components
+.list-group-item.active {
+  color: color-contrast($primary);
+}
+
+.list-group-item-action:not(.active):hover,
+.list-group-item-action:not(.active):focus {
+  color: var(--bs-secondary-text-emphasis);
+}
+
+// Map list-group-action colors to their list-group-item equivalents
+@each $color, $value in $theme-colors {
+  .list-group-item-action.list-group-item-#{$color} {
+    color: var(--bs-#{$color}-text-emphasis);
+    background-color: var(--bs-#{$color}-border-subtle);
+
+    &:hover,
+    &:focus {
+      color: var(--bs-#{$color}-text-emphasis);
+      background-color: color-mix(
+        in srgb,
+        var(--bs-#{$color}-border-subtle) 95%,
+        $black
+      );
+    }
+  }
+}
+
+.list-group-item-danger:not(.active) {
+  &:hover,
+  &:focus {
+    color: color-contrast($danger-bg-subtle);
+  }
+  color: color-contrast($danger-bg-subtle);
+}
+
+.list-group-action.list-group-item {
+  &:hover,
+  &:focus {
+    color: initial;
+  }
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link,
+.quick-jump-result.selected {
+  color: color-contrast($primary);
+}
+
+.btn {
+  @each $color, $value in $theme-colors {
+    &.btn-#{$color} {
+      color: color-contrast($value);
+    }
+  }
+}
+
+.badge {
+  @each $color, $value in $theme-colors {
+    &.text-bg-#{$color} {
+      color: color-contrast($value);
+    }
+  }
+}
+
 :root {
+  --bs-warning-bg-subtle: #{mix($warning, $white, 25%)};
   @each $varName, $value in $risingVariables {
     --#{$varName}: #{$value};
   }
@@ -44,7 +110,7 @@
 
 * {
   &::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 8px $card-border-color;
+    box-shadow: inset 0 0 8px var(--bs-border-color);
     border-radius: 10px;
   }
 
@@ -67,5 +133,26 @@
 
   .badge-warning {
     color: black;
+  }
+}
+
+.hidden-scrollbar {
+  $scrollbar-width: 8px;
+  overflow-y: scroll;
+  &::-webkit-scrollbar-thumb {
+    display: none;
+  }
+
+  &::-webkit-scrollbar-track {
+    box-shadow: none;
+  }
+  &::-webkit-scrollbar {
+    width: $scrollbar-width;
+  }
+}
+
+.hidden-scrollbar:hover {
+  &::-webkit-scrollbar-thumb {
+    display: initial;
   }
 }

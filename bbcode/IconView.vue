@@ -2,6 +2,7 @@
   <a
     :href="`${Utils.siteDomain}c/${character.name}`"
     target="_blank"
+    v-bind:character.prop="character"
     @mouseover.prevent="show()"
     @mouseenter.prevent="show()"
     @mouseleave.prevent="dismiss()"

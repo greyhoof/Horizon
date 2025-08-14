@@ -3,8 +3,61 @@ hr {
   margin-bottom: 5px;
 }
 
+a {
+  text-decoration: none;
+}
+
 .modal-dialog.modal-wide {
   max-width: 95%;
+}
+
+.modal-dialog.modal-70 {
+  min-width: 70%;
+}
+.card {
+  border-radius: 0.7em;
+}
+.kink-block .card {
+  border-radius: initial;
+  border-bottom-right-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+}
+
+.list-group-item {
+  border: 0px;
+}
+
+.quick-jump-overlay .quick-jump-container,
+.modal-content {
+  box-shadow: 6px 9px 19px 0px rgba(16, 16, 16, 0.25);
+  border-radius: 1em;
+  border: none;
+  overflow: hidden;
+}
+
+.window-modal {
+  .modal-content {
+    border-radius: 0px;
+  }
+}
+.modal-body {
+  background-color: $scoreReportBg;
+}
+
+.modal-header {
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  border-bottom: 1px solid $card-border-color;
+}
+
+.modal-footer {
+  border-top: none;
+  padding: 0.5rem 0.75rem 0.5rem 0.75rem;
+}
+
+.modal-header .btn-close {
+  --bs-btn-close-bg: none;
+  font-size: 1em;
+  margin-bottom: 0px;
 }
 
 .card-title {
@@ -38,6 +91,57 @@ $theme-is-dark: false !default;
 input:checked {
   accent-color: $primary;
   border-color: $primary;
+}
+
+.nav {
+  margin-bottom: 0.1rem;
+}
+
+.nav-tabs .nav-link {
+  border-top-right-radius: 0.7rem;
+  border-top-left-radius: 0.7rem;
+  border-bottom: 1px solid $gray-300;
+}
+
+.nav.nav-tabs .nav-link {
+  font-weight: 600;
+}
+
+.nav-tab-spacer {
+  display: flex;
+  flex: 1 0 0px;
+  border-bottom: 1px solid $gray-300;
+  margin-bottom: -1px;
+}
+
+#window-tabs .nav-tabs .nav-link.active {
+  border-bottom: 1px solid $body-bg;
+}
+
+.nav-tabs .nav-link.active {
+  background: none;
+  border-bottom: 1px solid transparent;
+}
+
+.nav-tabs li {
+  a {
+    border-top-left-radius: 0.4rem;
+    border-top-right-radius: 0.4rem;
+  }
+
+  &:first-child a {
+    //border-left: 0;
+    border-top-left-radius: 0;
+  }
+}
+
+.nav-tabs {
+  border-bottom: none;
+}
+
+.card-header {
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 0;
 }
 
 @font-face {
@@ -115,12 +219,3 @@ $font-family-base:
 body {
   font-family: $font-family-base;
 }
-// HACK: Bootstrap offers no way to override these by default, and they are SUPER bright.
-// The level numbers have been changed to make them work for dark themes.
-@if $theme-is-dark {
-  @each $color, $value in $theme-colors {
-    @include table-row-variant($color, theme-color-level($color, 5));
-  }
-}
-
-@include table-row-variant(active, $table-active-bg);

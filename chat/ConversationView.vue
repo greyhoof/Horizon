@@ -77,7 +77,7 @@
         <div style="flex: 1">
           <span
             v-show="conversation.channel.id.substr(0, 4) !== 'adh-'"
-            class="fa fa-star"
+            class="fa fa-fw fa-star"
             :title="l('channel.official')"
             style="margin-right: 5px; vertical-align: sub"
           ></span>
@@ -217,22 +217,29 @@
           overflow: auto;
         "
         :style="{ display: descriptionExpanded ? 'block' : 'none' }"
-        class="bg-solid-text border-bottom"
+        class="bg-solid-text border-bottom hidden-scrollbar"
       >
         <bbcode :text="conversation.channel.description"></bbcode>
       </div>
     </div>
     <div v-else class="header" style="display: flex; align-items: center">
-      <h4>{{ l('chat.consoleTab') }}</h4>
+      <i
+        style="margin-right: 5px; vertical-align: sub"
+        class="fa-solid fa-fw fa-house"
+      ></i>
+      <h5 style="margin: 0; display: inline; vertical-align: middle">
+        {{ l('chat.consoleTab') }}
+      </h5>
+
       <a href="#" @click.prevent="showLogs()" class="btn">
         <span class="fa fa-file-alt"></span>
         <span class="btn-text">{{ l('logs.title') }}</span>
       </a>
     </div>
     <div class="search input-group" v-show="showSearch">
-      <div class="input-group-prepend">
-        <div class="input-group-text"><span class="fas fa-search"></span></div>
-      </div>
+      <span class="input-group-text">
+        <span class="fas fa-search"></span>
+      </span>
       <input
         v-model="searchInput"
         @keydown.esc="hideSearch()"
@@ -255,16 +262,6 @@
         ><i class="fas fa-times"></i
       ></a>
     </div>
-    <!--
-    Fuck me, dude. How much yiffbot shit do I have to remove?
-
-     <div class="yiffbot-controls" v-if="isYiffBot()">
-      <div class="btn-group">
-        <div class="btn btn-sm btn-outline-secondary" @click="onYiffBotContinuePost">#continue</div>
-        <div class="btn btn-sm btn-outline-secondary" @click="onYiffBotRetryPost">#retry</div>
-      </div>
-    </div>
-     -->
     <div class="auto-ads" v-show="isAutopostingAds()">
       <h4>{{ l('admgr.activeHeader') }}</h4>
       <div class="update">{{ adAutoPostUpdate }}</div>
@@ -293,7 +290,7 @@
       >
     </div>
     <div
-      class="border-top messages"
+      class="border-top messages hidden-scrollbar"
       :class="getMessageWrapperClasses()"
       ref="messages"
       @scroll="onMessagesScroll"
@@ -1110,41 +1107,6 @@
       return member !== undefined && member.rank > Channel.Rank.Member;
     }
   }
-  // ALERT: YIFFBOT FUNCTIONALITY IS ON THE CHOPPING BLOCK!
-  // **     Yiffbot was banned from F-List, and as such, most
-  //        of it's functionality no longer remains. Given that,
-  //        features related to it are SUBJECT FOR DELETION!
-  //        Sowwwy...
-  // //     isYiffBot(): boolean {
-  // //       if (!this.isPrivate(this.conversation)) {
-  // //         return false;
-  // //       }
-
-  // //       return this.conversation.character.name === 'YiffBot 4000';
-  // //     }
-
-  // //     async onYiffBotContinuePost(): Promise<void> {
-  // //       if (!this.isPrivate(this.conversation)) {
-  // //         return;
-  // //       }
-
-  // //       const conv = <Conversation.PrivateConversation>this.conversation;
-
-  // //       await conv.sendMessageEx('#continue');
-  // //       await this.messageAdded(this.conversation.messages as Message[]);
-  // //     }
-
-  // //     async onYiffBotRetryPost(): Promise<void> {
-  // //       if (!this.isPrivate(this.conversation)) {
-  // //         return;
-  // //       }
-
-  // //       const conv = <Conversation.PrivateConversation>this.conversation;
-
-  // //       await conv.sendMessageEx('#retry');
-  // //       await this.messageAdded(this.conversation.messages as Message[]);
-  // //     }
-  // //   }
 </script>
 
 <style lang="scss">
@@ -1332,6 +1294,11 @@
       margin-right: 2px;
     }
 
+    .user-dev {
+      font-size: 80%;
+      margin-right: 2px;
+    }
+
     .match-found {
       margin-left: 3px;
       padding-left: 2px;
@@ -1346,13 +1313,13 @@
       padding-top: 2px;
       padding-bottom: 2px;
 
-      &.unicorn {
-        background-color: var(--scoreUnicornMatchBg);
-        border: 1px solid var(--scoreUnicornMatchFg);
+      &.perfect {
+        background-color: var(--scorePerfectMatchBg);
+        border: 1px solid var(--scorePerfectMatchFg);
         box-shadow: 0 0 5px 0 rgba(255, 255, 255, 0.5);
 
         &::before {
-          content: '🦄';
+          content: '✨';
           padding-right: 3px;
         }
       }
@@ -1491,13 +1458,5 @@
     margin-top: 0;
     min-width: 1.2em;
     max-width: 1.2em;
-  }
-
-  .yiffbot-controls {
-    .btn-group {
-      margin-left: 70px;
-      margin-top: 10px;
-      margin-bottom: 10px;
-    }
   }
 </style>

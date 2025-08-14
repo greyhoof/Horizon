@@ -1,16 +1,17 @@
 <template>
   <modal
     id="duplicateDialog"
-    :action="'Duplicate character' + name"
-    :disabled="duplicating || checking"
+    :action="'Duplicate character ' + name"
+    :disabled="true"
     @submit.prevent="duplicate()"
+    iconClass="fas fa-clone"
   >
     <p>
       This will duplicate the character, kinks, infotags, customs, subkinks and
       images. Guestbook entries, friends, groups, and bookmarks are not
       duplicated.
     </p>
-    <div class="form-row mb-2">
+    <div class="row mb-2">
       <form-group-inputgroup
         class="col-12"
         :errors="errors"
@@ -25,7 +26,7 @@
           slot-scope="props"
           :class="props.cls"
         />
-        <div slot="button" class="input-group-append">
+        <div slot="button">
           <button
             type="button"
             class="btn btn-secondary"

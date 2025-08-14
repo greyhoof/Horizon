@@ -13,9 +13,9 @@
             >{{ character.character.name }}</span
           >
           <span
-            v-if="statusClasses && statusClasses.matchScore === 'unicorn'"
+            v-if="statusClasses && statusClasses.matchScore === 'perfect'"
             :class="(statusClasses || {}).matchClass"
-            >Unicorn</span
+            >Perfect</span
           >
         </h1>
         <h3>{{ getOnlineStatus() }}</h3>
@@ -506,9 +506,9 @@
     overflow: hidden;
     opacity: 0.95;
     border-radius: 0 5px 5px 5px;
-    border: 1px solid var(--secondary);
+    border: 1px solid var(--bs-secondary);
 
-    .unicorn {
+    .perfect {
       margin-left: 8px;
     }
 

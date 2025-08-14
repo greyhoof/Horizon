@@ -1,9 +1,9 @@
 {
   "name": "fchat-horizon",
-  "version": "1.32.3",
+  "version": "1.33.0-beta1",
   "author": "The F-List Team and Horizon Contributors",
   "description": "A heavily modded FChat 3.0 client for F-List, continued from Rising",
-  "license": "MIT",
+  "license": "GPL-3.0-or-later",
   "main": "main.js",
   "devDependencies": {
     "@electron/remote": "^2.1.2",
@@ -24,7 +24,7 @@
     "async": "^0.9.2",
     "axios": "^0.30.0",
     "bluebird": "~3.7.2",
-    "bootstrap": "^4.6.2",
+    "bootstrap": "^5.3.7",
     "copy-webpack-plugin": "^6.4.1",
     "css-loader": "^5.2.7",
     "date-fns": "2.30.0",

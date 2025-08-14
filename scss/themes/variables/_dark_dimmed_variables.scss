@@ -15,8 +15,13 @@ $gray-800: color.scale($gray-base, $lightness: 80%);
 $gray-900: color.scale($gray-base, $lightness: 90%);
 $black: #fff;
 
+// Bootstrap 5 contrast colors
+$light-color: $black;
+$dark-color: $gray-base;
+$component-active-color: $light-color;
+
 // Theme and brand colors
-$primary: rgb(89, 89, 89);
+$primary: rgb(89, 89, 230);
 $secondary: $gray-400;
 $success: color.scale(#009900, $lightness: -5%);
 $info: #0447af;
@@ -27,6 +32,7 @@ $text-muted: $gray-500;
 $text-dark: $gray-600;
 $component-active-color: $gray-900;
 
+$white-color: $black;
 // Core page element colors
 $body-bg: $gray-100;
 $body-color: $gray-800;
@@ -37,11 +43,8 @@ $dropdown-divider-bg: $gray-300;
 
 // Modal Dialogs
 $modal-backdrop-bg: $white;
-$modal-content-bg: $gray-100;
+$modal-content-bg: $gray-200;
 $modal-header-border-color: $gray-300;
-
-// Fix YIQ(automatic text contrast) preferring black over white on dark themes.
-$yiq-text-light: $gray-800;
 
 // Reduce default padding slightly between columns in grids.
 $grid-gutter-width: 20px;
@@ -62,8 +65,8 @@ $text-background-color: $gray-200;
 $text-background-color-disabled: $gray-100;
 
 // F-List Rising
-$scoreUnicornMatchBg: rgb(0, 173, 173);
-$scoreUnicornMatchFg: rgb(29, 154, 154);
+$scorePerfectMatchBg: rgb(0, 173, 173);
+$scorePerfectMatchFg: rgb(29, 154, 154);
 $scoreMatchBg: rgb(0, 142, 0);
 $scoreMatchFg: rgb(0, 113, 0);
 $scoreWeakMatchBg: rgb(0, 80, 0);
@@ -77,8 +80,8 @@ $scoreMinimizeButtonFg: rgba(255, 255, 255, 0.7);
 $scoreMinimizeButtonBg: rgba(0, 0, 0, 0.2);
 $scoreReportBg: rgba(0, 0, 0, 0.2);
 
-$scoreFadedUnicornMatchBg: color.scale($scoreUnicornMatchBg, $alpha: -60%);
-$scoreFadedUnicornMatchFg: color.scale($scoreUnicornMatchFg, $alpha: -60%);
+$scoreFadedPerfectMatchBg: color.scale($scorePerfectMatchBg, $alpha: -60%);
+$scoreFadedPerfectMatchFg: color.scale($scorePerfectMatchFg, $alpha: -60%);
 $scoreFadedMatchBg: color.scale($scoreMatchBg, $alpha: -60%);
 $scoreFadedMatchFg: color.scale($scoreMatchFg, $alpha: -60%);
 $scoreFadedWeakMatchBg: color.scale($scoreWeakMatchBg, $alpha: -60%);

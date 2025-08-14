@@ -1,11 +1,31 @@
 <template>
   <div class="row character-page" id="pageBody" ref="pageBody">
-    <div class="col-12" style="min-height: 0">
-      <div class="alert alert-info" v-show="loading">
-        Loading character information.
-      </div>
-      <div class="alert alert-danger" v-show="error">{{ error }}</div>
+    <div class="col-md-4 col-lg-3 col-xl-2" v-if="loading || !character">
+      <div
+        class="card characterpage-placeholder"
+        style="height: 100%"
+        :class="loading ? 'throbber' : 'bg-light'"
+      ></div>
     </div>
+    <div
+      class="col-md-8 col-lg-9 col-xl-10"
+      style="padding-left: 0px"
+      v-if="loading || !character"
+    >
+      <div style="min-height: 0">
+        <div class="alert alert-info" v-show="loading">
+          Loading character information.
+        </div>
+        <div class="alert alert-danger" v-show="error">{{ error }}</div>
+      </div>
+
+      <div
+        class="card characterpage-placeholder"
+        :class="loading ? 'throbber' : 'bg-light'"
+        style="height: 90%"
+      ></div>
+    </div>
+
     <div
       class="col-md-4 col-lg-3 col-xl-2"
       v-if="
@@ -107,10 +127,18 @@
             <div class="card-body">
               <div class="tab-content">
                 <div role="tabpanel" v-show="tab === '0'" id="overview">
-                  <match-report
-                    :characterMatch="characterMatch"
-                    v-if="shouldShowMatch()"
-                  ></match-report>
+                  <template v-if="shouldShowMatch()">
+                    <profile-analysis
+                      :characterName="character.character.name"
+                      :characterId="character.character.id"
+                      v-if="character.is_self"
+                    >
+                    </profile-analysis>
+                    <match-report
+                      :characterMatch="characterMatch"
+                      v-else
+                    ></match-report>
+                  </template>
 
                   <div
                     style="margin-bottom: 10px"
@@ -217,6 +245,7 @@
   import core from '../../chat/core';
   import { Matcher, MatchReport } from '../../learn/matcher';
   import MatchReportView from './match-report.vue';
+  import ProfileAnalysis from '../../learn/recommend/ProfileAnalysis.vue';
   import { CharacterImage, SimpleCharacter } from '../../interfaces';
 
   const CHARACTER_CACHE_EXPIRE = 7 * 24 * 60 * 60 * 1000; // 7 days (milliseconds)
@@ -241,6 +270,7 @@
       'character-kinks': CharacterKinksView,
       'character-recon': ReconView,
       'match-report': MatchReportView,
+      'profile-analysis': ProfileAnalysis,
       bbcode: BBCodeView(standardParser)
     }
   })
@@ -318,10 +348,6 @@
     }
 
     shouldShowMatch(): boolean {
-      if (this.character?.character.name === 'YiffBot 4000') {
-        return false;
-      }
-
       return core.state.settings.risingAdScore;
     }
 
@@ -596,14 +622,27 @@
 </script>
 
 <style lang="scss">
+  #pageBody {
+    height: 100%;
+  }
   .compare-highlight-block {
     margin-bottom: 3px;
 
-    .quick-compare-block button {
-      margin-left: 2px;
+    .quick-compare-block {
+      & button {
+        margin-left: 2px;
+      }
+      &.input-group {
+        width: initial;
+      }
     }
   }
-
+  .characterpage-placeholder {
+    height: 100%;
+  }
+  .kink-block .card-header {
+    border-bottom-width: 3px !important;
+  }
   .character-kinks-block {
     i.fa {
       margin-right: 0.25rem;
@@ -619,7 +658,7 @@
         min-width: 200px;
         margin-bottom: 0;
         padding-bottom: 0;
-
+        position: absolute;
         opacity: 1;
       }
 
@@ -866,8 +905,6 @@
   }
 
   .match-report {
-    display: flex;
-    flex-direction: row;
     background-color: var(--scoreReportBg);
     /* width: 100%; */
     margin-top: -1.2rem;
@@ -892,10 +929,9 @@
       .scores {
         display: none;
       }
-
-      .minimize-btn {
-        opacity: 0.6;
-      }
+    }
+    &.profile-analysis-wrapper {
+      display: block;
     }
 
     h3 {
@@ -906,30 +942,14 @@
       position: absolute;
       display: block;
       right: 0.5rem;
-      background-color: var(--scoreMinimizeButtonBg);
       padding: 0.4rem;
       padding-top: 0.2rem;
       padding-bottom: 0.2rem;
-      font-size: 0.8rem;
-      color: var(--scoreMinimizeButtonFg);
       border-radius: 4px;
       z-index: 1000;
     }
 
     .scores {
-      float: left;
-      flex: 1;
-      margin: 0;
-      max-width: 25rem;
-
-      &.you {
-        margin-right: 1rem;
-      }
-
-      &.them {
-        margin-left: 1rem;
-      }
-
       .species {
         display: inline-block;
         color: var(--characterInfotagColor);
@@ -957,11 +977,8 @@
     }
 
     .vs {
-      margin-left: 1rem;
-      margin-right: 1rem;
       text-align: center;
       font-size: 5rem;
-      line-height: 0;
       color: rgba(255, 255, 255, 0.3);
       margin-top: auto;
       margin-bottom: auto;
@@ -1049,12 +1066,29 @@
   .character-card-header {
     position: sticky;
     top: -1rem;
-    z-index: 10000;
+    z-index: 1000;
     background: var(--headerBackgroundMaskColor) !important;
   }
 
+  .card-header.character-card-header {
+    border-bottom: 1px solid transparent;
+  }
   .character-description .bbcode {
     white-space: pre-line !important;
+
+    // [sub] and [sup] tags behave slightly differently on profiles and in chat
+    sub {
+      vertical-align: baseline;
+    }
+
+    sup {
+      vertical-align: top;
+    }
+
+    sub,
+    sup {
+      line-height: 1.5;
+    }
 
     blockquote {
       margin: 0;

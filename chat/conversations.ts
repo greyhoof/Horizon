@@ -87,6 +87,10 @@ abstract class Conversation implements Interfaces.Conversation {
     this.adManager = new AdManager(this);
     core.cache.conversationDraftCache.loadCache();
   }
+  markRead(): void {
+    this.lastRead = this.messages[this.messages.length - 1];
+    this.unread = Interfaces.UnreadState.None;
+  }
 
   get settings(): Interfaces.Settings {
     //tslint:disable-next-line:strict-boolean-expressions
@@ -856,12 +860,6 @@ export async function testSmartFilterForPrivateMessage(
 
   if (
     cachedProfile &&
-    // ALERT: YIFFBOT FUNCTIONALITY IS ON THE CHOPPING BLOCK!
-    // **     Yiffbot was banned from F-List, and as such, most
-    //        of it's functionality no longer remains. Given that,
-    //        features related to it are SUBJECT FOR DELETION!
-    //        Sowwwy...
-    // cachedProfile.character.character.name !== 'YiffBot 4000' &&
     cachedProfile.match.isFiltered &&
     core.state.settings.risingFilter.autoReply &&
     !cachedProfile.match.autoResponded
@@ -905,7 +903,7 @@ export async function testSmartFilterForPrivateMessage(
             'Sorry, the player of this character is not interested in characters matching your profile.\n' +
             `${core.state.settings.risingFilter.hidePrivateMessages ? ' They did not see your message. To bypass this warning, send your message again.' : ''}\n` +
             '\n' +
-            '🦄 Need a filter for yourself? Try out [url=https://horizn.moe/]F-Chat Horizon[/url]'
+            '✨ Need a filter for yourself? Try out [url=https://horizn.moe/]F-Chat Horizon[/url]'
         };
 
         core.connection.send('PRI', message);
@@ -930,12 +928,6 @@ export async function testSmartFilterForPrivateMessage(
 
   if (
     cachedProfile &&
-    // ALERT: YIFFBOT FUNCTIONALITY IS ON THE CHOPPING BLOCK!
-    // **     Yiffbot was banned from F-List, and as such, most
-    //        of it's functionality no longer remains. Given that,
-    //        features related to it are SUBJECT FOR DELETION!
-    //        Sowwwy...
-    // // cachedProfile.character.character.name !== 'YiffBot 4000' &&
     cachedProfile.match.isFiltered &&
     core.state.settings.risingFilter.hidePrivateMessages &&
     firstTime // subsequent messages bypass this filter on purpose
@@ -1120,7 +1112,7 @@ export default function (this: any): Interfaces.State {
     const message = createMessage(
       MessageType.Message,
       char,
-      decodeHTML(data.message),
+      decodeHTML(data.message.trimEnd()),
       time
     );
 
@@ -1142,7 +1134,7 @@ export default function (this: any): Interfaces.State {
     const message = createMessage(
       MessageType.Message,
       char,
-      decodeHTML(data.message),
+      decodeHTML(data.message.trimEnd()),
       time
     );
 
@@ -1154,8 +1146,11 @@ export default function (this: any): Interfaces.State {
     EventBus.$emit('channel-message', { message, channel: conversation });
 
     const words = conversation.settings.highlightWords.slice();
+    const watchedCharacters =
+      conversation.settings.horizonHighlightUsers.slice();
     if (conversation.settings.defaultHighlights)
       words.push(...core.state.settings.highlightWords);
+    watchedCharacters.push(...core.state.settings.horizonHighlightUsers);
     if (
       (conversation.settings.highlight === Interfaces.Setting.Default &&
         core.state.settings.highlight) ||
@@ -1191,6 +1186,28 @@ export default function (this: any): Interfaces.State {
           time
         )
       );
+    } else if (watchedCharacters.indexOf(data.character) !== -1) {
+      message.isHighlight = true;
+      await core.notifications.notify(
+        conversation,
+        data.character,
+        data.message,
+        characterImage(data.character),
+        'attention'
+      );
+
+      await state.consoleTab.addMessage(
+        new EventMessage(
+          l(
+            'events.watchedUserPosted',
+            `[user]${data.character}[/user]`,
+            `[session=${conversation.name}]${data.channel}[/session]`
+          ),
+          time
+        )
+      );
+      if (conversation !== state.selectedConversation || !state.windowFocused)
+        conversation.unread = Interfaces.UnreadState.Mention;
     } else if (conversation.settings.notify === Interfaces.Setting.True) {
       await core.notifications.notify(
         conversation,
@@ -1201,6 +1218,26 @@ export default function (this: any): Interfaces.State {
       );
       if (conversation !== state.selectedConversation || !state.windowFocused)
         conversation.unread = Interfaces.UnreadState.Mention;
+    } else if (
+      (message.type === MessageType.Message ||
+        message.type === MessageType.Ad) &&
+      isWarn(message.text)
+    ) {
+      const member = conversation.channel.members[message.sender.name];
+      if (
+        (member !== undefined && member.rank > Channel.Rank.Member) ||
+        message.sender.isChatOp
+      ) {
+        await core.notifications.notify(
+          conversation,
+          conversation.name,
+          data.message,
+          characterImage(data.character),
+          'modalert'
+        );
+        if (conversation !== state.selectedConversation || !state.windowFocused)
+          conversation.unread = Interfaces.UnreadState.Mention;
+      }
     }
   });
   connection.onMessage('LRP', async (data, time) => {

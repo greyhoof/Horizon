@@ -6,13 +6,14 @@
     @open="load()"
     dialogClass="w-100"
     :buttonText="l('conversationSettings.save')"
+    iconClass="fas fa-gear"
   >
-    <div class="form-group">
+    <div class="mb-3">
       <label class="control-label" :for="'notify' + conversation.key">{{
         l('conversationSettings.notify')
       }}</label>
       <select
-        class="form-control"
+        class="form-select"
         :id="'notify' + conversation.key"
         v-model="notify"
       >
@@ -27,12 +28,12 @@
         </option>
       </select>
     </div>
-    <div class="form-group">
+    <div class="mb-3">
       <label class="control-label" :for="'highlight' + conversation.key">{{
         l('settings.highlight')
       }}</label>
       <select
-        class="form-control"
+        class="form-select"
         :id="'highlight' + conversation.key"
         v-model="highlight"
       >
@@ -47,7 +48,7 @@
         </option>
       </select>
     </div>
-    <div class="form-group">
+    <div class="mb-3">
       <label class="control-label" for="defaultHighlights">
         <input
           type="checkbox"
@@ -57,7 +58,7 @@
         {{ l('settings.defaultHighlights') }}
       </label>
     </div>
-    <div class="form-group">
+    <div class="mb-3">
       <label class="control-label" :for="'highlightWords' + conversation.key">{{
         l('settings.highlightWords')
       }}</label>
@@ -67,12 +68,22 @@
         v-model="highlightWords"
       />
     </div>
-    <div class="form-group">
+    <div class="mb-3">
+      <label class="control-label" :for="'highlightUsers' + conversation.key">{{
+        l('settings.highlightUsers.conversation')
+      }}</label>
+      <input
+        :id="'highlightUsers' + conversation.key"
+        class="form-control"
+        v-model="horizonHighlightUsers"
+      />
+    </div>
+    <div class="mb-3">
       <label class="control-label" :for="'joinMessages' + conversation.key">{{
         l('settings.joinMessages')
       }}</label>
       <select
-        class="form-control"
+        class="form-select"
         :id="'joinMessages' + conversation.key"
         v-model="joinMessages"
       >
@@ -108,6 +119,7 @@
     notify!: Conversation.Setting;
     highlight!: Conversation.Setting;
     highlightWords!: string;
+    horizonHighlightUsers!: string;
     joinMessages!: Conversation.Setting;
     defaultHighlights!: boolean;
 
@@ -118,6 +130,7 @@
       this.highlightWords = settings.highlightWords.join(',');
       this.joinMessages = settings.joinMessages;
       this.defaultHighlights = settings.defaultHighlights;
+      this.horizonHighlightUsers = settings.horizonHighlightUsers.join(',');
     }
 
     submit(): void {
@@ -128,6 +141,11 @@
           .split(',')
           .map(x => x.trim())
           .filter(x => x.length > 0),
+        horizonHighlightUsers: this.horizonHighlightUsers
+          .split(',')
+          .map(x => x.trim())
+          .filter(x => x.length > 0),
+
         joinMessages: this.joinMessages,
         defaultHighlights: this.defaultHighlights,
         adSettings: this.conversation.settings.adSettings

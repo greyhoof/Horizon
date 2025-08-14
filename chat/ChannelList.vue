@@ -5,20 +5,20 @@
     @open="opened"
     @close="closed"
     dialog-class="w-100 channel-list"
+    iconClass="fas fa-hashtag"
   >
     <div style="display: flex; flex-direction: column">
       <tabs
         style="flex-shrink: 0"
         :tabs="[l('channelList.public'), l('channelList.private')]"
+        :fullWidth="true"
         v-model="tab"
       ></tabs>
       <div style="display: flex; flex-direction: column">
         <div class="input-group" style="padding: 10px 0; flex-shrink: 0">
-          <div class="input-group-prepend">
-            <div class="input-group-text">
-              <span class="fas fa-search"></span>
-            </div>
-          </div>
+          <span class="input-group-text">
+            <span class="fas fa-search"></span>
+          </span>
           <input
             class="form-control"
             style="flex: 1; margin-right: 10px"
@@ -39,7 +39,11 @@
             ></span>
           </a>
         </div>
-        <div style="overflow: auto" v-show="tab === '0'">
+        <div
+          class="hidden-scrollbar"
+          style="overflow: auto"
+          v-show="tab === '0'"
+        >
           <div v-for="channel in officialChannels" :key="channel.id">
             <label :for="channel.id">
               <input
@@ -52,7 +56,11 @@
             </label>
           </div>
         </div>
-        <div style="overflow: auto" v-show="tab === '1'">
+        <div
+          class="hidden-scrollbar"
+          style="overflow: auto"
+          v-show="tab === '1'"
+        >
           <div v-for="channel in openRooms" :key="channel.id">
             <label :for="channel.id">
               <input
@@ -66,11 +74,9 @@
           </div>
         </div>
         <div class="input-group" style="padding: 10px 0; flex-shrink: 0">
-          <div class="input-group-prepend">
-            <div class="input-group-text">
-              <span class="fas fa-plus"></span>
-            </div>
-          </div>
+          <span class="input-group-text">
+            <span class="fas fa-plus"></span>
+          </span>
           <input
             class="form-control"
             style="flex: 1; margin-right: 10px"

@@ -10,9 +10,9 @@
       class="border-bottom"
       id="window-tabs"
     >
-      <h4 style="padding: 2px 0">{{ l('title') }}</h4>
+      <h4 style="padding: 2px 0" class="d-md-block d-none">{{ l('title') }}</h4>
       <div class="btn btn-light" @click="openMenu" id="settings">
-        <i class="fa fa-cog"></i>
+        <i class="fas fa-bars"></i>
       </div>
       <div
         class="btn btn-outline-success"
@@ -77,18 +77,25 @@
           justify-content: flex-end;
           -webkit-app-region: drag;
         "
-        class="btn-group"
         id="windowButtons"
+        class="btn-group"
       >
-        <i
-          class="far fa-window-minimize btn btn-light"
-          @click.stop="minimize()"
-        ></i>
-        <i
-          class="far btn btn-light"
-          :class="'fa-window-' + (isMaximized ? 'restore' : 'maximize')"
-          @click="maximize()"
-        ></i>
+        <span
+          @click.stop="openSettingsMenu()"
+          class="d-none d-md-flex btn btn-light"
+        >
+          <i class="fa fa-cog"> </i>
+        </span>
+
+        <span class="btn btn-light" @click.stop="minimize()">
+          <i class="far fa-window-minimize"></i>
+        </span>
+        <span class="btn btn-light" @click="maximize()">
+          <i
+            class="far"
+            :class="'fa-window-' + (isMaximized ? 'restore' : 'maximize')"
+          ></i>
+        </span>
         <span class="btn btn-light" @click.stop="close()">
           <i class="fa fa-times fa-lg"></i>
         </span>
@@ -177,6 +184,7 @@
     view: Electron.BrowserView;
     hasNew: boolean;
     avatarUrl?: string;
+    insertedCssKey?: string;
   }
 
   // console.log(require('./build/tray.png').default);
@@ -257,6 +265,9 @@
       electron.ipcRenderer.on('fix-logs', () =>
         this.activeTab!.view.webContents.send('fix-logs')
       );
+      electron.ipcRenderer.on('ui-test', () =>
+        this.activeTab!.view.webContents.send('ui-test')
+      );
       electron.ipcRenderer.on('quit', () => this.destroyAllTabs());
       electron.ipcRenderer.on('reopen-profile', () =>
         this.activeTab!.view.webContents.send('reopen-profile')
@@ -304,6 +315,30 @@
           // tab.avatarUrl = url;
         }
       );
+      electron.ipcRenderer.on(
+        'user-css-updated',
+        async (
+          _e: Electron.IpcRendererEvent,
+          styleSheet: string,
+          useCustomCSS: boolean
+        ) => {
+          for (const tab of this.tabs) {
+            //We always clear the existing CSS, either because we need to inject a new stylesheet, or because we don't want any CSS anymore
+            if (tab.insertedCssKey) {
+              await tab.view.webContents.removeInsertedCSS(tab.insertedCssKey);
+            }
+            if (useCustomCSS) {
+              tab.insertedCssKey = await tab.view.webContents.insertCSS(
+                `html {${this.settings.horizonCustomCss}}`,
+                {
+                  cssOrigin: 'author'
+                }
+              );
+            }
+          }
+        }
+      );
+
       electron.ipcRenderer.on(
         'disconnect',
         (_e: Electron.IpcRendererEvent, id: number) => {
@@ -534,6 +569,17 @@
       log.debug('init.window.tab.add.load-index.complete', indexUrl);
 
       tab.view.setBounds(getWindowBounds());
+
+      if (this.settings.horizonCustomCssEnabled) {
+        tab.insertedCssKey = await tab.view.webContents.insertCSS(
+          `html {${this.settings.horizonCustomCss}}`,
+          {
+            cssOrigin: 'author'
+          }
+        );
+        log.debug('init.window.tab.add.cssInjected');
+      }
+
       this.lockTab = false;
 
       log.debug('init.window.tab.add.done');
@@ -596,6 +642,11 @@
       electron.ipcRenderer.send('open-update-changelog', this.updateVersion);
     }
 
+    openSettingsMenu(): void {
+      log.debug('settings clicked');
+      electron.ipcRenderer.send('open-settings-menu');
+    }
+
     getThemeClass() {
       // console.log('getThemeClassWindow', this.settings?.risingDisableWindowsHighContrast);
 
@@ -641,7 +692,8 @@
       flex-grow: 0;
     }
 
-    .btn-default {
+    .btn-default,
+    .btn-light:not(:hover) {
       background: transparent;
     }
 
@@ -652,9 +704,6 @@
         padding: 2px 10px;
         height: 100%;
         align-items: center;
-        &:first-child {
-          border-top-left-radius: 0;
-        }
       }
 
       img {
@@ -696,10 +745,7 @@
     }
 
     #window-tabs {
-      h4 {
-        margin: 0 15px 0 77px;
-      }
-
+      padding-left: 77px;
       .btn,
       li a {
         padding-top: 6px;

@@ -14,10 +14,10 @@ $yellow-color: $dracula-yellow;
 $purple-color: $dracula-purple;
 $cyan-color: $dracula-cyan;
 $white-color: $dracula-foreground;
-$black-color: #000;
-$brown-color: #8a6d3b;
+$black-color: $dracula-comment;
+$brown-color: #b89383;
 $pink-color: $dracula-pink;
-$gray-color: #ccc;
+$gray-color: $gray-600;
 $orange-color: $dracula-orange;
 // Apply variables to theme.
 @import '../chat';
@@ -61,19 +61,12 @@ $genders: (
   'cunt-boy': $dracula-green
 );
 
-.btn-primary,
-.btn-primary:hover,
-.btn-primary:active,
-.btn-primary:focus,
-.list-group-item.active,
-.quick-jump-result.selected,
-.btn-primary:not(:disabled):not(.disabled):active,
-.badge-warning,
 .list-group.conversation-nav
-  .list-group-item.item-private.active
+  .list-group-item-action.item-private.active
   .online-status {
-  color: $dracula-bg;
+  color: color-contrast($primary);
 }
+
 @each $gender, $color in $genders {
   .gender-#{$gender} {
     color: $color;
@@ -84,8 +77,8 @@ $genders: (
   }
 }
 
-.message-own {
-  background-color: $gray-100;
+.message-own:not(.message-warn) {
+  background-color: rgba($gray-200, 0.3);
 }
 
 .colorblindMode {
@@ -100,6 +93,81 @@ $genders: (
 .user-bookmark,
 .message-event .user-bookmark {
   color: $dracula-green;
+}
+
+.message-highlight {
+  background-color: color.scale($success, $alpha: -80%);
+  .blackText,
+  .blackNameText,
+  .gender-none {
+    color: #b0beea;
+  }
+  .grayText,
+  .grayNameText {
+    color: #c8cbdf;
+  }
+
+  .gender-herm {
+    color: #c7bde8;
+  }
+}
+
+.message-warn {
+  .blueText,
+  .blueNameText,
+  .gender-male {
+    color: #1a5fa1;
+  }
+  .grayText,
+  .grayNameText,
+  .whiteText,
+  .whiteNameText,
+  .blackText,
+  .blackNameText,
+  .gender-none {
+    color: inherit;
+  }
+
+  .pinkText,
+  .pinkNameText,
+  .gender-female {
+    color: #5f0237;
+  }
+
+  .yellowText,
+  .yellowNameText {
+    color: #6f6406;
+  }
+
+  .orangeText,
+  .orangeNameText,
+  .gender-transgender {
+    color: #833609;
+  }
+
+  .greenText,
+  .greenNameText,
+  .gender-cunt-boy {
+    color: #397849;
+  }
+
+  .brownText,
+  .brownNameText {
+    color: #531b00;
+  }
+
+  .cyanText,
+  .cyanNameText,
+  .gender-male-herm {
+    color: #053e3e;
+  }
+
+  .purpleText,
+  .purpleNameText,
+  .gender-shemale,
+  .gender-herm {
+    color: #5f1ebc;
+  }
 }
 
 :root {

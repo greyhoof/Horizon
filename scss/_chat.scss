@@ -1,5 +1,15 @@
 @use 'sass:color';
 
+// Global contrast overrides for active states
+.list-group-item.active,
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link,
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active {
+  color: color-yiq(theme-color('primary'));
+}
+
 .bg-solid-text {
   background: $text-background-color;
 }
@@ -28,6 +38,20 @@
 
 .has-new {
   background-color: theme-color-level('danger', 4) !important;
+}
+@keyframes throb {
+  0% {
+    background-color: $body-bg;
+  }
+  65% {
+    background-color: $gray-200;
+  }
+  100% {
+    background-color: $body-bg;
+  }
+}
+.throbber {
+  animation: throb 2s infinite;
 }
 
 .overlay-disable {
@@ -73,11 +97,32 @@
   .body {
     height: 100%;
     display: none;
-    width: 200px;
+    position: relative;
+    min-width: 210px;
+    max-width: 350px;
+    width: 210px;
     flex-direction: column;
     overflow: auto;
   }
-
+  .resize-handle {
+    position: absolute;
+    top: 0;
+    width: 8px;
+    height: 100%;
+    cursor: ew-resize;
+    z-index: 10;
+    opacity: 0;
+    background-color: $gray-200;
+  }
+  .resize-handle:hover {
+    opacity: 0.5;
+  }
+  .resize-handle-left {
+    left: 0;
+  }
+  .resize-handle-right {
+    right: 0;
+  }
   .expander {
     display: block;
     position: absolute;
@@ -102,6 +147,9 @@
     left: 0;
     margin-right: 0;
     padding-right: 0;
+    & .body {
+      padding-left: 10px;
+    }
 
     .expander {
       transform: rotate(270deg) translate3d(0, 0, 0);
@@ -117,6 +165,9 @@
     right: 0;
     margin-left: 0;
     padding-left: 0;
+    & .body {
+      padding-right: 10px;
+    }
 
     .expander {
       transform: rotate(90deg) translate3d(0, 0, 0);
@@ -124,6 +175,10 @@
       -webkit-transform: rotate(90deg) translate3d(0, 0, 0);
       -webkit-transform-origin: 0 0;
     }
+  }
+
+  #sidebarUserInfo {
+    border-bottom: solid 1px $card-border-color;
   }
 }
 
@@ -149,6 +204,65 @@
   }
 }
 
+.userInfo-buttons-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  .userInfo-button-item {
+    &:hover,
+    &:active {
+      text-decoration: none;
+      background-color: $gray-200;
+    }
+    flex: auto;
+    padding: 5px 3px 5px 3px;
+    min-width: 55px;
+    text-align: center;
+    font-size: 1.15rem;
+    display: inline-block;
+    border-radius: 6px;
+    transition: 0.2s;
+    .userInfo-pager-text {
+      font-size: 1rem;
+      color: var(--gray-dark);
+    }
+  }
+}
+
+.sidebarUserInfo-user {
+  max-width: 70%;
+  overflow-x: hidden;
+  padding: 0px 5px 6px 5px;
+  border-radius: 8px;
+  transition: 0.2s;
+  &:hover,
+  &:active {
+    text-decoration: none;
+    background-color: $gray-200;
+    cursor: pointer;
+  }
+}
+.sidebarUserInfo-name {
+  overflow-x: hidden;
+  overflow-y: hidden;
+  text-overflow: ellipsis;
+
+  font-weight: 600;
+}
+#sidebarUserInfo {
+  padding-bottom: 7px;
+  flex-shrink: 0;
+  .sidebarUserInfo-status {
+    opacity: 0.7;
+  }
+  .sidebarUserInfo-name:hover a,
+  .sidebarUserInfo-status:hover {
+    text-decoration: none;
+    color: var(--black);
+    opacity: 1;
+    transition: 0.2s;
+  }
+}
 .ads-text-box,
 .ads-text-box:focus {
   background-color: theme-color-level('info', -4);
@@ -185,12 +299,18 @@
 }
 
 .message-own {
-  background-color: $gray-200;
+  background-color: rgba($gray-200, 0.3);
 }
 
 .message-warn {
-  background-color: theme-color('danger');
-  color: color-yiq(theme-color('danger'));
+  background-color: $danger;
+  color: color-contrast($danger);
+  .bbcode {
+    .whiteText,
+    .blackText {
+      color: color-contrast($danger);
+    }
+  }
 }
 
 .messages {
@@ -243,7 +363,7 @@
 }
 
 .message-highlight {
-  background-color: theme-color-level('success', -8);
+  background-color: color.scale($color: $success, $alpha: -50%);
 }
 
 .message-action .bbcode {
@@ -301,7 +421,7 @@ $genders: (
     )
 {
   .#{$colorName}NameText {
-    color: $colorValue !important;
+    color: $colorValue;
   }
 }
 
@@ -317,13 +437,16 @@ $genders: (
 .profile-viewer {
   width: 98%;
   max-width: 98%;
+  & > .modal-content {
+    height: 100%;
+  }
 }
 
 #window-tabs {
   .hasNew {
     background-color: theme-color-level('warning', -2);
     border-color: theme-color-level('warning', -4);
-    color: color-yiq(theme-color('warning'));
+    color: color-contrast($warning);
     &:hover {
       background-color: theme-color-level('warning', -4);
     }
@@ -338,6 +461,16 @@ $genders: (
   @media (max-width: breakpoint-max(xs)) {
     display: none;
   }
+}
+
+.list-group.conversation-nav .list-group-item {
+  margin: 1px 0px 1px 0px;
+  border-radius: 4px;
+  //@each $color, $value in $theme-colors {
+  //&.list-group-item-#{$color} {
+  //color: color-yiq($value);
+  //}
+  //}
 }
 
 .logs-fab {

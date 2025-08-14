@@ -11,6 +11,7 @@
     - [Supported distros](#supported-distros)
     - [Additional installation instructions](#additional-installation-instructions)
       - [Debian/Ubuntu (deb)](#debianubuntu-deb)
+      - [Fedora/RPM-based (rpm)](#fedorarpm-based-rpm)
       - [AppImage](#appimage)
       - [Tarball (tar.gz)](#tarball-targz)
       - [Arch-based (AUR)](#arch-based-aur)
@@ -123,11 +124,12 @@ Horizon has excellent Linux support. Read more at [horizon-packages](https://git
 
 ### Supported distros
 
-| Distro                                                                                                      | Info                                                                                                                                     | Maintainer(s)              |
-| ----------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- |
-| ![Gentoo](https://img.shields.io/badge/Gentoo-54487A?style=for-the-badge&logo=gentoo&logoColor=white)       | [link](https://github.com/Fchat-Horizon/gentoo/tree/0dbb49c0a2010d9a1813b5495fb78e1178494b14)                                            | @CodingWithAnxiety         |
-| ![Arch](https://img.shields.io/badge/Arch%20Linux-1793D1?logo=arch-linux&logoColor=fff&style=for-the-badge) | [![AUR package](https://repology.org/badge/version-for-repo/aur/fchat-horizon.svg)](https://repology.org/project/fchat-horizon/versions) | astrayblackcat, KenwoodFox |
-| ![Debian](https://img.shields.io/badge/Debian-D70A53?style=for-the-badge&logo=debian&logoColor=white)       | [Available under releases](https://github.com/Fchat-Horizon/Horizon/releases/latest)                                                     | The Horizon Developers     |
+| Distro                                                                                                                                                                                                                    | Info                                                                                                                                     | Maintainer(s)              |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- |
+| ![Gentoo](https://img.shields.io/badge/Gentoo-54487A?style=for-the-badge&logo=gentoo&logoColor=white)                                                                                                                     | [link](https://github.com/Fchat-Horizon/gentoo/tree/0dbb49c0a2010d9a1813b5495fb78e1178494b14)                                            | @CodingWithAnxiety         |
+| ![Arch](https://img.shields.io/badge/Arch%20Linux-1793D1?logo=arch-linux&logoColor=fff&style=for-the-badge) <br> ![Manjaro](https://img.shields.io/badge/Manjaro-35BF5C?style=for-the-badge&logo=Manjaro&logoColor=white) | [![AUR package](https://repology.org/badge/version-for-repo/aur/fchat-horizon.svg)](https://repology.org/project/fchat-horizon/versions) | astrayblackcat, KenwoodFox |
+| ![Debian](https://img.shields.io/badge/Debian-D70A53?style=for-the-badge&logo=debian&logoColor=white) <br> ![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)          | [Available under releases](https://github.com/Fchat-Horizon/Horizon/releases/latest)                                                     | The Horizon Developers     |
+| ![Fedora](https://img.shields.io/badge/Fedora-294172?style=for-the-badge&logo=fedora&logoColor=white) <br> ![openSUSE](https://img.shields.io/badge/openSUSE-%2364B345?style=for-the-badge&logo=openSUSE&logoColor=white) | [Available under releases](https://github.com/Fchat-Horizon/Horizon/releases/latest)                                                     | The Horizon Developers     |
 
 ### Additional installation instructions
 
@@ -140,6 +142,25 @@ Horizon has excellent Linux support. Read more at [horizon-packages](https://git
    ```bash
    sudo dpkg -i F-Chat.Horizon-linux-<arch>.deb
    ```
+
+#### Fedora/RPM-based (rpm)
+
+1. Download the `.rpm` file for your architecture:
+   - [Linux x64 .rpm](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat.Horizon-linux-x86_64.rpm)
+   - [Linux arm64 .rpm](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat.Horizon-linux-arm64.rpm)
+2. Install using your package manager:
+   - **Fedora/RHEL/CentOS:**
+     ```bash
+     sudo dnf install F-Chat.Horizon-linux-<arch>.rpm
+     ```
+   - **openSUSE:**
+     ```bash
+     sudo zypper install F-Chat.Horizon-linux-<arch>.rpm
+     ```
+   - **Generic RPM:**
+     ```bash
+     sudo rpm -i F-Chat.Horizon-linux-<arch>.rpm
+     ```
 
 #### AppImage
 
@@ -227,6 +248,6 @@ Please read [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 # Credits
 
-- _CodingWithAnxiety_, Project Maintainer
-- _kawinski_, Assigned Project Nerd (Aka, helps with project direction.)
-- _FatCatClient_, (Temporary) co-owner.
+<a href="https://github.com/Fchat-Horizon/Horizon/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Fchat-Horizon/Horizon" />
+</a>

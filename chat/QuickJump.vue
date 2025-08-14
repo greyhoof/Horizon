@@ -1,71 +1,67 @@
 <template>
-  <div class="quick-jump-overlay" v-show="visible" @click="hide">
-    <div class="quick-jump-container bg-light" @click.stop>
-      <div class="quick-jump-header">
-        <span class="fas fa-search"></span>
-        <span>{{ l('quickJump.title') }}</span>
-      </div>
-      <input
-        ref="searchInput"
-        v-model="searchQuery"
-        :placeholder="l('quickJump.placeholder')"
-        class="quick-jump-input form-control"
-        @keydown="onKeyDown"
-        @input="onInput"
-      />
-      <div class="quick-jump-results" v-show="filteredResults.length > 0">
-        <div
-          v-for="(result, index) in filteredResults"
-          :key="result.key"
-          :class="[
-            'quick-jump-result',
-            { 'selected border-left': index === selectedIndex }
-          ]"
-          @click="selectResult(result)"
-          @mouseenter="selectedIndex = index"
-        >
-          <span class="result-icon">
-            <span
-              v-if="result.type === 'channel'"
-              class="fas fa-hashtag"
-            ></span>
-            <span
-              v-else-if="result.type === 'private'"
-              class="far fa-user-circle"
-            ></span>
-            <span v-else class="fas fa-home"></span>
-          </span>
-          <span class="result-name"
-            >{{ result.name }}
-            <span v-show="hasMentions(result)" class="badge badge-warning"
-              >!</span
-            ></span
-          >
-          <span class="result-description" v-if="result.description">
-            {{ result.description }}
-          </span>
+  <div v-show="visible">
+    <div class="quick-jump-overlay" @click="hide">
+      <div class="quick-jump-container bg-light" @click.stop>
+        <div class="quick-jump-header">
+          <span class="fas fa-shuffle"></span>
+          <span>{{ l('quickJump.title') }}</span>
         </div>
-      </div>
-      <div
-        class="quick-jump-footer"
-        v-show="filteredResults.length === 0 && searchQuery.length > 0"
-      >
-        <span>{{ l('quickJump.noResults') }}</span>
+        <input
+          ref="searchInput"
+          v-model="searchQuery"
+          :placeholder="l('quickJump.placeholder')"
+          class="quick-jump-input form-control"
+          @keydown="onKeyDown"
+          @input="onInput"
+        />
+        <div class="quick-jump-results" v-show="filteredResults.length > 0">
+          <div
+            v-for="(result, index) in filteredResults"
+            :key="result.key"
+            :class="[
+              'quick-jump-result',
+              { 'selected border-left': index === selectedIndex }
+            ]"
+            @click="selectResult(result)"
+            @mouseenter="selectedIndex = index"
+          >
+            <span class="result-icon">
+              <span :class="getResultIcon(result)"></span>
+            </span>
+
+            <span class="result-name"
+              >{{ result.name }}
+              <span v-show="hasMentions(result)" class="badge text-bg-warning"
+                >!</span
+              ></span
+            >
+            <span class="result-description" v-if="result.description">
+              {{ result.description }}
+            </span>
+          </div>
+        </div>
         <div
-          class="quick-jump-new-conversation border"
-          :class="{ selected: selectedIndex === -1 }"
-          @click="openNewConversation"
-          @mouseenter="selectedIndex = -1"
+          class="quick-jump-footer"
+          v-show="filteredResults.length === 0 && searchQuery.length > 0"
         >
-          <span class="result-icon">
-            <span class="fas fa-plus"></span>
-          </span>
-          <span class="result-name">{{
-            l('quickJump.openNewConversation', searchQuery)
-          }}</span>
+          <span>{{ l('quickJump.noResults') }}</span>
+          <div
+            class="quick-jump-new-conversation border"
+            :class="{ selected: selectedIndex === -1 }"
+            @click="openNewConversation"
+            @mouseenter="selectedIndex = -1"
+          >
+            <span class="result-icon">
+              <span class="fas fa-plus"></span>
+            </span>
+            <span class="result-name">{{
+              l('quickJump.openNewConversation', searchQuery)
+            }}</span>
+          </div>
         </div>
       </div>
     </div>
+    <div @click="hide" class="show modal-backdrop"></div>
   </div>
 </template>
 
@@ -81,7 +77,7 @@
   interface SearchResult {
     key: string;
     name: string;
-    type: 'channel' | 'private' | 'console';
+    type: 'channel' | 'private' | 'friend' | 'bookmark' | 'recent' | 'console';
     conversation?: Conversation;
     description?: string;
   }
@@ -101,12 +97,7 @@
 
       const query = this.searchQuery.toLowerCase();
       return this.allResults
-        .filter(
-          result =>
-            result.name.toLowerCase().includes(query) ||
-            (result.description &&
-              result.description.toLowerCase().includes(query))
-        )
+        .filter(result => result.name.toLowerCase().includes(query))
         .slice(0, 10); // Limit to 10 results
     }
 
@@ -163,6 +154,58 @@
         });
       }
 
+      //we filter: active conversations
+      for (const friend of core.characters.friends
+        .slice()
+        .filter(x => core.conversations.getPrivate(x, true) === undefined)) {
+        results.push({
+          key: friend.name,
+          name: friend.name,
+          type: 'friend',
+          description: l('user.friend')
+        });
+      }
+
+      //we filter: online friends, and active conversations
+      for (const bookmark of core.characters.bookmarks
+        .slice()
+        .filter(x => core.characters.friends.indexOf(x) === -1)
+        .filter(x => core.conversations.getPrivate(x, true) === undefined)) {
+        results.push({
+          key: bookmark.name,
+          name: bookmark.name,
+          type: 'bookmark',
+          description: l('user.bookmark')
+        });
+      }
+
+      //We filter: online friends, online bookmarks, and active conversations
+      for (const recent of core.conversations.recent
+        .slice()
+        .filter(
+          x =>
+            !core.characters.bookmarks.some(
+              bookmark => bookmark.name === x.character
+            )
+        )
+        .filter(
+          x =>
+            !core.characters.friends.some(friend => friend.name === x.character)
+        )
+        .filter(
+          x =>
+            core.conversations.getPrivate(
+              core.characters.get(x.character),
+              true
+            ) === undefined
+        )) {
+        results.push({
+          key: recent.character,
+          name: recent.character,
+          type: 'recent',
+          description: l('quickJump.recent')
+        });
+      }
       // Sort by recent activity (unread first, then by last message time)
       results.sort((a, b) => {
         if (!a.conversation || !b.conversation) return 0;
@@ -283,6 +326,11 @@
     selectResult(result: SearchResult): void {
       if (result.conversation) {
         result.conversation.show();
+      } else {
+        //We don't have a conversation for this result, but since one was selected we open it
+        const character = core.characters.get(result.name);
+        const conversation = core.conversations.getPrivate(character);
+        conversation.show();
       }
       this.hide();
     }
@@ -307,6 +355,25 @@
       this.hide();
     }
 
+    getResultIcon(result: SearchResult) {
+      switch (result.type) {
+        case 'console':
+          return 'fas fa-home';
+        case 'private':
+          return 'fas fa-comment';
+        case 'channel':
+          return 'fas fa-hashtag';
+        case 'friend':
+          return 'fas fa-user-group';
+        case 'bookmark':
+          return 'fas fa-bookmark';
+        case 'recent':
+          return 'fas fa-clock-rotate-left';
+        default:
+          return 'fas fa-comment';
+      }
+    }
+
     @Watch('visible')
     onVisibilityChange(newValue: boolean): void {
       if (newValue) {
@@ -324,17 +391,14 @@
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 9999;
+    //1 above the bootstrap 5 modal z-index (which used to be 1040)
+    z-index: 1051;
     display: flex;
     align-items: flex-start;
     justify-content: center;
     padding-top: 10vh;
 
     .quick-jump-container {
-      border-radius: 12px;
-      box-shadow:
-        0 20px 60px rgba(0, 0, 0, 0.3),
-        0 8px 25px rgba(0, 0, 0, 0.15);
       width: 90%;
       max-width: 600px;
       overflow: hidden;
@@ -354,7 +418,6 @@
         border: none;
         padding: 16px;
         font-size: 16px;
-        color: var(--textColor);
         outline: none;
 
         &::placeholder {
@@ -363,7 +426,6 @@
       }
 
       .quick-jump-results {
-        max-height: 400px;
         overflow-y: auto;
 
         .quick-jump-result {
@@ -376,12 +438,11 @@
           position: relative;
 
           &:hover {
-            background-color: var(--primary);
-            color: var(--textColor);
+            background-color: var(--bs-primary);
           }
 
           &.selected {
-            background-color: var(--primary);
+            background-color: var(--bs-primary);
             padding-left: 12px;
             font-weight: 600;
           }
@@ -440,7 +501,7 @@
           &.selected {
             padding-left: 12px;
             font-weight: 600;
-            background-color: var(--primary);
+            background-color: var(--bs-primary);
             opacity: 1;
           }
 

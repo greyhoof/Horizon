@@ -17,22 +17,23 @@
       >
         <div class="modal-content" style="max-height: 100%">
           <div class="modal-header" style="flex-shrink: 0">
-            <h4 class="modal-title">
+            <h5 class="modal-title">
+              <i v-if="iconClass" :class="iconClass" class="fa-fw"></i>
               <slot name="title">{{ action }}</slot>
-            </h4>
-            <button
+            </h5>
+            <a
               type="button"
-              class="close"
+              class="btn-close btn"
               @click="hide"
               aria-label="Close"
               v-show="!keepOpen"
             >
-              &times;
-            </button>
+              <i class="fa fa-times fa-lg"></i>
+            </a>
           </div>
           <div
-            class="modal-body"
-            style="overflow: auto; -webkit-overflow-scrolling: auto"
+            class="modal-body hidden-scrollbar"
+            style="overflow-x: auto; -webkit-overflow-scrolling: auto"
             tabindex="-1"
           >
             <slot></slot>
@@ -104,6 +105,8 @@
     readonly showCancel!: boolean;
     @Prop
     readonly buttonText?: string;
+    @Prop
+    readonly iconClass?: string;
     isShown = false;
 
     keepOpen = false;
@@ -165,5 +168,9 @@
 
   .modal-body:focus {
     outline: none !important;
+  }
+
+  .modal-title .fa-fw {
+    margin-right: 0.5rem;
   }
 </style>

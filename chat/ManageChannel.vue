@@ -4,11 +4,11 @@
     :action="l('manageChannel.action', channel.name)"
     :buttonText="l('manageChannel.submit')"
     @submit="submit"
-    dialogClass="w-100 modal-lg"
+    dialogClass="modal-70"
     @open="onOpen"
   >
     <div
-      class="form-group"
+      class="mb-3"
       v-show="isChannelOwner && channel.id.substr(0, 4) === 'adh-'"
     >
       <label class="control-label" for="isPublic">
@@ -16,17 +16,17 @@
         {{ l('manageChannel.isPublic') }}
       </label>
     </div>
-    <div class="form-group" v-show="isChannelOwner">
+    <div class="mb-3" v-show="isChannelOwner">
       <label class="control-label" for="mode">{{
         l('manageChannel.mode')
       }}</label>
-      <select v-model="mode" class="form-control" id="mode">
+      <select v-model="mode" class="form-select" id="mode">
         <option v-for="mode in modes" :value="mode">
           {{ l('channel.mode.' + mode) }}
         </option>
       </select>
     </div>
-    <div class="form-group">
+    <div class="mb-3">
       <label>{{ l('manageChannel.description') }}</label>
       <bbcode-editor
         classes="form-control"

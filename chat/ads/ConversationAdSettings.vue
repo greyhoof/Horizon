@@ -4,8 +4,10 @@
     @submit="submit"
     ref="dialog"
     @open="load()"
-    dialogClass="w-100"
+    id="conversationAdSettings"
+    dialogClass="modal-70"
     :buttonText="l('conversationSettings.save')"
+    iconClass="fas fa-rectangle-ad"
   >
     <div class="phased-out-warning">
       <h4>Prepare to Move</h4>
@@ -29,14 +31,14 @@
       </p>
     </div>
 
-    <div class="form-group">
+    <div class="mb-3">
       <label class="control-label" for="randomOrder">
         <input type="checkbox" v-model="randomOrder" id="randomOrder" />
         Serve ads in random order
       </label>
     </div>
 
-    <div class="form-group ad-list" v-for="(ad, index) in ads">
+    <div class="mb-3 ad-list" v-for="(ad, index) in ads">
       <label :for="'ad' + conversation.key + '-' + index" class="control-label"
         >Ad #{{ index + 1 }}
         <a v-if="index > 0" @click="moveAdUp(index)" title="Move Up"
@@ -56,8 +58,8 @@
       <editor
         :id="'ad' + conversation.key + '-' + index"
         v-model="ads[index]"
+        :classes="'form-control'"
         :hasToolbar="true"
-        class="form-control"
         :maxlength="core.connection.vars.lfrp_max"
       >
       </editor>
@@ -165,7 +167,7 @@
 </script>
 
 <style lang="scss">
-  .w-100 {
+  #conversationAdSettings.w-100 {
     min-width: 70%;
   }
 
@@ -190,7 +192,7 @@
       padding: 5px;
       border-radius: 0 5px 5px 5px;
       background: var(--input-bg);
-      border-color: var(--secondary);
+      border-color: var(--bs-secondary);
     }
 
     .bbcode-editor {

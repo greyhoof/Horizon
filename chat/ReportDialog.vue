@@ -4,11 +4,12 @@
     @submit.prevent="submit()"
     :disabled="submitting"
     dialogClass="modal-lg"
+    iconClass="fas fa-triangle-exclamation"
   >
     <div class="alert alert-danger" v-show="error">{{ error }}</div>
     <div ref="caption"></div>
     <br />
-    <div class="form-group">
+    <div class="mb-3">
       <h6>{{ l('chat.report.conversation') }}</h6>
       <p>{{ conversation }}</p>
       <h6>{{ l('chat.report.reporting') }}</h6>

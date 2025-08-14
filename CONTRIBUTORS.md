@@ -1,23 +1,6 @@
 # Contributors
 
-**Horizon** received contributions from these people:
-
-- **CodingWithAnxiety**, As the project maintainer
-- [freenutsxd](https://github.com/freenutsxd)
-- [FatcatClient](https://github.com/FatCatClient)
-- [Fire Under the Mountain](https://github.com/FireUnderTheMountain)
-
-As well, **Rising** received contributions from the following:
-
-- [Mr Stallion, esq.](https://github.com/hearmeneigh)
-- [twilight-sparkle-irl](https://github.com/twilight-sparkle-irl)
-- [ButterCheezii](https://github.com/ButterCheezii)
-- [FatCatClient](https://github.com/FatCatClient)
-- [WhiteHusky](https://github.com/WhiteHusky)
-- [Abeehiltz](https://github.com/Abeehiltz)
-- [greyhoof](https://github.com/greyhoof)
-- [Nensec](https://github.com/Nensec)
-- [F-List Team](https://github.com/f-list) (original F-Chat 3.0 client)
+Contributors are now listed in [README.md](./README.md)
 
 ## Acknowledgements
 

@@ -8,6 +8,7 @@
   >
     <tabs
       style="flex-shrink: 0"
+      :fullWidth="true"
       :tabs="
         channel
           ? { 0: l('users.friends'), 1: l('users.members') }
@@ -17,7 +18,11 @@
       "
       v-model="tab"
     ></tabs>
-    <div class="users" style="padding-left: 10px" v-if="tab === '0'">
+    <div
+      class="users hidden-scrollbar"
+      style="padding-left: 10px; padding-bottom: 10px"
+      v-if="tab === '0'"
+    >
       <h4>{{ l('users.friends') }}</h4>
       <div
         v-for="character in friends"
@@ -47,9 +52,15 @@
     </div>
     <div
       v-if="channel && tab === '1'"
-      style="padding-left: 5px; flex: 1; display: flex; flex-direction: column"
+      style="
+        padding-bottom: 10px;
+        padding-left: 5px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      "
     >
-      <div class="users" style="flex: 1; padding-left: 5px">
+      <div class="users hidden-scrollbar" style="flex: 1; padding-left: 5px">
         <h4>
           {{ l('users.memberCount', channel.sortedMembers.length) }}
           <a class="btn sort" @click="switchSort"><i class="fa fa-sort"></i></a>
@@ -68,11 +79,9 @@
         </div>
       </div>
       <div class="input-group" style="margin-top: 5px; flex-shrink: 0">
-        <div class="input-group-prepend">
-          <div class="input-group-text">
-            <span class="fas fa-search"></span>
-          </div>
-        </div>
+        <span class="input-group-text">
+          <span class="fas fa-search"></span>
+        </span>
         <input
           class="form-control"
           v-model="filter"
@@ -83,8 +92,13 @@
     </div>
     <div
       v-if="!channel && !isConsoleTab && tab === '1'"
-      style="flex: 1; display: flex; flex-direction: column"
-      class="profile"
+      style="
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 10px;
+      "
+      class="profile hidden-scrollbar"
     >
       <a :href="profileUrl" target="_blank" class="btn profile-button">
         <span class="fa fa-fw fa-user"></span>
@@ -290,7 +304,7 @@
     }
 
     .users {
-      overflow: auto;
+      height: 100%;
     }
 
     .nav li:first-child a {
@@ -329,7 +343,7 @@
 
     .profile {
       .profile-button {
-        border: 1px var(--secondary) solid;
+        border: 1px var(--bs-secondary) solid;
         padding-top: 0.25rem;
         padding-bottom: 0.25rem;
         min-height: 2rem;
@@ -364,7 +378,7 @@
       }
 
       .row.character-page {
-        display: block;
+        display: flex;
         margin-right: 0;
         margin-left: 0;
 
@@ -403,6 +417,9 @@
           .card {
             border: none !important;
             background-color: transparent !important;
+          }
+          .indentText {
+            padding-left: 0px;
           }
 
           .character-kinks-block {

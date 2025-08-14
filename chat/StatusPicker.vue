@@ -5,11 +5,12 @@
     buttonText="Select"
     @open="onMounted()"
     @submit="selectStatus"
-    dialogClass="w-100 modal-lg"
+    dialogClass="w-100 modal-70"
+    iconClass="fa-solid fa-clock-rotate-left"
   >
     <form class="status-picker" v-if="history.length > 0">
       <div
-        class="form-row"
+        class="row"
         v-for="(historicStatus, index) in history"
         :class="{ 'selected-row': index === selectedStatus }"
       >
@@ -32,7 +33,7 @@
               class="fas"
               :class="{ 'fa-check-circle': index === selectedStatus }"
           /></span>
-          <label class="custom-control-label" :for="'history_status_' + index">
+          <label class="form-check-label" :for="'history_status_' + index">
             <bbcode :text="historicStatus"></bbcode>
           </label>
           <span class="content-action" @click="removeStatusHistoryEntry(index)"
@@ -162,15 +163,15 @@
       border-radius: 2px;
     }
 
-    .form-row:hover {
+    .row:hover {
       /*background-color: #20203e;*/
       /*border: 1px solid #2d2d6b;*/
-      backdrop-filter: invert(30%) !important;
+      backdrop-filter: invert(30%);
       border-radius: 2px;
     }
 
     .selected-row,
-    .form-row.selected-row:hover {
+    .row.selected-row:hover {
       /*background-color: #343461;*/
       /*border: 1px solid #6565b2;*/
       backdrop-filter: invert(20%);

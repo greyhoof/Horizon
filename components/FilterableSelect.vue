@@ -1,13 +1,10 @@
 <template>
-  <dropdown
-    class="filterable-select"
-    linkClass="custom-select"
-    :keepOpen="true"
-  >
+  <dropdown class="filterable-select" linkClass="form-select" :keepOpen="true">
     <template slot="title" v-if="multiple">{{ label }}</template>
     <slot v-else slot="title" :option="selected">{{ label }}</slot>
 
-    <div style="padding: 10px">
+    <div class="p-2">
+      <!-- changed from style="padding: 10px" to utility class -->
       <input
         v-model="filter"
         class="form-control"
@@ -15,15 +12,20 @@
         @mousedown.stop
       />
     </div>
-    <div class="dropdown-items">
+    <div class="overflow-auto dropdown-items">
+      <!-- added overflow-auto class -->
       <template v-if="multiple">
         <a
           href="#"
           @click.stop="select(option)"
           v-for="option in filtered"
-          class="dropdown-item"
+          class="dropdown-item d-flex align-items-center"
         >
-          <input type="checkbox" :checked="isSelected(option)" />
+          <input
+            type="checkbox"
+            class="form-check-input me-2"
+            :checked="isSelected(option)"
+          />
           <slot :option="option">{{ option }}</slot>
         </a>
       </template>
@@ -115,17 +117,11 @@
   .filterable-select {
     .dropdown-items {
       max-height: 200px;
-      overflow-y: auto;
     }
 
     button {
       display: flex;
-      text-align: left;
-    }
-
-    input[type='checkbox'] {
-      vertical-align: text-bottom;
-      margin-right: 5px;
+      text-align: start; /* changed from left to start */
     }
   }
 </style>

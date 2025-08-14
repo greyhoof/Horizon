@@ -47,7 +47,7 @@
     >
       <select
         v-model="choice"
-        class="form-control"
+        class="form-select"
         slot-scope="props"
         :class="props.cls"
         id="copyCustomChoice"

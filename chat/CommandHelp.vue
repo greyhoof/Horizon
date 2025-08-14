@@ -4,6 +4,7 @@
     :buttons="false"
     :action="l('commands.help')"
     id="command-help"
+    iconClass="fas fa-question"
   >
     <div style="overflow: auto">
       <div v-for="command in filteredCommands">
@@ -25,9 +26,9 @@
       </div>
     </div>
     <div class="input-group" style="padding: 10px 0; flex-shrink: 0">
-      <div class="input-group-prepend">
-        <div class="input-group-text"><span class="fas fa-search"></span></div>
-      </div>
+      <span class="input-group-text">
+        <span class="fas fa-search"></span>
+      </span>
       <input class="form-control" v-model="filter" :placeholder="l('filter')" />
     </div>
   </modal>

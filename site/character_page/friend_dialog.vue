@@ -3,6 +3,7 @@
     :action="'Friends for ' + name"
     :buttons="false"
     dialog-class="modal-dialog-centered modal-lg"
+    iconClass="fas fa-user-group"
   >
     <div v-show="loading" class="alert alert-info">
       Loading friend information.
@@ -99,7 +100,7 @@
           <h4>Request Friendship</h4>
         </div>
         <div class="card-body">
-          <div class="form-inline">
+          <div class="d-flex align-items-center">
             <label class="control-label" for="friendRequestCharacter"
               >Character:
             </label>

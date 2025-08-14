@@ -37,6 +37,12 @@ const tabMap: { [key: string]: electron.WebContents } = {};
 const newMessagesMap: { [id: number]: boolean } = {};
 
 /**
+ * Used to track the injected CSS per key value. Inserting CSS returns a key value that can later be used to remove the value.
+ * @internal
+ */
+const windowCssKeyMap: { [id: number]: string } = {};
+
+/**
  * Tray icon path.
  * @internal
  */
@@ -248,6 +254,18 @@ export function createMainWindow(
     delete newMessagesMap[window.id];
   });
 
+  window.webContents.on('did-finish-load', async () => {
+    if (settings.horizonCustomCssEnabled) {
+      const key = await window.webContents.insertCSS(
+        `html {${settings.horizonCustomCss}}`,
+        {
+          cssOrigin: 'author'
+        }
+      );
+      windowCssKeyMap[window.id] = key;
+    }
+  });
+
   updateSupportedLanguages(
     electron.session.defaultSession.availableSpellCheckerLanguages
   );
@@ -291,7 +309,9 @@ export function createMainWindow(
   window.on('closed', () => windows.splice(windows.indexOf(window), 1));
   window.once('ready-to-show', () => {
     window.show();
-    if (lastState.maximized) window.maximize();
+    if (lastState.maximized) {
+      window.maximize();
+    }
   });
 
   //On MacOS, the app menu is not bound to any windows, so some options need to be manually toggled. An app can be "active" without any focused windows.
@@ -327,14 +347,20 @@ export function createMainWindow(
  * @internal
  */
 function toggleWindowSpecificMenuItems(active: boolean) {
-  let appMenu = app.applicationMenu;
+  const appMenu = app.applicationMenu;
+  const toggleableIds = [
+    'fixLogs',
+    'showProfile',
+    'newTab',
+    'zoomOut',
+    'zoomIn'
+  ];
+
   if (appMenu) {
-    ['fixLogs', 'showProfile', 'newTab', 'zoomOut', 'zoomIn'].forEach(
-      itemId => {
-        var item = appMenu!.getMenuItemById(itemId);
-        if (item) item.enabled = active;
-      }
-    );
+    toggleableIds.forEach(itemId => {
+      var item = appMenu!.getMenuItemById(itemId);
+      if (item) item.enabled = active;
+    });
   }
 }
 
@@ -374,6 +400,26 @@ export function setUpWebContents(
   webContents.setWindowOpenHandler(({ url }) => {
     openLinkExternally(new Event('link'), url);
     return { action: 'deny' };
+  });
+}
+
+export async function updateCustomCssAllWindows(
+  styleSheet: string,
+  useCustomCss: boolean
+) {
+  electron.BrowserWindow.getAllWindows().forEach(async window => {
+    if (windowCssKeyMap[window.id]) {
+      await window.webContents.removeInsertedCSS(windowCssKeyMap[window.id]);
+      delete windowCssKeyMap[window.id];
+    }
+    if (useCustomCss) {
+      let key = await window.webContents.insertCSS(` html { ${styleSheet} }`, {
+        cssOrigin: 'author'
+      });
+      windowCssKeyMap[window.id] = key;
+    }
+
+    window.webContents.send('user-css-updated', styleSheet, useCustomCss);
   });
 }
 
@@ -620,18 +666,20 @@ export function createChangelogWindow(
 export function createAboutWindow(
   parentWindow: electron.BrowserWindow
 ): electron.BrowserWindow {
+  const icon = process.platform === 'win32' ? winIcon : pngIcon;
+
   const about = new electron.BrowserWindow({
     width: 400,
-    height: 400,
+    height: 400, // Initial height
     center: true,
     resizable: false,
     minimizable: false,
-    useContentSize: process.platform === 'win32',
-    alwaysOnTop: true,
-    modal: false,
+    useContentSize: process.platform === 'win32', // Important for Windows
+    modal: true,
     parent: parentWindow,
     autoHideMenuBar: true,
-    icon: process.platform === 'win32' ? winIcon : pngIcon,
+    show: false,
+    icon,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false
@@ -640,30 +688,60 @@ export function createAboutWindow(
 
   remoteMain.enable(about.webContents);
 
-  // Make links open in external browser
+  // Handle external links
   about.webContents.setWindowOpenHandler(({ url }) => {
     electron.shell.openExternal(url);
     return { action: 'deny' };
   });
 
-  // Get package.json version and pass it to the renderer
-  const packageInfo = require('../package.json');
+  // Set package version
+  process.env.npm_package_version = require('../package.json').version;
 
-  // Set environment variable for package version that the renderer can access
-  process.env.npm_package_version = packageInfo.version;
-
-  // Load the about HTML file
+  // Load the HTML file
   about.loadFile(path.join(__dirname, 'about.html'));
 
-  about.webContents.on('dom-ready', () => {
-    // The following ensures proper path encoding for Windows paths too
-    const iconPath = process.platform === 'win32' ? winIcon : pngIcon;
-    const encodedPath = 'file://' + iconPath.replace(/\\/g, '/');
+  // Adjust height to content and show window
+  about.webContents.once('dom-ready', () => {
+    // Set icon path - use the icon directly as it's already a full path
+    const iconPath = 'file://' + icon.replace(/\\/g, '/');
 
-    about.webContents.executeJavaScript(`
-      document.querySelector('.app-logo').src = "${encodedPath}";
-      console.log("Updated icon path to: ${encodedPath}");
-    `);
+    // Calculate content height and set icon
+    about.webContents
+      .executeJavaScript(
+        `
+      // Sets icon
+      const logo = document.querySelector('.app-logo');
+      if (logo) logo.src = '${iconPath}';
+      
+      // Return height of content for window sizing
+      const container = document.querySelector('.container');
+      container ? container.scrollHeight + 60 : 400;
+    `
+      )
+      .then((height: number) => {
+        // Constrain height to reasonable bounds
+        const finalHeight = Math.min(Math.max(height, 350), 600);
+
+        // Platform-specific sizing
+        if (process.platform === 'win32') {
+          about.setContentSize(400, finalHeight);
+        } else {
+          about.setSize(400, finalHeight);
+        }
+
+        about.center();
+        about.show();
+      })
+      .catch(() => {
+        // Fallback if calculation fails
+        if (process.platform === 'win32') {
+          about.setContentSize(400, 400);
+        } else {
+          about.setSize(400, 400);
+        }
+        about.center();
+        about.show();
+      });
   });
 
   return about;

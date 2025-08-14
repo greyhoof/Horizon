@@ -8,199 +8,262 @@
     @touchend="userMenuHandle"
   >
     <sidebar id="sidebar" :label="l('chat.menu')" icon="fa-bars">
-      <img
-        :src="characterImage(ownCharacter.name)"
-        v-if="showAvatars"
-        style="
-          float: left;
-          margin-right: 5px;
-          margin-top: 5px;
-          width: 70px;
-          height: 70px;
-        "
-      />
-      <a
-        target="_blank"
-        :href="ownCharacterLink"
-        class="btn"
-        style="display: block"
-        >{{ ownCharacter.name }}</a
-      >
-      <a href="#" @click.prevent="logOut()" class="btn"
-        ><i class="fas fa-sign-out-alt"></i>{{ l('chat.logout') }}</a
-      ><br />
-      <div>
-        {{ l('chat.status') }}
-        <a href="#" @click.prevent="showStatus()" class="btn">
-          <span
-            class="fas fa-fw"
-            :class="getStatusIcon(ownCharacter.status)"
-          ></span
-          >{{ l('status.' + ownCharacter.status) }}
-        </a>
-      </div>
-      <div style="clear: both">
-        <a href="#" @click.prevent="showSearch()" class="btn"
-          ><span class="fas fa-fw fa-search"></span>
-          {{ l('characterSearch.open') }}</a
+      <div id="sidebarUserInfo">
+        <div
+          style="min-height: 65px; overflow: auto"
+          class="sidebarUserInfo-character"
         >
-      </div>
-      <div>
-        <a href="#" @click.prevent="showSettings()" class="btn"
-          ><span class="fas fa-fw fa-user-gear"></span>
-          {{ l('settings.character') }}</a
-        >
-      </div>
-      <div>
-        <a href="#" @click.prevent="showRecent()" class="btn"
-          ><span class="fas fa-fw fa-history"></span>
-          {{ l('chat.recentConversations') }}</a
-        >
-      </div>
+          <a
+            :href="ownCharacterLink"
+            role="button"
+            :aria-label="ownCharacter.name + '\'s avatar'"
+          >
+            <img
+              :src="characterImage(ownCharacter.name)"
+              id="userInfo-avatar"
+              v-if="showAvatars"
+              style="width: 60px; height: 60px; margin-right: 5px; float: left"
+            />
+          </a>
+          <div
+            @click.prevent="showStatus()"
+            class="sidebarUserInfo-user d-flex flex-column"
+          >
+            <h5
+              style="margin: 0; line-height: 1.65rem"
+              class="sidebarUserInfo-name"
+            >
+              {{ ownCharacter.name }}
+            </h5>
+            <span>
+              <i
+                class="fas fa-fw"
+                :class="getStatusIcon(ownCharacter.status)"
+              ></i>
+              {{ l('status.' + ownCharacter.status) }}
+            </span>
+          </div>
+        </div>
+        <div>
+          <div class="userInfo-buttons-container">
+            <a
+              href="#"
+              role="button"
+              class="userInfo-button-item"
+              :title="l('settings.character')"
+              @click.prevent="showSettings()"
+            >
+              <i class="fa-solid fa-user-gear fa-fw"></i>
+            </a>
+            <a
+              href="#"
+              role="button"
+              class="userInfo-button-item"
+              :title="l('admgr.open')"
+              @click.prevent="showAdLauncher()"
+            >
+              <i class="fa-solid fa-rectangle-ad fa-fw"></i>
+            </a>
 
-      <div>
-        <a href="#" @click.prevent="showAdCenter()" class="btn"
-          ><span class="fas fa-fw fa-ad"></span> Ad Editor</a
-        >
-      </div>
-
-      <div>
-        <a href="#" @click.prevent="showAdLauncher()" class="btn"
-          ><span class="fas fa-fw fa-play"></span> Post Ads</a
-        >
-
-        <span v-show="adsAreRunning()" class="adControls">
-          <span
-            aria-label="Stop All Ads"
-            class="fas fa-fw fa-stop"
-            @click.prevent="stopAllAds()"
-          ></span>
-        </span>
-      </div>
-
-      <div>
-        <a href="#" @click.prevent="showProfileAnalyzer()" class="btn"
-          ><span class="fas fa-fw fa-user-md"></span> Profile Helper</a
-        >
-      </div>
-
-      <div class="list-group conversation-nav">
-        <a
-          :class="getClasses(conversations.consoleTab)"
-          href="#"
-          @click.prevent="conversations.consoleTab.show()"
-          class="list-group-item list-group-item-action"
-        >
-          {{ conversations.consoleTab.name }}
-        </a>
-      </div>
-
-      <a
-        href="#"
-        @click.prevent="showAddPmPartner()"
-        class="btn btn-new-conversation"
-        ><span class="fas fa-comment"></span> {{ l('chat.pms') }}</a
-      >
-
-      <div class="list-group conversation-nav" ref="privateConversations">
-        <a
-          v-for="conversation in conversations.privateConversations"
-          href="#"
-          @click.prevent="conversation.show()"
-          :class="getClasses(conversation)"
-          :data-character="conversation.character.name"
-          data-touch="false"
-          class="list-group-item list-group-item-action item-private"
-          :key="conversation.key"
-          @click.middle.prevent.stop="conversation.close()"
-        >
-          <img
-            :src="characterImage(conversation.character.name)"
-            v-if="showAvatars"
-          />
-          <div class="name">
-            <span>{{ conversation.character.name }}</span>
-            <div style="line-height: 0; display: flex">
+            <span v-show="adsAreRunning()" class="adControls">
               <span
-                class="fas fa-reply"
-                v-show="needsReply(conversation)"
+                aria-label="Stop All Ads"
+                class="fas fa-fw fa-stop"
+                @click.prevent="stopAllAds()"
               ></span>
+            </span>
+
+            <a
+              href="#"
+              role="button"
+              class="userInfo-button-item"
+              :title="l('chat.logout')"
+              @click.prevent="logOut()"
+            >
+              <i class="fa-solid fa-sign-out-alt fa-fw"></i>
+            </a>
+          </div>
+          <note-status
+            v-if="coreState.settings.risingShowUnreadOfflineCount"
+          ></note-status>
+        </div>
+
+        <!--
+        This is temporarily commented out until we properly merge the two ad centre modals into one.
+        <div>
+          <a href="#" @click.prevent="showAdLauncher()" class="btn"
+            ><span class="fas fa-fw fa-play"></span> Post Ads</a
+          >
+        </div>
+        -->
+      </div>
+      <div id="conversations" class="hidden-scrollbar">
+        <div style="padding-top: 8px" class="list-group conversation-nav">
+          <a
+            :class="getClasses(conversations.consoleTab)"
+            href="#"
+            @click.prevent="conversations.consoleTab.show()"
+            class="list-group-item list-group-item-action"
+          >
+            {{ conversations.consoleTab.name }}
+          </a>
+        </div>
+
+        <div style="clear: both" class="conversationList-header d-flex">
+          <span class="flex-grow-1">
+            <a href="#" @click.prevent="showAddPmPartner()" class="btn">
+              {{ l('chat.pms.short') }}</a
+            >
+          </span>
+
+          <a
+            href="#"
+            @click.prevent="showSearch()"
+            :title="l('characterSearch.open')"
+            class="btn"
+            ><span class="fas fa-fw fa-search"></span>
+          </a>
+          <a
+            href="#"
+            @click.prevent="showRecent()"
+            :title="l('chat.recentConversations')"
+            class="btn"
+            ><span class="fas fa-fw fa-history"></span> </a
+          ><a
+            :class="{
+              glowing:
+                conversations.privateConversations.length === 0 &&
+                privateCanGlow
+            }"
+            href="#"
+            @click.prevent="showQuickJump()"
+            :title="l('quickJump.action')"
+            class="btn"
+            ><span class="fas fa-fw fa-shuffle"></span
+          ></a>
+        </div>
+        <div class="list-group conversation-nav" ref="privateConversations">
+          <a
+            v-for="conversation in conversations.privateConversations"
+            href="#"
+            @click.prevent="conversation.show()"
+            :class="getClasses(conversation)"
+            :data-character="conversation.character.name"
+            data-bs-touch="false"
+            class="list-group-item list-group-item-action item-private"
+            :key="conversation.key"
+            @click.middle.prevent.stop="conversation.close()"
+          >
+            <img
+              :src="characterImage(conversation.character.name)"
+              v-if="showAvatars"
+            />
+            <div class="name">
+              <span>{{ conversation.character.name }}</span>
+              <div style="line-height: 0; display: flex">
+                <span
+                  class="fas fa-reply"
+                  v-show="needsReply(conversation)"
+                ></span>
+                <span
+                  class="online-status"
+                  :class="getOnlineStatusIconClasses(conversation)"
+                ></span>
+                <span style="flex: 1"></span>
+                <span
+                  class="pin fas fa-thumbtack"
+                  :class="{ active: conversation.isPinned }"
+                  @click="conversation.isPinned = !conversation.isPinned"
+                  :aria-label="l('chat.pinTab')"
+                ></span>
+                <span
+                  class="fas fa-times leave"
+                  @click.stop="conversation.close()"
+                  :aria-label="l('chat.closeTab')"
+                ></span>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <div style="clear: both" class="conversationList-header d-flex">
+          <span class="flex-grow-1">
+            <a href="#" @click.prevent="showChannels()" class="btn">
+              {{ l('chat.channels') }}</a
+            >
+          </span>
+
+          <a
+            href="#"
+            @click.prevent="markAllAsRead()"
+            class="btn"
+            :title="l('action.markAsRead')"
+            ><span class="fas fa-fw fa-list-check"></span> </a
+          ><a
+            href="#"
+            @click.prevent="showRecent(true)"
+            class="btn"
+            :title="l('chat.recentConversations')"
+            ><span class="fas fa-fw fa-history"></span> </a
+          ><a
+            href="#"
+            @click.prevent="showChannels()"
+            class="btn"
+            :title="l('chat.channelJoin')"
+            :class="{
+              glowing:
+                conversations.channelConversations.length === 0 &&
+                channelCanGlow
+            }"
+            ><span class="fas fa-fw fa-plus"></span
+          ></a>
+        </div>
+
+        <div class="list-group conversation-nav" ref="channelConversations">
+          <a
+            v-for="conversation in conversations.channelConversations"
+            href="#"
+            @click.prevent="conversation.show()"
+            :class="getClasses(conversation)"
+            class="list-group-item list-group-item-action item-channel"
+            :key="conversation.key"
+            @click.middle.prevent.stop="conversation.close()"
+          >
+            <span class="name">{{ conversation.name }}</span>
+            <span>
               <span
-                class="online-status"
-                :class="getOnlineStatusIconClasses(conversation)"
+                v-if="conversation.hasAutomatedAds()"
+                class="fas fa-ad ads"
+                :class="{ active: conversation.isSendingAutomatedAds() }"
+                aria-label="Toggle ads"
+                @click.stop="conversation.toggleAutomatedAds()"
               ></span>
-              <span style="flex: 1"></span>
               <span
                 class="pin fas fa-thumbtack"
                 :class="{ active: conversation.isPinned }"
-                @click="conversation.isPinned = !conversation.isPinned"
                 :aria-label="l('chat.pinTab')"
+                @click.stop="conversation.isPinned = !conversation.isPinned"
+                @mousedown.prevent
               ></span>
               <span
                 class="fas fa-times leave"
                 @click.stop="conversation.close()"
                 :aria-label="l('chat.closeTab')"
               ></span>
-            </div>
-          </div>
-        </a>
+            </span>
+          </a>
+        </div>
       </div>
-      <a href="#" @click.prevent="showQuickJump()" class="new-conversation">{{
-        l('quickJump.action')
-      }}</a>
-      <a
-        href="#"
-        @click.prevent="showChannels()"
-        class="btn btn-new-conversation"
-        ><span class="fas fa-list"></span> {{ l('chat.channels') }}</a
-      >
-
-      <div class="list-group conversation-nav" ref="channelConversations">
-        <a
-          v-for="conversation in conversations.channelConversations"
-          href="#"
-          @click.prevent="conversation.show()"
-          :class="getClasses(conversation)"
-          class="list-group-item list-group-item-action item-channel"
-          :key="conversation.key"
-          @click.middle.prevent.stop="conversation.close()"
-        >
-          <span class="name">{{ conversation.name }}</span>
-          <span>
-            <span
-              v-if="conversation.hasAutomatedAds()"
-              class="fas fa-ad"
-              :class="{ active: conversation.isSendingAutomatedAds() }"
-              aria-label="Toggle ads"
-              @click.stop="conversation.toggleAutomatedAds()"
-            ></span>
-            <span
-              class="pin fas fa-thumbtack"
-              :class="{ active: conversation.isPinned }"
-              :aria-label="l('chat.pinTab')"
-              @click.stop="conversation.isPinned = !conversation.isPinned"
-              @mousedown.prevent
-            ></span>
-            <span
-              class="fas fa-times leave"
-              @click.stop="conversation.close()"
-              :aria-label="l('chat.closeTab')"
-            ></span>
-          </span>
-        </a>
-      </div>
-      <a
-        href="#"
-        @click.prevent="showChannels()"
-        class="join-channel"
-        :class="{
-          glowing:
-            conversations.channelConversations.length === 0 && channelCanGlow
-        }"
-        >Join Channel</a
-      >
     </sidebar>
-    <div style="display: flex; flex-direction: column; flex: 1; min-width: 0">
+    <div
+      style="
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-width: 0;
+        padding-bottom: 10px;
+      "
+    >
       <div id="quick-switcher" class="list-group">
         <a
           :class="getClasses(conversations.consoleTab)"
@@ -252,21 +315,7 @@
     <recent-conversations ref="recentDialog"></recent-conversations>
     <image-preview ref="imagePreview"></image-preview>
     <add-pm-partner ref="addPmPartnerDialog"></add-pm-partner>
-    <note-status
-      v-if="coreState.settings.risingShowUnreadOfflineCount"
-    ></note-status>
 
-    <modal
-      :buttons="false"
-      ref="profileAnalysis"
-      dialogClass="profile-analysis"
-    >
-      <profile-analysis></profile-analysis>
-      <template slot="title">
-        {{ ownCharacter.name }}
-        <a class="btn" @click="showProfileAnalyzer"><i class="fa fa-sync" /></a>
-      </template>
-    </modal>
     <quick-jump ref="quickJump"></quick-jump>
   </div>
 </template>
@@ -302,7 +351,6 @@
   import AdCenterDialog from './ads/AdCenter.vue';
   import AdLauncherDialog from './ads/AdLauncher.vue';
   import Modal from '../components/Modal.vue';
-  import ProfileAnalysis from '../learn/recommend/ProfileAnalysis.vue';
   import QuickJump from './QuickJump.vue';
 
   const unreadClasses = {
@@ -329,7 +377,6 @@
       adCenter: AdCenterDialog,
       adLauncher: AdLauncherDialog,
       modal: Modal,
-      'profile-analysis': ProfileAnalysis,
       'quick-jump': QuickJump
     }
   })
@@ -368,7 +415,6 @@
           this.privateCanGlow = false;
         }
       });
-
       Sortable.create(<HTMLElement>this.$refs['privateConversations'], {
         animation: 50,
         fallbackTolerance: 5,
@@ -680,8 +726,21 @@
       (<CharacterSearch>this.$refs['searchDialog']).show();
     }
 
-    showRecent(): void {
+    showRecent(showChannels?: boolean): void {
       (<RecentConversations>this.$refs['recentDialog']).show();
+
+      //Not particularly elegant, but it allows us to open the second tab without changing other function calls
+      (<RecentConversations>this.$refs['recentDialog']).setTab(
+        showChannels ? '1' : '0'
+      );
+    }
+
+    markAllAsRead(): void {
+      this.conversations.channelConversations.forEach(
+        (conversation: Conversation.ChannelConversation) => {
+          conversation.markRead();
+        }
+      );
     }
 
     showChannels(): void {
@@ -775,22 +834,31 @@
   }
 
   .list-group.conversation-nav {
+    //padding-top: 8px;
     .fas.active {
-      color: #02a002;
+      color: var(--bs-success);
     }
 
     .list-group-item {
       padding: 5px;
       display: flex;
       align-items: center;
-      border-right: 0;
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
       .name {
         flex: 1;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+      }
+      .pin,
+      .leave,
+      .ads {
+        &:hover,
+        &:focus {
+          color: var(--bs-link-hover-color);
+          &.active {
+            color: var(--bs-success-text-emphasis);
+          }
+        }
       }
       .fas {
         font-size: 16px;
@@ -816,23 +884,23 @@
         /*}*/
 
         .offline {
-          color: var(--text-muted);
+          color: var(--bs-tertiary-color);
         }
 
         .online {
-          color: var(--success);
+          color: var(--bs-success);
         }
 
         .away {
-          color: var(--warning);
+          color: var(--bs-warning);
         }
         .dnd {
-          color: var(--danger);
+          color: var(--bs-danger);
         }
 
         .fa-comment,
         .fa-comment-dots {
-          color: var(--black);
+          color: inherit;
         }
 
         /*.fa-eye {*/
@@ -850,10 +918,6 @@
       &:last-child img {
         border-bottom-left-radius: 4px;
       }
-    }
-
-    .list-group-item-danger:not(.active) {
-      color: inherit;
     }
   }
 
@@ -899,10 +963,6 @@
       font-size: 2em;
       height: 30px;
     }
-
-    .list-group-item-danger:not(.active) {
-      color: inherit;
-    }
   }
 
   #sidebar {
@@ -910,9 +970,12 @@
       padding: 2px 0;
       text-align: left;
     }
-    .btn-new-conversation {
+    .conversationList-header {
       display: block;
       margin-top: 10px;
+      .btn {
+        font-weight: 600;
+      }
     }
     @media (min-width: breakpoint-min(md)) {
       .sidebar {
@@ -923,7 +986,7 @@
       }
 
       .body {
-        display: block;
+        display: flex;
       }
 
       .expander {
@@ -937,7 +1000,7 @@
       margin-top: 3px;
 
       span {
-        color: var(--danger);
+        color: var(--bs-danger);
         cursor: pointer;
 
         &:hover {
@@ -956,8 +1019,6 @@
     }
 
     .glowing {
-      padding: 3px;
-      margin-right: 0.5em;
       animation: noticeme 2.5s alternate;
       animation-iteration-count: 10;
       animation-timing-function: ease-in-out;

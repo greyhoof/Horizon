@@ -81,6 +81,7 @@ export class Settings implements ISettings {
   horizonGenderMarkerOrigColor = false;
   horizonChangeOfflineColor = false;
   horizonNotifyFriendSignIn = false;
+  horizonHighlightUsers: string[] = [];
 
   horizonCacheDraftMessages = true;
   horizonSaveDraftMessagesToDiskTimer = 60;
@@ -102,7 +103,7 @@ export class Settings implements ISettings {
       '[sub][color=orange][b][AUTOMATED MESSAGE][/b][/color][/sub]\n' +
       'Sorry, the player of this character is not interested in characters matching your profile.\n' +
       '\n' +
-      '🦄 Need a filter for yourself? Try out [url=https://horizn.moe/]F-Chat Horizon[/url]',
+      '✨ Need a filter for yourself? Try out [url=https://horizn.moe/]F-Chat Horizon[/url]',
     minAge: null,
     maxAge: null,
     smartFilters: {
@@ -133,6 +134,7 @@ export class Settings implements ISettings {
   };
 
   risingCharacterTheme = undefined;
+  soundTheme = 'default';
 }
 
 export class AdSettings implements Conversation.AdSettings {
@@ -152,6 +154,7 @@ export class ConversationSettings implements Conversation.Settings {
     randomOrder: false,
     lastAdTimestamp: 0
   };
+  horizonHighlightUsers: string[] = [];
 }
 
 function pad(num: number): string | number {

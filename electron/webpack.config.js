@@ -124,6 +124,7 @@ const mainConfig = {
         { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader' },
         {
           test: /\.(wav|mp3|ogg)$/,
+          exclude: /sound-themes/,
           loader: 'file-loader',
           options: { name: 'sounds/[name].[ext]' }
         },
@@ -138,7 +139,26 @@ const mainConfig = {
           use: [
             'vue-style-loader',
             { loader: 'css-loader', options: { esModule: false } },
-            { loader: 'sass-loader', options: { warnRuleAsWarning: false } }
+            {
+              loader: 'sass-loader',
+              options: {
+                warnRuleAsWarning: false,
+                sassOptions: {
+                  quietDeps: true,
+                  // Add any specific codes here; '*' not supported, so rely on custom logger below.
+                  silenceDeprecations: [
+                    'mixed-decls',
+                    'import',
+                    'color-functions',
+                    'global-builtin',
+                    'slash-div',
+                    'function-units'
+                  ],
+                  verbose: false,
+
+                }
+              }
+            }
           ]
         },
         {
@@ -155,7 +175,24 @@ const mainConfig = {
           use: [
             MiniCssExtractPlugin.loader,
             { loader: 'css-loader', options: { esModule: false } },
-            { loader: 'sass-loader', options: { warnRuleAsWarning: false } }
+            {
+              loader: 'sass-loader',
+              options: {
+                warnRuleAsWarning: false,
+                sassOptions: {
+                  quietDeps: true,
+                  silenceDeprecations: [
+                    'mixed-decls',
+                    'import',
+                    'color-functions',
+                    'global-builtin',
+                    'slash-div',
+                    'function-units'
+                  ],
+                  verbose: false,
+                }
+              }
+            }
           ]
         },
         { test: /\.raw\.js$/, loader: 'raw-loader' }
@@ -234,6 +271,13 @@ const mainConfig = {
               .replace(/\\/g, '/'),
             to: path.join('assets'),
             context: path.resolve(__dirname, '..', 'assets')
+          },
+          {
+            from: path
+              .resolve(__dirname, '..', 'chat', 'sound-themes', '**', '*')
+              .replace(/\\/g, '/'),
+            to: path.join('sound-themes'),
+            context: path.resolve(__dirname, '..', 'chat', 'sound-themes')
           },
           {
             from: path.join(__dirname, 'package.json'),

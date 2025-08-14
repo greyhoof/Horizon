@@ -1,5 +1,5 @@
 <template>
-  <div class="form-group">
+  <div class="mb-3">
     <label v-if="label && id" :for="id">{{ label }}</label>
     <slot
       :cls="{ 'is-invalid': hasErrors, 'is-valid': valid }"

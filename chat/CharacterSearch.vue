@@ -2,9 +2,10 @@
   <modal
     :action="l('characterSearch.action')"
     @submit.prevent="submit()"
-    dialogClass="w-100"
+    dialogClass="modal-70"
     :buttonText="state === 'results' ? l('characterSearch.again') : undefined"
     class="character-search"
+    iconClass="fas fa-magnifying-glass"
   >
     <div v-if="options && state === 'search'">
       <div v-show="error" class="alert alert-danger">{{ error }}</div>
@@ -123,20 +124,6 @@
         </template>
       </div>
     </div>
-    <!-- 
-
-    ALERT: YIFFBOT FUNCTIONALITY IS ON THE CHOPPING BLOCK!
-    **     Yiffbot was banned from F-List, and as such, most
-           of it's functionality no longer remains. Given that,  
-           features related to it are SUBJECT FOR DELETION!
-           Sowwwy...
-
-
-    // <div class="search-yiffbot-suggestion" v-if="isYiffBot4000Online()" @click.prevent="showYiffBot4000()">
-    //   <div class="btn">No luck? Try AI play with <span>YiffBot 4000</span></div>
-    // </div> 
-    
-    -->
   </modal>
 </template>
 
@@ -285,35 +272,6 @@
     // tslint:disable-next-line no-any
     scoreWatcher: ((event: any) => void) | null = null;
 
-    // ALERT: YIFFBOT FUNCTIONALITY IS ON THE CHOPPING BLOCK!
-    // **     Yiffbot was banned from F-List, and as such, most
-    //        of it's functionality no longer remains. Given that,
-    //        features related to it are SUBJECT FOR DELETION!
-    //        Sowwwy...
-    // // isYiffBot4000Online(): boolean {
-    // //   return core.characters.get('YiffBot 4000').status !== 'offline';
-    // // }
-
-    // // showYiffBot4000(): void {
-    // //   const character = core.characters.get('YiffBot 4000');
-
-    // //   if (character.status === 'offline') {
-    // //     return;
-    // //   }
-
-    // //   const conversation = core.conversations.getPrivate(character);
-
-    // //   conversation.show();
-    // //   this.hide();
-
-    // //   const last = _.last(conversation.messages);
-
-    // //   if (!last || last.time.getTime() < Date.now() - 1000 * 60 * 30) {
-    // //     conversation.enteredText = 'Hello!';
-    // //     conversation.send();
-    // //   }
-    // // }
-
     @Hook('created')
     async created(): Promise<void> {
       if (options === undefined)
@@ -392,45 +350,6 @@
       console.log('Done!');
     }
 
-    getYiffBotCompatibleGender(): Character.Gender {
-      const g = Matcher.getTagValueList(
-        TagId.Gender,
-        core.characters.ownProfile.character
-      );
-      const o = Matcher.getTagValueList(
-        TagId.Orientation,
-        core.characters.ownProfile.character
-      );
-
-      if (
-        o === Orientation.Straight ||
-        o === Orientation.Unsure ||
-        _.isNil(o)
-      ) {
-        if (g === Gender.Male) {
-          return 'Female';
-        }
-
-        if (g === Gender.Female) {
-          return 'Male';
-        }
-      }
-
-      if (o === Orientation.Gay && g) {
-        return g === Gender.Male ? 'Male' : 'Female';
-      }
-
-      if (o === Orientation.BiFemalePreference) {
-        return 'Female';
-      }
-
-      if (o === Orientation.BiMalePreference) {
-        return 'Male';
-      }
-
-      return _.sample(['Male', 'Female']) as Character.Gender;
-    }
-
     @Hook('mounted')
     mounted(): void {
       core.connection.onMessage('ERR', data => {
@@ -476,21 +395,6 @@
         // this is done LAST to force Vue to wait with rendering
         this.hasReceivedResults = true;
         this.results = results;
-
-        // ALERT: YIFFBOT FUNCTIONALITY IS ON THE CHOPPING BLOCK!
-        // **     Yiffbot was banned from F-List, and as such, most
-        //        of it's functionality no longer remains. Given that,
-        //        features related to it are SUBJECT FOR DELETION!
-        //        Sowwwy...
-        // // if (this.isYiffBot4000Online()) {
-        // //   const char = core.characters.get('YiffBot 4000');
-
-        // //   (char as any).status = 'looking';
-        // //   (char as any).gender = this.getYiffBotCompatibleGender();
-        // //   (char as any).statusText = 'Try AI play with any gender, orientation & kink!';
-
-        // //   this.results.push({ character: char, profile: core.cache.profileCache.getSync('YiffBot 4000') });
-        // // }
 
         this.resort(results);
       });
@@ -928,7 +832,7 @@
       margin-bottom: 0;
       padding-top: 0;
       padding-bottom: 0;
-      background-color: var(--secondary);
+      background-color: var(--bs-secondary);
 
       &:hover {
         background-color: var(--blue);

@@ -1,5 +1,38 @@
 <template>
-  <div class="profile-analysis-wrapper" ref="profileAnalysisWrapper">
+  <div
+    id="match-report"
+    :class="{ 'match-report': true, minimized: isMinimized }"
+    class="profile-analysis-wrapper"
+    ref="profileAnalysisWrapper"
+  >
+    <a
+      class="minimize-btn btn"
+      :class="isMinimized ? 'btn-outline-secondary' : 'btn-secondary'"
+      @click.prevent="toggleMinimize()"
+      ><i
+        :class="{ fa: true, 'fa-plus': isMinimized, 'fa-minus': !isMinimized }"
+      ></i
+    ></a>
+    <div class="alert alert-info" role="alert">
+      <h4 class="alert-heading">Feedback requested.</h4>
+      <p>
+        This reworked version of the analyser— now visible on your profile, is
+        intended to give you a better idea of how the matcher sees your
+        character. Are the results inaccurate, or do you otherwise feel there's
+        improvements for the matcher?
+        <br />
+
+        We know there are a lot of issues with that feature as is, but can't
+        seem to get a proper consensus on where it's failing people. If you can,
+        please
+        <a href="https://horizn.moe/contact.html">reach out to us</a>.
+      </p>
+      <hr />
+      <p>
+        For now, if this thing gets in the way, you can click the
+        <i class="fa fa-minus"></i> button on the top right to close it.
+      </p>
+    </div>
     <div v-if="!analyzing && !recommendations.length">
       <h3>Looking good!</h3>
       <p>
@@ -27,24 +60,28 @@
         profile:
       </p>
 
-      <ul>
-        <li
+      <div class="row">
+        <div
           v-for="r in recommendations"
-          class="recommendation"
-          :class="r.level"
+          class="recommendation-wrapper col-12 col-md-6 col-xl-4"
         >
-          <h3>{{ r.title }}</h3>
-          <p>{{ r.desc }}</p>
-          <p class="more-info" v-if="r.helpUrl">
-            <a :href="r.helpUrl">Here's how</a>
-          </p>
-        </li>
-      </ul>
+          <div class="recommendation" :class="r.level">
+            <h5 v-if="r.helpUrl">
+              <a :href="r.helpUrl"
+                >{{ r.title }}
+                <i class="fa-solid fa-arrow-up-right-from-square"></i
+              ></a>
+            </h5>
+            <h5 v-else>{{ r.title }}</h5>
+            <p>{{ r.desc }}</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 <script lang="ts">
-  import { Component } from '@f-list/vue-ts';
+  import { Component, Hook, Prop } from '@f-list/vue-ts';
   import Vue from 'vue';
   import core from '../../chat/core';
   import {
@@ -59,13 +96,33 @@
     recommendations: ProfileRecommendation[] = [];
     analyzing = false;
 
+    isMinimized = false;
+
+    @Prop({ required: true })
+    readonly characterName: string;
+
+    @Prop({ required: true })
+    readonly characterId: number;
+    @Prop({ required: true })
+    @Hook('beforeMount')
+    async beforeMount(): Promise<void> {
+      this.isMinimized = !!(await core.settingsStore.get(
+        'hideProfileComparisonSummary'
+      ));
+    }
+
+    @Hook('mounted')
+    async onMounted(): void {
+      this.analyze();
+    }
+
     async analyze() {
       this.analyzing = true;
       this.recommendations = [];
 
       const char = await methods.characterData(
-        core.characters.ownProfile.character.name,
-        core.characters.ownProfile.character.id,
+        this.characterName,
+        this.characterId,
         true
       );
       const profile = new CharacterAnalysis(char.character);
@@ -74,6 +131,15 @@
       this.recommendations = await analyzer.analyze();
 
       this.analyzing = false;
+    }
+
+    async toggleMinimize(): Promise<void> {
+      this.isMinimized = !this.isMinimized;
+
+      await core.settingsStore.set(
+        'hideProfileComparisonSummary',
+        this.isMinimized
+      );
     }
   }
 </script>
@@ -95,11 +161,10 @@
       padding: 0;
     }
 
-    li {
-      padding: 10px;
-      margin: 5px;
+    .recommendation {
       line-height: 120%;
       border-radius: 3px;
+      padding: 5px;
 
       &.critical {
         background-color: var(--scoreMismatchBg);

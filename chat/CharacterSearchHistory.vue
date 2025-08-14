@@ -5,11 +5,11 @@
     buttonText="Select"
     @open="onMounted()"
     @submit="selectStatus"
-    dialogClass="w-100 modal-lg"
+    dialogClass="w-100 modal-70"
   >
     <form class="search-history" v-if="history.length > 0">
       <div
-        class="form-row"
+        class="row"
         v-for="(search, index) in history"
         :class="{ 'selected-row': index === selectedSearch }"
       >
@@ -32,7 +32,7 @@
               class="fas"
               :class="{ 'fa-check-circle': index === selectedSearch }"
           /></span>
-          <label class="custom-control-label" :for="'search_history_' + index">
+          <label class="form-check-label" :for="'search_history_' + index">
             {{ describeSearch(search) }}
           </label>
           <span class="content-action" @click="removeSearchHistoryEntry(index)"

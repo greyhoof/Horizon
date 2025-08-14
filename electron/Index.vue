@@ -2,7 +2,7 @@
   <div
     @mouseover="onMouseOver"
     id="page"
-    style="position: relative; padding: 5px 10px 10px"
+    style="position: relative; padding-top: 5px; overflow: clip"
     :class="getThemeClass()"
     @auxclick.prevent
     @click.middle="unpinUrlPreview"
@@ -55,7 +55,7 @@
           <div class="alert alert-danger" v-show="error">
             {{ error }}
           </div>
-          <div class="form-group">
+          <div class="mb-3">
             <label class="control-label" for="account">{{
               l('login.account')
             }}</label>
@@ -67,7 +67,7 @@
               :disabled="loggingIn"
             />
           </div>
-          <div class="form-group">
+          <div class="mb-3">
             <label class="control-label" for="password">{{
               l('login.password')
             }}</label>
@@ -80,7 +80,7 @@
               :disabled="loggingIn"
             />
           </div>
-          <div class="form-group" v-show="showAdvanced">
+          <div class="mb-3" v-show="showAdvanced">
             <label class="control-label" for="host">{{
               l('login.host')
             }}</label>
@@ -116,19 +116,19 @@
               </div>
             </div>
           </div>
-          <div class="form-group">
+          <div class="mb-3">
             <label for="advanced"
               ><input type="checkbox" id="advanced" v-model="showAdvanced" />
               {{ l('login.advanced') }}</label
             >
           </div>
-          <div class="form-group">
+          <div class="mb-3">
             <label for="save"
               ><input type="checkbox" id="save" v-model="saveLogin" />
               {{ l('login.save') }}</label
             >
           </div>
-          <div class="form-group" style="margin: 0; text-align: right">
+          <div class="mb-3" style="margin: 0; text-align: right">
             <button
               class="btn btn-primary"
               @click="login"
@@ -193,14 +193,14 @@
             @click="prevProfile"
             :disabled="!prevProfileAvailable()"
           >
-            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-left fa-lg"></i>
           </button>
           <button
             class="btn"
             @click="nextProfile"
             :disabled="!nextProfileAvailable()"
           >
-            <i class="fas fa-arrow-right"></i>
+            <i class="fas fa-arrow-right fa-lg"></i>
           </button>
         </div>
       </template>
@@ -210,11 +210,12 @@
       ref="fixLogsModal"
       @submit="fixLogs"
       buttonClass="btn-danger"
+      iconClass="fas fa-file-half-dashed"
     >
       <span style="white-space: pre-wrap">{{ l('fixLogs.text') }}</span>
-      <div class="form-group">
+      <div class="mb-3">
         <label class="control-label">{{ l('fixLogs.character') }}</label>
-        <select id="import" class="form-control" v-model="fixCharacter">
+        <select id="import" class="form-select" v-model="fixCharacter">
           <option v-for="character in fixCharacters" :value="character">
             {{ character }}
           </option>
@@ -256,6 +257,7 @@
     </modal>
 
     <logs ref="logsDialog"></logs>
+    <ui-test ref="uiTestDialog" v-if="isDevMode"> </ui-test>
   </div>
 </template>
 
@@ -277,10 +279,10 @@
   import core /*, { init as initCore }*/ from '../chat/core';
   import l from '../chat/localize';
   import Logs from '../chat/Logs.vue';
+  import UITest from '../chat/UITest.vue';
   import Socket from '../chat/WebSocket';
   import Modal from '../components/Modal.vue';
   import { SimpleCharacter } from '../interfaces';
-  import { Keys } from '../keys';
   // import { BetterSqliteStore } from '../learn/store/better-sqlite3';
   // import { Sqlite3Store } from '../learn/store/sqlite3';
   import CharacterPage from '../site/character_page/character_page.vue';
@@ -363,6 +365,7 @@
       modal: Modal,
       characterPage: CharacterPage,
       logs: Logs,
+      'ui-test': UITest,
       'word-definition': WordDefinition,
       BBCodeTester: BBCodeTester,
       bbcode: BBCodeView(core.bbCodeParser),
@@ -393,6 +396,7 @@
 
     profileNameHistory: string[] = [];
     profilePointer = 0;
+    isDevMode: boolean = process.env.NODE_ENV !== 'production';
 
     async startAndUpgradeCache(): Promise<void> {
       log.debug('init.chat.cache.start');
@@ -504,6 +508,10 @@
         (<Modal>this.$refs['fixLogsModal']).show();
       });
 
+      electron.ipcRenderer.on('ui-test', () => {
+        this.showUiTest();
+      });
+
       electron.ipcRenderer.on('update-zoom', (_e, zoomLevel) => {
         webContents.setZoomLevel(zoomLevel);
         // log.info('INDEXVUE ZOOM UPDATE', zoomLevel);
@@ -515,29 +523,6 @@
 
       electron.ipcRenderer.on('inactive-tab', () => {
         core.cache.setTabActive(false);
-      });
-
-      window.addEventListener('keydown', e => {
-        const key = getKey(e);
-
-        if (key === Keys.Tab && e.ctrlKey && !e.altKey) {
-          parent.send(
-            `${e.shiftKey ? 'previous' : 'switch'}-tab`,
-            this.character
-          );
-        }
-
-        if (
-          (key === Keys.PageDown || key === Keys.PageUp) &&
-          e.ctrlKey &&
-          !e.altKey &&
-          !e.shiftKey
-        ) {
-          parent.send(
-            `${key === Keys.PageUp ? 'previous' : 'switch'}-tab`,
-            this.character
-          );
-        }
       });
 
       log.debug('init.chat.listeners.done');
@@ -777,6 +762,7 @@
         return {
           [`theme-${core.state.settings.risingCharacterTheme || this.settings.theme}`]: true,
           colorblindMode: core.state.settings.risingColorblindMode,
+          vanillaTextColors: this.settings.horizonVanillaTextColors,
           disableWindowsHighContrast:
             core.state.generalSettings?.risingDisableWindowsHighContrast ||
             false
@@ -839,6 +825,10 @@
 
     showLogs(): void {
       (<Logs>this.$refs['logsDialog']).show();
+    }
+
+    showUiTest(): void {
+      (<UITest>this.$refs['uiTestDialog']).show();
     }
 
     async openDefinitionWithDictionary(): Promise<void> {
@@ -909,9 +899,12 @@
 
       .profile-title-right {
         float: right;
-        top: -7px;
+        top: 0px;
         right: 0;
         position: absolute;
+        .btn {
+          border: none;
+        }
       }
 
       .status-text {

@@ -4,9 +4,12 @@ import Axios from 'axios';
 import { CharacterAnalysis, Matcher } from '../matcher';
 import {
   FurryPreference,
+  Gender,
   Kink,
   mammalSpecies,
-  Species
+  Scoring,
+  Species,
+  TagId
 } from '../matcher-types';
 import { characterImage } from '../../chat/common';
 import { ProfileCache } from '../profile-cache';
@@ -55,6 +58,7 @@ export class ProfileRecommendationAnalyzer {
     await this.checkHqPortrait();
 
     this.checkMissingProperties();
+    this.checkGenderPreferences();
     this.checkSpeciesPreferences();
     this.checkKinkCounts();
     this.checkCustomKinks();
@@ -62,6 +66,7 @@ export class ProfileRecommendationAnalyzer {
     this.checkImages();
     this.checkInlineImage();
     this.checkDescriptionLength();
+    this.checkAnthroOrHuman();
 
     return this.recommendations;
   }
@@ -94,9 +99,9 @@ export class ProfileRecommendationAnalyzer {
     if (!profileUrl) {
       this.add(
         `ADD_HQ_AVATAR`,
-        ProfileRecommendationLevel.CRITICAL,
+        ProfileRecommendationLevel.NOTE,
         'Add a high-quality portrait',
-        'Profiles with a high-quality portraits stand out in chats with other Horizon users.',
+        'Profiles with a high-quality portrait stand out in chats with other Horizon users.',
         'https://horizn.moe/docs/guides/colors-and-avatars.html'
       );
     } else if (!ProfileCache.isSafeRisingPortraitURL(profileUrl)) {
@@ -174,7 +179,7 @@ export class ProfileRecommendationAnalyzer {
         if (kink) {
           accum.total += 1;
 
-          if (kink.description) {
+          if (kink.description && kink.description.trim().length > 0) {
             accum.filled += 1;
           }
         }
@@ -258,12 +263,23 @@ export class ProfileRecommendationAnalyzer {
     const p = this.profile;
 
     if (p.age === null) {
+      let isUnparsable =
+        this.profile.character.infotags[TagId.Age]?.string !== undefined;
       this.add(
         'AGE',
-        ProfileRecommendationLevel.CRITICAL,
-        'Enter age',
-        'Specifying the age of your character will improve your matches with other players.',
+        ProfileRecommendationLevel.NOTE,
+        isUnparsable ? 'Hard to parse age' : 'Enter age',
+        isUnparsable
+          ? 'The matcher could not parse your age. This could mean less accurate results for age-related preferences.'
+          : 'Specifying the age of your character will improve your matches with other players.',
         'https://wiki.f-list.net/Guide:_Character_Profiles#General_Details'
+      );
+    } else {
+      this.add(
+        'AGE',
+        ProfileRecommendationLevel.INFO,
+        'Age',
+        `The matcher thinks you are ${p.age} years old.`
       );
     }
 
@@ -284,6 +300,13 @@ export class ProfileRecommendationAnalyzer {
         'Enter species',
         "Specifying the species of your character – even if it's 'human' – will improve your matches with other players.",
         'https://wiki.f-list.net/Guide:_Character_Profiles#General_Details'
+      );
+    } else {
+      this.add(
+        'SPECIES',
+        ProfileRecommendationLevel.INFO,
+        'Species',
+        `The matcher has identified your species as: ${Species[p.species].toString()}`
       );
     }
 
@@ -340,12 +363,89 @@ export class ProfileRecommendationAnalyzer {
     if (p.gender === null) {
       this.add(
         'GENDER',
-        ProfileRecommendationLevel.CRITICAL,
-        'Enter gender',
-        "Specifying your character's gender will help matching you with other players",
-        'https://wiki.f-list.net/Guide:_Character_Profiles#General_Details'
+        ProfileRecommendationLevel.INFO,
+        'No gender',
+        'Characters with no defined gender are treated the same way as if you had selected the genderloss option.'
       );
     }
+  }
+
+  protected checkAnthroOrHuman(): void {
+    let kind = 'unknown';
+    if (this.profile.isHuman) {
+      if (this.profile.isAnthro) {
+        kind = 'kemonimimi';
+      } else {
+        kind = 'human(oid)';
+      }
+    } else if (this.profile.isAnthro) {
+      kind = 'furry';
+    }
+    this.add(
+      'ANTHROHUMAN',
+      kind === 'unknown'
+        ? ProfileRecommendationLevel.CRITICAL
+        : ProfileRecommendationLevel.INFO,
+      'Furry/ human scale',
+      `For the human/ furry preference, the matcher will count you as: ${kind}.`
+    );
+  }
+
+  protected checkGenderPreferences(): void {
+    const p = this.profile;
+    const c = this.profile.character;
+    const matches: string[] = [];
+    const weakMatches: string[] = [];
+    const weakMismatches: string[] = [];
+    const mismatches: string[] = [];
+    const neutral: string[] = [];
+    Object.values(Gender)
+      .filter(value => typeof value === 'number')
+      .forEach(genderValue => {
+        let score: Scoring = Scoring.NEUTRAL;
+        let kinkPref = Matcher.getKinkGenderPreference(
+          c,
+          genderValue as Gender
+        );
+        if (kinkPref === null) {
+          score = Matcher.scoreOrientationByGender(
+            p.gender,
+            p.orientation,
+            genderValue as Gender
+          ).score;
+        } else {
+          score = Matcher.formatKinkScore(
+            kinkPref,
+            genderValue.toString()
+          ).score;
+        }
+        const genderName = `${genderValue !== Gender.None ? Gender[genderValue].toLowerCase() : 'genderless'}`;
+        switch (score) {
+          case Scoring.MATCH:
+            matches.push(genderName);
+            break;
+          case Scoring.WEAK_MATCH:
+            weakMatches.push(genderName);
+            break;
+          case Scoring.NEUTRAL:
+            neutral.push(genderName);
+            break;
+          case Scoring.WEAK_MISMATCH:
+            weakMismatches.push(genderName);
+            break;
+          case Scoring.MISMATCH:
+            mismatches.push(genderName);
+            break;
+        }
+      });
+    this.add(
+      'GENDERPREFS',
+      neutral.length > 0
+        ? ProfileRecommendationLevel.NOTE
+        : ProfileRecommendationLevel.INFO,
+      'Your gender preferences',
+      `Loves: ${matches} \n Likes: ${weakMatches} \n Hesitant: ${weakMismatches} \n Dislike: ${mismatches}\ Unsure: ${neutral}`
+    );
   }
 
   protected checkSpeciesPreferences(): void {

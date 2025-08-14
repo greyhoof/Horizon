@@ -1,39 +1,3 @@
-/**
- * @license
- * MIT License
- *
- * Copyright (c) 2018 F-List
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- *
- * This license header applies to this file and all of the non-third-party assets it includes.
- * @file The entry point for the Electron main thread of F-Chat 3.0.
- * @copyright 2018 F-List
- * @author Maya Wolf <maya@f-list.net>
- * @version 3.0
- * @see {@link https://github.com/f-list/exported|GitHub repo}
- */
-
-// import { DebugLogger } from './debug-logger';
-// // @ts-ignore
-// const dl = new DebugLogger('main');
-
 import * as electron from 'electron';
 
 import log from 'electron-log'; //tslint:disable-line:match-default-export-name
@@ -46,10 +10,11 @@ import { defaultHost, GeneralSettings } from './common';
 import MenuItemConstructorOptions = electron.MenuItemConstructorOptions;
 import * as _ from 'lodash';
 import { AdCoordinatorHost } from '../chat/ads/ad-coordinator-host';
-import { IpcMainEvent } from 'electron';
+import { IpcMainEvent, session } from 'electron';
 import Axios from 'axios';
 import * as browserWindows from './browser_windows';
 import * as remoteMain from '@electron/remote/main';
+import { MenuItem } from 'electron/main';
 // Module to control application life.
 const app = electron.app;
 
@@ -223,7 +188,12 @@ function onReady(): void {
   app.on('open-file', () => {
     browserWindows.createMainWindow(settings, shouldImportSettings, baseDir);
   });
-
+  //Block automatic downloads in the image previewer.
+  //It's in its own partitioned session, so we can't use session.defaultSession here
+  const ses = session.fromPartition('persist:adblocked');
+  ses.on('will-download', (event, item, webContents) => {
+    event.preventDefault();
+  });
   if (
     settings.version !== app.getVersion() &&
     process.env.NODE_ENV !== 'development'
@@ -327,7 +297,30 @@ function onReady(): void {
       { role: 'toggleDevTools' },
       { type: 'separator' }
     );
-
+  const windowItem: MenuItemConstructorOptions = {
+    label: l('window'),
+    role: 'window',
+    submenu: [
+      {
+        label: l('navigation.nextTab'),
+        accelerator: 'Ctrl+Tab',
+        click: (_m: MenuItem, window: electron.BrowserWindow | undefined) => {
+          if (window) {
+            window.webContents.send('switch-tab');
+          }
+        }
+      },
+      {
+        label: l('navigation.previousTab'),
+        accelerator: 'Ctrl+Shift+Tab',
+        click: (_m: MenuItem, window: electron.BrowserWindow | undefined) => {
+          if (window) {
+            window.webContents.send('previous-tab');
+          }
+        }
+      }
+    ]
+  };
   //tslint:disable-next-line:no-floating-promises
 
   electron.Menu.setApplicationMenu(
@@ -424,9 +417,7 @@ function onReady(): void {
         ] as MenuItemConstructorOptions[]
       },
       viewItem,
-      ...(process.platform === 'darwin'
-        ? [{ role: 'windowMenu' } as electron.MenuItem]
-        : []),
+      ...(process.platform === 'darwin' ? [windowItem] : []),
       {
         label: `&${l('help')}`,
         submenu: [
@@ -472,9 +463,83 @@ function onReady(): void {
               openURLExternally(
                 'https://wiki.f-list.net/How_to_Report_a_User#In_chat'
               )
+          },
+          {
+            label: 'Test UI items',
+            click: (_m, window: electron.BrowserWindow, _e: KeyboardEvent) => {
+              window.webContents.send('ui-test');
+            },
+            id: 'uiTest',
+            visible: process.env.NODE_ENV !== 'production'
           }
         ] as MenuItemConstructorOptions[]
-      }
+      },
+      ...(process.platform !== 'darwin'
+        ? ([
+            {
+              label: l('navigation'),
+              visible: false,
+              submenu: [
+                {
+                  id: 'nextTab',
+                  accelerator: 'Ctrl+Tab',
+                  label: l('navigation.nextTab'),
+                  click: (
+                    _menuItem: electron.MenuItem,
+                    browserWindow: electron.BrowserWindow | undefined,
+                    _event: KeyboardEvent
+                  ) => {
+                    if (browserWindow) {
+                      browserWindow.webContents.send('switch-tab');
+                    }
+                  }
+                } as MenuItemConstructorOptions,
+                {
+                  id: 'nextTabAlt',
+                  accelerator: 'CmdOrCtrl+PageDown',
+                  label: l('navigation.nextTab'),
+                  click: (
+                    _menuItem: electron.MenuItem,
+                    browserWindow: electron.BrowserWindow | undefined,
+                    _event: KeyboardEvent
+                  ) => {
+                    if (browserWindow) {
+                      browserWindow.webContents.send('switch-tab');
+                    }
+                  }
+                } as MenuItemConstructorOptions,
+                {
+                  id: 'previousTab',
+                  accelerator: 'Ctrl+Shift+Tab',
+                  label: l('navigation.previousTab'),
+                  click: (
+                    _menuItem: electron.MenuItem,
+                    browserWindow: electron.BrowserWindow | undefined,
+                    _event: KeyboardEvent
+                  ) => {
+                    if (browserWindow) {
+                      browserWindow.webContents.send('previous-tab');
+                    }
+                  }
+                } as MenuItemConstructorOptions,
+                {
+                  id: 'previousTabAlt',
+                  accelerator: 'CmdOrCtrl+PageUp',
+                  label: l('navigation.previousTab'),
+                  click: (
+                    _menuItem: electron.MenuItem,
+                    browserWindow: electron.BrowserWindow | undefined,
+                    _event: KeyboardEvent
+                  ) => {
+                    if (browserWindow) {
+                      browserWindow.webContents.send('previous-tab');
+                    }
+                  }
+                } as MenuItemConstructorOptions
+              ] as MenuItemConstructorOptions[]
+            } as MenuItemConstructorOptions
+          ] as MenuItemConstructorOptions[])
+        : [])
     ])
   );
 
@@ -523,6 +588,13 @@ function onReady(): void {
       );
     }
   );
+  electron.ipcMain.on('open-settings-menu', (_event: IpcMainEvent) => {
+    browserWindows.createSettingsWindow(
+      settings,
+      true,
+      electron.BrowserWindow.getFocusedWindow()!
+    );
+  });
 
   electron.ipcMain.on(
     'save-login',
@@ -634,9 +706,20 @@ function onReady(): void {
     (_e, _options: GeneralSettings) => {
       log.info('main.settings.update.message', _options);
       if (_options) {
+        let newCss =
+          settings.horizonCustomCssEnabled !==
+            _options.horizonCustomCssEnabled ||
+          settings.horizonCustomCss !== _options.horizonCustomCss;
         Object.assign(settings, _options);
         //Now we save it to a file
         setGeneralSettings(_options);
+        //No need to bother with an expensive operation if we don't change anything related to CSS settings
+        if (newCss) {
+          browserWindows.updateCustomCssAllWindows(
+            settings.horizonCustomCss,
+            settings.horizonCustomCssEnabled
+          );
+        }
       }
     }
   );

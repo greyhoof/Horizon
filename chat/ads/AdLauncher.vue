@@ -8,24 +8,34 @@
     dialogClass="w-100"
     class="adLauncher"
     :buttonText="'Start Posting Ads'"
+    iconClass="fas fa-rectangle-ad"
   >
     <div v-if="hasAds()">
-      <h4>Ad Tags</h4>
-      <div class="form-group">
-        <p>Serve ads that match any one of these tags:</p>
+      <h5>Ad Tags</h5>
+      <div style="padding-bottom: 1em">
+        <div class="mb-3">
+          <p>Serve ads that match any one of these tags:</p>
 
-        <label
-          class="control-label"
-          :for="`adr-tag-${index}`"
-          v-for="(tag, index) in tags"
-        >
-          <input type="checkbox" v-model="tag.value" :id="`adr-tag-${index}`" />
-          {{ tag.title }}
-        </label>
+          <label
+            class="control-label"
+            :for="`adr-tag-${index}`"
+            v-for="(tag, index) in tags"
+          >
+            <input
+              type="checkbox"
+              v-model="tag.value"
+              :id="`adr-tag-${index}`"
+            />
+            {{ tag.title }}
+          </label>
+        </div>
+        <button class="btn btn-outline-secondary" @click="openAdEditor()">
+          <i class="fa-solid fa-pencil"></i> Edit Ads
+        </button>
       </div>
 
-      <h4>Target Channels</h4>
-      <div class="form-group">
+      <h5>Target Channels</h5>
+      <div class="mb-3">
         <p>Serve ads on these channels:</p>
 
         <p v-if="channels.length === 0">
@@ -56,8 +66,8 @@
         </label>
       </div>
 
-      <h4>Post Order</h4>
-      <div class="form-group">
+      <h5>Post Order</h5>
+      <div class="mb-3">
         <label class="control-label" for="adOrderRandom">
           <input
             type="radio"
@@ -78,12 +88,12 @@
         </label>
       </div>
 
-      <h4>Campaign</h4>
-      <div class="form-group">
+      <h5>Campaign</h5>
+      <div class="mb-3">
         <label class="control-label" for="timeoutMinutes"> Timeout </label>
 
         <select
-          class="form-control"
+          class="form-select"
           v-model="timeoutMinutes"
           id="timeoutMinutes"
         >
@@ -98,12 +108,12 @@
       </p>
     </div>
     <div v-else>
-      <h4>No Ads to Post!</h4>
+      <h5>No Ads to Post!</h5>
 
       <p>
         Use the
         <button class="btn btn-outline-secondary" @click="openAdEditor()">
-          Ad Editor
+          <i class="fa-solid fa-pencil"></i> Ad Editor
         </button>
         to create some ads first, then return here to post them.
       </p>

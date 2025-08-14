@@ -1,22 +1,18 @@
 <template>
   <Modal
-    :action="'Memo for ' + name"
-    :buttonText="this.editing ? 'Save and Close' : 'Close'"
+    :action="l('user.memo.action')"
+    buttonText="Save and Close"
     @close="onClose"
     @submit="save"
-    dialog-class="modal-lg modal-dialog-centered"
+    dialog-class="w-100 modal-dialog-centered"
+    iconClass="fas fa-note-sticky"
   >
-    <div class="form-group" v-if="editing">
+    <div class="mb-3">
       <textarea
         v-model="message"
         maxlength="1000"
         class="form-control"
       ></textarea>
-    </div>
-    <div v-else>
-      <p>{{ message }}</p>
-
-      <p><a href="#" @click="editing = true">Edit</a></p>
     </div>
   </Modal>
 </template>
@@ -27,6 +23,7 @@
   import Modal from '../../components/Modal.vue';
   import { SimpleCharacter } from '../../interfaces';
   import * as Utils from '../utils';
+  import l from './../../chat/localize';
   // import {methods} from './data_store';
   import { MemoManager } from '../../chat/character/memo';
 
@@ -47,6 +44,7 @@
     @Prop
     readonly memo?: Memo;
     message: string | null = null;
+    l = l;
     editing: boolean = false;
     saving: boolean = false;
 
@@ -57,6 +55,7 @@
     show(): void {
       super.show();
       this.setMemo();
+      this.editing = true;
     }
 
     @Watch('memo')

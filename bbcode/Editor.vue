@@ -76,15 +76,16 @@
       </div>
       <button
         type="button"
-        class="close"
+        class="btn-close"
         aria-label="Close"
         style="margin-left: 10px"
         @click="showToolbar = false"
-      >
-        &times;
-      </button>
+      ></button>
     </div>
-    <div class="bbcode-editor-text-area" style="order: 100; width: 100%">
+    <div
+      class="bbcode-editor-text-area bg-light"
+      style="order: 100; width: 100%"
+    >
       <textarea
         ref="input"
         v-model="text"
@@ -93,6 +94,7 @@
         :maxlength="maxlength"
         :placeholder="placeholder"
         :class="finalClasses"
+        class="hidden-scrollbar"
         @keyup="onKeyUp"
         :disabled="disabled"
         @paste="onPaste"
@@ -100,7 +102,7 @@
         :style="hasToolbar ? { 'border-top-left-radius': 0 } : undefined"
         @keydown="onKeyDown"
       ></textarea>
-      <textarea ref="sizer"></textarea>
+      <textarea ref="sizer" class="hidden-scrollbar"></textarea>
       <div class="bbcode-preview" v-show="preview">
         <div class="bbcode-preview-warnings">
           <div class="alert alert-danger" v-show="previewWarnings.length">
@@ -534,23 +536,33 @@
     }
   }
 
+  .bbcode-editor {
+    resize: none;
+  }
+
   .bbcode-toolbar {
     .toolbar-buttons {
       .btn.toggled {
-        background-color: var(--secondary) !important;
+        background-color: var(--bs-secondary) !important;
       }
     }
 
     .color-selector {
-      max-width: 145px;
+      max-width: 150px;
       top: -57px;
       left: 94px;
       line-height: 1;
       z-index: 1000;
-      background-color: var(--input-bg);
+      background-color: var(--bs-body-bg);
+      position: absolute;
+
+      .popover-body {
+        padding: 0px;
+      }
 
       .btn-group {
         display: block;
+        margin: 10px 13px 10px 13px;
       }
 
       .btn {
@@ -560,7 +572,7 @@
           padding: 0 !important;
           margin-right: -1px !important;
           margin-bottom: -1px !important;
-          border: 1px solid var(--secondary);
+          border: 1px solid var(--bs-secondary);
           width: 1.3rem;
           height: 1.3rem;
 
@@ -569,7 +581,7 @@
           }
 
           &:hover {
-            border-color: var(--gray-dark) !important;
+            border-color: var(--bs-gray-800) !important;
           }
 
           &.red {

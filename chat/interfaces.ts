@@ -139,6 +139,7 @@ export namespace Conversation {
     readonly joinMessages: Setting;
     readonly defaultHighlights: boolean;
     readonly adSettings: AdSettings;
+    readonly horizonHighlightUsers: ReadonlyArray<string>;
   }
 
   export interface AdSettings {
@@ -170,6 +171,7 @@ export namespace Conversation {
     loadLastSent(): void;
     show(): void;
     loadMore(): boolean;
+    markRead(): void;
   }
 }
 
@@ -291,6 +293,7 @@ export namespace Settings {
     readonly horizonGenderMarkerOrigColor: boolean;
     readonly horizonChangeOfflineColor: boolean;
     readonly horizonNotifyFriendSignIn: boolean;
+    readonly horizonHighlightUsers: ReadonlyArray<string>;
 
     readonly horizonCacheDraftMessages: boolean;
     readonly horizonSaveDraftMessagesToDiskTimer: number;
@@ -298,6 +301,7 @@ export namespace Settings {
     readonly risingFilter: SmartFilterSettings;
 
     readonly risingCharacterTheme: string | undefined;
+    readonly soundTheme: string;
   }
 }
 

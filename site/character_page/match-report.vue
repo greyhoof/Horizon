@@ -4,56 +4,61 @@
     :class="{ 'match-report': true, minimized: isMinimized }"
     v-if="haveScores(characterMatch.you) || haveScores(characterMatch.them)"
   >
-    <a class="minimize-btn" @click.prevent="toggleMinimize()"
+    <a
+      class="minimize-btn btn"
+      :class="isMinimized ? 'btn-outline-secondary' : 'btn-secondary'"
+      @click.prevent="toggleMinimize()"
       ><i
         :class="{ fa: true, 'fa-plus': isMinimized, 'fa-minus': !isMinimized }"
       ></i
     ></a>
 
-    <div class="scores you">
-      <h3>
-        <img
-          :src="getAvatarUrl(characterMatch.you.you.name)"
-          class="thumbnail"
-        />
-        {{ characterMatch.you.you.name }}
-        <small v-if="characterMatch.youMultiSpecies" class="species"
-          >as {{ getSpeciesStr(characterMatch.you) }}</small
-        >
-      </h3>
+    <div class="row">
+      <div class="scores you col-12 col-lg-5">
+        <h3>
+          <img
+            :src="getAvatarUrl(characterMatch.you.you.name)"
+            class="thumbnail"
+          />
+          {{ characterMatch.you.you.name }}
+          <small v-if="characterMatch.youMultiSpecies" class="species"
+            >as {{ getSpeciesStr(characterMatch.you) }}</small
+          >
+        </h3>
 
-      <ul>
-        <li
-          v-for="score in getScores(characterMatch.you)"
-          v-if="shouldShowScore(score)"
-          :class="getScoreClass(score)"
-          v-html="score.description"
-        ></li>
-      </ul>
-    </div>
+        <ul>
+          <li
+            v-for="score in getScores(characterMatch.you)"
+            v-if="shouldShowScore(score)"
+            :class="getScoreClass(score)"
+            v-html="score.description"
+          ></li>
+        </ul>
+      </div>
 
-    <div class="vs">vs.</div>
+      <div class="vs col-12 col-lg-2">vs</div>
 
-    <div class="scores them">
-      <h3>
-        <img
-          :src="getAvatarUrl(characterMatch.them.you.name)"
-          class="thumbnail"
-        />
-        {{ characterMatch.them.you.name }}
-        <small v-if="characterMatch.themMultiSpecies" class="species"
-          >as {{ getSpeciesStr(characterMatch.them) }}</small
-        >
-      </h3>
+      <div class="scores them col-12 col-lg-5">
+        <h3>
+          <img
+            :src="getAvatarUrl(characterMatch.them.you.name)"
+            class="thumbnail"
+          />
+          {{ characterMatch.them.you.name }}
+          <small v-if="characterMatch.themMultiSpecies" class="species"
+            >as {{ getSpeciesStr(characterMatch.them) }}</small
+          >
+        </h3>
 
-      <ul>
-        <li
-          v-for="score in getScores(characterMatch.them)"
-          v-if="shouldShowScore(score)"
-          :class="getScoreClass(score)"
-          v-html="score.description"
-        ></li>
-      </ul>
+        <ul>
+          <li
+            v-for="score in getScores(characterMatch.them)"
+            v-if="shouldShowScore(score)"
+            :class="getScoreClass(score)"
+            v-html="score.description"
+          ></li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>

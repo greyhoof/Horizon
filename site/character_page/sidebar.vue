@@ -3,8 +3,7 @@
     <div class="card-body">
       <img
         :src="getAvatarUrl()"
-        class="character-avatar"
-        style="width: 100%; height: auto"
+        class="character-page-avatar character-avatar"
       />
 
       <div v-if="character.character.title" class="character-title">
@@ -19,33 +18,51 @@
 
       <div
         v-if="authenticated"
-        class="d-flex justify-content-between flex-wrap character-links-block"
+        class="row justify-content-between flex-wrap character-links-block"
       >
         <template v-if="character.is_self">
-          <a :href="editUrl" class="edit-link"
-            ><i class="fa fa-fw fa-pencil-alt"></i>Edit</a
+          <a
+            :href="editUrl"
+            :title="l('userProfile.edit')"
+            class="edit-link btn btn-outline-secondary col-3"
+            ><i class="fa fa-fw fa-pencil-alt"></i
+          ></a>
+          <button
+            @click="showDelete"
+            :title="l('userProfile.delete')"
+            class="delete-link btn btn-outline-danger col-3"
           >
-          <a @click="showDelete" class="delete-link"
-            ><i class="fa fa-fw fa-trash"></i>Delete</a
+            <i class="fa fa-fw fa-trash"></i>
+          </button>
+          <button
+            @click="showDuplicate()"
+            :title="l('userProfile.duplicate')"
+            class="duplicate-link btn btn-outline-secondary col-3"
           >
-          <a @click="showDuplicate()" class="duplicate-link"
-            ><i class="fa fa-fw fa-copy"></i>Duplicate</a
-          >
+            <i class="fa fa-fw fa-copy"></i>
+          </button>
         </template>
         <template v-else>
-          <span
+          <template
             v-if="
               character.self_staff ||
               character.settings.block_bookmarks !== true
             "
           >
-            <a
+            <button
               @click.prevent="toggleBookmark()"
               href="#"
-              class="btn"
+              class="btn col-3"
+              :title="
+                l(
+                  character.bookmarked
+                    ? 'userProfile.bookmark'
+                    : 'userProfile.unbookmark'
+                )
+              "
               :class="{
-                bookmarked: character.bookmarked,
-                unbookmarked: !character.bookmarked
+                'btn-outline-success': character.bookmarked,
+                'btn-outline-secondary': !character.bookmarked
               }"
             >
               <i
@@ -54,32 +71,54 @@
                   'fa-bookmark': character.bookmarked,
                   'far fa-bookmark': !character.bookmarked
                 }"
-              ></i
-              >{{
-                l('user.' + (character.bookmarked ? 'unbookmark' : 'bookmark'))
-              }}
-            </a>
-            <span
+              ></i>
+            </button>
+
+            <button
+              href="#"
+              class="btn col-3"
+              disabled
               v-if="character.settings.block_bookmarks"
-              class="prevents-bookmarks"
-              >!</span
+              :title="l('userProfile.unbookmarkable')"
             >
-          </span>
-          <a href="#" @click.prevent="showFriends()" class="friend-link btn"
-            ><i class="fa fa-fw fa-user"></i>Friend</a
+              <i class="fa-solid fa-exclamation"></i>
+            </button>
+          </template>
+          <button
+            href="#"
+            @click.prevent="showFriends()"
+            :title="l('userProfile.showFriends')"
+            class="friend-link btn btn-outline-secondary col-3"
           >
-          <a
+            <i class="fa fa-fw fa-user-plus"></i>
+          </button>
+          <button
             href="#"
             v-if="!oldApi"
             @click.prevent="showReport()"
-            class="report-link btn"
+            :title="l('userProfile.report')"
+            class="report-link btn btn-outline-warning col-3"
           >
-            <i class="fa fa-fw fa-exclamation-triangle"></i>Report</a
-          >
+            <i class="fa fa-fw fa-exclamation-triangle"></i>
+          </button>
         </template>
-        <a href="#" @click.prevent="showMemo()" class="memo-link btn"
-          ><i class="far fa-sticky-note fa-fw"></i>Memo</a
+        <button
+          href="#"
+          @click.prevent="showMemo()"
+          :title="l('userProfile.memo')"
+          class="memo-link btn btn-outline-secondary col-3"
         >
+          <i class="far fa-sticky-note fa-fw"></i>
+        </button>
+        <a
+          v-if="authenticated && !character.is_self"
+          :href="noteUrl"
+          :title="l('userProfile.sendNote')"
+          class="character-page-note-link btn-outline-secondary col-3 btn"
+          style="padding: 0 4px"
+        >
+          <i class="far fa-envelope fa-fw"></i
+        ></a>
       </div>
       <div
         v-if="character.badges && character.badges.length > 0"
@@ -95,14 +134,6 @@
         </div>
       </div>
 
-      <a
-        v-if="authenticated && !character.is_self"
-        :href="noteUrl"
-        class="character-page-note-link btn"
-        style="padding: 0 4px"
-      >
-        <i class="far fa-envelope fa-fw"></i>Send Note</a
-      >
       <div
         v-if="character.character.online_chat"
         @click="showInChat()"
@@ -164,13 +195,19 @@
       </div>
 
       <div class="character-list-block" v-if="character.character_list">
-        <div v-for="listCharacter in character.character_list">
-          <img
-            :src="avatarUrl(listCharacter.name)"
-            class="character-avatar icon"
-            style="margin-right: 5px"
-          />
-          <character-link :character="listCharacter.name"></character-link>
+        <div
+          class="row align-items-center"
+          v-for="listCharacter in character.character_list"
+        >
+          <div class="col col-auto">
+            <img
+              :src="avatarUrl(listCharacter.name)"
+              class="character-avatar icon"
+            />
+          </div>
+          <div class="col">
+            <character-link :character="listCharacter.name"></character-link>
+          </div>
         </div>
       </div>
     </div>
@@ -299,6 +336,7 @@
         chanop: 'fa fa-star',
         helpdesk: 'fa fa-user',
         developer: 'fa fa-terminal',
+        maintainer: 'fa fa-wrench',
         'subscription.lifetime': 'fa fa-certificate'
       };
       return badgeName in classMap ? classMap[badgeName] : '';
@@ -312,6 +350,7 @@
         chanop: 'Channel Moderator',
         helpdesk: 'Helpdesk',
         developer: 'Developer',
+        maintainer: 'Horizon Maintainer',
         'subscription.lifetime': 'Lifetime Subscriber',
         'subscription.other': 'Subscriber'
       };
@@ -363,7 +402,7 @@
     }
 
     get editUrl(): string {
-      return `${Utils.siteDomain}character/${this.character.character.id}/edit`;
+      return `${Utils.siteDomain}character_edit.php?id=${this.character.character.id}`;
     }
 
     get noteUrl(): string {
