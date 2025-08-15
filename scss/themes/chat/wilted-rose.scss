@@ -100,3 +100,15 @@ $genders: (
     color: color.scale($color, $lightness: 5%);
   }
 }
+// Toolbar buttons – finalize contrast handling similar to Dracula theme.
+#conversation .btn-toolbar .btn-group a.btn {
+  background-color: $primary;
+  border-color: color.scale($primary, $lightness: -15%);
+  color: color-contrast($primary);
+  
+  &:hover,
+  &:focus {
+    background-color: color.scale($primary, $lightness: 10%);
+    border-color: color.scale($primary, $lightness: -25%);
+  }
+}
