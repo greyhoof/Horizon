@@ -92,8 +92,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - https://github.com/Fchat-Horizon/Horizon/pull/300 by @DerEchteDimenzio
   - This is their first contribution! 🎉
 - https://github.com/Fchat-Horizon/Horizon/pull/317 by @FatCatClient
-- https://github.com/Fchat-Horizon/Horizon/pull/311 by @DerEchteDimenzio
-- https://github.com/Fchat-Horizon/Horizon/pull/312 by @DerEchteDimenzio
+- https://github.com/Fchat-Horizon/Horizon/pull/318 by @FatCatClient
+- https://github.com/Fchat-Horizon/Horizon/pull/321 by @CodingWithAnxiety
+- https://github.com/Fchat-Horizon/Horizon/pull/327 by @CodingWithAnxiety
+- https://github.com/Fchat-Horizon/Horizon/pull/331 by @FatCatClient
 
 # [Releases]
 
