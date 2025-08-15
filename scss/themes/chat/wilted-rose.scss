@@ -105,7 +105,7 @@ $genders: (
   background-color: $primary;
   border-color: color.scale($primary, $lightness: -15%);
   color: color-contrast($primary);
-  
+
   &:hover,
   &:focus {
     background-color: color.scale($primary, $lightness: 10%);
