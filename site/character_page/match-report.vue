@@ -36,7 +36,7 @@
         </ul>
       </div>
 
-      <div class="vs col-12 col-lg-2">vs</div>
+      <div class="vs col-12 col-lg-2 text-dark-emphasis">vs</div>
 
       <div class="scores them col-12 col-lg-5">
         <h3>

@@ -979,7 +979,6 @@
     .vs {
       text-align: center;
       font-size: 5rem;
-      color: rgba(255, 255, 255, 0.3);
       margin-top: auto;
       margin-bottom: auto;
       font-style: italic;

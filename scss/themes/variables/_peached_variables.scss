@@ -83,8 +83,8 @@ $characterGuestbookPostBorderColor: rgba(0, 0, 0, 0.06);
 $characterGuestbookReplyBg: rgba(0, 0, 0, 0.05);
 $characterGuestbookTimestampFg: rgba(0, 0, 0, 0.4);
 $characterKinkCustomColor: color.adjust(
-  $secondary,
-  $lightness: 10%,
+  $warning,
+  $lightness: -30%,
   $saturation: 15%
 );
 $characterKinkCustomBorderColor: rgba(0, 0, 0, 0.1);
