@@ -87,7 +87,7 @@
             </button>
             <button
               type="button"
-              class="btn btn-danger ignoreFriend"
+              class="btn btn-outline-danger ignoreFriend"
               @click="ignore(request)"
             >
               Ignore
@@ -100,8 +100,8 @@
           <h4>Request Friendship</h4>
         </div>
         <div class="card-body">
-          <div class="d-flex align-items-center">
-            <label class="control-label" for="friendRequestCharacter"
+          <div class="input-group mb3">
+            <label class="input-group-text" for="friendRequestCharacter"
               >Character:
             </label>
             <character-select

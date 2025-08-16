@@ -18,7 +18,7 @@
   margin-bottom: 0 !important;
 }
 
-label {
+label:not(.input-group-text) {
   display: inline-block;
   margin-bottom: 0.5rem;
 }
