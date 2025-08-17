@@ -120,12 +120,9 @@
           <i class="far fa-envelope fa-fw"></i
         ></a>
       </div>
-      <div
-        v-if="character.badges && character.badges.length > 0"
-        class="badges-block"
-      >
+      <div v-if="displayBadges.length > 0" class="badges-block">
         <div
-          v-for="badge in character.badges"
+          v-for="badge in displayBadges"
           class="character-badge px-2 py-1"
           :class="badgeClass(badge)"
         >
@@ -322,6 +319,16 @@
       }
 
       return Utils.avatarURL(this.character.character.name);
+    }
+
+    get displayBadges(): string[] {
+      if (!this.character.badges) return [];
+      if (core.state.settings?.horizonShowDeveloperBadges)
+        return this.character.badges;
+      // Filter out maintainer & developer badges if user disabled them.
+      return this.character.badges.filter(
+        b => b !== 'maintainer' && b !== 'developer'
+      );
     }
 
     badgeClass(badgeName: string): string {

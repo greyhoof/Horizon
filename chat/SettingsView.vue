@@ -552,6 +552,20 @@
           <input
             class="form-check-input"
             type="checkbox"
+            id="horizonShowDeveloperBadges"
+            v-model="horizonShowDeveloperBadges"
+          />
+          <label class="form-check-label" for="horizonShowDeveloperBadges">
+            Show Horizon developer / maintainer badges
+          </label>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
             id="horizonShowGenderMarker"
             v-model="horizonShowGenderMarker"
           />
@@ -963,6 +977,7 @@
     risingShowPortraitInMessage!: boolean;
     risingShowHighQualityPortraits!: boolean;
     horizonShowCustomCharacterColors!: boolean;
+    horizonShowDeveloperBadges!: boolean;
     horizonShowGenderMarker!: boolean;
     horizonGenderMarkerOrigColor!: boolean;
     horizonChangeOfflineColor!: boolean;
@@ -1024,6 +1039,7 @@
         settings.risingShowHighQualityPortraits;
       this.horizonShowCustomCharacterColors =
         settings.horizonShowCustomCharacterColors;
+      this.horizonShowDeveloperBadges = settings.horizonShowDeveloperBadges;
       this.horizonShowGenderMarker = settings.horizonShowGenderMarker;
       this.horizonGenderMarkerOrigColor = settings.horizonGenderMarkerOrigColor;
       this.horizonChangeOfflineColor = settings.horizonChangeOfflineColor;
@@ -1140,6 +1156,7 @@
         risingShowPortraitInMessage: this.risingShowPortraitInMessage,
         risingShowHighQualityPortraits: this.risingShowHighQualityPortraits,
         horizonShowCustomCharacterColors: this.horizonShowCustomCharacterColors,
+        horizonShowDeveloperBadges: this.horizonShowDeveloperBadges,
         horizonShowGenderMarker: this.horizonShowGenderMarker,
         horizonGenderMarkerOrigColor: this.horizonGenderMarkerOrigColor,
         horizonChangeOfflineColor: this.horizonChangeOfflineColor,

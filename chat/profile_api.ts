@@ -141,7 +141,10 @@ async function executeCharacterData(
 
   // Add maintainer badge for Horizon developers
   const badges = [...data.badges];
-  if (isHorizonDev(data.name)) {
+  if (
+    isHorizonDev(data.name) &&
+    core.state.settings.horizonShowDeveloperBadges
+  ) {
     if (!badges.includes('maintainer')) {
       badges.push('maintainer');
     }

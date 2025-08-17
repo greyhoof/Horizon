@@ -11,7 +11,7 @@
     @click.middle.prevent.stop="toggleStickyness()"
     @click.right.passive="dismiss(true)"
     @click.left.passive="dismiss(true)"
-    ><img v-if="!!avatar" :src="avatarUrl" class="user-avatar" /><span
+    ><img v-if="!!avatar" :src="safeAvatarUrl" class="user-avatar" /><span
       v-if="isMarkerShown"
       :class="genderClass"
     ></span
@@ -129,7 +129,10 @@
     }
 
     // Check for dev badge
-    if (isHorizonDev(character.name)) {
+    if (
+      isHorizonDev(character.name) &&
+      core.state.settings.horizonShowDeveloperBadges
+    ) {
       devIcon = 'fa fa-wrench';
     }
 
@@ -253,7 +256,7 @@
     statusClass: string | null = null;
     matchClass: string | null = null;
     matchScore: number | string | null = null;
-    avatarUrl: string | null = null;
+    avatarUrl: string = '';
 
     // tslint:disable-next-line no-any
     scoreWatcher: ((event: any) => void) | null = null;
@@ -261,6 +264,8 @@
     @Hook('mounted')
     onMounted(): void {
       this.update();
+      // Refresh on global configuration changes (e.g., toggling developer badges)
+      EventBus.$on('configuration-update', this.update);
 
       if (this.match && !this.matchClass) {
         if (this.scoreWatcher) {
@@ -294,6 +299,7 @@
     onBeforeDestroy(): void {
       if (this.scoreWatcher)
         EventBus.$off('character-score', this.scoreWatcher);
+      EventBus.$off('configuration-update', this.update);
 
       this.dismiss();
     }
@@ -399,6 +405,10 @@
       EventBus.$emit('imagepreview-toggle-stickyness', {
         url: this.getCharacterUrl()
       });
+    }
+
+    get safeAvatarUrl(): string {
+      return this.avatarUrl || '';
     }
   }
 </script>
