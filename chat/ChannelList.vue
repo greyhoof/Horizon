@@ -45,15 +45,18 @@
           v-show="tab === '0'"
         >
           <div v-for="channel in officialChannels" :key="channel.id">
-            <label :for="channel.id">
+            <div class="form-check">
               <input
+                class="form-check-input"
                 type="checkbox"
                 :checked="channel.isJoined"
                 :id="channel.id"
                 @click.prevent="setJoined(channel)"
               />
-              {{ channel.name }} ({{ channel.memberCount }})
-            </label>
+              <label class="form-check-label" :for="channel.id">
+                {{ channel.name }} ({{ channel.memberCount }})
+              </label>
+            </div>
           </div>
         </div>
         <div
@@ -62,15 +65,18 @@
           v-show="tab === '1'"
         >
           <div v-for="channel in openRooms" :key="channel.id">
-            <label :for="channel.id">
+            <div class="form-check">
               <input
+                class="form-check-input"
                 type="checkbox"
                 :checked="channel.isJoined"
                 :id="channel.id"
                 @click.prevent="setJoined(channel)"
               />
-              {{ channel.name }} ({{ channel.memberCount }})
-            </label>
+              <label class="form-check-label" :for="channel.id">
+                {{ channel.name }} ({{ channel.memberCount }})
+              </label>
+            </div>
           </div>
         </div>
         <div class="input-group" style="padding: 10px 0; flex-shrink: 0">

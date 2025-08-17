@@ -32,10 +32,17 @@
     </div>
 
     <div class="mb-3">
-      <label class="control-label" for="randomOrder">
-        <input type="checkbox" v-model="randomOrder" id="randomOrder" />
-        Serve ads in random order
-      </label>
+      <div class="form-check">
+        <input
+          type="checkbox"
+          v-model="randomOrder"
+          id="randomOrder"
+          class="form-check-input"
+        />
+        <label class="form-check-label" for="randomOrder">
+          Serve ads in random order
+        </label>
+      </div>
     </div>
 
     <div class="mb-3 ad-list" v-for="(ad, index) in ads">

@@ -16,18 +16,17 @@
         <div class="mb-3">
           <p>Serve ads that match any one of these tags:</p>
 
-          <label
-            class="control-label"
-            :for="`adr-tag-${index}`"
-            v-for="(tag, index) in tags"
-          >
+          <div class="form-check" v-for="(tag, index) in tags">
             <input
+              class="form-check-input"
               type="checkbox"
               v-model="tag.value"
               :id="`adr-tag-${index}`"
             />
-            {{ tag.title }}
-          </label>
+            <label class="form-check-label" :for="`adr-tag-${index}`">
+              {{ tag.title }}
+            </label>
+          </div>
         </div>
         <button class="btn btn-outline-secondary" @click="openAdEditor()">
           <i class="fa-solid fa-pencil"></i> Edit Ads
@@ -43,49 +42,57 @@
           first.
         </p>
 
-        <label class="control-label">
+        <div class="form-check">
           <input
+            class="form-check-input"
             type="checkbox"
             id="ard-all-channels"
             @change="selectAllChannels($event)"
           />
-          <i>Select/unselect all</i>
-        </label>
+          <label class="form-check-label" for="ard-all-channels">
+            <i>Select/unselect all</i>
+          </label>
+        </div>
 
-        <label
-          class="control-label"
-          :for="`adr-channel-${index}`"
-          v-for="(channel, index) in channels"
-        >
+        <div class="form-check" v-for="(channel, index) in channels">
           <input
+            class="form-check-input"
             type="checkbox"
             v-model="channel.value"
             :id="`adr-channel-${index}`"
           />
-          {{ channel.title }}
-        </label>
+          <label class="form-check-label" :for="`adr-channel-${index}`">
+            {{ channel.title }}
+          </label>
+        </div>
       </div>
 
       <h5>Post Order</h5>
       <div class="mb-3">
-        <label class="control-label" for="adOrderRandom">
+        <div class="form-check">
           <input
+            class="form-check-input"
             type="radio"
             v-model="adOrder"
             value="random"
             id="adOrderRandom"
           />
-          Random order
-        </label>
-        <label class="control-label" for="adOrderAdCenter">
+          <label class="form-check-label" for="adOrderRandom">
+            Random order
+          </label>
+        </div>
+        <div class="form-check">
           <input
+            class="form-check-input"
             type="radio"
             v-model="adOrder"
             value="ad-center"
             id="adOrderAdCenter"
           />
-          Follow order in Ad Center
-        </label>
+          <label class="form-check-label" for="adOrderAdCenter">
+            Follow order in Ad Center
+          </label>
+        </div>
       </div>
 
       <h5>Campaign</h5>
@@ -275,7 +282,7 @@
 
 <style lang="scss">
   .adLauncher {
-    label {
+    label.control-label {
       display: block;
       margin-left: 0.75rem;
       color: var(--gray-dark);

@@ -51,20 +51,30 @@
                   {{ l('settings.updates') }}
                 </h5>
                 <div class="mb-3">
-                  <label class="control-label" for="updatecheck">
+                  <div class="form-check">
                     <input
                       type="checkbox"
                       id="updateCheck"
                       v-model="settings.updateCheck"
+                      class="form-check-input"
                     />
-                    {{ l('settings.updateCheck') }}
-                  </label>
+                    <label class="form-check-label" for="updateCheck">
+                      {{ l('settings.updateCheck') }}
+                    </label>
+                  </div>
                 </div>
                 <div class="mb-3" v-if="settings.updateCheck">
-                  <label class="control-label" for="beta">
-                    <input type="checkbox" id="beta" v-model="settings.beta" />
-                    {{ l('settings.beta') }}
-                  </label>
+                  <div class="form-check">
+                    <input
+                      type="checkbox"
+                      id="beta"
+                      v-model="settings.beta"
+                      class="form-check-input"
+                    />
+                    <label class="form-check-label" for="beta">
+                      {{ l('settings.beta') }}
+                    </label>
+                  </div>
                 </div>
               </div>
               <!--Appearance-->
@@ -77,10 +87,17 @@
                   {{ l('settings.theme') }}
                 </h5>
                 <div class="mb-3">
-                  <label class="control-label" for="beta">
-                    <input type="checkbox" disabled id="themeSystemSync" />
-                    {{ l('settings.theme.sync') }}
-                  </label>
+                  <div class="form-check">
+                    <input
+                      type="checkbox"
+                      disabled
+                      id="themeSystemSync"
+                      class="form-check-input"
+                    />
+                    <label class="form-check-label" for="themeSystemSync">
+                      {{ l('settings.theme.sync') }}
+                    </label>
+                  </div>
                 </div>
 
                 <div class="mb-3">
@@ -111,12 +128,17 @@
 
                 <div class="mb-3">
                   <label class="control-label" for="themeVanillaBbcode">
-                    <input
-                      v-model="settings.horizonVanillaTextColors"
-                      type="checkbox"
-                      id="themeVanillaBbcode"
-                    />
-                    {{ l('settings.theme.vanillaBbcode') }} </label
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        v-model="settings.horizonVanillaTextColors"
+                        type="checkbox"
+                        id="themeVanillaBbcode"
+                      />
+                      <label class="form-check-label" for="themeVanillaBbcode">
+                        {{ l('settings.theme.vanillaBbcode') }}
+                      </label>
+                    </div> </label
                   ><small class="form-text text-muted">{{
                     l('settings.theme.vanillaBbcode.legibilityNote')
                   }}</small>
@@ -207,14 +229,17 @@
               >
                 <h5>{{ l('user.profile') }}</h5>
                 <div class="mb-3">
-                  <label class="control-label" for="profileViewer">
+                  <div class="form-check">
                     <input
+                      class="form-check-input"
                       type="checkbox"
                       id="profileViewer"
                       v-model="settings.profileViewer"
                     />
-                    {{ l('settings.profileViewer') }}
-                  </label>
+                    <label class="form-check-label" for="profileViewer">
+                      {{ l('settings.profileViewer') }}
+                    </label>
+                  </div>
                 </div>
 
                 <h5>{{ l('settings.behavior.chat') }}</h5>
@@ -240,14 +265,17 @@
                 </div>
                 <h5>{{ l('settings.behavior.window') }}</h5>
                 <div class="mb-3">
-                  <label class="control-label" for="closeToTray">
+                  <div class="form-check">
                     <input
+                      class="form-check-input"
                       type="checkbox"
                       id="closeToTray"
                       v-model="settings.closeToTray"
                     />
-                    {{ l('settings.closeToTray') }}
-                  </label>
+                    <label class="form-check-label" for="closeToTray">
+                      {{ l('settings.closeToTray') }}
+                    </label>
+                  </div>
                 </div>
               </div>
               <!--Accessibility-->
@@ -257,17 +285,20 @@
                 style="height: 100%; width: 100%"
               >
                 <div class="mb-3" v-if="isWindows">
-                  <label
-                    class="control-label"
-                    for="risingDisableWindowsHighContrast"
-                  >
+                  <div class="form-check">
                     <input
+                      class="form-check-input"
                       type="checkbox"
-                      id="hwAcceleration"
+                      id="risingDisableWindowsHighContrast"
                       v-model="settings.risingDisableWindowsHighContrast"
                     />
-                    {{ l('settings.risingDisableWindowsHighContrast') }}
-                  </label>
+                    <label
+                      class="form-check-label"
+                      for="risingDisableWindowsHighContrast"
+                    >
+                      {{ l('settings.risingDisableWindowsHighContrast') }}
+                    </label>
+                  </div>
                 </div>
                 <div v-else class="warning">
                   <h5>{{ l('settings.comingsoon') }}</h5>
@@ -285,14 +316,17 @@
                   {{ l('settings.system') }}
                 </h5>
                 <div class="mb-3">
-                  <label class="control-label" for="hwAcceleration">
+                  <div class="form-check">
                     <input
+                      class="form-check-input"
                       type="checkbox"
                       id="hwAcceleration"
                       v-model="settings.hwAcceleration"
                     />
-                    {{ l('settings.hwAcceleration') }}
-                  </label>
+                    <label class="form-check-label" for="hwAcceleration">
+                      {{ l('settings.hwAcceleration') }}
+                    </label>
+                  </div>
                 </div>
                 <div class="mb-3">
                   <!--We do this one slightly differently because we 
@@ -382,12 +416,17 @@
 
                 <div class="mb-3">
                   <label class="control-label" for="customCssEnabled">
-                    <input
-                      type="checkbox"
-                      id="customCss"
-                      v-model="settings.horizonCustomCssEnabled"
-                    />
-                    {{ l('settings.customCss.enabled') }}
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="customCss"
+                        v-model="settings.horizonCustomCssEnabled"
+                      />
+                      <label class="form-check-label" for="customCss">
+                        {{ l('settings.customCss.enabled') }}
+                      </label>
+                    </div>
                   </label>
 
                   <label for="customCss" class="control-label label-full"

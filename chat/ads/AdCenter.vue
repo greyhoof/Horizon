@@ -46,12 +46,17 @@
       ></tagEditor>
 
       <label class="control-label disable" :for="'adm-disabled-' + index">
-        <input
-          type="checkbox"
-          :id="'adm-disabled-' + index"
-          v-model="ad.disabled"
-        />
-        Disable
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            :id="'adm-disabled-' + index"
+            v-model="ad.disabled"
+          />
+          <label class="form-check-label" :for="'adm-disabled-' + index">
+            Disable
+          </label>
+        </div>
       </label>
     </div>
 

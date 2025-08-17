@@ -49,14 +49,17 @@
       </select>
     </div>
     <div class="mb-3">
-      <label class="control-label" for="defaultHighlights">
+      <div class="form-check">
         <input
+          class="form-check-input"
           type="checkbox"
           id="defaultHighlights"
           v-model="defaultHighlights"
         />
-        {{ l('settings.defaultHighlights') }}
-      </label>
+        <label class="form-check-label" for="defaultHighlights">
+          {{ l('settings.defaultHighlights') }}
+        </label>
+      </div>
     </div>
     <div class="mb-3">
       <label class="control-label" :for="'highlightWords' + conversation.key">{{

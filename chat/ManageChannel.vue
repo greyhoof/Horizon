@@ -11,10 +11,17 @@
       class="mb-3"
       v-show="isChannelOwner && channel.id.substr(0, 4) === 'adh-'"
     >
-      <label class="control-label" for="isPublic">
-        <input type="checkbox" id="isPublic" v-model="isPublic" />
-        {{ l('manageChannel.isPublic') }}
-      </label>
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="isPublic"
+          v-model="isPublic"
+        />
+        <label class="form-check-label" for="isPublic">
+          {{ l('manageChannel.isPublic') }}
+        </label>
+      </div>
     </div>
     <div class="mb-3" v-show="isChannelOwner">
       <label class="control-label" for="mode">{{

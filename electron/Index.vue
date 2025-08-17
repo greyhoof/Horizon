@@ -117,16 +117,30 @@
             </div>
           </div>
           <div class="mb-3">
-            <label for="advanced"
-              ><input type="checkbox" id="advanced" v-model="showAdvanced" />
-              {{ l('login.advanced') }}</label
-            >
+            <div class="form-check">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="advanced"
+                v-model="showAdvanced"
+              />
+              <label class="form-check-label" for="advanced">
+                {{ l('login.advanced') }}
+              </label>
+            </div>
           </div>
           <div class="mb-3">
-            <label for="save"
-              ><input type="checkbox" id="save" v-model="saveLogin" />
-              {{ l('login.save') }}</label
-            >
+            <div class="form-check">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="save"
+                v-model="saveLogin"
+              />
+              <label class="form-check-label" for="save">
+                {{ l('login.save') }}
+              </label>
+            </div>
           </div>
           <div class="mb-3" style="margin: 0; text-align: right">
             <button
