@@ -250,9 +250,8 @@
 
     @Hook('mounted')
     async mounted(): Promise<void> {
-      if (this.character && this.character.is_self) return;
-
       this.expandedCustoms = this.autoExpandCustoms;
+      if (this.character && this.character.is_self) return;
 
       if (core.state.settings.risingAutoCompareKinks) {
         await this.compareKinks(core.characters.ownProfile, true);
