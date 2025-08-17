@@ -134,14 +134,19 @@
                         v-model="settings.horizonVanillaTextColors"
                         type="checkbox"
                         id="themeVanillaBbcode"
+                        aria-describedby="vanillaBbcodeLegibilityNote"
                       />
                       <label class="form-check-label" for="themeVanillaBbcode">
                         {{ l('settings.theme.vanillaBbcode') }}
                       </label>
-                    </div> </label
-                  ><small class="form-text text-muted">{{
-                    l('settings.theme.vanillaBbcode.legibilityNote')
-                  }}</small>
+                    </div>
+                    <div
+                      id="vanillaBbcodeLegibilityNote"
+                      class="form-text text-muted"
+                    >
+                      {{ l('settings.theme.vanillaBbcode.legibilityNote') }}
+                    </div>
+                  </label>
                 </div>
 
                 <h5>
