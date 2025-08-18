@@ -38,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Cases where the chatbox would resize erratically at line ends, especially with narrow glyphs (e.g. ! or i). [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/72fdfe8c0232571e9ef0c81f0bc28f7c7fbb61ed)
 - Issues with the tab switch shortcut not working immediately after creating a new tab. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/c932f5ebc976a666d516c0d25655da7011a913d2)
 - Numerous BBCode profile formatting issues (e.g. `[sub]`, `[sup]`, `[big]`, `[small]`, `[heading]`). [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/c33c56d342f7f969019ca452e5245e64c1937255)
+- The profile viewer's tabs will no longer float above the dimmer for dialogs inside the profile viewer. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/30f50213c28cd667b51eb201f4c9fad0afae226b)
 
 ### Changed
 
@@ -45,10 +46,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Quick jumper (Ctrl/Cmd + T) now also shows recent conversations, bookmarks and friends. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/49b76e617189be1f3ad3131db6f6ca2cc08ac28f)
 - Profile analyser now shows how the matcher interprets your character (species, inferred preference genders, etc.) rather than only missing fields. [[Species data]](https://github.com/Fchat-Horizon/Horizon/commit/f2522e8) [[Gender prefs]](https://github.com/Fchat-Horizon/Horizon/commit/7430118) [[UI & age nuance]](https://github.com/Fchat-Horizon/Horizon/commit/78f5de2)
 - Notification sounds now use higher quality .ogg variants where available. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/57a78e056b8cb1b3dc8b26528b9bc912ab4fd856)
+- Channel ``/warn`` messages now notify all users, as was the case in F-Chat 1.0 and 2.0. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/9afa0ef99b5cc7102669ee5508622a41d9f29060)
 
 ### Development
 
 - Upgraded to Bootstrap 5.3 from Bootstrap 4. [[Initial]](https://github.com/Fchat-Horizon/Horizon/commit/70de52c) [[SCSS update]](https://github.com/Fchat-Horizon/Horizon/commit/e156de4) [[Variable adjustments]](https://github.com/Fchat-Horizon/Horizon/commit/a968b26) [[Component class updates]](https://github.com/Fchat-Horizon/Horizon/commit/db92d85)
+- Running in development mode now adds an option to quickly view common UI elements for your current theme in a window dialog. It can be found in the app menu, under Help > Test UI items. [[Menu added]](https://github.com/Fchat-Horizon/Horizon/commit/ef0c9977bfe9d1d12bafc0e75e8bc47a5f465606) [[Elements added]](https://github.com/Fchat-Horizon/Horizon/commit/8c927962da322cd6dbea7ac99524f9499f5303f7)
 
 ### UI Changes overview
 
