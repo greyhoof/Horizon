@@ -67,6 +67,15 @@
         <span class="fa fa-fw fa-comment"></span
         ><span class="action-label">{{ l('user.messageJump') }}</span></a
       >
+      <a
+        tabindex="-1"
+        href="#"
+        @click.prevent="openConversation(false)"
+        class="list-group-item list-group-item-action"
+      >
+        <span class="fa fa-fw fa-comment-medical"></span
+        ><span class="action-label">{{ l('user.message') }}</span></a
+      >
 
       <a
         tabindex="-1"
