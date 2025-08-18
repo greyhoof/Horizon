@@ -6,6 +6,8 @@ const strings: { [key: string]: string | undefined } = {
   'action.copy': 'Copy',
   'action.copyWithoutBBCode': 'Copy without BBCode',
   'action.paste': 'Paste',
+  'action.delete': 'Delete',
+  'action.selectAll': 'Select All',
   'action.copyLink': 'Copy Link',
   'action.incognito': 'Open in Incognito mode',
   'action.suggestions': 'Suggestions',

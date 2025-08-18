@@ -127,6 +127,19 @@ webContents.on('context-menu', (_, props) => {
         role: props.editFlags.canPaste ? 'paste' : undefined,
         accelerator: 'CmdOrCtrl+V',
         enabled: props.editFlags.canPaste
+      },
+      {
+        id: 'delete',
+        label: l('action.delete'),
+        role: props.editFlags.canDelete ? 'delete' : undefined,
+        enabled: props.editFlags.canDelete
+      },
+      {
+        id: 'selectAll',
+        label: l('action.selectAll'),
+        role: props.editFlags.canSelectAll ? 'selectAll' : undefined,
+        accelerator: 'CmdOrCtrl+A',
+        enabled: props.editFlags.canSelectAll
       }
     );
   else if (
@@ -203,7 +216,6 @@ webContents.on('context-menu', (_, props) => {
 
   if (lookupWord) {
     menuTemplate.unshift(
-      { type: 'separator' },
       {
         label: `Look up '${lookupWord}'`,
         click: async () => {
@@ -213,7 +225,8 @@ webContents.on('context-menu', (_, props) => {
             y: props.y
           });
         }
-      }
+      },
+      { type: 'separator' }
     );
   }
 
