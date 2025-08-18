@@ -17,6 +17,11 @@ a {
 .card {
   border-radius: 0.7em;
 }
+
+.card-header.character-card-header {
+  border-top-right-radius: 0.7em;
+  border-top-left-radius: 0.7em;
+}
 .kink-block .card {
   border-radius: initial;
   border-bottom-right-radius: 1rem;
