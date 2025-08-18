@@ -297,7 +297,14 @@
           class="list-group-item list-group-item-action"
           :key="conversation.key"
         >
-          <span class="fas fa-hashtag conversation-icon"></span>
+          <span
+            class="conversation-icon"
+            :class="
+              conversation.channel.id.substr(0, 4) !== 'adh-'
+                ? 'fa fa-star'
+                : 'fas fa-hashtag'
+            "
+          ></span>
           <div class="name">{{ conversation.name }}</div>
         </a>
       </div>

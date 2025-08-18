@@ -76,10 +76,14 @@
       <div style="display: flex; align-items: center">
         <div style="flex: 1">
           <span
-            v-show="conversation.channel.id.substr(0, 4) !== 'adh-'"
-            class="fa fa-fw fa-star"
+            class="fa-fw"
+            :class="
+              conversation.channel.id.substr(0, 4) !== 'adh-'
+                ? 'fa fa-star'
+                : 'fas fa-hashtag'
+            "
             :title="l('channel.official')"
-            style="margin-right: 5px; vertical-align: sub"
+            style="vertical-align: sub"
           ></span>
           <h5 style="margin: 0; display: inline; vertical-align: middle">
             {{ conversation.name }}
