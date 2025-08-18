@@ -46,7 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Quick jumper (Ctrl/Cmd + T) now also shows recent conversations, bookmarks and friends. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/49b76e617189be1f3ad3131db6f6ca2cc08ac28f)
 - Profile analyser now shows how the matcher interprets your character (species, inferred preference genders, etc.) rather than only missing fields. [[Species data]](https://github.com/Fchat-Horizon/Horizon/commit/f2522e8) [[Gender prefs]](https://github.com/Fchat-Horizon/Horizon/commit/7430118) [[UI & age nuance]](https://github.com/Fchat-Horizon/Horizon/commit/78f5de2)
 - Notification sounds now use higher quality .ogg variants where available. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/57a78e056b8cb1b3dc8b26528b9bc912ab4fd856)
-- Channel ``/warn`` messages now notify all users, as was the case in F-Chat 1.0 and 2.0. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/9afa0ef99b5cc7102669ee5508622a41d9f29060)
+- Channel `/warn` messages now notify all users, as was the case in F-Chat 1.0 and 2.0. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/9afa0ef99b5cc7102669ee5508622a41d9f29060)
 
 ### Development
 
