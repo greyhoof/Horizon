@@ -1251,7 +1251,8 @@
   .chat-info-text {
     display: flex;
     align-items: center;
-    flex: 1 51%;
+    flex: 1 auto;
+    width: 100%;
     @media (max-width: breakpoint-max(xs)) {
       flex-basis: 100%;
     }

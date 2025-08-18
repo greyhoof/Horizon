@@ -22,7 +22,7 @@
       :style="showToolbar ? { display: 'flex' } : undefined"
       @mousedown.stop.prevent
       v-if="hasToolbar"
-      style="flex: 1 51%; position: relative"
+      style="flex: 1 51%"
     >
       <div
         class="popover popover-top color-selector"
