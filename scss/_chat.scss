@@ -458,7 +458,7 @@ $genders: (
 
 .btn-text {
   margin-left: 3px;
-  @media (max-width: breakpoint-max(xs)) {
+  @include media-breakpoint-down(md) {
     display: none;
   }
 }
