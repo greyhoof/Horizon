@@ -3,21 +3,25 @@
 // Base colors
 $white: #ffffff;
 $gray-base: #ffede5;
-$gray-100: #ffede5 !default;
-$gray-200: color.scale($gray-base, $lightness: -20%);
-$gray-300: #b2b2b2 !default;
-$gray-400: #999999 !default;
-$gray-500: #7f7f7f !default;
-$gray-600: #666666 !default;
-$gray-700: #4c4c4c !default;
-$gray-800: #333333 !default;
-$gray-900: #191919 !default;
+$gray-100: #ffe5f4 !default;
+$gray-200: color.scale($gray-base, $lightness: -20%, $saturation: -10%);
+$gray-300: color.scale($gray-base, $lightness: -30%, $saturation: -20%);
+$gray-400: color.scale($gray-base, $lightness: -40%, $saturation: -30%);
+$gray-500: color.scale($gray-base, $lightness: -50%, $saturation: -30%);
+$gray-600: color.scale($gray-base, $lightness: -60%, $saturation: -40%);
+$gray-700: color.scale($gray-base, $lightness: -70%, $saturation: -50%);
+$gray-800: color.scale($gray-base, $lightness: -80%, $saturation: -50%);
+$gray-900: color.scale($gray-base, $lightness: -90%, $saturation: -60%);
 $black: #000000 !default;
 
 // Bootstrap 5 contrast colors
 $light-color: $white;
 $dark-color: $black;
 $component-active-color: $dark-color;
+
+//Some theme overrides that differ from BS4
+$input-bg: $white;
+$list-group-bg: $white;
 
 // Theme colors
 $gray-color: $gray-400;
@@ -32,7 +36,7 @@ $yellow-color: #bcab17;
 $pink-color: #da1677;
 $green-color: #036603;
 $primary: #f38d68;
-$secondary: $gray-200;
+$secondary: #ffaa84;
 $warning: #f3ae4e;
 
 // Core page elements

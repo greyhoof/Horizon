@@ -35,6 +35,11 @@ $component-active-color: $light-color;
 
 $link-color: $gray-800;
 $link-hover-color: $black;
+
+//Some theme overrides that differ from BS4
+$input-bg: $gray-base;
+$list-group-bg: $gray-base;
+
 // F-List Rising
 $scorePerfectMatchBg: rgb(0, 173, 173);
 $scorePerfectMatchFg: rgb(29, 154, 154);
