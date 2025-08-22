@@ -40,7 +40,7 @@
         v-model="ad.tags"
         placeholder="Enter one or more tags, e.g. 'romantic'"
         :add-tag-on-keys="[13, 188, 9, 32]"
-        class="form-control"
+        class="form-control form-tag"
         :disabled="ad.disabled"
         :add-tag-on-blur="true"
       ></tagEditor>
@@ -133,10 +133,16 @@
   .ad-list .bbcode-toolbar .color-selector {
     left: 58px !important;
     top: 30px !important;
+    border: none;
   }
 
   .ad-list .bbcode-toolbar .eicon-selector {
     top: 30px !important;
+  }
+
+  .ad-list .form-control.form-tag {
+    display: flex;
+    padding: 0px;
   }
 
   .form-group.ad-list {

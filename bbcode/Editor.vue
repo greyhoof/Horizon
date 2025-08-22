@@ -541,6 +541,7 @@
   }
 
   .bbcode-toolbar {
+    position: relative;
     .toolbar-buttons {
       .btn.toggled {
         background-color: var(--bs-secondary) !important;
@@ -549,8 +550,8 @@
 
     .color-selector {
       max-width: 150px;
-      top: -57px;
-      left: 94px;
+      left: 5.7em;
+      bottom: 2.2em;
       line-height: 1;
       z-index: 1000;
       background-color: var(--bs-body-bg);

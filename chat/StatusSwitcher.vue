@@ -151,7 +151,6 @@
 
 <style lang="scss">
   .statusEditor .bbcode-toolbar .color-selector {
-    left: 58px !important;
   }
 
   .statusEditor .bbcode-toolbar .eicon-selector {
