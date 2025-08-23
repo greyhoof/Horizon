@@ -56,8 +56,8 @@
               :title="
                 l(
                   character.bookmarked
-                    ? 'userProfile.bookmark'
-                    : 'userProfile.unbookmark'
+                    ? 'userProfile.unbookmark'
+                    : 'userProfile.bookmark'
                 )
               "
               :class="{
