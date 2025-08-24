@@ -479,7 +479,29 @@
         'settings',
         (_e: Electron.IpcRendererEvent, settings: GeneralSettings) => {
           log.debug('settings.update.index');
+          let soundChanged =
+            this.settings.soundTheme !== settings.soundTheme ||
+            core.state.generalSettings.soundTheme !== settings.soundTheme;
           core.state.generalSettings = this.settings = settings;
+          /*
+          We have to do this after the settings change is applied to  this.settings &
+          core.state.generalSettings because the initSounds function checks those values
+          to determine which sounds to initialize.
+          */
+          if (soundChanged) {
+            log.debug(
+              'settings.update.index.reinitSounds',
+              settings.soundTheme
+            );
+            core.notifications.initSounds([
+              'attention',
+              'login',
+              'logout',
+              'modalert',
+              'newnote',
+              'silence'
+            ]);
+          }
         }
       );
 

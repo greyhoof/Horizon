@@ -24,6 +24,8 @@ interface SoundTheme {
 
 export default class Notifications implements Interface {
   isInBackground = false;
+  hasInitialized = false;
+  audioElements: HTMLAudioElement[] = [];
 
   protected shouldNotify(conversation: Conversation): boolean {
     return (
@@ -95,6 +97,13 @@ export default class Notifications implements Interface {
     const theme = await this.loadSoundTheme(soundTheme);
     const preloadPromises: Promise<void>[] = [];
 
+    if (this.hasInitialized) {
+      //If this isn't the first time we've called this method, we want to clean up our sources.
+      this.audioElements.forEach((element: HTMLAudioElement) => {
+        element.remove();
+      });
+    }
+
     for (const sound of sounds) {
       const audio = this.createAudioElement(sound);
       if (!audio) continue;
@@ -104,9 +113,11 @@ export default class Notifications implements Interface {
 
       const playPromise = this.preloadAudio(audio);
       if (playPromise) preloadPromises.push(playPromise);
+      this.audioElements.push(audio);
     }
 
     await Promise.all(preloadPromises);
+    this.hasInitialized = true;
   }
 
   private getSoundTheme(): string {
