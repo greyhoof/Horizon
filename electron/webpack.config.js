@@ -378,9 +378,9 @@ module.exports = function (mode) {
   if (mode === 'production') {
     process.env.NODE_ENV = 'production';
 
-    mainConfig.devtool = 'inline-source-map';
-    rendererConfig.devtool = 'inline-source-map';
-    storeWorkerEndpointConfig.devtool = 'inline-source-map';
+    mainConfig.devtool = false;
+    rendererConfig.devtool = false;
+    storeWorkerEndpointConfig.devtool = false;
 
     rendererConfig.plugins.push(new OptimizeCssAssetsPlugin());
   } else {
