@@ -32,6 +32,10 @@ a {
   border: 0px;
 }
 
+.btn:disabled {
+  cursor: not-allowed;
+}
+
 .quick-jump-overlay .quick-jump-container,
 .modal-content {
   box-shadow: 6px 9px 19px 0px rgba(16, 16, 16, 0.25);

@@ -31,6 +31,7 @@
             @click="showDelete"
             :title="l('userProfile.delete')"
             class="delete-link btn btn-outline-danger col-3"
+            disabled
           >
             <i class="fa fa-fw fa-trash"></i>
           </button>
@@ -38,6 +39,7 @@
             @click="showDuplicate()"
             :title="l('userProfile.duplicate')"
             class="duplicate-link btn btn-outline-secondary col-3"
+            disabled
           >
             <i class="fa fa-fw fa-copy"></i>
           </button>
