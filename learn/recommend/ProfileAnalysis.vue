@@ -25,7 +25,12 @@
         We know there are a lot of issues with that feature as is, but can't
         seem to get a proper consensus on where it's failing people. If you can,
         please
-        <a href="https://horizn.moe/contact.html">reach out to us</a>.
+        <a
+          href="https://horizn.moe/contact.html"
+          style="text-decoration: underline"
+          >reach out to us
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>.
+        </a>
       </p>
       <hr />
       <p>
