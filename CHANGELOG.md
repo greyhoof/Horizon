@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 # [Releases]
 
+## [1.33.1] - 2025-08-24
+
+### Added
+
+- Revamp of the character selector. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/4d1fa88)
+- New "Vanilla" gender colours setting. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/fa0b508)
+- Sound theme menu revamp (Can now preview sounds and set per-sound volumes). [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/2f70066)
+- Readded bbcode glow and added settings to toggle it. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/bccc564)
+
+### Fixed
+
+- Fixes for the default sound theme being painful on the ears. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/dcca0a4)
+- Fixes Bootstrap-related colour issues on collapsible elements. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/970b58a)
+
 ## [1.33.0] - 2025-08-24
 
 ### Added
