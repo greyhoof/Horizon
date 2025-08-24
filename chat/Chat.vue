@@ -9,7 +9,7 @@
   >
     <div
       class="card bg-light"
-      style="width: 400px; max-width: 100%; margin: 0 auto"
+      style="width: 1100px; max-width: 100%; margin: 0 auto"
       v-if="!connected"
     >
       <div class="alert alert-danger" v-show="error">{{ error }}</div>
@@ -27,11 +27,21 @@
       </h3>
       <div class="card-body">
         <h4 class="card-title">{{ l('login.selectCharacter') }}</h4>
-        <select v-model="selectedCharacter" class="form-select form-select">
-          <option v-for="character in ownCharacters" :value="character">
-            {{ character.name }}
-          </option>
-        </select>
+        <div class="character-grid">
+          <div
+            v-for="character in ownCharacters"
+            :key="character.id"
+            class="character-tile"
+            :class="{ selected: selectedCharacter && selectedCharacter.id === character.id }"
+            @click="selectCharacter(character)"
+            :title="character.name"
+          >
+            <div class="avatar-wrap">
+              <img :src="characterImage(character.name)" alt="avatar" class="avatar" />
+            </div>
+            <div class="char-name">{{ character.name }}</div>
+          </div>
+        </div>
         <div style="text-align: right; margin-top: 10px">
           <button
             class="btn btn-primary"
@@ -73,7 +83,7 @@
   import { InlineDisplayMode, SimpleCharacter } from '../interfaces';
   import { Keys } from '../keys';
   import ChatView from './ChatView.vue';
-  import { errorToString, getKey } from './common';
+  import { errorToString, getKey, characterImage } from './common';
   import core from './core';
   import l from './localize';
   import Logs from './Logs.vue';
@@ -163,6 +173,7 @@
     selectedCharacter =
       this.ownCharacters.find(x => x.id === this.defaultCharacter) ||
       this.ownCharacters[0];
+  characterImage = characterImage;
     @Prop
     readonly version?: string;
     error = '';
@@ -172,7 +183,7 @@
     copyPlain = false;
 
     @Hook('mounted')
-    mounted(): void {
+  mounted(): void {
       document.title = l('title', core.connection.character);
       document.addEventListener('copy', ((e: ClipboardEvent) => {
         if (this.copyPlain) {
@@ -306,6 +317,10 @@
       (<Modal>this.$refs['reconnecting']).hide();
     }
 
+    selectCharacter(character: SimpleCharacter): void {
+      this.selectedCharacter = character;
+    }
+
     showLogs(): void {
       (<Logs>this.$refs['logsDialog']).show();
     }
@@ -336,5 +351,67 @@
 <style lang="scss">
   .modal-footer {
     min-height: initial;
+  }
+
+  .character-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    max-height: 320px;
+    overflow: auto;
+    padding: 6px 2px;
+  }
+
+  .character-tile {
+    width: 96px;
+    min-width: 96px;
+    height: 110px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background: rgba(255,255,255,0.02);
+    border-radius: 8px;
+    padding: 8px;
+    cursor: pointer;
+    transition: box-shadow 0.08s ease, transform 0.08s ease;
+    text-align: center;
+  }
+
+  .character-tile:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+  }
+
+  .character-tile.selected {
+    outline: 2px solid rgba(100,150,255,0.9);
+    box-shadow: 0 8px 22px rgba(50,80,200,0.25);
+  }
+
+  .avatar-wrap {
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.08);
+  }
+
+  .avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .char-name {
+    margin-top: 6px;
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
   }
 </style>
