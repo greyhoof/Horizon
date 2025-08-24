@@ -136,6 +136,8 @@ export class Settings implements ISettings {
 
   risingCharacterTheme = undefined;
   soundTheme = 'default';
+  // Per-theme per-sound volume overrides. Structure: { [themeName]: { [soundName]: volumeNumber(0-1) } }
+  soundThemeSoundVolumes: { [theme: string]: { [sound: string]: number } } = {};
 }
 
 export class AdSettings implements Conversation.AdSettings {
