@@ -236,6 +236,9 @@ Are you sure?`,
   'settings.theme.vanillaBbcode': 'Use vanilla BBCode colors',
   'settings.theme.vanillaBbcode.legibilityNote':
     'These colors might not be legible on all themes.',
+  'settings.theme.bbcodeGlow': 'Enable BBCode glow (text shadow)',
+  'settings.theme.bbcodeGlow.note':
+    'Adds a subtle glow to certain BBCode-coloured text without changing the colour palette.',
   'settings.profileViewer': 'Use profile viewer',
   'settings.logDir': 'Change log location',
   'settings.logDir.confirm': `Do you want to set your log location to {0}?

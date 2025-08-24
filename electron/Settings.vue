@@ -149,6 +149,26 @@
                   </label>
                 </div>
 
+                <div class="mb-3">
+                  <label class="control-label" for="themeBbcodeGlow">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        v-model="settings.horizonBbcodeGlow"
+                        type="checkbox"
+                        id="themeBbcodeGlow"
+                        aria-describedby="bbcodeGlowNote"
+                      />
+                      <label class="form-check-label" for="themeBbcodeGlow">
+                        {{ l('settings.theme.bbcodeGlow') }}
+                      </label>
+                    </div>
+                    <div id="bbcodeGlowNote" class="form-text text-muted">
+                      {{ l('settings.theme.bbcodeGlow.note') }}
+                    </div>
+                  </label>
+                </div>
+
                 <h5>
                   {{ l('settings.spellcheck.language') }}
                 </h5>
