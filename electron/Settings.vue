@@ -150,6 +150,26 @@
                 </div>
 
                 <div class="mb-3">
+                  <label class="control-label" for="themeVanillaGenders">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        v-model="settings.horizonVanillaGenderColors"
+                        type="checkbox"
+                        id="themeVanillaGenders"
+                        aria-describedby="vanillaGendersNote"
+                      />
+                      <label class="form-check-label" for="themeVanillaGenders">
+                        {{ l('settings.theme.vanillaGenders') }}
+                      </label>
+                    </div>
+                    <div id="vanillaGendersNote" class="form-text text-muted">
+                      {{ l('settings.theme.vanillaGenders.note') }}
+                    </div>
+                  </label>
+                </div>
+
+                <div class="mb-3">
                   <label class="control-label" for="themeBbcodeGlow">
                     <div class="form-check">
                       <input

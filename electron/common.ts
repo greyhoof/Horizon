@@ -45,6 +45,7 @@ export class GeneralSettings {
   horizonCustomCss: string = '';
   horizonCustomCssEnabled: boolean = false;
   horizonVanillaTextColors: boolean = false;
+  horizonVanillaGenderColors: boolean = false;
   horizonBbcodeGlow: boolean = false;
   soundTheme = 'default';
   soundThemeSoundVolumes: { [theme: string]: { [sound: string]: number } } = {};

@@ -236,6 +236,9 @@ Are you sure?`,
   'settings.theme.vanillaBbcode': 'Use vanilla BBCode colors',
   'settings.theme.vanillaBbcode.legibilityNote':
     'These colors might not be legible on all themes.',
+  'settings.theme.vanillaGenders': 'Use vanilla gender colours',
+  'settings.theme.vanillaGenders.note':
+    "Show the original 'vanilla' gender colours regardless of the current theme.",
   'settings.theme.bbcodeGlow': 'Enable BBCode glow (text shadow)',
   'settings.theme.bbcodeGlow.note':
     'Adds a subtle glow to certain BBCode-coloured text without changing the colour palette.',

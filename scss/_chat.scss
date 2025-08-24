@@ -403,6 +403,19 @@ $genders: (
   }
 }
 
+// When user requests vanilla gender colours, force the original palette
+.vanillaGenderColors {
+  @each $gender, $color in $genders {
+    .gender-#{$gender} {
+      color: $color !important;
+    }
+
+    .message-event .gender-#{$gender} {
+      color: color.scale($color, $lightness: 5%) !important;
+    }
+  }
+}
+
 @each $colorName,
   $colorValue
     in (

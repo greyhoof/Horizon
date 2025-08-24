@@ -799,6 +799,7 @@
           [`theme-${core.state.settings.risingCharacterTheme || this.settings.theme}`]: true,
           colorblindMode: core.state.settings.risingColorblindMode,
           vanillaTextColors: this.settings.horizonVanillaTextColors,
+          vanillaGenderColors: this.settings.horizonVanillaGenderColors,
           bbcodeGlow: this.settings.horizonBbcodeGlow,
           disableWindowsHighContrast:
             core.state.generalSettings?.risingDisableWindowsHighContrast ||
