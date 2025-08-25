@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 # [Releases]
 
+## [1.33.2] - 2025-08-24
+
+### Added
+
+- Autologin. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/e3e377f)
+
+### Fixed
+
+- Fix regression with the character selector by adding a search bar [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/7ff8955)
+
 ## [1.33.1] - 2025-08-24
 
 ### Added
