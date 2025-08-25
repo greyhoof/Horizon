@@ -87,13 +87,13 @@ export default class Notifications implements Interface {
     ) as HTMLAudioElement;
     if (!audio) return;
 
-  // Determine volume override (per-theme per-sound) if present
-  const soundTheme = this.getSoundTheme();
-  const volume = this.getSoundVolume(soundTheme, sound);
+    // Determine volume override (per-theme per-sound) if present
+    const soundTheme = this.getSoundTheme();
+    const volume = this.getSoundVolume(soundTheme, sound);
 
-  audio.volume = volume;
-  audio.muted = false;
-  audio.play().catch(e => console.error(e));
+    audio.volume = volume;
+    audio.muted = false;
+    audio.play().catch(e => console.error(e));
   }
 
   async initSounds(sounds: ReadonlyArray<string>): Promise<void> {
@@ -113,9 +113,9 @@ export default class Notifications implements Interface {
       if (!audio) continue;
 
       this.setupAudioSources(audio, theme, soundTheme, sound);
-  // Apply saved volume if available before preloading
-  const volume = this.getSoundVolume(soundTheme, sound);
-  audio.volume = volume;
+      // Apply saved volume if available before preloading
+      const volume = this.getSoundVolume(soundTheme, sound);
+      audio.volume = volume;
       document.body.appendChild(audio);
 
       const playPromise = this.preloadAudio(audio);
@@ -223,7 +223,9 @@ export default class Notifications implements Interface {
   private getSoundVolume(themeName: string, sound: string): number {
     try {
       const gen = (core.state as any).generalSettings;
-      const perTheme = gen?.soundThemeSoundVolumes || core.state.settings.soundThemeSoundVolumes;
+      const perTheme =
+        gen?.soundThemeSoundVolumes ||
+        core.state.settings.soundThemeSoundVolumes;
       const themeVolumes = perTheme?.[themeName];
       if (themeVolumes && typeof themeVolumes[sound] === 'number') {
         const v = themeVolumes[sound];
