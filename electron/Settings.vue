@@ -63,6 +63,19 @@
                     </label>
                   </div>
                 </div>
+                <div class="mb-3">
+                  <div class="form-check">
+                    <input
+                      type="checkbox"
+                      id="autoLogin"
+                      v-model="settings.horizonAutoLogin"
+                      class="form-check-input"
+                    />
+                    <label class="form-check-label" for="autoLogin">
+                      {{ l('login.auto') }}
+                    </label>
+                  </div>
+                </div>
                 <div class="mb-3" v-if="settings.updateCheck">
                   <div class="form-check">
                     <input

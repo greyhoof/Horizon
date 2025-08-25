@@ -49,6 +49,7 @@ export class GeneralSettings {
   horizonBbcodeGlow: boolean = false;
   soundTheme = 'default';
   soundThemeSoundVolumes: { [theme: string]: { [sound: string]: number } } = {};
+  horizonAutoLogin: boolean = false;
 }
 
 log.debug('init.common.done');

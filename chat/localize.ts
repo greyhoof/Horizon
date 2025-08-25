@@ -64,6 +64,7 @@ const strings: { [key: string]: string | undefined } = {
   'login.proxy': 'Proxy',
   'login.advanced': 'Show advanced settings',
   'login.save': 'Save login',
+  'login.auto': 'Automatically log in',
   'login.error': 'Error logging you in: Could not connect to server',
   'login.error.proxy': 'Failed to set proxy',
   'login.submit': 'Log in',
