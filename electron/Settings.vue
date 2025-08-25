@@ -48,6 +48,23 @@
                 style="height: 100%; width: 100%"
               >
                 <h5>
+                  {{ l('settings.tabs.general') }}
+                </h5>
+                <div class="mb-3">
+                  <div class="form-check">
+                    <input
+                      type="checkbox"
+                      id="autoLogin"
+                      v-model="settings.horizonAutoLogin"
+                      class="form-check-input"
+                    />
+                    <label class="form-check-label" for="autoLogin">
+                      {{ l('login.auto') }}
+                    </label>
+                  </div>
+                </div>
+
+                <h5>
                   {{ l('settings.updates') }}
                 </h5>
                 <div class="mb-3">
@@ -60,19 +77,6 @@
                     />
                     <label class="form-check-label" for="updateCheck">
                       {{ l('settings.updateCheck') }}
-                    </label>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <div class="form-check">
-                    <input
-                      type="checkbox"
-                      id="autoLogin"
-                      v-model="settings.horizonAutoLogin"
-                      class="form-check-input"
-                    />
-                    <label class="form-check-label" for="autoLogin">
-                      {{ l('login.auto') }}
                     </label>
                   </div>
                 </div>
@@ -138,6 +142,9 @@
                     </filterable-select>
                   </label>
                 </div>
+                <h5>
+                  {{ l('settings.theme.textColors') }}
+                </h5>
 
                 <div class="mb-3">
                   <label class="control-label" for="themeVanillaBbcode">
