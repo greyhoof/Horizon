@@ -27,17 +27,39 @@
       </h3>
       <div class="card-body">
         <h4 class="card-title">{{ l('login.selectCharacter') }}</h4>
+        <div
+          class="selector-top"
+          style="display: flex; justify-content: center; margin-bottom: 8px"
+        >
+          <div style="width: 60%; max-width: 520px">
+            <input
+              ref="filterInput"
+              type="text"
+              class="form-control"
+              placeholder="Filter characters..."
+              v-model="filterText"
+              autofocus
+            />
+          </div>
+        </div>
         <div class="character-grid">
           <div
-            v-for="character in ownCharacters"
+            v-for="character in filteredCharacters"
             :key="character.id"
             class="character-tile"
-            :class="{ selected: selectedCharacter && selectedCharacter.id === character.id }"
+            :class="{
+              selected:
+                selectedCharacter && selectedCharacter.id === character.id
+            }"
             @click="selectCharacter(character)"
             :title="character.name"
           >
             <div class="avatar-wrap">
-              <img :src="characterImage(character.name)" alt="avatar" class="avatar" />
+              <img
+                :src="characterImage(character.name)"
+                alt="avatar"
+                class="avatar"
+              />
             </div>
             <div class="char-name">{{ character.name }}</div>
           </div>
@@ -173,7 +195,7 @@
     selectedCharacter =
       this.ownCharacters.find(x => x.id === this.defaultCharacter) ||
       this.ownCharacters[0];
-  characterImage = characterImage;
+    characterImage = characterImage;
     @Prop
     readonly version?: string;
     error = '';
@@ -183,7 +205,7 @@
     copyPlain = false;
 
     @Hook('mounted')
-  mounted(): void {
+    mounted(): void {
       document.title = l('title', core.connection.character);
       document.addEventListener('copy', ((e: ClipboardEvent) => {
         if (this.copyPlain) {
@@ -321,6 +343,16 @@
       this.selectedCharacter = character;
     }
 
+    filterText: string = '';
+
+    get filteredCharacters(): SimpleCharacter[] {
+      const q = this.filterText.trim().toLowerCase();
+      if (!q) return this.ownCharacters;
+      return this.ownCharacters.filter(c => c.name.toLowerCase().includes(q));
+    }
+
+    // The top input is a simple filter; selecting a tile is done by clicking it.
+
     showLogs(): void {
       (<Logs>this.$refs['logsDialog']).show();
     }
@@ -370,22 +402,24 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    background: rgba(255,255,255,0.02);
+    background: rgba(255, 255, 255, 0.02);
     border-radius: 8px;
     padding: 8px;
     cursor: pointer;
-    transition: box-shadow 0.08s ease, transform 0.08s ease;
+    transition:
+      box-shadow 0.08s ease,
+      transform 0.08s ease;
     text-align: center;
   }
 
   .character-tile:hover {
     transform: translateY(-4px);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
   }
 
   .character-tile.selected {
-    outline: 2px solid rgba(100,150,255,0.9);
-    box-shadow: 0 8px 22px rgba(50,80,200,0.25);
+    outline: 2px solid rgba(100, 150, 255, 0.9);
+    box-shadow: 0 8px 22px rgba(50, 80, 200, 0.25);
   }
 
   .avatar-wrap {
@@ -396,7 +430,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0,0,0,0.08);
+    background: rgba(0, 0, 0, 0.08);
   }
 
   .avatar {
