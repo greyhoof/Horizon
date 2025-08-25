@@ -414,6 +414,11 @@ $genders: (
     .message-event .gender-#{$gender} {
       color: color.scale($color, $lightness: 5%) !important;
     }
+
+    .gender-#{$gender}.user-bookmark,
+    .message-event .gender-#{$gender}.user-bookmark {
+      color: #66cc33;
+    }
   }
 }
 
