@@ -13,17 +13,39 @@
       v-if="!connected"
     >
       <div class="alert alert-danger" v-show="error">{{ error }}</div>
-      <h3 class="card-header" style="margin-top: 0; display: flex">
+      <h3
+        class="card-header"
+        style="margin-top: 0; display: flex; align-items: center"
+      >
         {{ l('title') }}
-        <a
-          href="#"
-          @click.prevent="showLogs()"
-          class="btn"
-          style="flex: 1; text-align: right"
+        <div
+          style="
+            margin-left: auto;
+            display: flex;
+            gap:4px;
+            align-items: center;
+          "
         >
-          <span class="fa fa-file-alt"></span>
-          <span class="btn-text">{{ l('logs.title') }}</span>
-        </a>
+          <a
+            href="https://discord.gg/JYuxqNVNtP"
+            target="_blank"
+            rel="noopener"
+            class="btn"
+            title="Join our Discord"
+          >
+            <span class="fab fa-discord"></span>
+          </a>
+
+          <a
+            href="#"
+            @click.prevent="showLogs()"
+            class="btn"
+            style="text-align: right"
+          >
+            <span class="fa fa-file-alt"></span>
+            <span class="btn-text">{{ l('logs.title') }}</span>
+          </a>
+        </div>
       </h3>
       <div class="card-body">
         <h4 class="card-title">{{ l('login.selectCharacter') }}</h4>

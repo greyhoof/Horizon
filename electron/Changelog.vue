@@ -39,6 +39,16 @@
               ref="mdContainer"
             ></div>
             <div class="modal-footer">
+              <a
+                class="btn btn-outline-primary"
+                href="https://discord.gg/JYuxqNVNtP"
+                target="_blank"
+                rel="noopener"
+                style="margin-left: 8px"
+              >
+                <span class="fab fa-discord"></span>
+                <span style="margin-left: 6px">Join Our Discord</span>
+              </a>
               <button
                 type="button"
                 class="btn btn-secondary"
