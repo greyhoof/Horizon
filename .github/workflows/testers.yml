@@ -10,7 +10,7 @@ jobs:
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK_TESTERS }}
           nodetail: true
-          title: "New Prerelease (${{ github.event.release.tag_name }})"
+          title: 'New Prerelease (${{ github.event.release.tag_name }})'
           description: |
             ${{ github.event.release.body }}
 
@@ -18,5 +18,5 @@ jobs:
 
             Discuss in <#1409676927995740272>
           color: 0x00FF00
-          content: "||<@&1409673714890440828>||"
-          username: "Pre-Release Bot"
+          content: '||<@&1409673714890440828>||'
+          username: 'Pre-Release Bot'
