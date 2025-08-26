@@ -390,7 +390,8 @@
     flex-wrap: wrap;
     gap: 12px;
     max-height: 320px;
-    overflow: auto;
+    /* Allow shadows to render outside the scroll area so glows aren't clipped */
+    overflow: visible;
     padding: 6px 2px;
   }
 
@@ -418,8 +419,10 @@
   }
 
   .character-tile.selected {
-    outline: 2px solid rgba(100, 150, 255, 0.9);
-    box-shadow: 0 8px 22px rgba(50, 80, 200, 0.25);
+    outline: 2px solid var(--bs-primary);
+    box-shadow:
+      0 8px 22px rgba(var(--bs-primary-rgb), 0.25),
+      0 0 8px rgba(var(--bs-primary-rgb), 0.18);
   }
 
   .avatar-wrap {
@@ -443,9 +446,12 @@
   .char-name {
     margin-top: 6px;
     font-size: 12px;
+    width: 100%;
+    line-height: 1.2;
+    min-height: 2.4em; /* two lines at 1.2 line-height */
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
-    width: 100%;
+    white-space: normal;
+    word-break: break-word;
   }
 </style>
