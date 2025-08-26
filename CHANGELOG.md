@@ -5,6 +5,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html). You can also read it on our [website](https://fchat-horizon.github.io/docs/changelog.html).
 
+
+# [Unreleased]
+
+## [1.33.4-beta.1] - 2025-08-26
+
+### Added
+
+- Button to join Discord in several places. [\[Commit\]](https://github.com/Fchat-Horizon/Horizon/commit/bf4430d)
+- Character selector pinning. [\[Commit\]](https://github.com/Fchat-Horizon/Horizon/commit/046c56c)
+
+### Fixed
+
+- Make character selector respect theme colours (removes placeholder colours). [\[Commit\]](https://github.com/Fchat-Horizon/Horizon/commit/f1f7f2a)
+- Character selection screen fixes:
+  - Fixes vertical scroll clipping for the whole grid
+  - Fixes grid item backgrounds being invisible in light themes
+  - Fixes avatars clipping into the avatar background [\[Commit\]](https://github.com/Fchat-Horizon/Horizon/commit/d5625c9)
+- Profile analysis now marks unparsable species fields as empty instead of crashing. [\[Commit\]](https://github.com/Fchat-Horizon/Horizon/commit/c06642c)
+- Fixes Default and Mars themes being detected as light themes by unstyled components. [\[Commit\]](https://github.com/Fchat-Horizon/Horizon/commit/4a57466)
+- Fixes Dracula message-own background colour. [\[Commit\]](https://github.com/Fchat-Horizon/Horizon/commit/8a5cc9e)
+- Fixes vanilla gender colours overriding the "Highlight friends/ bookmarks" name colours; that setting now uses the vanilla colour correctly. [\[Commit\]](https://github.com/Fchat-Horizon/Horizon/commit/01603af)
+
+### Changed
+
+- Notification volume control styled with Bootstrap classes. [\[Commit\]](https://github.com/Fchat-Horizon/Horizon/commit/700ea2a)
+- Moved the version button to under "About Horizon". [\[Commit\]](https://github.com/Fchat-Horizon/Horizon/commit/c6ae55a)
+
+### Development
+
+- Added GitHub Actions workflows for release notifications to Discord. [\[Commit\]](https://github.com/Fchat-Horizon/Horizon/commit/f5b4dc6)
+
 # [Releases]
 
 ## [1.33.3] - 2025-08-24
