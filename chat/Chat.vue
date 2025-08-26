@@ -22,7 +22,7 @@
           style="
             margin-left: auto;
             display: flex;
-            gap:4px;
+            gap: 4px;
             align-items: center;
           "
         >
@@ -82,6 +82,7 @@
                 alt="avatar"
                 class="avatar"
               />
+              <div class="avatar-bg"></div>
             </div>
             <div class="char-name">{{ character.name }}</div>
           </div>
@@ -412,9 +413,8 @@
     flex-wrap: wrap;
     gap: 12px;
     max-height: 320px;
-    /* Allow shadows to render outside the scroll area so glows aren't clipped */
-    overflow: visible;
-    padding: 6px 2px;
+    overflow-y: auto;
+    padding: 6px 2px 26px 2px;
   }
 
   .character-tile {
@@ -425,7 +425,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(var(--bs-black-rgb), 0.02);
     border-radius: 8px;
     padding: 8px;
     cursor: pointer;
@@ -450,19 +450,25 @@
   .avatar-wrap {
     width: 64px;
     height: 64px;
-    border-radius: 8px;
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.08);
-  }
-
-  .avatar {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+    position: relative;
+    .avatar-bg {
+      position: absolute;
+      bottom: 0px;
+      height: 100%;
+      width: 100%;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.08);
+    }
+    .avatar {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
   }
 
   .char-name {
