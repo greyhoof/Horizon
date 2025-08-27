@@ -214,9 +214,9 @@ div.indentText {
     width: 50px;
   }
   transition: opacity 1s;
-  &.loading{
+  &.loading {
     opacity: 0;
-    visibility:hidden;
+    visibility: hidden;
   }
 }
 

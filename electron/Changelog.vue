@@ -143,8 +143,8 @@
           : 'v' + process.env.APP_VERSION);
       let releaseInfo: ReleaseInfo = (await Axios.get<ReleaseInfo>(apiUrl))
         .data;
-  let md = markdownit({ html: true, linkify: true, typographer: true });
-  md.use(alert);
+      let md = markdownit({ html: true, linkify: true, typographer: true });
+      md.use(alert);
 
       const defaultRender =
         md.renderer.rules.link_open ||
@@ -333,7 +333,6 @@
     margin: 0.5em auto;
     max-height: calc(100vh - 160px);
     object-fit: contain;
-    
   }
 
   .logs-container iframe,
