@@ -106,6 +106,7 @@
   @Component()
   export default class Changelog extends Vue {
     settings!: GeneralSettings;
+    osIsDark = remote.nativeTheme.shouldUseDarkColors;
     updateVersion!: string | undefined;
     currentVersion = process.env.APP_VERSION;
     isMaximized = false;
@@ -117,7 +118,7 @@
 
     get styling(): string {
       try {
-        return `<style>${fs.readFileSync(path.join(__dirname, `themes/${this.settings.theme}.css`), 'utf8').toString()}</style>`;
+        return `<style>${fs.readFileSync(path.join(__dirname, `themes/${this.getSyncedTheme()}.css`), 'utf8').toString()}</style>`;
       } catch (e) {
         if (
           (<Error & { code: string }>e).code === 'ENOENT' &&
@@ -129,9 +130,18 @@
         throw e;
       }
     }
+    getSyncedTheme() {
+      if (!this.settings.themeSync) return this.settings.theme;
+      return this.osIsDark
+        ? this.settings.themeSyncDark
+        : this.settings.themeSyncLight;
+    }
 
     @Hook('mounted')
     async mounted(): Promise<void> {
+      remote.nativeTheme.on('updated', () => {
+        this.osIsDark = remote.nativeTheme.shouldUseDarkColors;
+      });
       const container = <HTMLElement>this.$refs['mdContainer'];
       if (container) {
         container.addEventListener('click', this.delegateLinkClick);
@@ -143,8 +153,8 @@
           : 'v' + process.env.APP_VERSION);
       let releaseInfo: ReleaseInfo = (await Axios.get<ReleaseInfo>(apiUrl))
         .data;
-  let md = markdownit({ html: true, linkify: true, typographer: true });
-  md.use(alert);
+      let md = markdownit({ html: true, linkify: true, typographer: true });
+      md.use(alert);
 
       const defaultRender =
         md.renderer.rules.link_open ||
@@ -333,7 +343,6 @@
     margin: 0.5em auto;
     max-height: calc(100vh - 160px);
     object-fit: contain;
-    
   }
 
   .logs-container iframe,
