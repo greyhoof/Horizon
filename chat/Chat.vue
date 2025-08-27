@@ -341,6 +341,7 @@
           {
             defaultCharacter: this.defaultCharacter,
             animateEicons: core.state.settings.animatedEicons,
+            smoothMosaics: core.state.settings.smoothMosaics,
             fuzzyDates: true,
             inlineDisplayMode: InlineDisplayMode.DISPLAY_ALL
           },
