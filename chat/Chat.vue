@@ -89,7 +89,6 @@
               <i class="fas fa-thumbtack"></i>
             </span>
 
-            <!-- Default star (moved to the right) -->
             <span
               v-if="character.id === defaultCharacter"
               class="char-icon default-star"
@@ -535,6 +534,7 @@
       .char-icon {
         position: absolute;
         top: 6px;
+  z-index: 10;
         display: inline-flex;
         align-items: center;
         justify-content: center;
