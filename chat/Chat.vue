@@ -534,7 +534,7 @@
       .char-icon {
         position: absolute;
         top: 6px;
-  z-index: 10;
+        z-index: 10;
         display: inline-flex;
         align-items: center;
         justify-content: center;
