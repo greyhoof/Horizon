@@ -74,6 +74,7 @@
                 selectedCharacter && selectedCharacter.id === character.id
             }"
             @click="selectCharacter(character)"
+            @dblclick="handleCharacterDoubleClick(character)"
             :title="character.name"
           >
             <!-- Pin toggle (stop click propagation so clicking pin doesn't select)
@@ -398,6 +399,14 @@
 
     selectCharacter(character: SimpleCharacter): void {
       this.selectedCharacter = character;
+    }
+
+    handleCharacterDoubleClick(character: SimpleCharacter): void {
+      this.selectCharacter(character);
+      //better safe than sorry :^)
+      if (!this.connecting && !this.connected) {
+        this.connect();
+      }
     }
 
     isPinned(id: number): boolean {
