@@ -7,7 +7,7 @@
 .btn-primary,
 .btn-primary:hover,
 .btn-primary:active {
-  color: color-yiq(theme-color('primary'));
+  color: color-yiq($primary);
 }
 
 .bg-solid-text {
@@ -37,7 +37,7 @@
 }
 
 .has-new {
-  background-color: theme-color-level('danger', 4) !important;
+  background-color: mix($black, $danger, 4 * 8%) !important;
 }
 @keyframes throb {
   0% {
@@ -265,7 +265,7 @@
 }
 .ads-text-box,
 .ads-text-box:focus {
-  background-color: theme-color-level('info', -4);
+  background-color: mix($white, $info, 4 * 8%);
 }
 
 .border-top {
@@ -376,7 +376,7 @@
 }
 
 .last-read {
-  border-bottom: solid 2px theme-color-level('success', -2) !important;
+  border-bottom: solid 2px mix($white, $success, 2 * 8%) !important;
 }
 
 .fas.active {
@@ -463,11 +463,11 @@ $genders: (
 
 #window-tabs {
   .hasNew {
-    background-color: theme-color-level('warning', -2);
-    border-color: theme-color-level('warning', -4);
+    background-color: mix($white, $warning, 2 * 8%);
+    border-color: mix($white, $warning, 4 * 8%);
     color: color-contrast($warning);
     &:hover {
-      background-color: theme-color-level('warning', -4);
+      background-color: mix($white, $warning, 4 * 8%);
     }
   }
   .tab:not(.active):not(:hover) {

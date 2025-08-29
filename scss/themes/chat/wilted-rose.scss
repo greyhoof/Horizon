@@ -39,8 +39,8 @@ body,
 }
 
 .list-group-item-danger {
-  color: theme-color-level('danger', -9);
-  background-color: theme-color-level('danger', -7);
+  color: mix($white, $danger, 9 * 8%);
+  background-color: mix($white, $danger, 7 * 8%);
 }
 
 .colorblindMode {
