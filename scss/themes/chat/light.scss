@@ -18,6 +18,10 @@
   color: #fff;
 }
 
+.message-own:not(.message-warn) {
+  background-color: rgba($gray-300, 0.5);
+}
+
 .colorblindMode {
   @import '../colorblind';
   @import '../../rising';
