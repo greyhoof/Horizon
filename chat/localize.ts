@@ -286,6 +286,8 @@ Current log location: {1}`,
     'Disable Windows high-contrast mode',
   'settings.system': 'System',
   'settings.systemLogLevel': 'System Log Level',
+  'settings.risingShowUnreadOfflineCount':
+    'Show unread note and offline message counts in the left sidebar',
   'settings.charactersToGeneral':
     'In the nearby future, most of these settings will be moved to the global settings menu, where they will be applied globally across your characters. Settings like your pings, or other similar settings that can also be set on a per-conversation level will remain character-specific though.',
   'settings.charactersToGeneral.instructions':

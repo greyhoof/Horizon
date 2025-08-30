@@ -469,8 +469,7 @@
             v-model="risingShowUnreadOfflineCount"
           />
           <label class="form-check-label" for="risingShowUnreadOfflineCount">
-            Show unread note and offline message counts at the bottom right
-            corner
+            {{ l('settings.risingShowUnreadOfflineCount') }}
           </label>
         </div>
       </div>
