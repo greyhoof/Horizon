@@ -319,8 +319,7 @@
 
 .messages-both {
   .message-ad:not(.message-score) {
-    --bs-bg-opacity: 0.3;
-    background-color: rgba(var(--bs-info-rgb), var(--bs-bg-opacity)) !important;
+    background-color: mix($white, $info, 4 * 8%);
     padding: 0 2px 2px 2px;
     box-shadow: $gray-500 -2px -2px 2px inset;
   }
@@ -364,7 +363,7 @@
 }
 
 .message-highlight {
-  background-color: color.scale($color: $success, $alpha: -70%);
+  background-color: mix($white, $success, 4 * 8%);
 }
 
 .message-action .bbcode {
