@@ -33,7 +33,14 @@ body,
 }
 
 .sidebar {
-  background-color: rgba($body-bg, 0.4);
+  --sidebar-alpha: 1;
+  background-color: rgba($body-bg, var(--sidebar-alpha));
+
+  @media (min-width: breakpoint-min(md)) {
+    & {
+      --sidebar-alpha: 0.4;
+    }
+  }
 }
 
 .message-own:not(.message-warn) {
