@@ -163,6 +163,12 @@
               @click="login"
               :disabled="loggingIn"
             >
+              <div
+                v-if="loggingIn"
+                class="spinner-border spinner-border-sm"
+                role="status"
+              ></div>
+
               {{ l(loggingIn ? 'login.working' : 'login.submit') }}
             </button>
           </div>

@@ -70,6 +70,7 @@ const strings: { [key: string]: string | undefined } = {
   'login.submit': 'Log in',
   'login.working': 'Logging in...',
   'login.selectCharacter': 'Select a character',
+  'login.filterCharacters': 'Filter characters...',
   'login.connect': 'Connect',
   'login.connecting': 'Connecting...',
   'login.connectError': 'Connection error: {0}',

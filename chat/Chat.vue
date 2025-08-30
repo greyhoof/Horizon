@@ -9,10 +9,13 @@
   >
     <div
       class="card bg-light"
+      id="connect-character-select"
       style="width: 1100px; max-width: 100%; margin: 0 auto"
       v-if="!connected"
     >
-      <div class="alert alert-danger" v-show="error">{{ error }}</div>
+      <div class="alert alert-danger" v-show="error">
+        {{ error }}
+      </div>
       <h3
         class="card-header"
         style="margin-top: 0; display: flex; align-items: center"
@@ -58,14 +61,15 @@
               ref="filterInput"
               type="text"
               class="form-control"
-              placeholder="Filter characters..."
+              :placeholder="l('login.filterCharacters')"
+              v-on:keyup.enter="connect"
               v-model="filterText"
               autofocus
             />
           </div>
         </div>
         <div class="character-grid">
-          <div
+          <button
             v-for="character in filteredCharacters"
             :key="character.id"
             class="character-tile"
@@ -75,7 +79,11 @@
             }"
             @click="selectCharacter(character)"
             @dblclick="handleCharacterDoubleClick(character)"
+            @focus="selectCharacter(character)"
+            v-on:keyup.enter="handleCharacterDoubleClick(character)"
+            v-on:keydown="charTileKeyDown"
             :title="character.name"
+            :disabled="connecting"
           >
             <!-- Pin toggle (stop click propagation so clicking pin doesn't select)
                  pinned characters appear before non-pinned in ordering
@@ -107,7 +115,7 @@
               <div class="avatar-bg"></div>
             </div>
             <div class="char-name">{{ character.name }}</div>
-          </div>
+          </button>
         </div>
         <div style="text-align: right; margin-top: 10px">
           <button
@@ -115,6 +123,11 @@
             @click="connect"
             :disabled="connecting"
           >
+            <div
+              v-if="connecting"
+              class="spinner-border spinner-border-sm"
+              role="status"
+            ></div>
             {{ l(connecting ? 'login.connecting' : 'login.connect') }}
           </button>
         </div>
@@ -146,6 +159,7 @@
   import log from 'electron-log'; //tslint:disable-line:match-default-export-name
   import { Component, Hook, Prop } from '@f-list/vue-ts';
   import Vue from 'vue';
+  import { getKey } from './common';
   import Modal from '../components/Modal.vue';
   import { InlineDisplayMode, SimpleCharacter } from '../interfaces';
   import { Keys } from '../keys';
@@ -413,6 +427,21 @@
       return this.pinnedIds.indexOf(id) !== -1;
     }
 
+    focusFilter() {
+      this.$refs['filterInput'].focus();
+    }
+
+    charTileKeyDown(e: KeyboardEvent): void {
+      const key = getKey(e);
+      console.log(key);
+      switch (key) {
+        case Keys.ForwardSlash: {
+          e.preventDefault();
+          this.focusFilter();
+        }
+      }
+    }
+
     togglePin(character: SimpleCharacter): void {
       // don't allow pinning the default character
       if (character.id === this.defaultCharacter) return;
@@ -458,6 +487,7 @@
       if (list.length > 0 && list[0].id === this.defaultCharacter)
         result.push(list[0]);
       result.push(...pinned, ...others);
+      this.selectedCharacter = result[0];
       return result;
     }
 
@@ -468,6 +498,9 @@
     }
 
     async connect(): Promise<void> {
+      if (!this.selectedCharacter) {
+        return;
+      }
       this.connecting = true;
 
       // skipping await
@@ -495,11 +528,19 @@
     min-height: initial;
   }
 
+  #connect-character-select {
+    .alert {
+      border-top-right-radius: var(--bs-card-border-radius);
+      border-top-left-radius: var(--bs-card-border-radius);
+      margin-bottom: 0px;
+    }
+  }
+
   .character-grid {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
-    max-height: 320px;
+    max-height: 45vh;
     overflow-y: auto;
     padding: 6px 2px 26px 2px;
     position: relative;
@@ -513,6 +554,7 @@
       align-items: center;
       justify-content: flex-start;
       background: rgba(var(--bs-black-rgb), 0.02);
+      border: none;
       border-radius: 8px;
       padding: 8px;
       cursor: pointer;
@@ -522,14 +564,21 @@
       text-align: center;
       position: relative;
 
-      &:hover {
+      &:not(:disabled):hover {
+        border: none;
         transform: translateY(-4px);
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+        &:not(.selected) {
+          box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+        }
 
         .char-icon.pin-icon {
           opacity: 1;
           pointer-events: auto;
         }
+      }
+      &:disabled {
+        color: var(--bs-secondary-color);
+        cursor: initial;
       }
 
       &.selected {
