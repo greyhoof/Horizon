@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 # [Unreleased]
 
-## [1.33.4] - 2025-08-26
+## [1.33.4] - 2025-09-XX
 
 ### Added
 
@@ -22,16 +22,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Fixes vertical scroll clipping for the whole grid
   - Fixes grid item backgrounds being invisible in light themes
   - Fixes avatars clipping into the avatar background [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/d5625c9)
+- UI items with their own colour scaling now have their scaling back after the Bootstrap 5 upgrade. [[Reimplemented scaling]](https://github.com/Fchat-Horizon/Horizon/commit/4e168e67d6ec4c4dacd7c38ba7427a4c15efc257) [[Overridden colors]](https://github.com/Fchat-Horizon/Horizon/commit/15c02d1a539b75fd65b2a04f9ace0d5932567a1e)
+  - This includes:
+    - Ping messages.
+    - Ads in mixed mode (while ad matching is disabled).
+    - Signed in tabs when you have a new ping.
+    - The text box while directly posting a channel ad.
+    - Character badges on the profile view
+  - This should also (hopefully) make some other instances of scaled colours slightly more accurate to how they were before.
 - Profile analysis now marks unparsable species fields as empty instead of crashing. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/c06642c)
 - Fixes Default and Mars themes being detected as light themes by unstyled components. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/4a57466)
 - Fixes Dracula message-own background colour. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/8a5cc9e)
 - Fixes vanilla gender colours overriding the "Highlight friends/ bookmarks" name colours; that setting now uses the vanilla colour correctly. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/01603af)
--
+- Fixed the 'About Horizon' window being fullscreenable on all platforms, and being forced into full screen mode on MacOS if opened while the main window is in full screen mode. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/96a1ea85716317448027769941bc726e6484f269)
 
 ### Changed
 
 - Notification volume control styled with Bootstrap classes. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/700ea2a)
 - Moved the version button to under "About Horizon". [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/c6ae55a)
+- Better background/ text contrast for your own messages in light themes. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/283747c7b78792112a43b098b3d267d06b05b8db)
 
 ### Development
 
