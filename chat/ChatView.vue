@@ -62,16 +62,16 @@
               :title="l('admgr.open')"
               @click.prevent="showAdLauncher()"
             >
-              <i class="fa-solid fa-rectangle-ad fa-fw"></i>
+              <i class="fa-solid fa-rectangle-ad fa-fw"></i
+              ><a v-show="adsAreRunning()" role="button" class="adControls">
+                <span
+                  title="Stop All Ads"
+                  class="fas fa-fw fa-stop"
+                  @click.stop="stopAllAds()"
+                ></span>
+              </a>
             </a>
 
-            <span v-show="adsAreRunning()" class="adControls">
-              <span
-                aria-label="Stop All Ads"
-                class="fas fa-fw fa-stop"
-                @click.prevent="stopAllAds()"
-              ></span>
-            </span>
             <a
               href="#"
               role="button"
@@ -1003,17 +1003,12 @@
     }
 
     .adControls {
-      float: right;
-      margin-right: 0.25rem;
-      margin-top: 3px;
-
-      span {
-        color: var(--bs-danger);
-        cursor: pointer;
-
-        &:hover {
-          color: var(--red);
-        }
+      position: absolute;
+      color: var(--bs-danger);
+      z-index: 12;
+      top: 0px;
+      &:hover {
+        color: var(--bs-danger-text-emphasis);
       }
     }
 

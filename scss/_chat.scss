@@ -221,6 +221,7 @@
     display: inline-block;
     border-radius: 6px;
     transition: 0.2s;
+    position: relative;
     .userInfo-pager-text {
       font-size: 1rem;
       color: var(--gray-dark);
