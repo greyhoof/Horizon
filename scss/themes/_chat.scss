@@ -102,6 +102,11 @@
   }
 }
 
+.image-preview-wrapper .image-preview-toolbar {
+  background-color: rgba($gray-200, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
 :root {
   --bs-warning-bg-subtle: #{mix($warning, $white, 25%)};
   @each $varName, $value in $risingVariables {
