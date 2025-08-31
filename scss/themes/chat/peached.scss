@@ -37,6 +37,13 @@ body,
   }
 }
 
+.modal-body,
+.card {
+  .form-control:not(.btn) {
+    background-color: $white;
+  }
+}
+
 .message-own:not(.message-warn) {
   background-color: rgba($gray-300, 0.5);
 }
