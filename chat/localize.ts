@@ -218,6 +218,9 @@ Are you sure?`,
   'settings.animatedEicons': 'Animate [eicon]s',
   'settings.smoothMosaics': 'Attempt to synchronise [eicon] mosaics',
   'settings.idleTimer': 'Idle timer (minutes, clear to disable)',
+  'settings.timeFormat': 'Time format',
+  'settings.timeFormat.12hour':
+    'Use 12-hour time (e.g. 2:30 PM) instead of 24-hour',
   'settings.messageSeparators': 'Display separators between messages',
   'settings.eventMessages':
     'Also display console messages (like login/logout, status changes) in current tab',
