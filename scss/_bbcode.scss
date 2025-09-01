@@ -213,7 +213,7 @@ div.indentText {
     height: 50px;
     width: 50px;
   }
-  transition: opacity 1s;
+  transition: opacity 0.25s;
   &.loading {
     opacity: 0;
     visibility: hidden;
