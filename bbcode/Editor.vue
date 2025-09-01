@@ -727,59 +727,10 @@
         height: 18px;
         padding: 0 6px;
         border-radius: 10px;
-        font-size: 0.75em;
+        font-size: 0.85em;
         color: rgba(0, 0, 0, 0.7);
         background: rgba(255, 255, 255, 0.85);
         border: 1px solid rgba(0, 0, 0, 0.06);
-      }
-
-      .color-typing-hint .chip.red {
-        background: var(--textRedColor);
-        color: #1b1b1b;
-      }
-      .color-typing-hint .chip.orange {
-        background: var(--textOrangeColor);
-        color: #1b1b1b;
-      }
-      .color-typing-hint .chip.yellow {
-        background: var(--textYellowColor);
-        color: #1b1b1b;
-      }
-      .color-typing-hint .chip.green {
-        background: var(--textGreenColor);
-        color: #1b1b1b;
-      }
-      .color-typing-hint .chip.cyan {
-        background: var(--textCyanColor);
-        color: #1b1b1b;
-      }
-      .color-typing-hint .chip.purple {
-        background: var(--textPurpleColor);
-        color: #1b1b1b;
-      }
-      .color-typing-hint .chip.blue {
-        background: var(--textBlueColor);
-        color: #1b1b1b;
-      }
-      .color-typing-hint .chip.pink {
-        background: var(--textPinkColor);
-        color: #1b1b1b;
-      }
-      .color-typing-hint .chip.black {
-        background: var(--textBlackColor);
-        color: #fff;
-      }
-      .color-typing-hint .chip.brown {
-        background: var(--textBrownColor);
-        color: #1b1b1b;
-      }
-      .color-typing-hint .chip.white {
-        background: var(--textWhiteColor);
-        color: #1b1b1b;
-      }
-      .color-typing-hint .chip.gray {
-        background: var(--textGrayColor);
-        color: #1b1b1b;
       }
 
       .color-typing-hint.no-match .chip {
