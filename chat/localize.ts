@@ -23,7 +23,7 @@ const strings: { [key: string]: string | undefined } = {
   'action.markAsRead': 'Mark all as read',
   'action.cancel': 'Cancel',
   'admgr.open': 'Ad Center',
-  'admgr.postingBegins': 'Posting beings in {0}m {1}s',
+  'admgr.postingBegins': 'Posting begins in {0}m {1}s',
   'admgr.nextPostDue': 'Next ad in {0}m {1}s',
   'admgr.expiresIn': ', auto-posting expires in {0}m {1}s',
   'admgr.noAds':
