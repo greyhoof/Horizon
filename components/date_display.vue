@@ -30,11 +30,9 @@
       const timeFormat = use12 ? 'yyyy-MM-dd hh:mm a' : 'yyyy-MM-dd HH:mm';
       const absolute = format(date, timeFormat);
       const relative = formatDistanceToNow(date, { addSuffix: true });
-      const fuzzy =
-        (core &&
-          (core.state as any).settings &&
-          (core.state as any).settings.fuzzyDates) ||
-        false;
+      const fuzzy = core.state.generalSettings
+        ? core.state.generalSettings.fuzzyDates
+        : true;
       if (fuzzy) {
         this.primary = relative;
         this.secondary = absolute;

@@ -221,6 +221,7 @@ Are you sure?`,
   'settings.timeFormat': 'Time format',
   'settings.timeFormat.12hour':
     'Use 12-hour time (e.g. 2:30 PM) instead of 24-hour',
+  'settings.timeFormat.fuzzyDates': 'Use "fuzzy" dates for profiles',
   'settings.messageSeparators': 'Display separators between messages',
   'settings.eventMessages':
     'Also display console messages (like login/logout, status changes) in current tab',

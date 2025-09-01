@@ -54,6 +54,7 @@ export class GeneralSettings {
   soundThemeSoundVolumes: { [theme: string]: { [sound: string]: number } } = {};
   horizonAutoLogin: boolean = false;
   use12HourTime: boolean = false;
+  fuzzyDates: boolean = true;
 }
 
 log.debug('init.common.done');

@@ -63,6 +63,9 @@
                     </label>
                   </div>
                 </div>
+                <h5>
+                  {{ l('settings.timeFormat') }}
+                </h5>
                 <div class="mb-3">
                   <div class="form-check">
                     <input
@@ -73,6 +76,20 @@
                     />
                     <label class="form-check-label" for="use12HourTime">
                       {{ l('settings.timeFormat.12hour') }}
+                    </label>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      v-model="settings.fuzzyDates"
+                      type="checkbox"
+                      id="fuzzyDates"
+                    />
+                    <label class="form-check-label" for="fuzzyDates">
+                      {{ l('settings.timeFormat.fuzzyDates') }}
                     </label>
                   </div>
                 </div>
