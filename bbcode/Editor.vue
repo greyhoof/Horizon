@@ -30,6 +30,21 @@
         v-on-clickaway="dismissColorSelector"
       >
         <div class="popover-body">
+          <div
+            class="color-typing-hint"
+            v-if="awaitingColorKey && awaitingBuffer"
+            :class="{ 'no-match': awaitingNoMatch }"
+          >
+            <div class="buffer">{{ awaitingBuffer.toLowerCase() }}</div>
+            <div class="matches">
+              <span
+                v-for="m in awaitingMatches"
+                :key="m"
+                :class="['chip', m]"
+                >{{ m }}</span
+              >
+            </div>
+          </div>
           <div class="btn-group" role="group" aria-label="Color">
             <button
               v-for="btnCol in buttonColors"
@@ -202,8 +217,46 @@
     private undoStack: string[] = [];
     private undoIndex = 0;
     private lastInput = 0;
+    private awaitingColorKey: boolean = false;
+    private awaitingNoMatch: boolean = false;
+    private awaitingNoMatchTimer: number | null = null;
+    private awaitingBuffer: string = '';
     //tslint:disable:strict-boolean-expressions
     private resizeListener!: () => void;
+
+    private getMatches(prefix: string): string[] {
+      const topRow = new Set(this.buttonColors.slice(0, 8));
+      return this.buttonColors
+        .filter(c => c.toLowerCase().startsWith(prefix.toLowerCase()))
+        .sort((a, b) => {
+          const aTop = topRow.has(a) ? 0 : 1;
+          const bTop = topRow.has(b) ? 0 : 1;
+          if (aTop !== bTop) return aTop - bTop;
+          return a.localeCompare(b);
+        });
+    }
+
+    get awaitingMatches(): string[] {
+      return this.awaitingBuffer
+        ? this.getMatches(this.awaitingBuffer).slice(0, 3)
+        : [];
+    }
+
+    private clearAwaiting(): void {
+      this.awaitingColorKey = false;
+      this.awaitingBuffer = '';
+      this.awaitingNoMatch = false;
+      if (this.awaitingNoMatchTimer) {
+        window.clearTimeout(this.awaitingNoMatchTimer);
+        this.awaitingNoMatchTimer = null;
+      }
+      this.colorPopupVisible = false;
+    }
+
+    private applyAndClearColor(color: string): void {
+      this.clearAwaiting();
+      this.colorApply(color);
+    }
 
     @Hook('created')
     created(): void {
@@ -434,6 +487,59 @@
 
     onKeyDown(e: KeyboardEvent): void {
       const key = getKey(e);
+      if (this.awaitingColorKey) {
+        // Escape: cancel
+        if (key === Keys.Escape) {
+          e.stopPropagation();
+          e.preventDefault();
+          this.clearAwaiting();
+          return;
+        }
+
+        // Backspace: remove last char
+        if (key === Keys.Backspace) {
+          e.stopPropagation();
+          e.preventDefault();
+          if (this.awaitingBuffer.length > 0)
+            this.awaitingBuffer = this.awaitingBuffer.slice(0, -1);
+          return;
+        }
+
+        if (key >= Keys.KeyA && key <= Keys.KeyZ) {
+          e.stopPropagation();
+          e.preventDefault();
+          const ch = String.fromCharCode(key);
+          this.awaitingBuffer += ch;
+
+          const prefix = this.awaitingBuffer.toLowerCase();
+          const matches = this.buttonColors.filter(c =>
+            c.toLowerCase().startsWith(prefix)
+          );
+
+          if (matches.length === 1) {
+            this.applyAndClearColor(matches[0]);
+            return;
+          }
+          const exact = matches.find(c => c.toLowerCase() === prefix);
+          if (exact) {
+            this.applyAndClearColor(exact);
+            return;
+          }
+
+          if (matches.length === 0) {
+            this.awaitingNoMatch = true;
+            if (this.awaitingNoMatchTimer)
+              window.clearTimeout(this.awaitingNoMatchTimer);
+            this.awaitingNoMatchTimer = window.setTimeout(
+              () => this.clearAwaiting(),
+              800
+            ) as unknown as number;
+            return;
+          }
+
+          return;
+        }
+      }
       if ((e.metaKey || e.ctrlKey) && !e.shiftKey && !e.altKey) {
         if (key === Keys.KeyZ) {
           e.preventDefault();
@@ -452,6 +558,15 @@
             this.lastInput = Date.now();
           }
         }
+        if (key === Keys.KeyD) {
+          e.stopPropagation();
+          e.preventDefault();
+          this.awaitingColorKey = true;
+          this.awaitingBuffer = '';
+          this.colorPopupVisible = true;
+          return;
+        }
+
         for (const button of this.buttons)
           if (button.key === key) {
             e.stopPropagation();
@@ -572,6 +687,104 @@
       .btn-group {
         display: block;
         margin: 10px 13px 10px 13px;
+      }
+
+      .color-typing-hint {
+        padding: 6px 8px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        font-size: 0.85em;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.02),
+          rgba(0, 0, 0, 0.02)
+        );
+        backdrop-filter: blur(3px);
+      }
+
+      .color-typing-hint .buffer {
+        font-weight: 600;
+        text-transform: lowercase;
+        min-width: 18px;
+        color: var(--bs-body-color);
+        padding-right: 6px;
+        border-right: 1px solid rgba(0, 0, 0, 0.06);
+      }
+
+      .color-typing-hint .matches {
+        display: flex;
+        gap: 6px;
+        flex-wrap: nowrap;
+        align-items: center;
+      }
+
+      .color-typing-hint .chip {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 18px;
+        padding: 0 6px;
+        border-radius: 10px;
+        font-size: 0.75em;
+        color: rgba(0, 0, 0, 0.7);
+        background: rgba(255, 255, 255, 0.85);
+        border: 1px solid rgba(0, 0, 0, 0.06);
+      }
+
+      .color-typing-hint .chip.red {
+        background: var(--textRedColor);
+        color: #1b1b1b;
+      }
+      .color-typing-hint .chip.orange {
+        background: var(--textOrangeColor);
+        color: #1b1b1b;
+      }
+      .color-typing-hint .chip.yellow {
+        background: var(--textYellowColor);
+        color: #1b1b1b;
+      }
+      .color-typing-hint .chip.green {
+        background: var(--textGreenColor);
+        color: #1b1b1b;
+      }
+      .color-typing-hint .chip.cyan {
+        background: var(--textCyanColor);
+        color: #1b1b1b;
+      }
+      .color-typing-hint .chip.purple {
+        background: var(--textPurpleColor);
+        color: #1b1b1b;
+      }
+      .color-typing-hint .chip.blue {
+        background: var(--textBlueColor);
+        color: #1b1b1b;
+      }
+      .color-typing-hint .chip.pink {
+        background: var(--textPinkColor);
+        color: #1b1b1b;
+      }
+      .color-typing-hint .chip.black {
+        background: var(--textBlackColor);
+        color: #fff;
+      }
+      .color-typing-hint .chip.brown {
+        background: var(--textBrownColor);
+        color: #1b1b1b;
+      }
+      .color-typing-hint .chip.white {
+        background: var(--textWhiteColor);
+        color: #1b1b1b;
+      }
+      .color-typing-hint .chip.gray {
+        background: var(--textGrayColor);
+        color: #1b1b1b;
+      }
+
+      .color-typing-hint.no-match .chip {
+        opacity: 0.5;
+        filter: grayscale(100%);
       }
 
       .btn {
