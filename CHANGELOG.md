@@ -7,21 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 # [Unreleased]
 
-## [1.33.4] - 2025-09-XX
+## [1.33.4] - 2025-09-01
 
 ### Added
 
+- The colour picker shortcut (Ctrl/ Cmd + D) now has auto completion. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/daef228846d62790366fd485f6ccc83425adc295)
+- Added a setting to toggle between 12 or 24 hours timestamps, and one to toggle fuzzy/ exact times on the profile viewer (similar to the website). [[12 hours]](https://github.com/Fchat-Horizon/Horizon/commit/fb7f6fad365fa57fb6b8b52bad2b63f5372c3b59) [[Fuzzy times]](https://github.com/Fchat-Horizon/Horizon/commit/e1033a74786f5afeae5f9e3c4af491a02712bdec)
+- Added a setting to sync your theme with your computer's light/ dark mode setting. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/368997ac899edf6163e7e35859c006fd98bd6046)
 - Button to join Discord in several places. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/bf4430d)
 - Character selector pinning. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/046c56c)
 
 ### Fixed
 
-- Ensure default profile star and pin icons render above character images in the character selector.
+- Ensure default profile star and pin icons render above character images in the character selector. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/137da320fa5a87cb262b8290f5cce7b69eeb82ac)
 - Make character selector respect theme colours (removes placeholder colours). [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/f1f7f2a)
-- Character selection screen fixes:
-  - Fixes vertical scroll clipping for the whole grid
-  - Fixes grid item backgrounds being invisible in light themes
-  - Fixes avatars clipping into the avatar background [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/d5625c9)
+- Character selection screen fixes [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/d5625c9):
+  - Fixes vertical scroll clipping for the whole grid.
+  - Fixes grid item backgrounds being invisible in light themes.
+  - Fixes avatars clipping into the avatar background.
 - UI items with their own colour scaling now have their scaling back after the Bootstrap 5 upgrade. [[Reimplemented scaling]](https://github.com/Fchat-Horizon/Horizon/commit/4e168e67d6ec4c4dacd7c38ba7427a4c15efc257) [[Overridden colors]](https://github.com/Fchat-Horizon/Horizon/commit/15c02d1a539b75fd65b2a04f9ace0d5932567a1e)
   - This includes:
     - Ping messages.
@@ -31,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Character badges on the profile view
   - This should also (hopefully) make some other instances of scaled colours slightly more accurate to how they were before.
 - Profile analysis now marks unparsable species fields as empty instead of crashing. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/c06642c)
+- Fixes eicons not being visible in the log viewer if you haven't signed in yet. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/7e5774d21f12f7b34091e31b03cacacfebf72244)
 - Fixes Default and Mars themes being detected as light themes by unstyled components. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/4a57466)
 - Fixes Dracula message-own background colour. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/8a5cc9e)
 - Fixes vanilla gender colours overriding the "Highlight friends/ bookmarks" name colours; that setting now uses the vanilla colour correctly. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/01603af)
