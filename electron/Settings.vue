@@ -63,6 +63,19 @@
                     </label>
                   </div>
                 </div>
+                <div class="mb-3">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      v-model="settings.use12HourTime"
+                      type="checkbox"
+                      id="use12HourTime"
+                    />
+                    <label class="form-check-label" for="use12HourTime">
+                      {{ l('settings.timeFormat.12hour') }}
+                    </label>
+                  </div>
+                </div>
 
                 <h5>
                   {{ l('settings.updates') }}
@@ -116,23 +129,6 @@
                     </label>
                   </div>
                 </div>
-                <h5>
-                  {{ l('settings.timeFormat') || 'Time format' }}
-                </h5>
-                <div class="mb-3">
-                  <div class="form-check">
-                    <input
-                      class="form-check-input"
-                      v-model="settings.use12HourTime"
-                      type="checkbox"
-                      id="use12HourTime"
-                    />
-                    <label class="form-check-label" for="use12HourTime">
-                      {{ l('settings.timeFormat.12hour') }}
-                    </label>
-                  </div>
-                </div>
-
                 <div class="mb-3" v-if="!settings.themeSync">
                   <label class="control-label" for="theme" style="width: 20ch">
                     {{ l('settings.theme.app') }}
