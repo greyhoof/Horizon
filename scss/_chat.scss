@@ -378,6 +378,10 @@
   border-bottom: solid 2px mix($white, $success, 2 * 8%) !important;
 }
 
+.messages .message:last-of-type.last-read {
+  border-bottom: none !important;
+}
+
 .fas.active {
   color: theme-color('success');
 }
