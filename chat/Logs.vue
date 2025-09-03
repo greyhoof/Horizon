@@ -335,7 +335,7 @@
 
     async downloadConversation(): Promise<void> {
       if (this.selectedConversation === undefined) return;
-      const zip = new Zip();
+      const zip = new AdmZip();
       const html = Dialog.confirmDialog(l('logs.html'));
       for (const date of this.dates) {
         const messages = await core.logs.getLogs(
@@ -345,12 +345,12 @@
         );
         zip.addFile(
           `${formatDate(date)}.${html ? 'html' : 'txt'}`,
-          getLogs(messages, html)
+          Buffer.from(getLogs(messages, html), 'utf-8')
         );
       }
       this.download(
         `${this.selectedConversation.name}.zip`,
-        URL.createObjectURL(zip.build())
+        URL.createObjectURL(new Blob([zip.toBuffer()]))
       );
     }
 
