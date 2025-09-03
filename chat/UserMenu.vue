@@ -526,8 +526,11 @@
 
   #userMenuMatch,
   #userMenuStatus {
-    max-width: 220px;
     background: none;
+  }
+
+  #userMenuMatch {
+    max-width: 220px;
   }
 
   .userMenuInner {
