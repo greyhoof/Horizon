@@ -20,7 +20,8 @@ export const availableDisplayLanguages: { code: string; name: string }[] = [
   { code: 'en_us', name: 'English (US)' },
   { code: 'en_x_uwu', name: 'Cyute Engwish' },
   { code: 'fr', name: 'Français (France)' },
-  { code: 'de', name: 'Deutsch (Deutschland)' }
+  { code: 'de', name: 'Deutsch (Deutschland)' },
+  { code: 'es', name: 'Español (España)' }
 ];
 
 export function setLanguage(lang: string | undefined): void {
