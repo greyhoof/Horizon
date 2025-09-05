@@ -18,10 +18,9 @@
             <a
               type="button"
               class="btn-close"
-              aria-label="Close"
+              :aria-label="l('action.close')"
               v-if="!isMac"
               @click.stop="close()"
-              z-
             >
               <span class="fas fa-times"></span>
             </a>
@@ -155,7 +154,7 @@
                       :placeholder="l('filter')"
                       :title="l('settings.theme')"
                     >
-                      <template slot-scope="s">
+                      <template v-slot="s">
                         {{ capitalizeThemeName(s.option) }}
                       </template>
                     </filterable-select>
@@ -174,7 +173,7 @@
                       :placeholder="l('filter')"
                       :title="l('settings.theme')"
                     >
-                      <template slot-scope="s">
+                      <template v-slot="s">
                         {{ capitalizeThemeName(s.option) }}
                       </template>
                     </filterable-select>
@@ -192,7 +191,7 @@
                       :placeholder="l('filter')"
                       :title="l('settings.theme')"
                     >
-                      <template slot-scope="s">
+                      <template v-slot="s">
                         {{ capitalizeThemeName(s.option) }}
                       </template>
                     </filterable-select>
@@ -285,7 +284,7 @@
                       :multiple="true"
                       :title="l('settings.spellcheck.language')"
                     >
-                      <template slot-scope="s">
+                      <template v-slot="s">
                         {{
                           //s.option ||
                           formatLanguage(s.option) ||
@@ -336,7 +335,7 @@
                       style="flex: 1; margin-right: 10px"
                       :title="l('settings.soundTheme')"
                     >
-                      <template slot-scope="s">
+                      <template v-slot="s">
                         {{ capitalizeSoundThemeName(s.option) }}
                       </template>
                     </filterable-select>
@@ -355,14 +354,24 @@
                       <div class="text-muted" v-if="currentSoundThemeDetails">
                         <div>{{ currentSoundThemeDetails.description }}</div>
                         <div v-if="currentSoundThemeDetails.author">
-                          By {{ currentSoundThemeDetails.author }}
+                          {{
+                            l(
+                              'settings.soundTheme.by',
+                              currentSoundThemeDetails.author
+                            )
+                          }}
                         </div>
                         <div class="small">
-                          Version: {{ currentSoundThemeDetails.version }}
+                          {{
+                            l(
+                              'settings.soundTheme.version',
+                              currentSoundThemeDetails.version
+                            )
+                          }}
                         </div>
                       </div>
                       <div v-else class="text-muted small">
-                        No metadata available
+                        {{ l('settings.soundTheme.noMetadata') }}
                       </div>
                     </div>
                     <div>
@@ -372,14 +381,19 @@
                           @click.prevent.stop="
                             soundListCollapsed = !soundListCollapsed
                           "
-                          title="Toggle sound list"
+                          :title="l('settings.soundTheme.toggleList')"
                         >
-                          {{ soundListCollapsed ? 'Show' : 'Hide' }}
+                          {{
+                            l(
+                              soundListCollapsed
+                                ? 'settings.soundTheme.show'
+                                : 'settings.soundTheme.hide'
+                            )
+                          }}
                         </button>
                       </div>
                     </div>
                   </div>
-
                   <div
                     v-if="
                       currentSoundThemeDetails &&
@@ -389,7 +403,9 @@
                   >
                     <div v-if="!soundListCollapsed" class="mt-2">
                       <div
-                        v-for="(path, sound) in currentSoundThemeDetails.sounds"
+                        v-for="sound in Object.keys(
+                          currentSoundThemeDetails.sounds
+                        )"
                         :key="sound"
                         class="sound-row d-flex flex-row mb-3 align-items-center"
                       >
@@ -425,16 +441,16 @@
                           <button
                             class="btn btn-sm btn-outline-primary p-2"
                             @click.prevent.stop="previewSound(sound)"
-                            title="Preview"
+                            :title="l('settings.soundTheme.preview')"
                           >
-                            Preview
+                            {{ l('settings.soundTheme.preview') }}
                           </button>
                         </div>
                       </div>
                     </div>
                   </div>
                   <div v-else class="mt-2 text-muted small">
-                    No sounds listed for this theme
+                    {{ l('settings.soundTheme.noSounds') }}
                   </div>
                 </div>
               </div>
@@ -557,12 +573,24 @@
                         style="flex: 1; margin-right: 10px"
                         v-model="settings.risingSystemLogLevel"
                       >
-                        <option value="error">Error</option>
-                        <option value="warn">Warn</option>
-                        <option value="info">Info</option>
-                        <option value="verbose">Verbose</option>
-                        <option value="debug">Debug</option>
-                        <option value="silly">Silly</option>
+                        <option value="error">
+                          {{ l('settings.systemLogLevel.error') }}
+                        </option>
+                        <option value="warn">
+                          {{ l('settings.systemLogLevel.warn') }}
+                        </option>
+                        <option value="info">
+                          {{ l('settings.systemLogLevel.info') }}
+                        </option>
+                        <option value="verbose">
+                          {{ l('settings.systemLogLevel.verbose') }}
+                        </option>
+                        <option value="debug">
+                          {{ l('settings.systemLogLevel.debug') }}
+                        </option>
+                        <option value="silly">
+                          {{ l('settings.systemLogLevel.silly') }}
+                        </option>
                       </select>
                     </div>
                   </label>
@@ -572,23 +600,12 @@
                   {{ l('settings.browserOptionTitle') }}
                 </h5>
                 <div class="warning" v-if="isMac">
-                  <h5>Danger Zone!</h5>
+                  <h5>{{ l('settings.dangerZone') }}</h5>
 
                   <hr />
-                  <p>
-                    Mac User: As of writing, MacOS has a bug in how it handles
-                    opening links.
-                  </p>
-                  <p>
-                    When your default browser is something other than Safari and
-                    you select Safari in this settings window, links might be
-                    opened twice.
-                  </p>
-                  <p>
-                    Once in Safari and a second time in your default browser.
-                    This tends to happen when Safari is not running when
-                    clicking a link.
-                  </p>
+                  <p>{{ l('settings.macLinkBug1') }}</p>
+                  <p>{{ l('settings.macLinkBug2') }}</p>
+                  <p>{{ l('settings.macLinkBug3') }}</p>
                 </div>
 
                 <label class="control-label label-full" for="browserPath">
@@ -673,14 +690,14 @@
               class="btn btn-secondary"
               @click.stop="close()"
             >
-              Close
+              {{ l('action.close') }}
             </button>
             <button
               type="button"
               class="btn btn-primary"
               @click.stop="submit()"
             >
-              Save changes
+              {{ l('action.saveChanges') }}
             </button>
           </div>
         </div>

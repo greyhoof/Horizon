@@ -121,7 +121,7 @@
         :class="{ disabled: !hasAdLogs() }"
       >
         <span class="fa fa-fw fa-ad"></span
-        ><span class="action-label">Show ad log</span>
+        ><span class="action-label">{{ l('user.showAdLog') }}</span>
       </a>
       <a
         tabindex="-1"
@@ -182,7 +182,7 @@
       ref="memo"
       :disabled="memoLoading"
       @submit="updateMemo"
-      buttonText="Save and Close"
+      :buttonText="l('action.saveAndClose')"
       dialogClass="w-100"
       iconClass="fas fa-note-sticky"
     >
@@ -488,14 +488,7 @@
     overflow-x: hidden;
   }
 
-  #userMenu-userInfo,
-  #userMenu-avatar {
-    //display: inline-block;
-  }
-
-  #userMenu-userInfo {
-    //width: 140px;
-  }
+  /* removed empty rulesets */
 
   .userInfo-status {
     opacity: 0.7;

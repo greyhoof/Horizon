@@ -18,7 +18,9 @@ let current: { [k: string]: string } = { ...enUS }; // start with US English onl
 // Name is what we show in the dropdown. Code is the file name (code.json)
 export const availableDisplayLanguages: { code: string; name: string }[] = [
   { code: 'en_us', name: 'English (US)' },
-  { code: 'en_x_uwu', name: 'Cyute Engwish' }
+  { code: 'en_x_uwu', name: 'Cyute Engwish' },
+  { code: 'fr', name: 'Français (France)' },
+  { code: 'de', name: 'Deutsch (Deutschland)' }
 ];
 
 export function setLanguage(lang: string | undefined): void {

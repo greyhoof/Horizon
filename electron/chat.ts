@@ -150,7 +150,7 @@ webContents.on('context-menu', (_, props) => {
     if (props.mediaType === 'none') {
       menuTemplate.push({
         id: 'toggleStickyness',
-        label: 'Toggle Sticky Preview',
+        label: l('action.toggleStickyPreview'),
         click(): void {
           EventBus.$emit('imagepreview-toggle-stickyness', {
             url: props.linkURL
