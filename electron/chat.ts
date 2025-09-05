@@ -20,6 +20,7 @@ import Connection from '../fchat/connection';
 import { Keys } from '../keys';
 import { GeneralSettings /*, nativeRequire*/ } from './common';
 import { Logs, SettingsStore } from './filesystem';
+import { setLanguage } from '../chat/localize';
 import Notifications from './notifications';
 import * as SlimcatImporter from './importer';
 import Index from './Index.vue';
@@ -288,6 +289,13 @@ if (params['import'] !== undefined)
     alert(l('importer.error'));
   }
 onSettings(settings);
+
+// Apply UI language early (fallback handled in setLanguage)
+try {
+  setLanguage(settings.displayLanguage);
+} catch (e) {
+  console.warn('Failed to apply display language', e);
+}
 
 log.debug('init.chat.core');
 

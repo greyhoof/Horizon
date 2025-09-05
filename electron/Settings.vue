@@ -303,9 +303,15 @@
                       id="displayLanguage"
                       class="form-select"
                       style="flex: 1; margin-right: 10px"
-                      disabled
+                      v-model="settings.displayLanguage"
                     >
-                      <option>English</option>
+                      <option
+                        v-for="lang in availableDisplayLanguages"
+                        :key="lang.code"
+                        :value="lang.code"
+                      >
+                        {{ lang.name }}
+                      </option>
                     </select>
                   </label>
                 </div>
@@ -687,7 +693,7 @@
   import { Component, Hook } from '@f-list/vue-ts';
   import * as remote from '@electron/remote';
   import Vue from 'vue';
-  import l from '../chat/localize';
+  import l, { setLanguage, availableDisplayLanguages } from '../chat/localize';
   import { GeneralSettings } from './common';
   import fs from 'fs';
   import path from 'path';
@@ -723,6 +729,7 @@
     availableSoundThemes: ReadonlyArray<string> = [];
     logLevel: log.LevelOption = false;
     selectedLang: string | string[] | undefined;
+    availableDisplayLanguages = availableDisplayLanguages;
     //These are not reactive.
     //Which is kind of good because of all the security issues that'd otherwise arise
     isWindows = process.platform === 'win32';
@@ -786,6 +793,18 @@
         remote.session.defaultSession.availableSpellCheckerLanguages
       );
       this.sortedLangs = _.sortBy(availableLanguages, 'name');
+      try {
+        setLanguage(this.settings.displayLanguage);
+      } catch (e) {
+        console.warn('Failed to set initial display language', e);
+      }
+      this.$watch(
+        () => this.settings.displayLanguage,
+        (newLang: string) => {
+          setLanguage(newLang);
+          ipcRenderer.send('general-settings-update', this.settings);
+        }
+      );
       window.addEventListener('keyup', e => {
         if (e.key === 'Escape') {
           this.close();
