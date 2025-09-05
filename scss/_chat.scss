@@ -302,9 +302,7 @@
 
 .message-block {
   padding: 1px 0;
-  &:not(:last-child) {
-    border-bottom: solid 1px $card-border-color;
-  }
+  border-top: solid 1px $card-border-color;
 }
 
 .message-own {
@@ -421,7 +419,7 @@
       border-radius: 2px;
     }
     .message-avatar-spacer {
-      height: 1px;
+      height: 0px;
     }
     .message-modern-inner {
       flex: 1;
@@ -451,7 +449,7 @@
       }
     }
     .message-content {
-      margin-top: 2px;
+      margin-top: 0px;
       min-width: 0;
       .bbcode {
         background: transparent;
