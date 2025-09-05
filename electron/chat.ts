@@ -262,6 +262,13 @@ function onSettings(s: GeneralSettings): void {
 
   // spellchecker.setDictionary(s.spellcheckLang, dictDir);
   // for(const word of s.customDictionary) spellchecker.add(word);
+
+  // Apply display language live when settings change
+  try {
+    setLanguage(settings.displayLanguage);
+  } catch (e) {
+    console.warn('Failed to apply display language', e);
+  }
 }
 
 electron.ipcRenderer.on(
