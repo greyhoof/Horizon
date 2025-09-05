@@ -40,5 +40,11 @@
     "title": "Horizon",
     "title.connected": "Horizon ({0})",
     "version": "Version {0}",
-    "developmentVersion": "Version de développement [{0}]"
+    "developmentVersion": "Version de développement [{0}]",
+    "quickJump.members": "membres",
+    "logs.confirmExport": "Êtes-vous sûr de vouloir exporter tous les logs de {0} ? Si vous avez beaucoup de logs, ceci pourrait être long.",
+    "logs.date": "Date",
+    "logs.selectCharacter": "Sélectionner un personnage...",
+    "logs.selectConversation": "Sélectionner une conversation...",
+    "logs.allDates": "Tout montrer"
 }
