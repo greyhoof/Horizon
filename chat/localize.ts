@@ -11,7 +11,7 @@ let current: { [k: string]: string } = en;
 export const availableDisplayLanguages: { code: string; name: string }[] = [
   { code: 'en', name: 'English' },
   // Pseudo-locale for fun / testing text expansion and placeholder handling
-  { code: 'en-x-uwu', name: 'Cyute Engwish' }
+  { code: 'en_x_uwu', name: 'Cyute Engwish' }
 ];
 
 export function setLanguage(lang: string | undefined): void {
