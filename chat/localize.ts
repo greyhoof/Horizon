@@ -9,7 +9,9 @@ let current: { [k: string]: string } = en;
 // List of available display languages (extend when new JSON files are added)
 // Name is what we show in the dropdown. Code is the file name (code.json)
 export const availableDisplayLanguages: { code: string; name: string }[] = [
-  { code: 'en', name: 'English' }
+  { code: 'en', name: 'English' },
+  // Pseudo-locale for fun / testing text expansion and placeholder handling
+  { code: 'en-x-uwu', name: 'Cyute Engwish' }
 ];
 
 export function setLanguage(lang: string | undefined): void {
