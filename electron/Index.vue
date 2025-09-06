@@ -29,7 +29,7 @@
 
     <!-- Login card -->
     <div
-      v-if="character === undefined"
+      v-if="!characters"
       style="
         display: flex;
         align-items: center;
