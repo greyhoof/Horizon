@@ -355,10 +355,10 @@
     "settings.playSound": "Benachrichtigungston abspielen",
     "settings.profileViewer": "Profil-Viewer nutzen",
     "settings.risingDisableWindowsHighContrast": "Modus für hohen Kontrast in Windows deaktivieren",
-    "settings.risingShowUnreadOfflineCount": "Ungelesene Nachrichten und offline Nachrichten in der linken Spalte anzeigen",
+    "settings.risingShowUnreadOfflineCount": "Ungelesene Notizen und offline Nachrichten in der linken Spalte anzeigen",
     "settings.showAvatars": "Charakter-Avatare anzeigen",
     "settings.showCustomCharacterColors": "Selbstgewählte Farben für Charakternamen anzeigen",
-    "settings.showDeveloperBadges": "Horizon Developer/",
+    "settings.showDeveloperBadges": "Horizon Developer / Mitwirkende mit Icons markieren",
     "commands.warn.param0": "Nachricht",
     "commands.warn.param0.help": "Die Nachricht als eine Warnung ausgeben."
 }
