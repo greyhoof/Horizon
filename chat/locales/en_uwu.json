@@ -445,5 +445,16 @@
     "admgr.channels.none": "Owie, you don't have any open channy-wannies fow ad posting! >w< Pwease open some channies fiwst, oki? :3",
     "admgr.channels.selectAll": "Sewect/unsewect aww ^w^",
     "admgr.confirmRemoveAd": "A-Awe you suwe you wish to wemove dis ad?",
-    "admgr.copyChannelAds": "Copy Channyel Addsies to Add Editow!"
+    "admgr.copyChannelAds": "Copy Channyel Addsies to Add Editow!",
+    "admgr.overwriteWarning": "Ch-chotto matte!: This akshun will overwwite ads in channew {0}...! Ads not stowed in the Ad Centew will be lost... Awe you shure you wanna continyuu?",
+    "characterAd.noAds": "{0}-chan hasn't powsted any ads on the channews you are on 😔...",
+    "characterAd.title": "Channyew Ads fow",
+    "admgr.disable": "Tuwn off",
+    "admgr.editChannelAds": "Edit Channyew Ads...",
+    "admgr.manualPostBlocked": "Gomen! Can't post ads manuawwy while ad auto-posting is active, baka!",
+    "admgr.order.adCenter": "Fowwow owda in Ad Centew",
+    "admgr.order.random": "Wandom orda xD",
+    "admgr.tags.placeholder": "Enta one or mowe tags, like 'kawaii'~🤍",
+    "admgr.timeout": "T-Timeout...!",
+    "admgr.waitTenMinutes": "H-haiyai! Wait ten minutes between ad posts on this channyew..."
 }
