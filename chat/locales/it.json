@@ -43,7 +43,7 @@
     "admgr.editor": "Editor di pubblicità",
     "admgr.expiresIn": ", pubblicazione automatica scade tra {0}m {1}s",
     "admgr.manualPostBlocked": "Impossibile pubblicare pubblicità mentre la pubblicazione automatica è attiva",
-    "admgr.matches": "verranno usate pubblicità",
+    "admgr.matches": "verranno usate pubblicità.",
     "admgr.moveDown": "Muovi giù",
     "admgr.moveUp": "Muovi sù",
     "admgr.nextPostDue": "Prossima pubblicità tra {0}m {1}s",
