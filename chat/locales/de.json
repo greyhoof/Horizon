@@ -446,5 +446,7 @@
     "settings.theme.app.light": "Light Mode",
     "settings.tabs.import": "Importieren",
     "settings.tabs.behavior": "App-Verhalten",
-    "settings.systemLogLevel.silly": "Wild"
+    "settings.systemLogLevel.silly": "Wild",
+    "settings.theme.bbcodeGlow": "BBCode Text Glow (hinterlegter Schatten) zulassen",
+    "settings.theme.bbcodeGlow.note": "Hinterlegt bestimmten mit BBCode gefärbten Text mit einem leichten Glow, ohne die Farbpalette zu ändern."
 }
