@@ -314,7 +314,6 @@
                     </div>
                   </label>
                 </div>
-                <<<<<<< HEAD
 
                 <h5>
                   {{ l('settings.spellcheck.language') }}
