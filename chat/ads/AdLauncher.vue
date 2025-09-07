@@ -114,7 +114,9 @@
           </option>
         </select>
 
-        <label class="control-label" for="timeoutMinutes"> Delay </label>
+        <label class="control-label" for="timeoutMinutes">
+          {{ l('admgr.delay') }}</label
+        >
 
         <select class="form-select" v-model="delayMinutes" id="delayMinutes">
           <option v-for="delay in delayOptions" :value="delay.value">
@@ -168,19 +170,19 @@
     channels: { value: boolean; title: string; id: string }[] = [];
 
     timeoutOptions = [
-      { value: 30, title: '30 minutes' },
-      { value: 60, title: '1 hour' },
-      { value: 120, title: '2 hours' },
-      { value: 180, title: '3 hours' }
+      { value: 30, title: l('time.minutes', '30') },
+      { value: 60, title: l('time.hour') },
+      { value: 120, title: l('time.hours', '2') },
+      { value: 180, title: l('time.hours', '3') }
     ];
 
     delayOptions = [
-      { value: 10, title: '10 minutes' },
-      { value: 15, title: '15 minutes' },
-      { value: 20, title: '20 minutes' },
-      { value: 30, title: '30 minutes' },
-      { value: 45, title: '45 minutes' },
-      { value: 60, title: '1 hour' }
+      { value: 10, title: l('time.minutes', '10') },
+      { value: 15, title: l('time.minutes', '15') },
+      { value: 20, title: l('time.minutes', '15') },
+      { value: 30, title: l('time.minutes', '15') },
+      { value: 45, title: l('time.minutes', '15') },
+      { value: 60, title: l('time.hour') }
     ];
 
     load() {
