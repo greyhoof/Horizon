@@ -7,7 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 # [Unreleased]
 
-## [1.33.5] - 2025-09-03
+_Nothing yet._
+
+# [Releases]
+
+## [1.33.5] - 2025-09-07
 
 ### Added
 
@@ -34,8 +38,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - https://github.com/Fchat-Horizon/Horizon/pull/281 by @BootsieWootsie
 - https://github.com/Fchat-Horizon/Horizon/pull/336 by @BootsieWootsie
-
-# [Releases]
 
 ## [1.33.4] - 2025-09-01
 
