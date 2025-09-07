@@ -157,8 +157,6 @@
   "settings.timeFormat.12hour": "12-Stunden-Format (Bsp.: 2:30 PM) statt 24-Stunden-Format nutzen",
   "settings.updateCheck": "Automatisch nach neuen Updates suchen",
   "settings.updates": "Updates",
-  "smartFilter.pm.blocked": "Sorry, der Spieler dieses Charakters ist nicht an Charakteren interessiert, die deinem Profil entsprechen.",
-  "smartFilter.pm.notSeen": "Deine Nachricht wurde nicht gesehen. Um diese Warnung zu umgehen, sende deine Nachricht erneut.",
   "spellchecker.add": "Zum Wörterbuch hinzufügen",
   "spellchecker.remove": "Vom Wörterbuch entfernen",
   "status.away": "Abwesend",
@@ -457,7 +455,6 @@
   "settings.typeMatch": "Type Match",
   "settings.useDefaultTheme": "(Default Theme Nutzen)",
   "settings.visibility": "Sichtbarkeit",
-  "smartFilter.pm.tryHorizon": "✨ Du benötigst auch einen Filter? Probier's aus: [url=https://horizn.moe/]F-Chat Horizon[/url]",
   "ui.genericItems": "Generische Items",
   "user.chatKick": "Chat-Kick"
 }

@@ -899,10 +899,10 @@ export async function testSmartFilterForPrivateMessage(
           recipient: fromChar.name,
           message:
             '\n[sub][color=orange][b][AUTOMATED MESSAGE][/b][/color][/sub]\n' +
-            l('smartFilter.pm.blocked') +
-            `${core.state.settings.risingFilter.hidePrivateMessages ? ' ' + l('smartFilter.pm.notSeen') : ''}\n` +
+            'Sorry, the player of this character is not interested in characters matching your profile.' +
+            `${core.state.settings.risingFilter.hidePrivateMessages ? ' They did not see your message. To bypass this warning, send your message again.' : ''}\n` +
             '\n' +
-            l('smartFilter.pm.tryHorizon')
+            '✨ Need a filter for yourself? Try out [url=https://horizn.moe/]F-Chat Horizon[/url]'
         };
 
         core.connection.send('PRI', message);
