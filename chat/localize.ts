@@ -22,12 +22,24 @@ export const availableDisplayLanguages: { code: string; name: string }[] = [
   { code: 'fr', name: 'Français (France)' },
   { code: 'de', name: 'Deutsch (Deutschland)' },
   { code: 'es', name: 'Español (España)' },
-  { code: 'it', name: 'Italiano (Italia)' }
+  { code: 'it', name: 'Italiano (Italia)' },
+  ...(process.env.NODE_ENV !== 'production'
+    ? [{ code: 'test', name: 'Test Language' }]
+    : [])
 ];
 
 export function setLanguage(lang: string | undefined): void {
   const code = (lang && String(lang)) || 'en_us';
   if (code === i18nState.locale) return;
+
+  // Handle special test language (dev mode only)
+  if (code === 'test' && process.env.NODE_ENV !== 'production') {
+    current = { ...enUS };
+    i18nState.locale = code;
+    i18nState.version++;
+    return;
+  }
+
   try {
     const data: { [k: string]: string } = localeContext(`./${code}.json`);
     current = { ...enUS, ...data };
@@ -52,6 +64,12 @@ export default function l(key: string, ...args: (string | number)[]): string {
       return key;
     }
   }
+
+  // Apply test language transformation (dev mode only)
+  if (i18nState.locale === 'test' && process.env.NODE_ENV !== 'production') {
+    str = str.replace(/\b\w+\b/g, 'test');
+  }
+
   for (let i = args.length - 1; i >= 0; i--)
     str = str.replace(new RegExp(`\\{${i}\\}`, 'g'), args[i].toString());
   return str;
