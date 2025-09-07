@@ -63,6 +63,56 @@
                   </div>
                 </div>
                 <h5>
+                  {{ l('settings.spellcheck.language') }}
+                </h5>
+
+                <div class="mb-3">
+                  <label class="control-label" for="displayLanguage">
+                    {{ l('settings.displayLanguage') }}
+                    <select
+                      id="displayLanguage"
+                      class="form-select"
+                      style="flex: 1; margin-right: 10px"
+                      v-model="settings.displayLanguage"
+                    >
+                      <option
+                        v-for="lang in availableDisplayLanguages"
+                        :key="lang.code"
+                        :value="lang.code"
+                      >
+                        {{ lang.name }}
+                      </option>
+                    </select>
+                  </label>
+                </div>
+                <!--On MacOS, Electron uses the OS' native spell checker as of version 35.2.0 -->
+                <div class="mb-3" v-if="!isMac">
+                  <label
+                    class="control-label"
+                    for="spellCheckLang"
+                    style="width: 24ch"
+                  >
+                    {{ l('settings.spellcheck') }}
+                    <filterable-select
+                      v-model="selectedLang"
+                      :options="sortedLangs"
+                      :filterFunc="filterLanguage"
+                      :placeholder="l('filter')"
+                      :multiple="true"
+                      :title="l('settings.spellcheck.language')"
+                    >
+                      <template v-slot="s">
+                        {{
+                          //s.option ||
+                          formatLanguage(s.option) ||
+                          l('settings.spellcheck.language')
+                        }}
+                      </template>
+                    </filterable-select>
+                  </label>
+                </div>
+
+                <h5>
                   {{ l('settings.timeFormat') }}
                 </h5>
                 <div class="mb-3">
@@ -264,36 +314,11 @@
                     </div>
                   </label>
                 </div>
+                <<<<<<< HEAD
 
                 <h5>
                   {{ l('settings.spellcheck.language') }}
                 </h5>
-                <!--On MacOS, Electron uses the OS' native spell checker as of version 35.2.0 -->
-                <div class="mb-3" v-if="!isMac">
-                  <label
-                    class="control-label"
-                    for="spellCheckLang"
-                    style="width: 20ch"
-                  >
-                    {{ l('settings.spellcheck') }}
-                    <filterable-select
-                      v-model="selectedLang"
-                      :options="sortedLangs"
-                      :filterFunc="filterLanguage"
-                      :placeholder="l('filter')"
-                      :multiple="true"
-                      :title="l('settings.spellcheck.language')"
-                    >
-                      <template v-slot="s">
-                        {{
-                          //s.option ||
-                          formatLanguage(s.option) ||
-                          l('settings.spellcheck.language')
-                        }}
-                      </template>
-                    </filterable-select>
-                  </label>
-                </div>
 
                 <div class="mb-3">
                   <label class="control-label" for="displayLanguage">
@@ -312,6 +337,32 @@
                         {{ lang.name }}
                       </option>
                     </select>
+                  </label>
+                </div>
+                <!--On MacOS, Electron uses the OS' native spell checker as of version 35.2.0 -->
+                <div class="mb-3" v-if="!isMac">
+                  <label
+                    class="control-label"
+                    for="spellCheckLang"
+                    style="width: 24ch"
+                  >
+                    {{ l('settings.spellcheck') }}
+                    <filterable-select
+                      v-model="selectedLang"
+                      :options="sortedLangs"
+                      :filterFunc="filterLanguage"
+                      :placeholder="l('filter')"
+                      :multiple="true"
+                      :title="l('settings.spellcheck.language')"
+                    >
+                      <template v-slot="s">
+                        {{
+                          //s.option ||
+                          formatLanguage(s.option) ||
+                          l('settings.spellcheck.language')
+                        }}
+                      </template>
+                    </filterable-select>
                   </label>
                 </div>
               </div>
