@@ -543,21 +543,24 @@
       </div>
 
       <div class="mb-3">
-        <label class="control-label" for="chatLayoutMode"
-          >Chat layout style</label
-        >
+        <label class="control-label" for="chatLayoutMode">{{
+          l('settings.chatLayoutMode')
+        }}</label>
         <select
           id="chatLayoutMode"
           class="form-select"
           v-model="chatLayoutMode"
         >
-          <option value="classic">Classic</option>
-          <option value="modern">Modern</option>
+          <option value="classic">
+            {{ l('settings.chatLayoutMode.classic') }}
+          </option>
+          <option value="modern">
+            {{ l('settings.chatLayoutMode.modern') }}
+          </option>
         </select>
-        <small class="form-text text-muted"
-          >Modern layout shows larger avatars and bubble-style messages, similar
-          to Discord.</small
-        >
+        <small class="form-text text-muted">{{
+          l('settings.chatLayoutMode.modernDescription')
+        }}</small>
       </div>
       <div class="mb-3">
         <div class="form-check">
@@ -569,9 +572,11 @@
             :disabled="chatLayoutMode !== 'modern'"
           />
           <label class="form-check-label" for="messageGrouping">
-            Group messages together in modern, remove seperators between recent
-            messages from same sender.
+            {{ l('settings.messageGrouping') }}
           </label>
+          <small class="form-text text-muted">{{
+            l('settings.messageGrouping.description')
+          }}</small>
         </div>
       </div>
 
