@@ -15,15 +15,15 @@
       :tabs="[
         l('settings.tabs.general'),
         l('settings.tabs.notifications'),
-        'Horizon ✨',
-        'Smart Filters ✨',
+        l('settings.tabs.horizon'),
+        l('settings.tabs.smartFilters'),
         l('settings.tabs.hideAds'),
         l('settings.tabs.import')
       ]"
     ></tabs>
     <div v-show="selectedTab === '0'">
       <div class="warning">
-        <h5>Heads up!</h5>
+        <h5>{{ l('warning.info') }}</h5>
         <div>
           {{ l('settings.charactersToGeneral') }}
         </div>
@@ -316,7 +316,7 @@
       </div>
     </div>
     <div v-show="selectedTab === '2'">
-      <h5>Matching</h5>
+      <h5>{{ l('settings.matching') }}</h5>
 
       <div class="mb-3">
         <div class="form-check">
@@ -327,8 +327,7 @@
             v-model="risingAdScore"
           />
           <label class="form-check-label" for="risingAdScore">
-            Colorize ads, profiles, and names of compatible and incompatible
-            characters
+            {{ l('settings.matching.adScore') }}
           </label>
         </div>
       </div>
@@ -342,7 +341,7 @@
             v-model="risingComparisonInUserMenu"
           />
           <label class="form-check-label" for="risingComparisonInUserMenu">
-            Show quick match results in the right click character menu
+            {{ l('settings.matching.comparisonInUserMenu') }}
           </label>
         </div>
       </div>
@@ -356,7 +355,7 @@
             v-model="risingComparisonInSearch"
           />
           <label class="form-check-label" for="risingComparisonInSearch">
-            Show quick match results in the search results
+            {{ l('settings.matching.comparisonInSearch') }}
           </label>
         </div>
       </div>
@@ -368,7 +367,7 @@
       <!--                </label>-->
       <!--            </div>-->
 
-      <h5>Preview</h5>
+      <h5>{{ l('settings.preview') }}</h5>
 
       <div class="mb-3">
         <div class="form-check">
@@ -379,7 +378,7 @@
             v-model="risingLinkPreview"
           />
           <label class="form-check-label" for="risingLinkPreview">
-            Show a link/image preview when the mouse hovers over a link
+            {{ l('settings.preview.link') }}
           </label>
         </div>
       </div>
@@ -393,12 +392,12 @@
             v-model="risingCharacterPreview"
           />
           <label class="form-check-label" for="risingCharacterPreview">
-            Show a character preview when the mouse hovers over a character name
+            {{ l('settings.preview.character') }}
           </label>
         </div>
       </div>
 
-      <h5>Profile</h5>
+      <h5>{{ l('settings.profile') }}</h5>
 
       <div class="mb-3">
         <div class="form-check">
@@ -409,7 +408,7 @@
             v-model="risingAutoCompareKinks"
           />
           <label class="form-check-label" for="risingAutoCompareKinks">
-            Automatically compare kinks when viewing a character profile
+            {{ l('settings.profile.autoCompareKinks') }}
           </label>
         </div>
       </div>
@@ -423,12 +422,12 @@
             v-model="risingAutoExpandCustomKinks"
           />
           <label class="form-check-label" for="risingAutoExpandCustomKinks">
-            Automatically expand custom kinks
+            {{ l('settings.profile.autoExpandCustoms') }}
           </label>
         </div>
       </div>
 
-      <h5>Draft Messages</h5>
+      <h5>{{ l('settings.horizonDraftMessages') }}</h5>
 
       <div class="mb-3">
         <div class="form-check">
