@@ -624,7 +624,14 @@
       const data = e.clipboardData!.getData('text/plain');
       if (!this.isShiftPressed && urlRegex.test(data)) {
         e.preventDefault();
-        this.applyText(`[url=${data}]`, '[/url]');
+        console.log('bbcode.url.paste', data);
+
+        //we only replace the brackets instead of trying to force the whole path to be escaped because
+        //these two characters give us trouble with BBCode and the rest can just be picked up by the browser anyway
+        this.applyText(
+          `[url=${data.replace('[', '%5B').replace(']', '%5D')}]`,
+          '[/url]'
+        );
       }
     }
 
