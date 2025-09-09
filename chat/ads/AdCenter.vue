@@ -5,7 +5,7 @@
     ref="dialog"
     @open="load"
     dialogClass="modal-70"
-    :buttonText="l('conversationSettings.save')"
+    :buttonText="l('action.saveChanges')"
     iconClass="fas fa-file-pen"
   >
     <div class="mb-3 ad-list" v-for="(ad, index) in ads">
