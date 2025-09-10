@@ -1217,26 +1217,6 @@ export default function (this: any): Interfaces.State {
       );
       if (conversation !== state.selectedConversation || !state.windowFocused)
         conversation.unread = Interfaces.UnreadState.Mention;
-    } else if (
-      (message.type === MessageType.Message ||
-        message.type === MessageType.Ad) &&
-      isWarn(message.text)
-    ) {
-      const member = conversation.channel.members[message.sender.name];
-      if (
-        (member !== undefined && member.rank > Channel.Rank.Member) ||
-        message.sender.isChatOp
-      ) {
-        await core.notifications.notify(
-          conversation,
-          conversation.name,
-          data.message,
-          characterImage(data.character),
-          'modalert'
-        );
-        if (conversation !== state.selectedConversation || !state.windowFocused)
-          conversation.unread = Interfaces.UnreadState.Mention;
-      }
     }
   });
   connection.onMessage('LRP', async (data, time) => {
