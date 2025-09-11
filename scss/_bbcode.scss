@@ -260,6 +260,14 @@ div.indentText {
   min-height: $line-height-base;
   padding-top: 0.4em;
   padding-bottom: 0.4em;
+  transition: border-radius 0.2s;
+}
+
+.bbcode-collapse.collapsed {
+  & > .bbcode-collapse-header {
+    border-bottom-left-radius: var(--bs-card-border-radius);
+    border-bottom-right-radius: var(--bs-card-border-radius);
+  }
 }
 
 .bbcode-collapse-body {
