@@ -703,6 +703,7 @@ class State implements Interfaces.State {
   channelMap: { [key: string]: ChannelConversation | undefined } = {};
   consoleTab!: ConsoleConversation;
   selectedConversation: Conversation = this.consoleTab;
+  lastConversation: Conversation = this.selectedConversation;
   recent: Interfaces.RecentPrivateConversation[] = [];
   recentChannels: Interfaces.RecentChannelConversation[] = [];
   pinned!: { channels: string[]; private: string[] };
@@ -776,6 +777,7 @@ class State implements Interfaces.State {
 
   show(conversation: Conversation): void {
     if (conversation === this.selectedConversation) return;
+    this.lastConversation = this.selectedConversation;
     this.selectedConversation.onHide();
     conversation.unread = Interfaces.UnreadState.None;
     this.selectedConversation = conversation;

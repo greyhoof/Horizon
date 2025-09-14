@@ -210,7 +210,25 @@
       results.sort((a, b) => {
         if (!a.conversation || !b.conversation) return 0;
 
-        // Prioritize conversations with unread messages
+        //First we want pings
+        if (
+          a.conversation.unread === Conversation.UnreadState.Mention &&
+          b.conversation.unread !== Conversation.UnreadState.Mention
+        ) {
+          return -1;
+        }
+        if (
+          b.conversation.unread === Conversation.UnreadState.Mention &&
+          a.conversation.unread !== Conversation.UnreadState.Mention
+        ) {
+          return 1;
+        }
+
+        if (a.conversation === core.conversations.lastConversation) {
+          return 1;
+        }
+
+        //Any other unread states (currently only UnreadState.Unread) that aren't None get prioritized after
         if (
           a.conversation.unread !== Conversation.UnreadState.None &&
           b.conversation.unread === Conversation.UnreadState.None
