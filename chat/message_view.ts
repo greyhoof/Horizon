@@ -23,7 +23,9 @@ const userPostfix: { [key: number]: string | undefined } = {
 @Component({
   render(this: MessageView, createElement: CreateElement): VNode {
     const message = this.message;
-    const layoutMode = core.state.settings.chatLayoutMode || 'classic';
+    const layoutMode = core.connection.isOpen
+      ? core.state.settings.chatLayoutMode || 'classic'
+      : 'classic';
     let modernInner: VNode | null = null; // track modern inner wrapper
 
     // setTimeout(
