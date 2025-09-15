@@ -734,6 +734,8 @@
   "time.years": "{0} years",
   "time.year": "1 year",
   "title": "Horizon",
+  "title.dev": "Horizon (Dev)",
+  "title.beta": "Horizon (Beta)",
   "title.connected": "Horizon ({0})",
   "ui.genericItems": "Generic items",
   "ui.messages": "Messages",

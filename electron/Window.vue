@@ -10,7 +10,9 @@
       class="border-bottom"
       id="window-tabs"
     >
-      <h4 style="padding: 2px 0" class="d-md-block d-none">{{ l('title') }}</h4>
+      <h4 style="padding: 2px 0" class="d-md-block d-none">
+        {{ l(windowTitleKey) }}
+      </h4>
       <div class="btn btn-light" @click="openMenu" id="settings">
         <i class="fas fa-bars"></i>
       </div>
@@ -206,6 +208,8 @@
     platform = process.platform;
     lockTab = false;
     hasCompletedUpgrades = false;
+    windowTitleKey: string =
+      process.env.NODE_ENV === 'production' ? 'title' : 'title.dev';
 
     @Hook('mounted')
     async mounted(): Promise<void> {
