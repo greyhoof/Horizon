@@ -645,7 +645,7 @@
                   }}</small>
                 </label>
                 <h5>
-                  {{ l('settings.customCss') }}
+                  {{ l('settings.experimental', l('settings.customCss')) }}
                 </h5>
 
                 <div class="mb-3">
