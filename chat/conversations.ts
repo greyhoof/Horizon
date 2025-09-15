@@ -310,6 +310,9 @@ class PrivateConversation
       1
     );
     delete state.privateMap[this.character.name.toLowerCase()];
+    if (this.typingStatus !== 'clear') {
+      this.setOwnTyping('clear');
+    }
     await state.savePinned();
     if (state.selectedConversation === this) state.show(state.consoleTab);
     clearInterval(this.cacheInterval);
