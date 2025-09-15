@@ -217,6 +217,7 @@
   import * as _ from 'lodash';
 
   import { Component, Hook, Prop, Watch } from '@f-list/vue-ts';
+  import anyAscii from 'any-ascii';
   import Vue from 'vue';
   import log from 'electron-log'; //tslint:disable-line:match-default-export-name
 
@@ -296,8 +297,8 @@
     autoExpandCustoms = false;
 
     /* guestbookPostCount: number | null = null;
-        friendCount: number | null = null;
-        groupCount: number | null = null; */
+          friendCount: number | null = null;
+          groupCount: number | null = null; */
 
     guestbook: Guestbook | null = null;
     friends: SimpleCharacter[] | null = null;
@@ -537,6 +538,8 @@
 
       standardParser.inlines = this.character.character.inlines;
 
+      this.parseTextToAscii(this.character);
+
       if (cache && cache.meta) {
         this.guestbook = cache.meta.guestbook;
         this.friends = cache.meta.friends;
@@ -607,6 +610,36 @@
         this.updateMeta(this.name);
       } finally {
         this.refreshing = false;
+      }
+    }
+
+    private parseTextToAscii(character: Character): void {
+      if (
+        core.state.generalSettings &&
+        core.state.generalSettings.horizonForceAsciiProfiles
+      ) {
+        character.character.description = anyAscii(
+          character.character.description
+        );
+
+        if (character.character.title) {
+          character.character.title = anyAscii(character.character.title);
+        }
+        if (character.character.infotags) {
+          for (const key in character.character.infotags) {
+            if (
+              character.character.infotags.hasOwnProperty(key) &&
+              character.character.infotags[key] &&
+              character.character.infotags[key].string
+            ) {
+              character.character.infotags[key].string = anyAscii(
+                character.character.infotags[key].string!
+              );
+            }
+          }
+        }
+
+        // We don't do customs here, so that they are at least sorted before parsing. Check the character_page/kinks.vue component for that
       }
     }
 

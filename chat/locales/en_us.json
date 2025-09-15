@@ -603,6 +603,8 @@
   "settings.highlightWords": "Custom highlight notify words (comma-separated)",
   "settings.horizonDraftMessages": "Draft Messages",
   "settings.horizonCacheDraftMessages": "Automatically save and restore in-progress messages while using Horizon (change requires new tab)",
+  "settings.horizonForceAsciiProfiles": "Force ASCII text on profiles",
+  "settings.horizonForceAsciiProfiles.note": "For assistive technologies, or people who just cannot read Unicode semifonts, this forces all profile text to be regular ASCII text.",
   "settings.horizonSaveDraftMessagesToDiskTimer": "How often to backup save in-progress messages to disk (seconds, minimum 5, change requires new tab)",
   "settings.hwAcceleration": "Enable hardware acceleration (requires restart)",
   "settings.idleTimer": "Idle timer (minutes, clear to disable)",
