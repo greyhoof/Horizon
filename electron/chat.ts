@@ -231,6 +231,33 @@ webContents.on('context-menu', (_, props) => {
     );
   }
 
+  if (props.srcURL.startsWith('https://static.f-list.net/images/eicon/')) {
+    let eiconName = props.titleText;
+    menuTemplate.unshift(
+      {
+        label: l('action.eicon.copy'),
+        click: () => {
+          electron.clipboard.writeText(eiconName);
+        }
+      },
+      {
+        label: l('action.eicon.copyBbcode'),
+
+        click: () => {
+          electron.clipboard.writeText(`[eicon]${eiconName}[/eicon]`);
+        }
+      },
+      {
+        label: l('eicon.addToFavorites'),
+        click: async () => {
+          EventBus.$emit('eicon-pinned', {
+            eicon: eiconName
+          });
+        }
+      }
+    );
+  }
+
   if (menuTemplate.length > 0)
     remote.Menu.buildFromTemplate(menuTemplate).popup({});
 

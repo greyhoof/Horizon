@@ -187,6 +187,7 @@
   import modal from '../components/Modal.vue';
   import CustomDialog from '../components/custom_dialog';
   import l from '../chat/localize';
+  import { EventBus } from '../chat/preview/event-bus';
 
   function debounce<T>(
     func: (this: T, ...args: any) => void,
@@ -226,6 +227,9 @@
       store = await EIconStore.getSharedStore();
       this.storeLoaded = true;
 
+      EventBus.$on('eicon-pinned', (data: any) => {
+        this.forceAddFavorite(data.eicon);
+      });
       this.searchWithString('category:favorites');
     }
 
@@ -676,6 +680,30 @@
       void core.settingsStore.set('favoriteEIcons', core.state.favoriteEIcons);
 
       this.$forceUpdate();
+    }
+
+    forceAddFavorite(eicon: string): void {
+      if (eicon in core.state.favoriteEIcons) return;
+
+      core.state.favoriteEIcons[eicon] = true;
+
+      void core.settingsStore.set('favoriteEIcons', core.state.favoriteEIcons);
+
+      if (this.search === 'category:favorites') {
+        this.runSearch();
+      }
+    }
+
+    forceRemove(eicon: string): void {
+      if (!(eicon in core.state.favoriteEIcons)) return;
+
+      delete core.state.favoriteEIcons[eicon];
+
+      void core.settingsStore.set('favoriteEIcons', core.state.favoriteEIcons);
+
+      if (this.search === 'category:favorites') {
+        this.runSearch();
+      }
     }
 
     close(): void {
