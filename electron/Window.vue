@@ -477,7 +477,10 @@
     }
 
     refreshWindowTitle() {
-      document.title = this.activeTab ? this.activeTab.title : l('title');
+      document.title =
+        this.settings.horizonWindowTitleCharacter && this.activeTab
+          ? this.activeTab.title
+          : l('title');
     }
 
     get styling(): string {

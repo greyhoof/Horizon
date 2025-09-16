@@ -488,6 +488,20 @@
                     </label>
                   </div>
                 </div>
+
+                <div class="mb-3">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="windowTitleCharacter"
+                      v-model="settings.horizonWindowTitleCharacter"
+                    />
+                    <label class="form-check-label" for="windowTitleCharacter">
+                      {{ l('settings.windowTitleCharacter') }}
+                    </label>
+                  </div>
+                </div>
               </div>
               <!--Accessibility-->
               <div

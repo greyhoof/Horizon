@@ -228,6 +228,8 @@ Are you sure?`,
   'settings.joinMessages': 'Display join/leave messages in channels',
   'settings.alwaysNotify': 'Play sounds even when looking at the tab',
   'settings.closeToTray': 'Close to tray',
+  'settings.windowTitleCharacter':
+    'Display signed in character in window title',
   'settings.behavior.chat': 'Chat',
   'settings.behavior.window': 'Window',
   'settings.spellcheck': 'Spellcheck',
