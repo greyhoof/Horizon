@@ -10,7 +10,7 @@
   >
     <form class="status-picker" v-if="pinned.length > 0">
       <p class="text-sm-end">
-        {{ l('statusHistory.pinned', pinned.length, 5) }}
+        {{ l('statusHistory.pinned') }}
       </p>
       <div
         class="row"
@@ -166,13 +166,12 @@
     }
 
     async pinStatusFromHistory(pinHistoryIndex: number): Promise<void> {
-      const newPins: string[] = _.take(
-        _.concat([this.history[pinHistoryIndex]], this.pinned),
-        MAX_PINNED_STATUSES
-      );
-      this.pinned = newPins;
+      const status = this.history[pinHistoryIndex];
+      console.log(this.pinned.indexOf(status));
+      if (this.pinned.indexOf(status) > -1) return;
+      this.pinned.push(status);
 
-      await core.settingsStore.set('statusPins', newPins);
+      await core.settingsStore.set('statusPins', this.pinned);
     }
 
     async unpinStatus(index: number): Promise<void> {

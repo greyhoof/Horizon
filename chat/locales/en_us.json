@@ -726,7 +726,7 @@
   "statusHistory.confirmRemove.pinned": "Are you sure you want to unpin this status message?",
   "statusHistory.count": "Status history {0}/{1}",
   "statusHistory.empty": "This character has no status message history.",
-  "statusHistory.pinned": "Pinned statuses {0}/{1}",
+  "statusHistory.pinned": "Pinned statuses",
   "statusHistory.title": "Status message history",
   "time.day": "1 day",
   "time.days": "{0} days",
