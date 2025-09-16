@@ -525,7 +525,7 @@
         e.preventDefault();
         this.togglePreview();
       }
-      if ((key === Keys.Enter || key === Key.Space) && this.preview) {
+      if ((key === Keys.Enter || key === Keys.Space) && this.preview) {
         e.stopPropagation();
         e.preventDefault();
         this.togglePreview();
