@@ -187,6 +187,7 @@
     hasNew: boolean;
     avatarUrl?: string;
     insertedCssKey?: string;
+    title: string;
   }
 
   // console.log(require('./build/tray.png').default);
@@ -300,6 +301,8 @@
         (_e: Electron.IpcRendererEvent, id: number, name: string) => {
           const tab = this.tabMap[id];
           tab.user = name;
+          tab.title = l('title.connected', name);
+          this.refreshWindowTitle();
           const menu = this.createTrayMenu(tab);
           menu.unshift(
             { label: tab.user, enabled: false },
@@ -356,6 +359,8 @@
             );
           }
           tab.user = undefined;
+          tab.title = l('title');
+          this.refreshWindowTitle();
           Vue.set(tab, 'avatarUrl', undefined);
         }
       );
@@ -475,6 +480,13 @@
       this.tabs = [];
     }
 
+    refreshWindowTitle() {
+      document.title =
+        this.settings.horizonWindowTitleCharacter && this.activeTab
+          ? this.activeTab.title
+          : l('title');
+    }
+
     get styling(): string {
       try {
         return `<style>${fs.readFileSync(path.join(__dirname, `themes/${this.getSyncedTheme()}.css`), 'utf8').toString()}</style>`;
@@ -555,7 +567,13 @@
 
       log.debug('init.window.tab.add.notify');
 
-      const tab = { active: false, view, user: undefined, hasNew: false };
+      const tab = {
+        active: false,
+        view,
+        user: undefined,
+        hasNew: false,
+        title: l('title')
+      };
       this.tabs.push(tab);
       this.tabMap[view.webContents.id] = tab;
 
@@ -605,6 +623,7 @@
       browserWindow.setBrowserView(tab.view);
       tab.view.setBounds(getWindowBounds());
       tab.view.webContents.focus();
+      this.refreshWindowTitle();
 
       // tab.view.webContents.send('active-tab', { webContentsId: tab.view.webContents.id });
       _.each(this.tabs, t =>
