@@ -88,8 +88,6 @@
       ) {
         this.kink.description = anyAscii(this.kink.description);
         this.kink.name = anyAscii(this.kink.name);
-      } else {
-        console.log('shits fine yo');
       }
     }
 

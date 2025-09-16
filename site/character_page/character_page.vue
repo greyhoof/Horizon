@@ -625,21 +625,9 @@
         if (character.character.title) {
           character.character.title = anyAscii(character.character.title);
         }
-        if (character.character.infotags) {
-          for (const key in character.character.infotags) {
-            if (
-              character.character.infotags.hasOwnProperty(key) &&
-              character.character.infotags[key] &&
-              character.character.infotags[key].string
-            ) {
-              character.character.infotags[key].string = anyAscii(
-                character.character.infotags[key].string!
-              );
-            }
-          }
-        }
 
-        // We don't do customs here, so that they are at least sorted before parsing. Check the character_page/kinks.vue component for that
+        // We don't do customs and infotags here, so that they are at least sorted before parsing.
+        //Check the character_page/kink.vue and infotag.vue components for that
       }
     }
 
