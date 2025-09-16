@@ -245,9 +245,6 @@
     readonly avatar: boolean = false;
 
     @Prop({ default: false })
-    readonly avatarOrig: boolean = false;
-
-    @Prop({ default: false })
     readonly isMarkerShown: boolean = false;
 
     userClass = '';
@@ -351,7 +348,9 @@
       this.matchClass = res.matchClass;
       this.matchScore = res.matchScore;
       this.userClass = res.userClass;
-      this.avatarUrl = characterImage(this.character.name, this.avatarOrig);
+      this.avatarUrl =
+        this.character.overrides.avatarUrl ||
+        characterImage(this.character.name);
     }
 
     getMatchScoreTitle(score: number | string | null): string {

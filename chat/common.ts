@@ -7,14 +7,10 @@ export function profileLink(this: any | never, character: string): string {
   return `https://www.f-list.net/c/${character}`;
 }
 
-export function characterImage(
-  this: any | never,
-  character: string,
-  original: boolean = false
-): string {
+export function characterImage(this: any | never, character: string): string {
   const c = core.characters.get(character);
 
-  if (c.overrides.avatarUrl && !original) {
+  if (c.overrides.avatarUrl) {
     return c.overrides.avatarUrl;
   }
 
