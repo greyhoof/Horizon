@@ -568,6 +568,7 @@
   "settings.charactersToGeneral.instructions": "This new settings menu can be found under the app menu in Horizon > Preferences. Check it out!",
   "settings.clickOpensMessage": "Clicking users opens messages (instead of their profile)",
   "settings.closeToTray": "Close to tray",
+  "settings.windowTitleCharacter": "Display signed-in character in window title",
   "settings.colorblindMode": "Colorblind mode",
   "settings.colorBookmarks": "Show friends/bookmarks in a different colour",
   "settings.comingsoon": "Coming soon.",
