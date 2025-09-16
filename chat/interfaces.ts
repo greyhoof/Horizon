@@ -237,6 +237,7 @@ export namespace Settings {
     hiddenUsers: string[];
     favoriteEIcons: Record<string, boolean>;
     statusHistory: string[];
+    statusPins: string[];
     searchHistory: (ExtendedSearchData | SearchData)[];
     hideNonMatchingAds: boolean;
     hideProfileComparisonSummary: boolean;
