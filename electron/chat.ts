@@ -26,6 +26,7 @@ import * as SlimcatImporter from './importer';
 import Index from './Index.vue';
 import log from 'electron-log'; // tslint:disable-line: match-default-export-name
 import { WordPosSearch } from '../learn/dictionary/word-pos-search';
+import { MenuItemConstructorOptions } from 'electron/main';
 
 log.debug('init.chat');
 
@@ -233,7 +234,20 @@ webContents.on('context-menu', (_, props) => {
 
   if (props.srcURL.startsWith('https://static.f-list.net/images/eicon/')) {
     let eiconName = props.titleText;
+    //Electron on Mac allows for header context menu items, so we use that instead of a disabled item split of by a seperator.
     menuTemplate.unshift(
+      {
+        label: eiconName,
+        enabled: false,
+        type: process.platform === 'darwin' ? 'header' : 'normal'
+      },
+      ...(process.platform === 'darwin'
+        ? []
+        : [
+            {
+              type: 'separator'
+            } as MenuItemConstructorOptions
+          ]),
       {
         label: l('action.eicon.copy'),
         click: () => {
