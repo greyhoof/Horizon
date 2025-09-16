@@ -7,7 +7,7 @@
     @open="load"
     dialogClass="w-100"
     class="adLauncher"
-    :buttonText="l('admgr.setup')"
+    :buttonText="l('admgr.startAds')"
     iconClass="fas fa-rectangle-ad"
   >
     <div v-if="hasAds()" style="position: relative">
@@ -179,9 +179,9 @@
     delayOptions = [
       { value: 10, title: l('time.minutes', '10') },
       { value: 15, title: l('time.minutes', '15') },
-      { value: 20, title: l('time.minutes', '15') },
-      { value: 30, title: l('time.minutes', '15') },
-      { value: 45, title: l('time.minutes', '15') },
+      { value: 20, title: l('time.minutes', '20') },
+      { value: 30, title: l('time.minutes', '30') },
+      { value: 45, title: l('time.minutes', '45') },
       { value: 60, title: l('time.hour') }
     ];
 

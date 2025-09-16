@@ -542,7 +542,7 @@ export function createSettingsWindow(
   parentWindow: electron.BrowserWindow
 ): electron.BrowserWindow | undefined {
   let desiredHeight = 570;
-  let desiredWidth = 805;
+  let desiredWidth = 885;
 
   const windowProperties: electron.BrowserWindowConstructorOptions = {
     center: true,

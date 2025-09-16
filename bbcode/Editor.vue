@@ -2,6 +2,9 @@
   <div
     class="bbcode-editor"
     style="display: flex; flex-wrap: wrap; justify-content: flex-end"
+    @keydown="onKeyDownGlobal"
+    tabindex="1"
+    ref="editorContainer"
   >
     <slot></slot>
     <a
@@ -82,9 +85,13 @@
         </div>
         <div
           @click="previewBBCode"
-          class="btn btn-light btn-sm"
+          class="btn btn-light btn-sm bbcode-editor-preview"
           :class="preview ? 'active' : ''"
-          :title="preview ? l('editor.closePreview') : l('editor.preview')"
+          :title="
+            preview
+              ? l('editor.closePreview', `${this.shortcutModifierKey}+Shift+P`)
+              : l('editor.preview', `${this.shortcutModifierKey}+Shift+P`)
+          "
         >
           <i class="fa fa-eye"></i>
         </div>
@@ -211,7 +218,7 @@
     maxHeight!: number;
     minHeight!: number;
     showToolbar = false;
-
+    shortcutModifierKey: String = process.platform == 'darwin' ? '⌘' : 'Ctrl';
     protected parser!: BBCodeParser;
     protected defaultButtons = defaultButtons;
 
@@ -298,6 +305,7 @@
       this.sizer.style.visibility = 'hidden';
       this.resize();
       window.addEventListener('resize', this.resizeListener);
+      this.editorContainer = this.$refs['editorContainer'] as HTMLElement;
     }
 
     //tslint:enable
@@ -508,6 +516,22 @@
       this.lastInput = Date.now();
     }
 
+    //By "global" we mean global to the editor, not for the entire page.
+    //They fire when the editor element is focused, not the text box.
+    onKeyDownGlobal(e: KeyboardEvent): void {
+      const key = getKey(e);
+      if (e.ctrlKey && e.shiftKey && key === Keys.KeyP) {
+        e.stopPropagation();
+        e.preventDefault();
+        this.togglePreview();
+      }
+      if ((key === Keys.Enter || key === Keys.Space) && this.preview) {
+        e.stopPropagation();
+        e.preventDefault();
+        this.togglePreview();
+      }
+    }
+
     onKeyDown(e: KeyboardEvent): void {
       const key = getKey(e);
       if (this.awaitingColorKey) {
@@ -662,6 +686,18 @@
         this.parser.storeWarnings = false;
       }
     }
+
+    togglePreview(): void {
+      this.doPreview();
+      // If we're in preview mode, we need to ensure focus is maintained
+      if (this.preview) {
+        this.$nextTick(() => {
+          this.editorContainer.focus();
+        });
+      } else {
+        this.$nextTick(() => this.focus());
+      }
+    }
   }
 </script>
 <style lang="scss">
@@ -691,6 +727,12 @@
 
   .bbcode-editor {
     resize: none;
+    &:focus {
+      outline: none;
+      .bbcode-editor-preview {
+        outline: 2px ridge var(--bs-primary-border-subtle);
+      }
+    }
   }
 
   .bbcode-toolbar {

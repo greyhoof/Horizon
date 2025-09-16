@@ -582,6 +582,7 @@
 
       electron.ipcRenderer.on('active-tab', () => {
         core.cache.setTabActive(true);
+        webContents.setZoomLevel(this.settings.zoomLevel);
       });
 
       electron.ipcRenderer.on('inactive-tab', () => {

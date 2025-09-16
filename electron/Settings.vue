@@ -475,6 +475,28 @@
                   </div>
                 </div>
 
+                <div class="mb-3">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="horizonForceAsciiProfiles"
+                      :disabled="!settings.profileViewer"
+                      v-model="settings.horizonForceAsciiProfiles"
+                      aria-describedby="forceAsciiNote"
+                    />
+                    <label
+                      class="form-check-label"
+                      for="horizonForceAsciiProfiles"
+                    >
+                      {{ l('settings.horizonForceAsciiProfiles') }}
+                    </label>
+                    <div id="forceAsciiNote" class="form-text text-muted">
+                      {{ l('settings.horizonForceAsciiProfiles.note') }}
+                    </div>
+                  </div>
+                </div>
+
                 <h5>{{ l('settings.behavior.chat') }}</h5>
                 <div class="mb-3">
                   <label class="control-label label-full" for="logDir">
@@ -507,6 +529,20 @@
                     />
                     <label class="form-check-label" for="closeToTray">
                       {{ l('settings.closeToTray') }}
+                    </label>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="windowTitleCharacter"
+                      v-model="settings.horizonWindowTitleCharacter"
+                    />
+                    <label class="form-check-label" for="windowTitleCharacter">
+                      {{ l('settings.windowTitleCharacter') }}
                     </label>
                   </div>
                 </div>
@@ -645,7 +681,7 @@
                   }}</small>
                 </label>
                 <h5>
-                  {{ l('settings.customCss') }}
+                  {{ l('settings.experimental', l('settings.customCss')) }}
                 </h5>
 
                 <div class="mb-3">

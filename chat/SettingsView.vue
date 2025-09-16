@@ -188,7 +188,7 @@
       </div>
       <div class="mb-3">
         <label class="control-label" for="fontSize">{{
-          l('settings.fontSize')
+          l('settings.experimental', l('settings.fontSize'))
         }}</label>
         <input
           id="fontSize"
@@ -543,7 +543,7 @@
 
       <div class="mb-3">
         <label class="control-label" for="chatLayoutMode">{{
-          l('settings.chatLayoutMode')
+          l('settings.experimental', l('settings.chatLayoutMode'))
         }}</label>
         <select
           id="chatLayoutMode"

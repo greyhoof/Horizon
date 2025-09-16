@@ -310,6 +310,9 @@ class PrivateConversation
       1
     );
     delete state.privateMap[this.character.name.toLowerCase()];
+    if (this.typingStatus !== 'clear') {
+      this.setOwnTyping('clear');
+    }
     await state.savePinned();
     if (state.selectedConversation === this) state.show(state.consoleTab);
     clearInterval(this.cacheInterval);
@@ -703,6 +706,7 @@ class State implements Interfaces.State {
   channelMap: { [key: string]: ChannelConversation | undefined } = {};
   consoleTab!: ConsoleConversation;
   selectedConversation: Conversation = this.consoleTab;
+  lastConversation: Conversation = this.selectedConversation;
   recent: Interfaces.RecentPrivateConversation[] = [];
   recentChannels: Interfaces.RecentChannelConversation[] = [];
   pinned!: { channels: string[]; private: string[] };
@@ -776,6 +780,7 @@ class State implements Interfaces.State {
 
   show(conversation: Conversation): void {
     if (conversation === this.selectedConversation) return;
+    this.lastConversation = this.selectedConversation;
     this.selectedConversation.onHide();
     conversation.unread = Interfaces.UnreadState.None;
     this.selectedConversation = conversation;
@@ -1217,26 +1222,6 @@ export default function (this: any): Interfaces.State {
       );
       if (conversation !== state.selectedConversation || !state.windowFocused)
         conversation.unread = Interfaces.UnreadState.Mention;
-    } else if (
-      (message.type === MessageType.Message ||
-        message.type === MessageType.Ad) &&
-      isWarn(message.text)
-    ) {
-      const member = conversation.channel.members[message.sender.name];
-      if (
-        (member !== undefined && member.rank > Channel.Rank.Member) ||
-        message.sender.isChatOp
-      ) {
-        await core.notifications.notify(
-          conversation,
-          conversation.name,
-          data.message,
-          characterImage(data.character),
-          'modalert'
-        );
-        if (conversation !== state.selectedConversation || !state.windowFocused)
-          conversation.unread = Interfaces.UnreadState.Mention;
-      }
     }
   });
   connection.onMessage('LRP', async (data, time) => {

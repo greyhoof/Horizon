@@ -30,6 +30,8 @@
 [![Linux x64](https://img.shields.io/badge/Linux%20x64-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat.Horizon-linux-x86_64.AppImage)
 [![Linux arm64](https://img.shields.io/badge/Linux%20arm64-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://github.com/Fchat-Horizon/Horizon/releases/latest/download/F-Chat.Horizon-linux-arm64.AppImage)
 
+Also check out [Frolic Chat](https://github.com/Frolic-chat/Frolic)! It's another F-Chat Rising fork, and we're big fans on it ourselves.
+
 # Horizon
 
 This repository contains a continuation of the heavily customized F-Chat Rising, a version of the mainline F-Chat 3.0 client.

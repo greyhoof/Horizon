@@ -528,6 +528,10 @@
     min-width: 100%;
   }
 
+  #userMenuStatus {
+    max-width: 100%;
+  }
+
   #userMenuMatch {
     max-width: 220px;
   }
