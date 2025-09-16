@@ -726,7 +726,7 @@
   "statusHistory.confirmRemove.pinned": "Êtes-vous sûr de vouloir désépingler ce message de statut ?",
   "statusHistory.count": "Historique des statuts {0}/{1}",
   "statusHistory.empty": "Ce personnage n'a pas d'historique de statut.",
-  "statusHistory.pinned": "Statuts épinglés {0}/{1}",
+  "statusHistory.pinned": "Statuts épinglés",
   "statusHistory.title": "Historique de statut",
   "time.day": "1 jour",
   "time.days": "{0} jours",
