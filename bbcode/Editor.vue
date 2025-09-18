@@ -61,7 +61,7 @@
               class="btn text-color"
               :class="btnCol"
               :title="btnCol"
-              @click.prevent.stop="colorApply(btnCol)"
+              @click.prevent.stop="applyAndClearColor(btnCol)"
               tabindex="0"
             ></button>
           </div>
