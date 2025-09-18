@@ -84,7 +84,11 @@
                       </option>
                     </select>
                   </label>
+                  <div class="form-text text-muted">
+                    {{ l('settings.displayLanguage.note') }}
+                  </div>
                 </div>
+
                 <!--On MacOS, Electron uses the OS' native spell checker as of version 35.2.0 -->
                 <div class="mb-3" v-if="!isMac">
                   <label
