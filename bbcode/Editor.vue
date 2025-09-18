@@ -28,7 +28,9 @@
       class="bbcode-toolbar btn-toolbar"
       role="toolbar"
       :disabled="disabled"
-      :style="showToolbar ? { display: 'flex' } : undefined"
+      :style="
+        showToolbar || colorPopupVisible ? { display: 'flex' } : undefined
+      "
       @mousedown.stop.prevent
       v-if="hasToolbar"
       style="flex: 1 51%"
