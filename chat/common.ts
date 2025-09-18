@@ -91,6 +91,7 @@ export class Settings implements ISettings {
 
   horizonCacheDraftMessages = true;
   horizonSaveDraftMessagesToDiskTimer = 60;
+  horizonUseColorPicker = true;
 
   risingFilter = {
     hideAds: false,

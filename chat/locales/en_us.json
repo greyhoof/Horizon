@@ -610,6 +610,7 @@
   "settings.horizonForceAsciiProfiles": "Standardize profile fonts",
   "settings.horizonForceAsciiProfiles.note": "For assistive technologies, or people who just cannot read Unicode semifonts, this forces all profile text to be regular ASCII text.",
   "settings.horizonSaveDraftMessagesToDiskTimer": "How often to backup save in-progress messages to disk (seconds, minimum 5, change requires new tab)",
+  "settings.horizonUseColorPicker": "Use the quick, auto-complete BBCode color picker when you use the keyboard shortcut.",
   "settings.hwAcceleration": "Enable hardware acceleration (requires restart)",
   "settings.idleTimer": "Idle timer (minutes, clear to disable)",
   "settings.import": "Import settings",

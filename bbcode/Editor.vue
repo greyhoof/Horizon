@@ -148,6 +148,7 @@
   import { getKey } from '../chat/common';
   import { Keys } from '../keys';
   import { BBCodeElement, CoreBBCodeParser, urlRegex } from './core';
+  import core from '../chat/core';
   import { defaultButtons, EditorButton, EditorSelection } from './editor';
   import { BBCodeParser } from './parser';
   import { default as IconView } from './IconView.vue';
@@ -608,7 +609,7 @@
             this.lastInput = Date.now();
           }
         }
-        if (key === Keys.KeyD) {
+        if (core.state.settings.horizonUseColorPicker && key === Keys.KeyD) {
           e.stopPropagation();
           e.preventDefault();
           this.awaitingColorKey = true;
