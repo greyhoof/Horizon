@@ -18,6 +18,12 @@
     >
       <i class="fa fa-code"></i>
     </a>
+
+    <EIconSelector
+      :onSelect="onSelectEIcon"
+      ref="eIconSelector"
+    ></EIconSelector>
+
     <div
       class="bbcode-toolbar btn-toolbar"
       role="toolbar"
@@ -61,11 +67,6 @@
           </div>
         </div>
       </div>
-
-      <EIconSelector
-        :onSelect="onSelectEIcon"
-        ref="eIconSelector"
-      ></EIconSelector>
 
       <div class="btn-group toolbar-buttons" style="flex-wrap: wrap">
         <div v-if="!!characterName" class="character-btn">
