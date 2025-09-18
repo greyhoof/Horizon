@@ -7,7 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 # [Unreleased]
 
-_Nothing yet._
+## [1.34.0] - 2025-09-XX
+
+### Added
+
+- Horizon now supports multiple languages beyond just English! Currently supported languages are: French, German, Hungarian, Italian and Spanish. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/cadf98feaed0b1e6b81e1b9507079f7a36992974)
+- Added a character-level setting for 'modern' chat display. Similar to Discord. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/0810899e2bda3dd80f69ea351c48c91b527b3dcf)
+- Automatic ads now let you choose the interval between posts. You can't go below the F-Chat minimum though. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/e967090e6dd9eeef281be7ad91aec7f57dcccea6)
+- Added a setting to show the active character in the window's title. It's under the app settings. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/3f360cf23abac233e839426a09342efe25a21f4c)
+- Added a keyboard shortcut (Ctrl/ Cmd + Shift + P) for quickly previewing your BBCode formatting. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/c8116f01b043d45382638ec89a7ad2876da45e37)
+- Right-clicking an eicon in chat now gives you a context menu to copy it or add it to your favourites. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/2e975d516aa5b8f7a3cbe2e2cd98af2f3726855b)
+- You can now pin statuses in the Status History window for easy access. We also increased the limit of statuses your history saves to 15. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/8a15570fa0d002fb9fb5ef700bc96e7c1c3445db)
+
+### Changed
+
+- Removed the ping sound from channel warnings. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/ff1bca7833e87fe99b621946e2ae00c3b4dded58)
+  - We originally brought this back, because it was a feature in F-Chat 1.0 and 2.0. But this was a bad decision.
+- The Character Search dialog has been slightly redesigned to better work for widescreen devices. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/cac0f1e6b7d5177ec0e00cd7abe64c64e22d983b)
+- Timestamps for highlighted (pinged, warned) messages now match the background style. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/b279ea74b8316f0d4c3402fb8067ef19c0001c86)
+- Quick Jump search results are reodered in a way that hopefully makes more sense. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/4b1ba64a4068b7a73314323d2e2225d62474f140)
+  - The order right now is: Pinged messages > Your previous conversation > Messages marked as unread (red color) > Message time > Alphabetical order
+- 'Full width' tab items no longer get a scrollbar if their contents are too wide for their containers. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/63bf433d95648b67ad86f2485ac82f73bd0238b8)
+- The text selection box now uses theme-appropriate colors. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/650b5c63d16e473ee5be8f1a1d47ed29ee49347d)
+
+### Fixed
+
+- Fixed pasting URLs with square brackets (\[ and \]) making you paste broken BBCode. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/624a0005d8f9c158a721b3d5d0be6e511cd0e6de)
+- Fixed profile \[collapse\] items looking slightly broken when closed. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/a257b2536342ba56f957f1f5081bf566c09d696f)
+- Fixes issues with the zoom level occassionally resetting (and desynchronizing) when switching tabs. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/c0ee1c8cf1a23fd48ee0799a604d43ed689d36aa)
+- Closing a PM while having some text in the text box no longer makes the other person think you're still typing. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/b5c35c630577a5cd3af8470c8008295d2be05bfe)
+- Fixed an edge case where overly long status texts without any spaces would escape from the character right click menu. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/03fbe9f68d2fbd8653df2bda4a0a37d7f82938d0)
 
 # [Releases]
 
