@@ -318,6 +318,49 @@
       });
     }
 
+    sanitizeConversationName(name: string): string {
+      /*
+       * Replace characters that are forbidden in paths with an underscore.
+       * This list should cover Unix, Windows and macOS.
+       * Files and folders also may not end with spaces.
+       */
+      let sanitizedName = name.replace(/[\/<>:"\\|?*.]/g, '_').trimRight();
+
+      /*
+       * For Windows, certain names are forbidden, too.
+       */
+      if (
+        [
+          'CON',
+          'PRN',
+          'AUX',
+          'NUL',
+          'COM1',
+          'COM2',
+          'COM3',
+          'COM4',
+          'COM5',
+          'COM6',
+          'COM7',
+          'COM8',
+          'COM9',
+          'LPT1',
+          'LPT2',
+          'LPT3',
+          'LPT4',
+          'LPT5',
+          'LPT6',
+          'LPT7',
+          'LPT8',
+          'LPT9'
+        ].includes(sanitizedName)
+      ) {
+        sanitizedName += '_';
+      }
+
+      return sanitizedName;
+    }
+
     downloadDay(): void {
       if (
         this.selectedConversation === undefined ||
@@ -326,7 +369,7 @@
       )
         return;
       const html = Dialog.confirmDialog(l('logs.html'));
-      const name = `${this.selectedConversation.name}-${formatDate(new Date(this.selectedDate))}.${html ? 'html' : 'txt'}`;
+      const name = `${this.sanitizeConversationName(this.selectedConversation.name)}-${formatDate(new Date(this.selectedDate))}.${html ? 'html' : 'txt'}`;
       this.download(
         name,
         `data:${encodeURIComponent(name)},${encodeURIComponent(getLogs(this.messages, html))}`
@@ -349,7 +392,7 @@
         );
       }
       this.download(
-        `${this.selectedConversation.name}.zip`,
+        `${this.sanitizeConversationName(this.selectedConversation.name)}.zip`,
         URL.createObjectURL(new Blob([zip.toBuffer()]))
       );
     }
@@ -374,7 +417,7 @@
             date
           );
           zip.addFile(
-            `${conv.name}/${formatDate(date)}.${html ? 'html' : 'txt'}`,
+            `${this.sanitizeConversationName(conv.name)}/${formatDate(date)}.${html ? 'html' : 'txt'}`,
             Buffer.from(getLogs(messages, html), 'utf-8')
           );
         }
