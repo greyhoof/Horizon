@@ -14,6 +14,7 @@
         class="form-control"
         :placeholder="placeholder"
         @mousedown.stop
+        @click.stop
       />
     </div>
     <div class="overflow-auto dropdown-items">
