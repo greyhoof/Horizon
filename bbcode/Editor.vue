@@ -609,7 +609,11 @@
             this.lastInput = Date.now();
           }
         }
-        if (core.state.settings.horizonUseColorPicker && key === Keys.KeyD) {
+        if (
+          this.hasToolbar &&
+          core.state.settings.horizonUseColorPicker &&
+          key === Keys.KeyD
+        ) {
           e.stopPropagation();
           e.preventDefault();
           this.awaitingColorKey = true;

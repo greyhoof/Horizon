@@ -520,6 +520,7 @@
             type="checkbox"
             id="horizonUseColorPicker"
             v-model="horizonUseColorPicker"
+            :disabled="!bbCodeBar"
           />
           <label class="form-check-label" for="horizonUseColorPicker">
             {{ l('settings.horizonUseColorPicker') }}
@@ -1239,6 +1240,7 @@
             : diskDraftTimer > 5
               ? diskDraftTimer
               : 5,
+        horizonUseColorPicker: this.horizonUseColorPicker,
 
         risingColorblindMode: this.risingColorblindMode,
         risingFilter: {
