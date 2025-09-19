@@ -48,6 +48,9 @@ export class ImageUrlMutator {
       }
     );
 
+    /* This proxy is disabled since it doesn't directly work anymore. Youtube videos themselves auto-mute, 
+     * but it's preferable to have them like this for now.
+    /*
     this.add(
       /^http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?[\w\?=]*)?/,
       async (_url: string, match: RegExpMatchArray): Promise<string> => {
@@ -55,6 +58,7 @@ export class ImageUrlMutator {
         return `https://yewtu.be/embed/${videoId}?autoplay=1`;
       }
     );
+    */
 
     this.add(
       /^https?:\/\/(?:.*twitter.com|x.com)\/(\w*\/status\/\d*)(?:\/(photo)\/(\d*))?/,
