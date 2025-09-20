@@ -654,6 +654,10 @@ function onReady(): void {
       w.send('update-zoom', zl);
   });
 
+  electron.ipcMain.on('open-dir', (_e, directory: string) => {
+    electron.shell.openPath(directory);
+  });
+
   electron.ipcMain.handle('browser-option-browse', async () => {
     log.debug('settings.browserOption.browse');
     console.log('settings.browserOption.browse', JSON.stringify(settings));

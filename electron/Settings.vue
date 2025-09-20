@@ -517,6 +517,18 @@
                       <button
                         class="btn btn-outline-secondary"
                         @click="browseForLogDir()"
+                        :title="l('settings.logDir.select')"
+                      >
+                        <span class="fas fa-fw fa-folder-plus"></span></button
+                      ><button
+                        class="btn btn-outline-secondary"
+                        @click="openLogDir()"
+                        :title="
+                          l(
+                            'platform.open',
+                            l(`platform.fileExplorer.${platformName}`)
+                          )
+                        "
                       >
                         <span class="far fa-fw fa-folder-open"></span>
                       </button></div
@@ -791,6 +803,8 @@
     //Which is kind of good because of all the security issues that'd otherwise arise
     isWindows = process.platform === 'win32';
     isMac = process.platform === 'darwin';
+
+    platformName = process.platform;
 
     get styling(): string {
       try {
@@ -1126,6 +1140,10 @@
           ipcRenderer.send('log-path-update', dir[0]);
         }
       }
+    }
+
+    openLogDir(): void {
+      ipcRenderer.send('open-dir', this.settings.logDirectory);
     }
 
     filterLanguage(
