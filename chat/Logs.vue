@@ -405,11 +405,17 @@
         return;
       const zip = new AdmZip();
       const html = Dialog.confirmDialog(l('logs.html'));
+      const existingConversationNames = new Array<string>();
       for (const conv of this.conversations) {
         const dates = await core.logs.getLogDates(
           this.selectedCharacter,
           conv.key
         );
+        let sanitizedConvName = this.sanitizeConversationName(conv.name);
+        while (existingConversationNames.includes(sanitizedConvName)) {
+          sanitizedConvName += '_';
+        }
+        existingConversationNames.push(sanitizedConvName);
         for (const date of dates) {
           const messages = await core.logs.getLogs(
             this.selectedCharacter,
@@ -417,7 +423,7 @@
             date
           );
           zip.addFile(
-            `${this.sanitizeConversationName(conv.name)}/${formatDate(date)}.${html ? 'html' : 'txt'}`,
+            `${sanitizedConvName}/${formatDate(date)}.${html ? 'html' : 'txt'}`,
             Buffer.from(getLogs(messages, html), 'utf-8')
           );
         }
