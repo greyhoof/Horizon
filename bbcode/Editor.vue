@@ -524,7 +524,7 @@
     //They fire when the editor element is focused, not the text box.
     onKeyDownGlobal(e: KeyboardEvent): void {
       const key = getKey(e);
-      if (e.ctrlKey && e.shiftKey && key === Keys.KeyP) {
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && key === Keys.KeyP) {
         e.stopPropagation();
         e.preventDefault();
         this.togglePreview();
