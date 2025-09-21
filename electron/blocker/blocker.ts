@@ -1,10 +1,10 @@
 import log from 'electron-log';
-import { ElectronBlocker } from '@cliqz/adblocker-electron';
+import { ElectronBlocker } from '@ghostery/adblocker-electron';
 import path from 'path';
 import fs from 'fs';
 import * as _ from 'lodash';
 import * as electron from 'electron';
-import { NetworkFilter } from '@cliqz/adblocker';
+import { NetworkFilter } from '@ghostery/adblocker';
 
 export class BlockerIntegration {
   protected static readonly adBlockerLists = [
