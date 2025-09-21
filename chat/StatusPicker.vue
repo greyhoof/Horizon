@@ -132,6 +132,8 @@
 
     selectedStatus: number | null = null;
 
+    selectedPin: number | null = null;
+
     @Hook('mounted')
     async onMounted(): Promise<void> {
       this.history = (await core.settingsStore.get('statusHistory')) || [];
