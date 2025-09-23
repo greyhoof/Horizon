@@ -38,6 +38,15 @@
           >
             <span class="fab fa-discord"></span>
           </a>
+          <a
+            href="https://chat.f-list.net/stats/"
+            target="_blank"
+            rel="noopener"
+            class="btn"
+          >
+            <span class="fa fa-chart-line"></span>
+            <span class="btn-text">{{ l('chat.stats') }}</span>
+          </a>
 
           <a
             href="#"

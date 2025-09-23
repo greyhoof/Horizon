@@ -152,6 +152,7 @@
   "chat.setStatus.message": "Status message (optional)",
   "chat.setStatus.status": "Status",
   "chat.status": "Status:",
+  "chat.stats": "Chat stats",
   "chat.toggleAds": "Toggle ads",
   "chat.typing.paused": "{0} has entered text.",
   "chat.typing.typing": "{0} is typing…",
