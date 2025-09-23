@@ -533,6 +533,18 @@
                         <span class="far fa-fw fa-folder-open"></span>
                       </button></div
                   ></label>
+                  <div id="logDirNote" class="form-text text-muted">
+                    <a
+                      href="#"
+                      @click="
+                        externalUrlHandler(
+                          `https://horizn.moe/docs/guides/backup.html`
+                        )
+                      "
+                      ><span>{{ `${l('settings.logDir.note')} ` }}</span>
+                      <i class="fa-solid fa-arrow-up-right-from-square"></i>.
+                    </a>
+                  </div>
                 </div>
                 <h5>{{ l('settings.behavior.window') }}</h5>
                 <div class="mb-3">
@@ -1151,6 +1163,10 @@
       languageEntry: { lang: string; name: string }
     ): boolean {
       return filter.test(languageEntry.name);
+    }
+
+    externalUrlHandler(url: string) {
+      ipcRenderer.send('open-url-externally', url);
     }
 
     countLines(text: string): number {
