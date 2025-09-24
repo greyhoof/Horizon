@@ -1145,6 +1145,8 @@
       await importKey('pinned');
       await importKey('modes');
       await importKey('conversationSettings');
+      await importKey('hiddenUsers');
+      await importKey('favoriteEIcons');
       core.connection.close(false);
     }
 
