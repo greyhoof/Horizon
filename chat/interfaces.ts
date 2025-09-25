@@ -241,6 +241,7 @@ export namespace Settings {
     searchHistory: (ExtendedSearchData | SearchData)[];
     hideNonMatchingAds: boolean;
     hideProfileComparisonSummary: boolean;
+    hideProfileAnalysis: boolean;
     ads: Ad[];
   };
 
