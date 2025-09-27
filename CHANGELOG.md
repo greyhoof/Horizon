@@ -62,6 +62,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 # [Releases]
 
+## [1.33.7] - 2025-09-27
+
+### Fixed
+
+- Sites no longer get permissions by default. Or at all, for that matter. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/1fa0662f062d5507d9eb608f81f3eed02ed314ff)
+
 ## [1.33.6] - 2025-09-07
 
 ### Fixed
