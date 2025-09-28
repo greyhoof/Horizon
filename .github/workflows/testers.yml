@@ -10,7 +10,7 @@ jobs:
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK_TESTERS }}
           nodetail: true
-          url: (${{ github.event.release.html_url }})
+          url: ${{ github.event.release.html_url }}
           title: 'New Prerelease (${{ github.event.release.tag_name }})'
           description: |
 
