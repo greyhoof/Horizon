@@ -39,7 +39,11 @@
               ><i class="fa-solid fa-circle-dot"></i
             ></span>
             <span class="result-description" v-if="result.description">
-              {{ result.description }}
+              {{
+                isMostRecent(result)
+                  ? l('quickJump.lastConversation')
+                  : result.description
+              }}
             </span>
           </div>
         </div>
@@ -153,7 +157,10 @@
           name: conversation.name,
           type: 'channel',
           conversation,
-          description: `${conversation.channel.sortedMembers.length} ${l('quickJump.members')}`
+          description: l(
+            'quickJump.members',
+            conversation.channel.sortedMembers.length
+          )
         });
       }
 
@@ -376,6 +383,13 @@
       return (
         result.conversation !== undefined &&
         result.conversation.unread !== Conversation.UnreadState.None
+      );
+    }
+
+    isMostRecent(result: SearchResult): boolean {
+      return (
+        result.conversation !== undefined &&
+        result.conversation === core.conversations.lastConversation
       );
     }
 
