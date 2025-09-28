@@ -35,6 +35,9 @@
                 >!</span
               ></span
             >
+            <span v-show="isUnread(result)" class="badge text-bg-danger"
+              ><i class="fa-solid fa-circle-dot"></i
+            ></span>
             <span class="result-description" v-if="result.description">
               {{ result.description }}
             </span>
@@ -224,7 +227,16 @@
           return 1;
         }
 
-        if (a.conversation === core.conversations.lastConversation) {
+        if (
+          a.conversation === core.conversations.lastConversation &&
+          b.conversation !== core.conversations.lastConversation
+        ) {
+          return -1;
+        }
+        if (
+          b.conversation === core.conversations.lastConversation &&
+          a.conversation !== core.conversations.lastConversation
+        ) {
           return 1;
         }
 
@@ -357,6 +369,13 @@
       return (
         result.conversation !== undefined &&
         result.conversation.unread === Conversation.UnreadState.Mention
+      );
+    }
+
+    isUnread(result: SearchResult): boolean {
+      return (
+        result.conversation !== undefined &&
+        result.conversation.unread !== Conversation.UnreadState.None
       );
     }
 

@@ -117,6 +117,7 @@ export namespace Conversation {
     readonly recentChannels: ReadonlyArray<RecentChannelConversation>;
     readonly selectedConversation: Conversation;
     readonly hasNew: boolean;
+    readonly lastConversation: Conversation;
     byKey(key: string): Conversation | undefined;
 
     getPrivate(character: Character): PrivateConversation;
