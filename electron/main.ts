@@ -14,6 +14,7 @@ import { IpcMainEvent, session } from 'electron';
 import Axios from 'axios';
 import * as browserWindows from './browser_windows';
 import * as remoteMain from '@electron/remote/main';
+import { Event } from 'electron/main';
 
 const configuredSessions = new WeakSet<electron.Session>();
 
@@ -481,23 +482,7 @@ function onReady(): void {
 
           { type: 'separator' },
           { role: 'minimize' },
-          {
-            accelerator: process.platform === 'darwin' ? 'Cmd+Q' : undefined,
-            label: l('action.quit'),
-            click(_m: electron.MenuItem, window: electron.BrowserWindow): void {
-              if (characters.length === 0) return app.quit();
-              const button = electron.dialog.showMessageBoxSync(window, {
-                message: l('chat.confirmLeave'),
-                title: l('title'),
-                buttons: [l('confirmYes'), l('confirmNo')],
-                cancelId: 1
-              });
-              if (button === 0) {
-                browserWindows.quitAllWindows();
-                app.quit();
-              }
-            }
-          }
+          { role: 'quit', label: l('action.quit') }
         ] as MenuItemConstructorOptions[]
       },
       {
@@ -850,5 +835,26 @@ else
   });
 app.on('second-instance', () => {
   browserWindows.createMainWindow(settings, shouldImportSettings, baseDir);
+});
+app.on('before-quit', (event: Event) => {
+  if (characters.length !== 0) {
+    const focusedWindow = electron.BrowserWindow.getFocusedWindow();
+    //forcing a window to be focused is weird. Let's just make it so that it floats otherwise.
+    const options = {
+      message: l('chat.confirmLeave'),
+      title: l('title'),
+      buttons: [l('confirmYes'), l('confirmNo')],
+      cancelId: 1
+    };
+    const button = focusedWindow
+      ? electron.dialog.showMessageBoxSync(focusedWindow, options)
+      : electron.dialog.showMessageBoxSync(options);
+
+    if (button === 1) {
+      event.preventDefault();
+      return;
+    }
+  }
+  browserWindows.quitAllWindows();
 });
 app.on('window-all-closed', () => app.quit());
