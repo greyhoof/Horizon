@@ -640,7 +640,6 @@ function onReady(): void {
         'https://horizn.moe/download.html?ver=' + updateVersion
       );
       browserWindows.quitAllWindows();
-      app.quit();
     }
   );
   electron.ipcMain.on(
