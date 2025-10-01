@@ -454,7 +454,6 @@ function createTrayMenu(): electron.MenuItemConstructorOptions[] {
       label: l('action.quit'),
       click: () => {
         quitAllWindows();
-        electron.app.quit();
       }
     }
   ];
@@ -500,8 +499,11 @@ export function updateZoomLevel(zoomLevel: number) {
  * Quits all browser windows.
  * @function
  */
-export function quitAllWindows() {
-  for (const w of windows) w.webContents.send('quit');
+export async function quitAllWindows() {
+  for (const w of windows) {
+    w.webContents.send('quit');
+    w.close();
+  }
 }
 
 /**
