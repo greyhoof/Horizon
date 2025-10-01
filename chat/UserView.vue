@@ -36,6 +36,7 @@
   import { kinkMatchWeights, Scoring } from '../learn/matcher-types';
   import { characterImage } from './common';
   import { isHorizonDev } from './profile_api';
+  import { CharacterColor } from './../fchat/characters';
 
   export function getStatusIcon(status: Character.Status): string {
     switch (status) {
@@ -148,6 +149,13 @@
 
       // undefined == not interested
       // null == no cache hit
+      if (
+        cache === null &&
+        core.state.settings.horizonShowCustomCharacterColors &&
+        !character.overrides.characterColor
+      ) {
+        void core.cache.addProfile(character.name, true);
+      }
       if (cache === null && showMatch) {
         void core.cache.addProfile(character.name);
       }
@@ -201,8 +209,10 @@
     const userClass =
       `user-view` +
       (isBookmark && !useOfflineColor ? ' user-bookmark' : '') +
-      (character.overrides.characterColor && !useOfflineColor
-        ? ` ${character.overrides.characterColor}NameText`
+      (character.overrides.characterColor &&
+      !useOfflineColor &&
+      character.overrides.characterColor !== CharacterColor.none
+        ? ` ${CharacterColor[character.overrides.characterColor]}NameText`
         : ` gender-${gender}`);
     // `user-view gender-${gender}${isBookmark ? ' user-bookmark' : ''}`;
 

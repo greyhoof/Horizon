@@ -384,6 +384,9 @@ export class ProfileCache extends AsyncCache<CharacterCacheRecord> {
           characterColor
         );
       }
+    } else {
+      //Let's hope this won't wind up killing memory too
+      core.characters.setOverride(c.character.name, 'characterColor', null);
     }
   }
 

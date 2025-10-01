@@ -241,10 +241,17 @@ export class CacheManager {
    *
    * Comment imported from Frolic; may be inaccurate if significant changes occured.
    */
-  async addProfile(character: string | ComplexCharacter): Promise<void> {
+  async addProfile(
+    character: string | ComplexCharacter,
+    fromDiskOnly: boolean = false
+  ): Promise<void> {
     if (typeof character === 'string') {
       // console.log('Learn discover', character);
 
+      if (fromDiskOnly) {
+        await this.profileCache.get(character);
+        return;
+      }
       await this.queueForFetching(character);
       return;
     }
