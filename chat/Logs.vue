@@ -175,7 +175,12 @@
                 }
               : undefined,
             html
-              ? t => `${core.bbCodeParser.parseEverything(t).innerHTML}`
+              ? t => {
+                  const parsedElement = core.bbCodeParser.parseEverything(t);
+                  const result = parsedElement.innerHTML;
+                  parsedElement.cleanup?.();
+                  return `${result}`;
+                }
               : undefined
           ),
         start
