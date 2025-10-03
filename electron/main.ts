@@ -34,6 +34,165 @@ remoteMain.initialize();
 
 const characters: string[] = [];
 
+// Simple CLI support: allow headless export/import when running the packaged executable from a shell
+async function tryHandleCli(): Promise<boolean> {
+  const argv = process.argv.slice(1);
+  const command = argv[0];
+  const has = (flag: string) => argv.includes(flag);
+  const get = (flag: string): string | undefined => {
+    const idx = argv.indexOf(flag);
+    return idx !== -1 ? argv[idx + 1] : undefined;
+  };
+
+  if (command === 'help' || has('--help') || has('-h')) {
+    console.log(`
+Horizon - CLI Usage
+
+USAGE:
+  horizon <command> [flags]
+  horizon [flags]              Start GUI (with optional flags)
+
+COMMANDS:
+  export                  Export user data to a ZIP archive
+  import                  Import user data from a ZIP archive
+  help                    Show this help message
+
+GUI FLAGS:
+  --devtools              Open DevTools on startup for debugging
+
+EXPORT FLAGS:
+  --data-dir <path>       Data directory (default: userData/data)
+  --out <path>            Output ZIP file path (default: ./horizon-export.zip)
+  --characters <list>     Comma-separated list of characters to export (default: all)
+  --include-general       Include general settings (default: true)
+  --include-character-settings    Include character settings (default: true)
+  --include-logs          Include chat logs (default: true)
+  --include-drafts        Include message drafts (default: true)
+  --include-pinned-conversations  Include pinned conversations (default: true)
+  --include-pinned-eicons Include pinned eicons (default: true)
+  --include-recents       Include recent users/channels (default: true)
+  --include-hidden        Include hidden users (default: true)
+
+IMPORT FLAGS:
+  --zip <path>            ZIP file to import (required)
+  --data-dir <path>       Data directory (default: userData/data)
+  --characters <list>     Comma-separated list of characters to import (default: all)
+  --overwrite             Overwrite existing files (default: false)
+  --include-general       Include general settings (default: true)
+  --include-character-settings    Include character settings (default: true)
+  --include-logs          Include chat logs (default: true)
+  --include-drafts        Include message drafts (default: true)
+  --include-pinned-conversations  Include pinned conversations (default: true)
+  --include-pinned-eicons Include pinned eicons (default: true)
+  --include-recents       Include recent users/channels (default: true)
+  --include-hidden        Include hidden users (default: true)
+
+EXAMPLES:
+  # Export all data
+  horizon export --data-dir ~/.config/horizon/data --out ~/backup.zip
+
+  # Export only logs for specific characters
+  horizon export --characters "CharName1,CharName2" --include-logs
+
+  # Import from a backup
+  horizon import --zip ~/backup.zip --data-dir ~/.config/horizon/data
+
+  # Import with overwrite
+  horizon import --zip ~/backup.zip --overwrite
+
+  # Start GUI with DevTools
+  horizon --devtools
+`);
+    app.exit(0);
+    return true;
+  }
+
+  if (command === 'export') {
+    const { runExportCli } = await import('./services/exporter/backup-export-cli');
+    const dataDir =
+      get('--data-dir') || path.join(app.getPath('userData'), 'data');
+    const out = get('--out') || path.join(process.cwd(), 'horizon-export.zip');
+    const include = (f: string, d = false) => (has(f) ? true : d);
+    const chars = get('--characters')?.split(',').filter(Boolean);
+    const exportResult = await runExportCli({
+      dataDir,
+      out,
+      includeGeneral: include('--include-general', true),
+      includeCharacterSettings: include('--include-character-settings', true),
+      includeLogs: include('--include-logs', true),
+      includeDrafts: include('--include-drafts', true),
+      includePinnedConversations: include(
+        '--include-pinned-conversations',
+        true
+      ),
+      includePinnedEicons: include('--include-pinned-eicons', true),
+      includeRecents: include('--include-recents', true),
+      includeHidden: include('--include-hidden', true),
+      characters: chars
+    });
+    // Emit a simple summary for cron logs
+    console.log(
+      JSON.stringify({
+        op: 'export',
+        out: exportResult.out,
+        characters: exportResult.characters.length
+      })
+    );
+    // Exit without opening any window
+    app.exit(0);
+    return true;
+  }
+
+  if (command === 'import') {
+    const { runImportCli } = await import('./services/importer/backup-import-cli');
+    const zip = get('--zip');
+    if (!zip) return false;
+    const dataDir =
+      get('--data-dir') || path.join(app.getPath('userData'), 'data');
+    const include = (f: string, d = false) => (has(f) ? true : d);
+    const chars = get('--characters')?.split(',').filter(Boolean);
+    const overwrite = has('--overwrite');
+    const importResult = await runImportCli({
+      zip,
+      dataDir,
+      includeGeneral: include('--include-general', true),
+      includeCharacterSettings: include('--include-character-settings', true),
+      includeLogs: include('--include-logs', true),
+      includeDrafts: include('--include-drafts', true),
+      includePinnedConversations: include(
+        '--include-pinned-conversations',
+        true
+      ),
+      includePinnedEicons: include('--include-pinned-eicons', true),
+      includeRecents: include('--include-recents', true),
+      includeHidden: include('--include-hidden', true),
+      overwrite,
+      characters: chars
+    });
+    console.log(
+      JSON.stringify({
+        op: 'import',
+        zip,
+        touchedCharacters: importResult.touchedCharacters.length,
+        generalImported: importResult.generalImported
+      })
+    );
+    app.exit(0);
+    return true;
+  }
+  return false;
+}
+
+function broadcastConnectedCharacters(): void {
+  for (const w of electron.webContents.getAllWebContents()) {
+    try {
+      w.send('connected-characters-updated', characters.slice());
+    } catch {
+      // ignore
+    }
+  }
+}
+
 const baseDir = app.getPath('userData');
 fs.mkdirSync(baseDir, { recursive: true });
 let shouldImportSettings = false;
@@ -150,7 +309,7 @@ export function openURLExternally(linkUrl: string): void {
     if (fileIsExecutable) {
       // regular expression that looks for an encoded % symbol followed by two hexadecimal characters
       // using this expression, we can find parts of the URL that were encoded twice
-      const re = /%25([0-9a-f]{2})/ig;
+      const re = /%25([0-9a-f]{2})/gi;
 
       // encode the URL no matter what
       linkUrl = encodeURI(linkUrl);
@@ -185,7 +344,15 @@ export function openURLExternally(linkUrl: string): void {
 
 let zoomLevel = settings.zoomLevel;
 
-function onReady(): void {
+async function onReady(): Promise<void> {
+  try {
+    if (await tryHandleCli()) return;
+  } catch (err) {
+    log.error('cli.run.failed', err);
+    app.exit(1);
+    return;
+  }
+
   let hasCompletedUpgrades = false;
 
   const logLevel = process.env.NODE_ENV === 'production' ? 'info' : 'silly';
@@ -198,7 +365,11 @@ function onReady(): void {
 
   app.setAppUserModelId('net.flist.fchat');
   app.on('open-file', () => {
-    browserWindows.createMainWindow(settings, shouldImportSettings, baseDir);
+    browserWindows.createMainWindow(
+      settings,
+      shouldImportSettings ? 'auto' : undefined,
+      baseDir
+    );
   });
   const configurePermissionPolicy = (
     targetSession: electron.Session | null,
@@ -437,7 +608,7 @@ function onReady(): void {
               if (hasCompletedUpgrades)
                 browserWindows.createMainWindow(
                   settings,
-                  shouldImportSettings,
+                  shouldImportSettings ? 'auto' : undefined,
                   baseDir
                 );
             },
@@ -456,7 +627,7 @@ function onReady(): void {
             click: (_m, window: electron.BrowserWindow) => {
               browserWindows.createSettingsWindow(
                 settings,
-                shouldImportSettings,
+                shouldImportSettings ? 'auto' : undefined,
                 window
               );
             },
