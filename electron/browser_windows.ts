@@ -22,6 +22,8 @@ import l from '../chat/localize';
  */
 const maxTabCount = process.env.NODE_ENV === 'production' ? 3 : 5;
 
+type ImporterHint = 'auto' | 'vanilla' | 'advanced' | 'slimcat' | undefined;
+
 /**
  * Used to store the mapping of character names to their respective web contents from a tab.
  * This allows for quick access to the web contents associated with a specific character.
@@ -191,15 +193,15 @@ export function openTab(w: electron.BrowserWindow) {
  * @function
  * @param {GeneralSettings} settings
  * This contains the general settings for the application.
- * @param {boolean} shouldImportSettings
- * Seemingly unreferenced outside of creating the window.
+ * @param {ImporterHint} ImporterHint
+ * Handles what and how we should import
  * @param {string} baseDir
  * Base directory for the application, used for the ad blocker.
  * @returns {electron.BrowserWindow | undefined}
  */
 export function createMainWindow(
   settings: GeneralSettings,
-  shouldImportSettings: boolean,
+  ImporterHint: ImporterHint,
   baseDir: string
 ): electron.BrowserWindow | undefined {
   if (tabCount >= maxTabCount) return;
@@ -298,7 +300,7 @@ export function createMainWindow(
   window.loadFile(path.join(__dirname, 'window.html'), {
     query: {
       settings: JSON.stringify(settings),
-      import: shouldImportSettings ? 'true' : ''
+      import: ImporterHint ?? ''
     }
   });
 
@@ -531,8 +533,8 @@ export function toggleUpdateNotice(updateAvailable: boolean, version?: string) {
  * @function
  * @param {GeneralSettings} settings
  * The general settings for the application, modified by the user in the settings window.
- * @param {boolean} shouldImportSettings
- * Seemingly unreferenced outside of creating the window.
+ * @param {ImporterHint} ImporterHint
+ * Handles what and how we should import
  * @param {electron.BrowserWindow} parentWindow
  * The parent window for the settings window. This is used to create a modal dialog.
  * @returns {electron.BrowserWindow | undefined}
@@ -540,7 +542,7 @@ export function toggleUpdateNotice(updateAvailable: boolean, version?: string) {
  */
 export function createSettingsWindow(
   settings: GeneralSettings,
-  shouldImportSettings: boolean,
+  ImporterHint: ImporterHint,
   parentWindow: electron.BrowserWindow
 ): electron.BrowserWindow | undefined {
   let desiredHeight = 570;
@@ -578,7 +580,7 @@ export function createSettingsWindow(
   browserWindow.loadFile(path.join(__dirname, 'settings.html'), {
     query: {
       settings: JSON.stringify(settings),
-      import: shouldImportSettings ? 'true' : ''
+      import: ImporterHint ?? ''
     }
   });
 
@@ -594,8 +596,8 @@ export function createSettingsWindow(
  *
  * @param settings
  * The general application settings to be passed to the changelog window.
- * @param shouldImportSettings
- * Seemingly unreferenced outside of creating the window.
+ * @param ImporterHint
+ * Handles what and how we should import
  * @param parentWindow
  * The parent window for the settings window. This is used to create a modal dialog.
  * @param updateVer
@@ -606,7 +608,7 @@ export function createSettingsWindow(
  */
 export function createChangelogWindow(
   settings: GeneralSettings,
-  shouldImportSettings: boolean,
+  ImporterHint: ImporterHint,
   parentWindow: electron.BrowserWindow,
   updateVer?: string
 ): electron.BrowserWindow | undefined {
@@ -645,8 +647,8 @@ export function createChangelogWindow(
   browserWindow.loadFile(path.join(__dirname, 'changelog.html'), {
     query: {
       settings: JSON.stringify(settings),
-      import: shouldImportSettings ? 'true' : '',
-      updateVer: updateVer ? updateVer : ''
+      import: ImporterHint ?? '',
+      updateVer: updateVer || ''
     }
   });
 
