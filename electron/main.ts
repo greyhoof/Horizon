@@ -164,7 +164,7 @@ export function openURLExternally(linkUrl: string): void {
       }
 
       // replace %s in arguments with URL and encapsulate in quotes to prevent issues with spaces and special characters in the path
-      let link = settings.browserArgs.replace('%s', '\"' + linkUrl + '\"');
+      let link = settings.browserArgs.replace('%s', '"' + linkUrl + '"');
 
       const execFile = require('child_process').exec;
       if (process.platform === 'darwin') {
