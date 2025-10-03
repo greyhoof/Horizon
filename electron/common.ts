@@ -58,6 +58,9 @@ export class GeneralSettings {
   use12HourTime: boolean = false;
   fuzzyDates: boolean = true;
   horizonForceAsciiProfiles: boolean = false;
+  hasImportedVanillaLogs: boolean = false;
+  hasDismissedVanillaImport: boolean = false;
+  vanillaCustomBaseDir: string | undefined = undefined;
 }
 
 log.debug('init.common.done');
