@@ -150,7 +150,7 @@ export function openURLExternally(linkUrl: string): void {
     if (fileIsExecutable) {
       // regular expression that looks for an encoded % symbol followed by two hexadecimal characters
       // using this expression, we can find parts of the URL that were encoded twice
-      const re = new RegExp('%25([0-9a-f]{2})', 'ig');
+      const re = /%25([0-9a-f]{2})/ig;
 
       // encode the URL no matter what
       linkUrl = encodeURI(linkUrl);
