@@ -22,7 +22,7 @@ import { GeneralSettings /*, nativeRequire*/ } from './common';
 import { Logs, SettingsStore } from './filesystem';
 import { setLanguage } from '../chat/localize';
 import Notifications from './notifications';
-import * as SlimcatImporter from './importer';
+import * as SlimcatImporter from './services/importer/importer';
 import Index from './Index.vue';
 import log from 'electron-log'; // tslint:disable-line: match-default-export-name
 import { WordPosSearch } from '../learn/dictionary/word-pos-search';

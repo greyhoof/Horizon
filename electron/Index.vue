@@ -325,7 +325,7 @@
   import ProfileAnalysis from '../learn/recommend/ProfileAnalysis.vue';
   import { defaultHost, GeneralSettings } from './common';
   import { fixLogs /*SettingsStore, Logs as FSLogs*/ } from './filesystem';
-  import * as SlimcatImporter from './importer';
+  import * as SlimcatImporter from './services/importer/importer';
   import _ from 'lodash';
   import { EventBus } from '../chat/preview/event-bus';
 
