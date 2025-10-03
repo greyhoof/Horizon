@@ -660,6 +660,70 @@ export function createChangelogWindow(
 }
 
 /**
+ * Creates an exporter window for backing up user data.
+ * @function
+ * @param {GeneralSettings} settings
+ * The general application settings to be passed to the exporter window.
+ * @param {ImporterHint} importHint
+ * Optional hint to the renderer about which importer to trigger.
+ * @param {electron.BrowserWindow} parentWindow
+ * The parent window for the exporter window. This is used to create a modal dialog.
+ * @returns {electron.BrowserWindow | undefined}
+ * Returns the newly created exporter window or undefined if creation failed.
+ */
+export function createExporterWindow(
+  settings: GeneralSettings,
+  importHint: ImporterHint,
+  parentWindow: electron.BrowserWindow
+): electron.BrowserWindow | undefined {
+  let desiredHeight = 720;
+  let desiredWidth = 885;
+
+  const windowProperties: electron.BrowserWindowConstructorOptions = {
+    center: true,
+    show: false,
+    icon: process.platform === 'win32' ? winIcon : pngIcon,
+    frame: false,
+    width: desiredWidth,
+    minWidth: desiredWidth,
+    height: desiredHeight,
+    minHeight: desiredHeight,
+    resizable: true,
+    modal: true,
+    parent: parentWindow,
+    maximizable: false,
+    webPreferences: {
+      webviewTag: true,
+      nodeIntegration: true,
+      nodeIntegrationInWorker: true,
+      spellcheck: true,
+      enableRemoteModule: true,
+      contextIsolation: false,
+      partition: 'persist:fchat'
+    } as any
+  };
+
+  if (process.platform === 'darwin') {
+    windowProperties.titleBarStyle = 'hiddenInset';
+  }
+
+  const browserWindow = new electron.BrowserWindow(windowProperties);
+  remoteMain.enable(browserWindow.webContents);
+  browserWindow.loadFile(path.join(__dirname, 'exporter.html'), {
+    query: {
+      settings: JSON.stringify(settings),
+      import: importHint ?? ''
+    }
+  });
+
+  browserWindow.once('ready-to-show', () => {
+    browserWindow.show();
+  });
+
+  return browserWindow;
+}
+
+/**
  * Creates a new about window.
  * @function
  * @param {electron.BrowserWindow} parentWindow
