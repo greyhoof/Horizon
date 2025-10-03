@@ -1,0 +1,476 @@
+import * as remote from '@electron/remote';
+import fs from 'fs';
+import path from 'path';
+import { ipcRenderer } from 'electron';
+import log from 'electron-log';
+import AdmZip from 'adm-zip';
+
+export interface BackupCharacterInfo {
+  name: string;
+  selected: boolean;
+  hasLogs: boolean;
+  hasSettings: boolean;
+  hasPinnedConversations: boolean;
+  hasPinnedEicons: boolean;
+  hasRecents: boolean;
+  hasHidden: boolean;
+  hasDrafts?: boolean;
+}
+
+export async function chooseImportZip(vm: any): Promise<void> {
+  if (vm.importInProgress) return;
+  const result = await remote.dialog.showOpenDialog({
+    title: 'Choose Horizon export', // TODO: localize
+    filters: [{ name: 'ZIP archives', extensions: ['zip'] }],
+    properties: ['openFile']
+  });
+  if (result.canceled || !result.filePaths || result.filePaths.length === 0)
+    return;
+  await loadImportZip(vm, result.filePaths[0]);
+}
+
+export function resetImportZipState(vm: any): void {
+  vm.importZipArchive = undefined;
+  vm.importZipPath = undefined;
+  vm.importZipName = undefined;
+  vm.importCharacters = [];
+  vm.importGeneralAvailable = false;
+  vm.importCharacterSettingsAvailable = false;
+  vm.importLogsAvailable = false;
+  vm.importPinnedConversationsAvailable = false;
+  vm.importPinnedEiconsAvailable = false;
+  vm.importRecentsAvailable = false;
+  vm.importHiddenAvailable = false;
+  vm.importDraftsAvailable = false;
+  vm.importIncludeGeneralSettings = false;
+  vm.importIncludeCharacterSettings = false;
+  vm.importIncludeLogs = false;
+  vm.importIncludePinnedConversations = false;
+  vm.importIncludePinnedEicons = false;
+  vm.importIncludeRecents = false;
+  vm.importIncludeHidden = false;
+  vm.importIncludeDrafts = false;
+  vm.importZipError = undefined;
+}
+
+export async function loadImportZip(vm: any, filePath: string): Promise<void> {
+  vm.importSummary = undefined;
+  vm.importError = undefined;
+  vm.importZipError = undefined;
+  resetImportZipState(vm);
+  
+  try {
+    const zip = new AdmZip(filePath);
+    vm.importZipArchive = zip;
+    vm.importZipPath = filePath;
+    vm.importZipName = path.basename(filePath);
+    parseImportZip(vm);
+  } catch (error) {
+    log.error('settings.import.zip.load.error', error);
+    resetImportZipState(vm);
+    vm.importZipError = 'We couldn\'t read that export. Please choose a Horizon export created by this app.';
+  }
+}
+
+function createEmptyCharacterInfo(name: string): BackupCharacterInfo {
+  return {
+    name,
+    selected: true,
+    hasLogs: false,
+    hasSettings: false,
+    hasPinnedConversations: false,
+    hasPinnedEicons: false,
+    hasRecents: false,
+    hasHidden: false,
+    hasDrafts: false
+  };
+}
+
+function isValidCharacterEntry(normalized: string): boolean {
+  return (
+    normalized.startsWith('characters/') &&
+    !normalized.includes('..') &&
+    normalized !== 'settings'
+  );
+}
+
+function processCharacterEntry(
+  normalized: string,
+  characterMap: Map<string, BackupCharacterInfo>
+): void {
+  const segments = normalized.split('/');
+  if (segments.length < 3) return;
+
+  const characterName = segments[1];
+  const category = segments[2];
+
+  let info = characterMap.get(characterName);
+  if (!info) {
+    info = createEmptyCharacterInfo(characterName);
+    characterMap.set(characterName, info);
+  }
+
+  updateCharacterInfo(info, category, segments);
+}
+
+function updateCharacterInfo(
+  info: BackupCharacterInfo,
+  category: string,
+  segments: string[]
+): void {
+  if (category === 'logs') {
+    info.hasLogs = true;
+    return;
+  }
+
+  if (category === 'drafts.txt') {
+    info.hasDrafts = true;
+    return;
+  }
+
+  if (category !== 'settings') return;
+
+  info.hasSettings = true;
+  const fileName = segments.slice(3).join('/');
+
+  if (fileName === 'pinned') {
+    info.hasPinnedConversations = true;
+  } else if (fileName === 'favoriteEIcons') {
+    info.hasPinnedEicons = true;
+  } else if (fileName === 'recent' || fileName === 'recentChannels') {
+    info.hasRecents = true;
+  } else if (fileName === 'hiddenUsers') {
+    info.hasHidden = true;
+  }
+}
+
+export function parseImportZip(vm: any): void {
+  const zip: AdmZip = vm.importZipArchive;
+  if (!zip) return;
+
+  const characterMap = new Map<string, BackupCharacterInfo>();
+  const entries = zip.getEntries();
+
+  // Check for general settings
+  vm.importGeneralAvailable = entries.some(e => e.entryName === 'settings');
+
+  // Process all entries
+  for (const entry of entries) {
+    if (entry.isDirectory) continue;
+    const normalized = entry.entryName.replace(/\\/g, '/');
+    
+    if (!isValidCharacterEntry(normalized)) continue;
+    processCharacterEntry(normalized, characterMap);
+  }
+
+  vm.importCharacters = Array.from(characterMap.values()).sort((a, b) =>
+    a.name.localeCompare(b.name)
+  );
+
+  // Set availability flags
+  vm.importCharacterSettingsAvailable = vm.importCharacters.some(
+    (c: BackupCharacterInfo) => c.hasSettings
+  );
+  vm.importLogsAvailable = vm.importCharacters.some(
+    (c: BackupCharacterInfo) => c.hasLogs
+  );
+  vm.importPinnedConversationsAvailable = vm.importCharacters.some(
+    (c: BackupCharacterInfo) => c.hasPinnedConversations
+  );
+  vm.importPinnedEiconsAvailable = vm.importCharacters.some(
+    (c: BackupCharacterInfo) => c.hasPinnedEicons
+  );
+  vm.importRecentsAvailable = vm.importCharacters.some(
+    (c: BackupCharacterInfo) => c.hasRecents
+  );
+  vm.importHiddenAvailable = vm.importCharacters.some(
+    (c: BackupCharacterInfo) => c.hasHidden
+  );
+  vm.importDraftsAvailable = vm.importCharacters.some(
+    (c: BackupCharacterInfo) => !!c.hasDrafts
+  );
+
+  // Set include flags based on availability
+  vm.importIncludeGeneralSettings = vm.importGeneralAvailable;
+  vm.importIncludeCharacterSettings = vm.importCharacterSettingsAvailable;
+  vm.importIncludeLogs = vm.importLogsAvailable;
+  vm.importIncludePinnedConversations = vm.importPinnedConversationsAvailable;
+  vm.importIncludePinnedEicons = vm.importPinnedEiconsAvailable;
+  vm.importIncludeRecents = vm.importRecentsAvailable;
+  vm.importIncludeHidden = vm.importHiddenAvailable;
+  vm.importIncludeDrafts = vm.importDraftsAvailable;
+
+  if (vm.importCharacters.length === 0) {
+    vm.importIncludeCharacterSettings = false;
+    vm.importIncludeLogs = false;
+    vm.importIncludePinnedConversations = false;
+    vm.importIncludePinnedEicons = false;
+    vm.importIncludeRecents = false;
+    vm.importIncludeHidden = false;
+    vm.importIncludeDrafts = false;
+  }
+
+  if (!vm.importGeneralAvailable && vm.importCharacters.length === 0) {
+    vm.importZipError = 'This export doesn\'t contain any data Horizon can restore.';
+  }
+}
+
+export function setImportCharacters(vm: any, selected: boolean): void {
+  vm.importCharacters.forEach((character: any) => {
+    character.selected = selected;
+  });
+}
+
+export function getSelectedImportCharacters(vm: any): string[] {
+  return vm.importCharacters
+    .filter((character: any) => character.selected)
+    .map((character: any) => character.name);
+}
+
+export function describeImportCharacter(
+  character: BackupCharacterInfo
+): string {
+  const parts: string[] = [];
+  if (character.hasSettings) parts.push('Settings');
+  if (character.hasLogs) parts.push('Logs');
+  if (character.hasPinnedConversations) parts.push('Pinned conversations');
+  if (character.hasPinnedEicons) parts.push('Pinned eicons');
+  if (character.hasRecents) parts.push('Recents');
+  if (character.hasHidden) parts.push('Hidden users');
+  if (character.hasDrafts) parts.push('Drafts');
+  if (parts.length === 0) return 'No data found for this character.';
+  return parts.join(', ');
+}
+
+export function getSafeDestination(
+  baseDir: string,
+  relative: string
+): string | undefined {
+  const normalized = relative.replace(/\\/g, '/');
+  if (normalized.includes('..')) return undefined;
+  const target = path.resolve(baseDir, normalized);
+  const base = path.resolve(baseDir);
+  if (target === base || target.startsWith(`${base}${path.sep}`)) return target;
+  return undefined;
+}
+
+/**
+ * Returns true if the file exists and is effectively an empty JSON object.
+ */
+function isEffectivelyEmptyDraftsFile(p: string): boolean {
+  try {
+    if (!fs.existsSync(p)) return false;
+    const raw = fs.readFileSync(p, 'utf8').trim();
+    if (raw.length === 0) return true;
+    try {
+      const parsed = JSON.parse(raw);
+      return (
+        parsed &&
+        typeof parsed === 'object' &&
+        !Array.isArray(parsed) &&
+        Object.keys(parsed).length === 0
+      );
+    } catch {
+      return raw.replace(/\s+/g, '') === '{}';
+    }
+  } catch {
+    return false;
+  }
+}
+
+interface ImportStats {
+  logsCopied: number;
+  logsSkipped: number;
+  settingsCopied: number;
+  settingsSkipped: number;
+  generalImported: boolean;
+  generalCandidate: boolean;
+  charactersTouched: Set<string>;
+}
+
+function shouldImportEntry(
+  vm: any,
+  category: string,
+  segments: string[],
+  info: BackupCharacterInfo
+): { shouldImport: boolean; isLog: boolean; isDrafts: boolean } {
+  const decision = {
+    shouldImport: false,
+    isLog: false,
+    isDrafts: false
+  };
+
+  if (category === 'logs' && vm.importIncludeLogs && info.hasLogs) {
+    decision.shouldImport = true;
+    decision.isLog = true;
+  } else if (
+    category === 'drafts.txt' &&
+    vm.importIncludeDrafts &&
+    info.hasDrafts
+  ) {
+    decision.shouldImport = true;
+    decision.isDrafts = true;
+  } else if (category === 'settings' && info.hasSettings) {
+    decision.shouldImport = shouldImportSettingsFile(vm, segments, info);
+  }
+
+  return decision;
+}
+
+function shouldImportSettingsFile(
+  vm: any,
+  segments: string[],
+  info: BackupCharacterInfo
+): boolean {
+  if (vm.importIncludeCharacterSettings) return true;
+
+  const fileName = segments.slice(3).join('/');
+  return (
+    (fileName === 'pinned' &&
+      vm.importIncludePinnedConversations &&
+      info.hasPinnedConversations) ||
+    (fileName === 'favoriteEIcons' &&
+      vm.importIncludePinnedEicons &&
+      info.hasPinnedEicons) ||
+    ((fileName === 'recent' || fileName === 'recentChannels') &&
+      vm.importIncludeRecents &&
+      info.hasRecents) ||
+    (fileName === 'hiddenUsers' && vm.importIncludeHidden && info.hasHidden)
+  );
+}
+
+export async function runZipImport(vm: any): Promise<void> {
+  if (!vm.canRunZipImport) return;
+
+  // Runtime safety: block import if any characters are currently connected
+  try {
+    const connected: string[] = await ipcRenderer.invoke(
+      'get-connected-characters'
+    );
+    if (connected?.length > 0) return;
+  } catch {}
+
+  const zip: AdmZip = vm.importZipArchive;
+  if (!zip) return;
+
+  vm.importInProgress = true;
+  vm.importSummary = undefined;
+  vm.importError = undefined;
+
+  try {
+    const dataDir = vm.settings.logDirectory;
+    if (!dataDir) throw new Error('No log directory configured');
+    fs.mkdirSync(dataDir, { recursive: true });
+
+    const selectedCharacters = new Set(getSelectedImportCharacters(vm));
+    const characterInfo = new Map(
+      vm.importCharacters.map((c: BackupCharacterInfo) => [c.name, c])
+    );
+
+    const stats: ImportStats = {
+      logsCopied: 0,
+      logsSkipped: 0,
+      settingsCopied: 0,
+      settingsSkipped: 0,
+      generalImported: false,
+      generalCandidate: false,
+      charactersTouched: new Set<string>()
+    };
+
+    // Import general settings
+    if (vm.importGeneralAvailable && vm.importIncludeGeneralSettings) {
+      stats.generalCandidate = true;
+      const generalEntry = zip.getEntry('settings');
+      if (generalEntry) {
+        const destination = getSafeDestination(dataDir, 'settings');
+        if (destination) {
+          fs.mkdirSync(path.dirname(destination), { recursive: true });
+          const generalData = generalEntry.getData();
+          
+          if (vm.importOverwrite || !fs.existsSync(destination)) {
+            fs.writeFileSync(destination, generalData);
+            stats.generalImported = true;
+            
+            // Apply settings to current VM
+            try {
+              const newSettings = JSON.parse(generalData.toString('utf8'));
+              Object.assign(vm.settings, newSettings);
+            } catch (error) {
+              log.warn('settings.import.zip.general.parse', error);
+            }
+          }
+        }
+      }
+    }
+
+    // Import character data
+    const entries = zip.getEntries();
+    for (const entry of entries) {
+      if (entry.isDirectory) continue;
+      
+      const normalized = entry.entryName.replace(/\\/g, '/');
+      if (!normalized.startsWith('characters/') || normalized.includes('..'))
+        continue;
+
+      const segments = normalized.split('/');
+      if (segments.length < 3) continue;
+
+      const characterName = segments[1];
+      if (!selectedCharacters.has(characterName)) continue;
+
+      const info = characterInfo.get(characterName);
+      if (!info) continue;
+
+      const category = segments[2];
+      const decision = shouldImportEntry(vm, category, segments, info);
+      if (!decision.shouldImport) continue;
+
+      const relative = normalized.substring('characters/'.length);
+      const destination = getSafeDestination(dataDir, relative);
+      if (!destination) continue;
+
+      fs.mkdirSync(path.dirname(destination), { recursive: true });
+
+      // Check if we should skip this file
+      const exists = fs.existsSync(destination);
+      if (exists && !vm.importOverwrite) {
+        if (decision.isDrafts && !isEffectivelyEmptyDraftsFile(destination)) {
+          if (decision.isLog) stats.logsSkipped++;
+          else stats.settingsSkipped++;
+          continue;
+        }
+        if (!decision.isDrafts) {
+          if (decision.isLog) stats.logsSkipped++;
+          else stats.settingsSkipped++;
+          continue;
+        }
+      }
+
+      // Extract and write file
+      const fileData = entry.getData();
+      fs.writeFileSync(destination, fileData);
+      stats.charactersTouched.add(characterName);
+      
+      if (decision.isLog) stats.logsCopied++;
+      else stats.settingsCopied++;
+    }
+
+    // Finalize import
+    if (stats.generalImported || stats.charactersTouched.size > 0) {
+      ipcRenderer.send('general-settings-update', vm.settings);
+    }
+
+    const generalState = stats.generalImported
+      ? 'updated'
+      : stats.generalCandidate
+        ? 'skipped'
+        : 'not imported';
+
+    vm.importSummary = `Restored data for ${stats.charactersTouched.size} character(s). Logs copied: ${stats.logsCopied} (skipped ${stats.logsSkipped}). Settings copied: ${stats.settingsCopied} (skipped ${stats.settingsSkipped}). General settings: ${generalState}.`;
+  } catch (error) {
+    log.error('settings.import.zip.error', error);
+    vm.importError = 'Import failed. Please review the log for more details.';
+  } finally {
+    vm.importInProgress = false;
+  }
+}
