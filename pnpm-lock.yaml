@@ -34,6 +34,9 @@ importers:
       '@ghostery/adblocker-extended-selectors':
         specifier: ^2.0.0
         version: 2.11.6
+      '@types/adm-zip':
+        specifier: ^0.5.7
+        version: 0.5.7
       '@types/archiver':
         specifier: ^6.0.3
         version: 6.0.3
@@ -600,6 +603,9 @@ packages:
   '@tootallnate/once@2.0.0':
     resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
     engines: {node: '>= 10'}
+
+  '@types/adm-zip@0.5.7':
+    resolution: {integrity: sha512-DNEs/QvmyRLurdQPChqq0Md4zGvPwHerAJYWk9l2jCbD1VPpnzRJorOdiq4zsw09NFbYnhfsoEhWtxIzXpn2yw==}
 
   '@types/archiver@6.0.3':
     resolution: {integrity: sha512-a6wUll6k3zX6qs5KlxIggs1P1JcYJaTCx2gnlr+f0S1yd2DoaEwoIK10HmBaLnZwWneBz+JBm0dwcZu0zECBcQ==}
@@ -5674,6 +5680,10 @@ snapshots:
       defer-to-connect: 2.0.1
 
   '@tootallnate/once@2.0.0': {}
+
+  '@types/adm-zip@0.5.7':
+    dependencies:
+      '@types/node': 16.18.32
 
   '@types/archiver@6.0.3':
     dependencies:

@@ -71,6 +71,7 @@
     "@ghostery/adblocker-electron": "^2.0.0",
     "@ghostery/adblocker-electron-preload": "^2.0.0",
     "@ghostery/adblocker-extended-selectors": "^2.0.0",
+    "@types/adm-zip": "^0.5.7",
     "@types/archiver": "^6.0.3",
     "adm-zip": "^0.5.16",
     "archiver": "^7.0.1",
