@@ -13,16 +13,15 @@ import * as qs from 'querystring';
 import { getKey } from '../chat/common';
 import { EventBus } from '../chat/preview/event-bus';
 import { init as initCore } from '../chat/core';
-import l from '../chat/localize';
+import l, { setLanguage } from '../chat/localize';
 // import {setupRaven} from '../chat/vue-raven';
 import Socket from '../chat/WebSocket';
 import Connection from '../fchat/connection';
 import { Keys } from '../keys';
 import { GeneralSettings /*, nativeRequire*/ } from './common';
 import { Logs, SettingsStore } from './filesystem';
-import { setLanguage } from '../chat/localize';
 import Notifications from './notifications';
-import { SlimcatImporter } from './services';
+import { handleStartupImport } from './services';
 import Index from './Index.vue';
 import log from 'electron-log'; // tslint:disable-line: match-default-export-name
 import { WordPosSearch } from '../learn/dictionary/word-pos-search';
@@ -322,21 +321,20 @@ const params = <{ [key: string]: string | undefined }>(
 );
 let settings = <GeneralSettings>JSON.parse(params['settings']!);
 
-// console.log('SETTINGS', settings);
+log.info('[chat.ts] params[import]:', params['import'], 'type:', typeof params['import']);
 
-if (params['import'] !== undefined)
-  try {
-    if (
-      SlimcatImporter.canImportGeneral() &&
-      confirm(l('importer.importGeneral'))
-    ) {
-      SlimcatImporter.importGeneral(settings);
-      electron.ipcRenderer.send('save-login', settings.account, settings.host);
-    }
-  } catch {
-    alert(l('importer.error'));
-  }
-onSettings(settings);
+if (params['import'] !== undefined && params['import'] !== '') {
+  log.info('[chat.ts] Calling handleStartupImport');
+  handleStartupImport(settings, params['import']).then(updatedSettings => {
+    settings = updatedSettings;
+    onSettings(settings);
+  }).catch(err => {
+    log.error('Startup import error:', err);
+  });
+} else {
+  log.info('[chat.ts] Skipping import, calling onSettings directly');
+  onSettings(settings);
+}
 
 // Apply UI language early (fallback handled in setLanguage)
 try {

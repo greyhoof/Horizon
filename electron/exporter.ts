@@ -9,10 +9,7 @@ log.info('init.exporter');
 const params = <{ [key: string]: string | undefined }>(
   qs.parse(window.location.search.slice(1))
 );
-const settings = Object.assign(
-  new GeneralSettings(),
-  JSON.parse(params['settings']!)
-);
+const settings = <GeneralSettings>JSON.parse(params['settings']!);
 const importHint = params['import'];
 
 const logLevel = process.env.NODE_ENV === 'production' ? 'info' : 'silly';

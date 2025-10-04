@@ -197,6 +197,7 @@
   @Component
   export default class Window extends Vue {
     settings!: GeneralSettings;
+    importHint: string | undefined;
     tabs: Tab[] = [];
     activeTab: Tab | undefined;
     tabMap: { [key: number]: Tab } = {};
@@ -590,7 +591,8 @@
         slashes: true,
         query: {
           settings: JSON.stringify(this.settings),
-          hasCompletedUpgrades: JSON.stringify(this.hasCompletedUpgrades)
+          hasCompletedUpgrades: JSON.stringify(this.hasCompletedUpgrades),
+          import: this.importHint || ''
         }
       });
 
