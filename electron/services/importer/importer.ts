@@ -13,7 +13,7 @@ import {
   Message as LogMessage,
   serializeMessage,
   SettingsStore
-} from './filesystem';
+} from '../../filesystem';
 
 function getRoamingDir(): string | undefined {
   const appdata = process.env.APPDATA;
