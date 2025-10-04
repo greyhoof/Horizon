@@ -832,6 +832,12 @@ async function onReady(): Promise<void> {
     );
   });
 
+  electron.ipcMain.on('open-exporter-window', () => {
+    const targetWindow = electron.BrowserWindow.getFocusedWindow();
+    if (!targetWindow) return;
+    browserWindows.createExporterWindow(settings, undefined, targetWindow);
+  });
+
   electron.ipcMain.on(
     'save-login',
     (_event: IpcMainEvent, account: string, host: string, proxy: string) => {
@@ -844,9 +850,13 @@ async function onReady(): Promise<void> {
   electron.ipcMain.on(
     'connect',
     (e: IpcMainEvent & { sender: electron.WebContents }, character: string) => {
-      if (characters.indexOf(character) !== -1) return (e.returnValue = false);
+      if (characters.indexOf(character) !== -1) {
+        e.returnValue = false;
+        return;
+      }
       characters.push(character);
       e.returnValue = true;
+      broadcastConnectedCharacters();
     }
   );
   electron.ipcMain.on(
@@ -870,8 +880,13 @@ async function onReady(): Promise<void> {
     (_event: IpcMainEvent, character: string) => {
       const index = characters.indexOf(character);
       if (index !== -1) characters.splice(index, 1);
+      broadcastConnectedCharacters();
     }
   );
+
+  electron.ipcMain.handle('get-connected-characters', () => {
+    return characters.slice();
+  });
 
   const adCoordinator = new AdCoordinatorHost();
   electron.ipcMain.on('request-send-ad', (event: IpcMainEvent, adId: string) =>
