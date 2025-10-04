@@ -2,10 +2,11 @@ import { addMinutes } from 'date-fns';
 import * as fs from 'fs';
 import * as path from 'path';
 import { promisify } from 'util';
-import { Settings } from '../chat/common';
-import { Conversation } from '../chat/interfaces';
-import { isAction } from '../chat/slash_commands';
-import { GeneralSettings } from './common';
+// todo: maybe we should change how we import the following?
+import { Settings } from '../../../chat/common';
+import { Conversation } from '../../../chat/interfaces';
+import { isAction } from '../../../chat/slash_commands';
+import { GeneralSettings } from '../../common';
 import {
   checkIndex,
   getLogDir,
