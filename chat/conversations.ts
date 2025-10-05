@@ -1298,6 +1298,7 @@ export default function (this: any): Interfaces.State {
     }
   });
   connection.onMessage('NLN', async (data, time) => {
+    if (!core.state.settings.horizonShowSigninNotifications) return;
     const message = new EventMessage(
       l('events.login', `[user]${data.identity}[/user]`),
       time
@@ -1323,6 +1324,7 @@ export default function (this: any): Interfaces.State {
       await conv.addMessage(message);
   });
   connection.onMessage('FLN', async (data, time) => {
+    if (!core.state.settings.horizonShowSigninNotifications) return;
     const message = new EventMessage(
       l('events.logout', `[user]${data.character}[/user]`),
       time
@@ -1547,6 +1549,13 @@ export default function (this: any): Interfaces.State {
     }
     const char = core.characters.get(data.character);
     if (!isOfInterest(char)) return;
+
+    if (
+      !core.state.settings.horizonShowDuplicateStatusNotifications &&
+      !char.hasStatusTextChanged(data.statusmsg)
+    )
+      return;
+
     const status = l(`status.${data.status}`);
     const key =
       data.statusmsg.length > 0 ? 'events.status.message' : 'events.status';

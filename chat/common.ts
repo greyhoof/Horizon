@@ -84,6 +84,8 @@ export class Settings implements ISettings {
   horizonVanillaGenderColors = false;
   horizonChangeOfflineColor = false;
   horizonNotifyFriendSignIn = false;
+  horizonShowDuplicateStatusNotifications = true;
+  horizonShowSigninNotifications = true;
   horizonHighlightUsers: string[] = [];
 
   chatLayoutMode: 'classic' | 'modern' = 'classic';

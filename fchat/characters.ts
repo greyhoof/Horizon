@@ -14,8 +14,18 @@ class Character implements Interfaces.Character {
   isChatOp = false;
   isIgnored = false;
   overrides: CharacterOverrides = {};
+  private _previousStatusText = '';
 
   constructor(public name: string) {}
+
+  hasStatusTextChanged(newStatusText: string): boolean {
+    return this._previousStatusText !== newStatusText;
+  }
+
+  updateStatusText(newStatusText: string): void {
+    this._previousStatusText = this.statusText;
+    this.statusText = decodeHTML(newStatusText);
+  }
 }
 
 export interface CharacterOverrides {
@@ -67,7 +77,7 @@ class State implements Interfaces.State {
         this.bookmarks.splice(this.bookmarks.indexOf(character), 1);
     }
     character.status = status;
-    character.statusText = decodeHTML(text);
+    character.updateStatusText(text);
   }
 
   setOverride(name: string, type: 'avatarUrl', value: string | undefined): void;

@@ -298,6 +298,8 @@ export namespace Settings {
     readonly horizonGenderMarkerOrigColor: boolean;
     readonly horizonChangeOfflineColor: boolean;
     readonly horizonNotifyFriendSignIn: boolean;
+    readonly horizonShowSigninNotifications: boolean;
+    readonly horizonShowDuplicateStatusNotifications: boolean;
     readonly horizonHighlightUsers: ReadonlyArray<string>;
 
     readonly chatLayoutMode: 'classic' | 'modern';
@@ -305,6 +307,7 @@ export namespace Settings {
 
     readonly horizonCacheDraftMessages: boolean;
     readonly horizonSaveDraftMessagesToDiskTimer: number;
+    readonly horizonUseColorPicker: boolean;
 
     readonly risingFilter: SmartFilterSettings;
 
