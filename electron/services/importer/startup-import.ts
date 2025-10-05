@@ -95,7 +95,7 @@ function handleVanillaImportPrompt(
   });
 
   if (choice === 1) {
-    ipcRenderer.send('open-settings-menu', 'advanced');
+    ipcRenderer.send('open-exporter-window', 'vanilla');
   } else if (choice === 0) {
     return doVanillaGeneralImport(ctx, settings);
   } else {
