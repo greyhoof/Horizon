@@ -95,7 +95,7 @@ function isValidCharacterEntry(normalized: string): boolean {
   );
 }
 
-function processCharacterEntry(
+function parseCharacterEntry(
   normalized: string,
   characterMap: Map<string, BackupCharacterInfo>
 ): void {
@@ -157,11 +157,11 @@ export function parseImportZip(vm: any): void {
 
   // Process all entries
   for (const entry of entries) {
-    if (entry.isDirectory) continue;
+    if (!entry || entry.isDirectory) continue;
     const normalized = entry.entryName.replace(/\\/g, '/');
 
     if (!isValidCharacterEntry(normalized)) continue;
-    processCharacterEntry(normalized, characterMap);
+    parseCharacterEntry(normalized, characterMap);
   }
 
   vm.importCharacters = Array.from(characterMap.values()).sort((a, b) =>
@@ -398,7 +398,7 @@ function shouldSkipExistingFile(
   return true;
 }
 
-function processCharacterEntry(
+function importCharacterFile(
   vm: any,
   entry: any,
   dataDir: string,
@@ -406,6 +406,7 @@ function processCharacterEntry(
   characterInfo: Map<string, BackupCharacterInfo>,
   stats: ImportStats
 ): void {
+  if (!entry || !entry.entryName) return;
   const normalized = entry.entryName.replace(/\\/g, '/');
   if (!normalized.startsWith('characters/') || normalized.includes('..'))
     return;
@@ -456,8 +457,8 @@ function importCharacterData(
 ): void {
   const entries = zip.getEntries();
   for (const entry of entries) {
-    if (entry.isDirectory) continue;
-    processCharacterEntry(
+    if (!entry || entry.isDirectory) continue;
+    importCharacterFile(
       vm,
       entry,
       dataDir,
