@@ -213,8 +213,9 @@ const settings = new GeneralSettings();
 //We need this, since displaying the changelog is done through a child window instead of an external link
 let showChangelogOnBoot = false;
 
-if (!fs.existsSync(settingsFile)) shouldImportSettings = true;
-else
+if (!fs.existsSync(settingsFile)) {
+  shouldImportSettings = true;
+} else {
   try {
     Object.assign(
       settings,
@@ -223,6 +224,7 @@ else
   } catch (e) {
     log.error(`Error loading settings: ${e}`);
   }
+}
 
 if (!settings.hwAcceleration) {
   log.info('Disabling hardware acceleration.');
@@ -367,7 +369,7 @@ async function onReady(): Promise<void> {
   app.on('open-file', () => {
     browserWindows.createMainWindow(
       settings,
-      shouldImportSettings ? 'auto' : undefined,
+      undefined,
       baseDir
     );
   });
@@ -598,7 +600,7 @@ async function onReady(): Promise<void> {
             click: (_m: electron.MenuItem, w: electron.BrowserWindow) => {
               let win = w || electron.BrowserWindow.getFocusedWindow();
               if (!win) return;
-              browserWindows.createChangelogWindow(settings, false, win);
+              browserWindows.createChangelogWindow(settings, undefined, win);
             }
           },
           { type: 'separator' },
@@ -608,7 +610,7 @@ async function onReady(): Promise<void> {
               if (hasCompletedUpgrades)
                 browserWindows.createMainWindow(
                   settings,
-                  shouldImportSettings ? 'auto' : undefined,
+                  undefined,
                   baseDir
                 );
             },
@@ -633,6 +635,12 @@ async function onReady(): Promise<void> {
             },
             accelerator:
               process.platform === 'darwin' ? 'CmdOrCtrl+,' : undefined
+          },
+          {
+            label: l('settings.export.title'),
+            click: (_m, window: electron.BrowserWindow) => {
+              browserWindows.createExporterWindow(settings, undefined, window);
+            }
           },
           {
             label: l('fixLogs.action'),
@@ -818,7 +826,7 @@ async function onReady(): Promise<void> {
     (_event: IpcMainEvent, updateVersion: string) => {
       browserWindows.createChangelogWindow(
         settings,
-        true,
+        undefined,
         electron.BrowserWindow.getFocusedWindow()!,
         updateVersion
       );
@@ -827,15 +835,15 @@ async function onReady(): Promise<void> {
   electron.ipcMain.on('open-settings-menu', (_event: IpcMainEvent) => {
     browserWindows.createSettingsWindow(
       settings,
-      true,
+      undefined,
       electron.BrowserWindow.getFocusedWindow()!
     );
   });
 
-  electron.ipcMain.on('open-exporter-window', () => {
+  electron.ipcMain.on('open-exporter-window', (_event: IpcMainEvent, importHint?: string) => {
     const targetWindow = electron.BrowserWindow.getFocusedWindow();
     if (!targetWindow) return;
-    browserWindows.createExporterWindow(settings, undefined, targetWindow);
+    browserWindows.createExporterWindow(settings, importHint as any, targetWindow);
   });
 
   electron.ipcMain.on(
@@ -985,13 +993,13 @@ async function onReady(): Promise<void> {
 
   let window = browserWindows.createMainWindow(
     settings,
-    shouldImportSettings,
+    shouldImportSettings ? 'auto' : undefined,
     baseDir
   );
   if (showChangelogOnBoot && window) {
     browserWindows.createChangelogWindow(
       settings,
-      shouldImportSettings,
+      shouldImportSettings ? 'auto' : undefined,
       window
     );
     showChangelogOnBoot = false;
@@ -1019,7 +1027,7 @@ else
     });
   });
 app.on('second-instance', () => {
-  browserWindows.createMainWindow(settings, shouldImportSettings, baseDir);
+  browserWindows.createMainWindow(settings, undefined, baseDir);
 });
 app.on('before-quit', (event: Event) => {
   if (characters.length !== 0) {

@@ -1285,3 +1285,4 @@
   .disableWindowsHighContrast * {
     forced-color-adjust: none;
   }
+</style>

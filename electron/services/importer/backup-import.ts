@@ -339,16 +339,146 @@ function shouldImportSettingsFile(
   );
 }
 
-export async function runZipImport(vm: any): Promise<void> {
-  if (!vm.canRunZipImport) return;
-
-  // Runtime safety: block import if any characters are currently connected
+async function checkConnectedCharacters(): Promise<boolean> {
   try {
     const connected: string[] = await ipcRenderer.invoke(
       'get-connected-characters'
     );
-    if (connected?.length > 0) return;
-  } catch {}
+    return connected?.length > 0;
+  } catch {
+    return false;
+  }
+}
+
+function importGeneralSettings(
+  vm: any,
+  zip: AdmZip,
+  dataDir: string,
+  stats: ImportStats
+): void {
+  if (!vm.importGeneralAvailable || !vm.importIncludeGeneralSettings) return;
+
+  stats.generalCandidate = true;
+  const generalEntry = zip.getEntry('settings');
+  if (!generalEntry) return;
+
+  const destination = getSafeDestination(dataDir, 'settings');
+  if (!destination) return;
+
+  fs.mkdirSync(path.dirname(destination), { recursive: true });
+  const generalData = generalEntry.getData();
+
+  if (vm.importOverwrite || !fs.existsSync(destination)) {
+    fs.writeFileSync(destination, generalData);
+    stats.generalImported = true;
+
+    try {
+      const newSettings = JSON.parse(generalData.toString('utf8'));
+      Object.assign(vm.settings, newSettings);
+    } catch (error) {
+      log.warn('settings.import.zip.general.parse', error);
+    }
+  }
+}
+
+function shouldSkipExistingFile(
+  destination: string,
+  exists: boolean,
+  overwrite: boolean,
+  decision: { isLog: boolean; isDrafts: boolean }
+): boolean {
+  if (!exists || overwrite) return false;
+
+  if (decision.isDrafts) {
+    return !isEffectivelyEmptyDraftsFile(destination);
+  }
+
+  return true;
+}
+
+function processCharacterEntry(
+  vm: any,
+  entry: any,
+  dataDir: string,
+  selectedCharacters: Set<string>,
+  characterInfo: Map<string, BackupCharacterInfo>,
+  stats: ImportStats
+): void {
+  const normalized = entry.entryName.replace(/\\/g, '/');
+  if (!normalized.startsWith('characters/') || normalized.includes('..'))
+    return;
+
+  const segments = normalized.split('/');
+  if (segments.length < 3) return;
+
+  const characterName = segments[1];
+  if (!selectedCharacters.has(characterName)) return;
+
+  const info = characterInfo.get(characterName);
+  if (!info) return;
+
+  const category = segments[2];
+  const decision = shouldImportEntry(vm, category, segments, info);
+  if (!decision.shouldImport) return;
+
+  const relative = normalized.substring('characters/'.length);
+  const destination = getSafeDestination(dataDir, relative);
+  if (!destination) return;
+
+  fs.mkdirSync(path.dirname(destination), { recursive: true });
+
+  const exists = fs.existsSync(destination);
+  if (shouldSkipExistingFile(destination, exists, vm.importOverwrite, decision)) {
+    if (decision.isLog) stats.logsSkipped++;
+    else stats.settingsSkipped++;
+    return;
+  }
+
+  const fileData = entry.getData();
+  fs.writeFileSync(destination, fileData);
+  stats.charactersTouched.add(characterName);
+
+  if (decision.isLog) stats.logsCopied++;
+  else stats.settingsCopied++;
+}
+
+function importCharacterData(
+  vm: any,
+  zip: AdmZip,
+  dataDir: string,
+  selectedCharacters: Set<string>,
+  characterInfo: Map<string, BackupCharacterInfo>,
+  stats: ImportStats
+): void {
+  const entries = zip.getEntries();
+  for (const entry of entries) {
+    if (entry.isDirectory) continue;
+    processCharacterEntry(vm, entry, dataDir, selectedCharacters, characterInfo, stats);
+  }
+}
+
+function finalizeImport(vm: any, stats: ImportStats): void {
+  if (stats.generalImported || stats.charactersTouched.size > 0) {
+    ipcRenderer.send('general-settings-update', vm.settings);
+  }
+
+  let generalState: string;
+  if (stats.generalImported) {
+    generalState = 'updated';
+  } else if (stats.generalCandidate) {
+    generalState = 'skipped';
+  } else {
+    generalState = 'not imported';
+  }
+
+  vm.importSummary = `Restored data for ${stats.charactersTouched.size} character(s). Logs copied: ${stats.logsCopied} (skipped ${stats.logsSkipped}). Settings copied: ${stats.settingsCopied} (skipped ${stats.settingsSkipped}). General settings: ${generalState}.`;
+}
+
+export async function runZipImport(vm: any): Promise<void> {
+  if (!vm.canRunZipImport) return;
+
+  const hasConnected = await checkConnectedCharacters();
+  if (hasConnected) return;
 
   const zip: AdmZip = vm.importZipArchive;
   if (!zip) return;
@@ -377,96 +507,9 @@ export async function runZipImport(vm: any): Promise<void> {
       charactersTouched: new Set<string>()
     };
 
-    // Import general settings
-    if (vm.importGeneralAvailable && vm.importIncludeGeneralSettings) {
-      stats.generalCandidate = true;
-      const generalEntry = zip.getEntry('settings');
-      if (generalEntry) {
-        const destination = getSafeDestination(dataDir, 'settings');
-        if (destination) {
-          fs.mkdirSync(path.dirname(destination), { recursive: true });
-          const generalData = generalEntry.getData();
-          
-          if (vm.importOverwrite || !fs.existsSync(destination)) {
-            fs.writeFileSync(destination, generalData);
-            stats.generalImported = true;
-            
-            // Apply settings to current VM
-            try {
-              const newSettings = JSON.parse(generalData.toString('utf8'));
-              Object.assign(vm.settings, newSettings);
-            } catch (error) {
-              log.warn('settings.import.zip.general.parse', error);
-            }
-          }
-        }
-      }
-    }
-
-    // Import character data
-    const entries = zip.getEntries();
-    for (const entry of entries) {
-      if (entry.isDirectory) continue;
-      
-      const normalized = entry.entryName.replace(/\\/g, '/');
-      if (!normalized.startsWith('characters/') || normalized.includes('..'))
-        continue;
-
-      const segments = normalized.split('/');
-      if (segments.length < 3) continue;
-
-      const characterName = segments[1];
-      if (!selectedCharacters.has(characterName)) continue;
-
-      const info = characterInfo.get(characterName);
-      if (!info) continue;
-
-      const category = segments[2];
-      const decision = shouldImportEntry(vm, category, segments, info);
-      if (!decision.shouldImport) continue;
-
-      const relative = normalized.substring('characters/'.length);
-      const destination = getSafeDestination(dataDir, relative);
-      if (!destination) continue;
-
-      fs.mkdirSync(path.dirname(destination), { recursive: true });
-
-      // Check if we should skip this file
-      const exists = fs.existsSync(destination);
-      if (exists && !vm.importOverwrite) {
-        if (decision.isDrafts && !isEffectivelyEmptyDraftsFile(destination)) {
-          if (decision.isLog) stats.logsSkipped++;
-          else stats.settingsSkipped++;
-          continue;
-        }
-        if (!decision.isDrafts) {
-          if (decision.isLog) stats.logsSkipped++;
-          else stats.settingsSkipped++;
-          continue;
-        }
-      }
-
-      // Extract and write file
-      const fileData = entry.getData();
-      fs.writeFileSync(destination, fileData);
-      stats.charactersTouched.add(characterName);
-      
-      if (decision.isLog) stats.logsCopied++;
-      else stats.settingsCopied++;
-    }
-
-    // Finalize import
-    if (stats.generalImported || stats.charactersTouched.size > 0) {
-      ipcRenderer.send('general-settings-update', vm.settings);
-    }
-
-    const generalState = stats.generalImported
-      ? 'updated'
-      : stats.generalCandidate
-        ? 'skipped'
-        : 'not imported';
-
-    vm.importSummary = `Restored data for ${stats.charactersTouched.size} character(s). Logs copied: ${stats.logsCopied} (skipped ${stats.logsSkipped}). Settings copied: ${stats.settingsCopied} (skipped ${stats.settingsSkipped}). General settings: ${generalState}.`;
+    importGeneralSettings(vm, zip, dataDir, stats);
+    importCharacterData(vm, zip, dataDir, selectedCharacters, characterInfo, stats);
+    finalizeImport(vm, stats);
   } catch (error) {
     log.error('settings.import.zip.error', error);
     vm.importError = 'Import failed. Please review the log for more details.';
