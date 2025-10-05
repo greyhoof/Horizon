@@ -385,7 +385,9 @@ export function setUpWebContents(
       /^https?:\/\/(www\.)?f-list.net\/c\/([^/#]+)\/?#?/
     );
     if (profileMatch !== null && settings.profileViewer) {
-      const characterName = decodeURIComponent(profileMatch[2].replace(/\+/g, '%20'));
+      const characterName = decodeURIComponent(
+        profileMatch[2].replace(/\+/g, '%20')
+      );
       webContents.send('open-profile', characterName);
       return;
     }
