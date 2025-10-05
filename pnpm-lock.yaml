@@ -27,10 +27,10 @@ importers:
         version: 2.11.6
       '@ghostery/adblocker-electron':
         specifier: ^2.0.0
-        version: 2.11.6(electron@37.2.0(supports-color@10.0.0))
+        version: 2.11.6(electron@38.2.1(supports-color@10.0.0))
       '@ghostery/adblocker-electron-preload':
         specifier: ^2.0.0
-        version: 2.11.6(electron@37.2.0(supports-color@10.0.0))
+        version: 2.11.6(electron@38.2.1(supports-color@10.0.0))
       '@ghostery/adblocker-extended-selectors':
         specifier: ^2.0.0
         version: 2.11.6
@@ -52,7 +52,7 @@ importers:
     devDependencies:
       '@electron/remote':
         specifier: ^2.1.2
-        version: 2.1.2(electron@37.2.0(supports-color@10.0.0))
+        version: 2.1.2(electron@38.2.1(supports-color@10.0.0))
       '@f-list/vue-ts':
         specifier: ^1.0.3
         version: 1.0.3
@@ -117,8 +117,8 @@ importers:
         specifier: 2.30.0
         version: 2.30.0
       electron:
-        specifier: ^37.2.0
-        version: 37.2.0(supports-color@10.0.0)
+        specifier: ^38.2.1
+        version: 38.2.1(supports-color@10.0.0)
       electron-builder:
         specifier: ^26.0.12
         version: 26.0.12(bluebird@3.7.2)(electron-builder-squirrel-windows@25.1.8)(supports-color@10.0.0)
@@ -133,7 +133,7 @@ importers:
         version: 3.2.9(bluebird@3.7.2)(supports-color@10.0.0)
       electron-settings:
         specifier: ~4.0.4
-        version: 4.0.4(electron@37.2.0(supports-color@10.0.0))
+        version: 4.0.4(electron@38.2.1(supports-color@10.0.0))
       file-loader:
         specifier: ^6.2.0
         version: 6.2.0(webpack@5.99.9)
@@ -1856,8 +1856,8 @@ packages:
     resolution: {integrity: sha512-3UDv+G9CsCKO1WKMGw9fwq/SWJYbI0c5Y7LU1AXYoDdbhE2AHQ6N6Nb34sG8Fj7T5APy8qXDCKuuIHd1BR0tVA==}
     engines: {node: '>=8'}
 
-  detect-libc@2.1.0:
-    resolution: {integrity: sha512-vEtk+OcP7VBRtQZ1EJ3bdgzSfBjgnEalLTp5zjJrS+2Z1w2KZly4SBdac/WDU3hhsNAZ9E8SC96ME4Ey8MZ7cg==}
+  detect-libc@2.1.1:
+    resolution: {integrity: sha512-ecqj/sy1jcK1uWrwpR67UhYrIFQ+5WlGxth34WquCbamhFA6hkkwiu37o6J5xCHdo1oixJRfVRw+ywV+Hq/0Aw==}
     engines: {node: '>=8'}
 
   detect-node@2.1.0:
@@ -2004,8 +2004,8 @@ packages:
     engines: {node: '>= 10.17.0'}
     hasBin: true
 
-  electron@37.2.0:
-    resolution: {integrity: sha512-dE6+qeg6SBUVd5d8CD2+GH82kh+gF1v40+hs+U+UOno681NMSGmBtgqwldQRpbvtnQDD7V2M9Cpfr3+Abw7aBg==}
+  electron@38.2.1:
+    resolution: {integrity: sha512-P4pE2RpRg3kM8IeOK+heg6iAxR5wcXnNHrbVchn7M3GBnYAhjfJRkROusdOro5PlKzdtfKjesbbqaG4MqQXccg==}
     engines: {node: '>= 12.20.55'}
     hasBin: true
 
@@ -5239,7 +5239,7 @@ snapshots:
 
   '@electron/get@2.0.3(supports-color@10.0.0)':
     dependencies:
-      debug: 4.4.1(supports-color@10.0.0)
+      debug: 4.4.3(supports-color@10.0.0)
       env-paths: 2.2.1
       fs-extra: 8.1.0
       got: 11.8.6
@@ -5291,7 +5291,7 @@ snapshots:
       '@malept/cross-spawn-promise': 2.0.0
       chalk: 4.1.2
       debug: 4.4.3(supports-color@10.0.0)
-      detect-libc: 2.1.0
+      detect-libc: 2.1.1
       fs-extra: 10.1.0
       got: 11.8.6
       node-abi: 3.77.0
@@ -5326,9 +5326,9 @@ snapshots:
       - bluebird
       - supports-color
 
-  '@electron/remote@2.1.2(electron@37.2.0(supports-color@10.0.0))':
+  '@electron/remote@2.1.2(electron@38.2.1(supports-color@10.0.0))':
     dependencies:
-      electron: 37.2.0(supports-color@10.0.0)
+      electron: 38.2.1(supports-color@10.0.0)
 
   '@electron/universal@1.5.1(supports-color@10.0.0)':
     dependencies:
@@ -5378,16 +5378,16 @@ snapshots:
     dependencies:
       '@ghostery/adblocker-extended-selectors': 2.11.6
 
-  '@ghostery/adblocker-electron-preload@2.11.6(electron@37.2.0(supports-color@10.0.0))':
+  '@ghostery/adblocker-electron-preload@2.11.6(electron@38.2.1(supports-color@10.0.0))':
     dependencies:
       '@ghostery/adblocker-content': 2.11.6
-      electron: 37.2.0(supports-color@10.0.0)
+      electron: 38.2.1(supports-color@10.0.0)
 
-  '@ghostery/adblocker-electron@2.11.6(electron@37.2.0(supports-color@10.0.0))':
+  '@ghostery/adblocker-electron@2.11.6(electron@38.2.1(supports-color@10.0.0))':
     dependencies:
       '@ghostery/adblocker': 2.11.6
-      '@ghostery/adblocker-electron-preload': 2.11.6(electron@37.2.0(supports-color@10.0.0))
-      electron: 37.2.0(supports-color@10.0.0)
+      '@ghostery/adblocker-electron-preload': 2.11.6(electron@38.2.1(supports-color@10.0.0))
+      electron: 38.2.1(supports-color@10.0.0)
       tldts-experimental: 7.0.15
 
   '@ghostery/adblocker-extended-selectors@2.11.6': {}
@@ -7131,7 +7131,7 @@ snapshots:
 
   detect-libc@2.0.4: {}
 
-  detect-libc@2.1.0: {}
+  detect-libc@2.1.1: {}
 
   detect-node@2.1.0:
     optional: true
@@ -7356,9 +7356,9 @@ snapshots:
       - bluebird
       - supports-color
 
-  electron-settings@4.0.4(electron@37.2.0(supports-color@10.0.0)):
+  electron-settings@4.0.4(electron@38.2.1(supports-color@10.0.0)):
     dependencies:
-      electron: 37.2.0(supports-color@10.0.0)
+      electron: 38.2.1(supports-color@10.0.0)
       lodash: 4.17.21
       mkdirp: 1.0.4
       write-file-atomic: 3.0.3
@@ -7395,7 +7395,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  electron@37.2.0(supports-color@10.0.0):
+  electron@38.2.1(supports-color@10.0.0):
     dependencies:
       '@electron/get': 2.0.3(supports-color@10.0.0)
       '@types/node': 16.18.32
