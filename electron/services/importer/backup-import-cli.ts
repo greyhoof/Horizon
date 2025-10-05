@@ -109,6 +109,85 @@ function classifyEntry(
   return { should: false, isLog: false, isDrafts: false };
 }
 
+function importGeneralSettingsFromZip(
+  zip: AdmZip,
+  dataDir: string,
+  opts: ImportCliOptions
+): boolean {
+  if (!opts.includeGeneral) return false;
+  
+  const general = zip.getEntry('settings');
+  if (!general) return false;
+  
+  const dst = getSafeDestination(dataDir, 'settings');
+  if (!dst) throw new Error('Invalid settings destination');
+  
+  fs.mkdirSync(path.dirname(dst), { recursive: true });
+  
+  if (opts.overwrite || !fs.existsSync(dst)) {
+    const data = general.getData();
+    fs.writeFileSync(dst, data);
+    return true;
+  }
+  
+  return false;
+}
+
+function shouldSkipExistingFile(
+  destination: string,
+  decision: { isLog: boolean; isDrafts: boolean },
+  opts: ImportCliOptions
+): boolean {
+  const exists = fs.existsSync(destination);
+  if (!exists || opts.overwrite) return false;
+  
+  if (decision.isDrafts && isEffectivelyEmptyDraftsFile(destination)) {
+    return false;
+  }
+  
+  return true;
+}
+
+function processZipEntry(
+  entry: AdmZip.IZipEntry,
+  dataDir: string,
+  allowed: Set<string>,
+  opts: ImportCliOptions,
+  stats: {
+    logsCopied: number;
+    logsSkipped: number;
+    settingsCopied: number;
+    settingsSkipped: number;
+    touched: Set<string>;
+  }
+): void {
+  if (entry.isDirectory) return;
+  
+  const normalized = entry.entryName.replace(/\\/g, '/');
+  const segments = normalized.split('/');
+  const decision = classifyEntry(normalized, segments, allowed, opts);
+  
+  if (!decision.should || !decision.character) return;
+
+  const relative = normalized.substring('characters/'.length);
+  const destination = getSafeDestination(dataDir, relative);
+  if (!destination) return;
+  
+  fs.mkdirSync(path.dirname(destination), { recursive: true });
+
+  if (shouldSkipExistingFile(destination, decision, opts)) {
+    if (decision.isLog) stats.logsSkipped++;
+    else stats.settingsSkipped++;
+    return;
+  }
+
+  const data = entry.getData();
+  fs.writeFileSync(destination, data);
+  stats.touched.add(decision.character);
+  if (decision.isLog) stats.logsCopied++;
+  else stats.settingsCopied++;
+}
+
 export async function runImportCli(opts: ImportCliOptions): Promise<{
   touchedCharacters: string[];
   generalImported: boolean;
@@ -118,21 +197,7 @@ export async function runImportCli(opts: ImportCliOptions): Promise<{
   fs.mkdirSync(dataDir, { recursive: true });
 
   const zip = new AdmZip(opts.zip);
-  let generalImported = false;
-
-  if (opts.includeGeneral) {
-    const general = zip.getEntry('settings');
-    if (general) {
-      const dst = getSafeDestination(dataDir, 'settings');
-      if (!dst) throw new Error('Invalid settings destination');
-      fs.mkdirSync(path.dirname(dst), { recursive: true });
-      if (opts.overwrite || !fs.existsSync(dst)) {
-        const data = general.getData();
-        fs.writeFileSync(dst, data);
-        generalImported = true;
-      }
-    }
-  }
+  const generalImported = importGeneralSettingsFromZip(zip, dataDir, opts);
 
   const wantedChars =
     opts.characters && opts.characters.length > 0
@@ -150,39 +215,7 @@ export async function runImportCli(opts: ImportCliOptions): Promise<{
 
   const entries = zip.getEntries();
   for (const entry of entries) {
-    if (entry.isDirectory) continue;
-    
-    const normalized = entry.entryName.replace(/\\/g, '/');
-    const segments = normalized.split('/');
-    const decision = classifyEntry(normalized, segments, allowed, opts);
-    
-    if (!decision.should || !decision.character) continue;
-
-    const relative = normalized.substring('characters/'.length);
-    const destination = getSafeDestination(dataDir, relative);
-    if (!destination) continue;
-    
-    fs.mkdirSync(path.dirname(destination), { recursive: true });
-
-    const exists = fs.existsSync(destination);
-    if (exists && !opts.overwrite) {
-      if (decision.isDrafts && !isEffectivelyEmptyDraftsFile(destination)) {
-        if (decision.isLog) stats.logsSkipped++;
-        else stats.settingsSkipped++;
-        continue;
-      }
-      if (!decision.isDrafts) {
-        if (decision.isLog) stats.logsSkipped++;
-        else stats.settingsSkipped++;
-        continue;
-      }
-    }
-
-    const data = entry.getData();
-    fs.writeFileSync(destination, data);
-    stats.touched.add(decision.character);
-    if (decision.isLog) stats.logsCopied++;
-    else stats.settingsCopied++;
+    processZipEntry(entry, dataDir, allowed, opts, stats);
   }
 
   return {

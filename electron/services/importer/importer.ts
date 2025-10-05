@@ -34,7 +34,6 @@ function getSettingsDir(character: string): string | undefined {
   if (fs.existsSync(charDir)) return charDir;
   charDir = path.join(dir, '!Defaults');
   if (fs.existsSync(charDir)) return charDir;
-  return;
 }
 
 export function canImportGeneral(): boolean {
