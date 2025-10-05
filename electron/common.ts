@@ -56,6 +56,7 @@ export class GeneralSettings {
   horizonAutoLogin: boolean = false;
   horizonWindowTitleCharacter: boolean = false;
   use12HourTime: boolean = false;
+  showSeconds: boolean = false;
   fuzzyDates: boolean = true;
   horizonForceAsciiProfiles: boolean = false;
 }
