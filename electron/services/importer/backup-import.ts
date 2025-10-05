@@ -58,7 +58,7 @@ export async function loadImportZip(vm: any, filePath: string): Promise<void> {
   vm.importError = undefined;
   vm.importZipError = undefined;
   resetImportZipState(vm);
-  
+
   try {
     const zip = new AdmZip(filePath);
     vm.importZipArchive = zip;
@@ -68,7 +68,8 @@ export async function loadImportZip(vm: any, filePath: string): Promise<void> {
   } catch (error) {
     log.error('settings.import.zip.load.error', error);
     resetImportZipState(vm);
-    vm.importZipError = 'We couldn\'t read that export. Please choose a Horizon export created by this app.';
+    vm.importZipError =
+      "We couldn't read that export. Please choose a Horizon export created by this app.";
   }
 }
 
@@ -158,7 +159,7 @@ export function parseImportZip(vm: any): void {
   for (const entry of entries) {
     if (entry.isDirectory) continue;
     const normalized = entry.entryName.replace(/\\/g, '/');
-    
+
     if (!isValidCharacterEntry(normalized)) continue;
     processCharacterEntry(normalized, characterMap);
   }
@@ -211,7 +212,8 @@ export function parseImportZip(vm: any): void {
   }
 
   if (!vm.importGeneralAvailable && vm.importCharacters.length === 0) {
-    vm.importZipError = 'This export doesn\'t contain any data Horizon can restore.';
+    vm.importZipError =
+      "This export doesn't contain any data Horizon can restore.";
   }
 }
 
@@ -428,7 +430,9 @@ function processCharacterEntry(
   fs.mkdirSync(path.dirname(destination), { recursive: true });
 
   const exists = fs.existsSync(destination);
-  if (shouldSkipExistingFile(destination, exists, vm.importOverwrite, decision)) {
+  if (
+    shouldSkipExistingFile(destination, exists, vm.importOverwrite, decision)
+  ) {
     if (decision.isLog) stats.logsSkipped++;
     else stats.settingsSkipped++;
     return;
@@ -453,7 +457,14 @@ function importCharacterData(
   const entries = zip.getEntries();
   for (const entry of entries) {
     if (entry.isDirectory) continue;
-    processCharacterEntry(vm, entry, dataDir, selectedCharacters, characterInfo, stats);
+    processCharacterEntry(
+      vm,
+      entry,
+      dataDir,
+      selectedCharacters,
+      characterInfo,
+      stats
+    );
   }
 }
 
@@ -508,7 +519,14 @@ export async function runZipImport(vm: any): Promise<void> {
     };
 
     importGeneralSettings(vm, zip, dataDir, stats);
-    importCharacterData(vm, zip, dataDir, selectedCharacters, characterInfo, stats);
+    importCharacterData(
+      vm,
+      zip,
+      dataDir,
+      selectedCharacters,
+      characterInfo,
+      stats
+    );
     finalizeImport(vm, stats);
   } catch (error) {
     log.error('settings.import.zip.error', error);

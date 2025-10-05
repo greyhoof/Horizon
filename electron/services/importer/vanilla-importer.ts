@@ -1,11 +1,11 @@
 /**
  * Vanilla F-Chat Importer
- * 
+ *
  * Imports data from vanilla F-Chat clients that store data in the fchat directory:
  * - F-Chat Rising
  * - F-Chat 3.0
  * - F-Chat Frolic
- * ? Does Frolic actually use the same folder? I think so. 
+ * ? Does Frolic actually use the same folder? I think so.
  * ? Fatcat pls confirm kthx byes
  */
 
@@ -96,7 +96,9 @@ export function canImport(context?: VanillaContext): boolean {
   return fs.existsSync(path.join(ctx.dataDir, 'settings'));
 }
 
-export function listCharacters(context?: VanillaContext): ReadonlyArray<string> {
+export function listCharacters(
+  context?: VanillaContext
+): ReadonlyArray<string> {
   const ctx = context ?? resolveContext();
   if (!ctx) return [];
   return fs

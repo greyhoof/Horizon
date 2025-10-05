@@ -50,7 +50,7 @@ function isEffectivelyEmptyDraftsFile(p: string): boolean {
 function detectCharacters(zip: AdmZip, filter?: string[]): string[] {
   const set = new Set<string>();
   const entries = zip.getEntries();
-  
+
   for (const entry of entries) {
     const normalized = entry.entryName.replace(/\\/g, '/');
     if (!normalized.startsWith('characters/') || normalized.includes('..'))
@@ -58,7 +58,7 @@ function detectCharacters(zip: AdmZip, filter?: string[]): string[] {
     const parts = normalized.split('/');
     if (parts.length >= 2) set.add(parts[1]);
   }
-  
+
   const list = Array.from(set).sort((a, b) => a.localeCompare(b));
   if (!filter || filter.length === 0) return list;
   const fset = new Set(filter.map(s => s.toLowerCase()));
@@ -115,21 +115,21 @@ function importGeneralSettingsFromZip(
   opts: ImportCliOptions
 ): boolean {
   if (!opts.includeGeneral) return false;
-  
+
   const general = zip.getEntry('settings');
   if (!general) return false;
-  
+
   const dst = getSafeDestination(dataDir, 'settings');
   if (!dst) throw new Error('Invalid settings destination');
-  
+
   fs.mkdirSync(path.dirname(dst), { recursive: true });
-  
+
   if (opts.overwrite || !fs.existsSync(dst)) {
     const data = general.getData();
     fs.writeFileSync(dst, data);
     return true;
   }
-  
+
   return false;
 }
 
@@ -140,11 +140,11 @@ function shouldSkipExistingFile(
 ): boolean {
   const exists = fs.existsSync(destination);
   if (!exists || opts.overwrite) return false;
-  
+
   if (decision.isDrafts && isEffectivelyEmptyDraftsFile(destination)) {
     return false;
   }
-  
+
   return true;
 }
 
@@ -162,17 +162,17 @@ function processZipEntry(
   }
 ): void {
   if (entry.isDirectory) return;
-  
+
   const normalized = entry.entryName.replace(/\\/g, '/');
   const segments = normalized.split('/');
   const decision = classifyEntry(normalized, segments, allowed, opts);
-  
+
   if (!decision.should || !decision.character) return;
 
   const relative = normalized.substring('characters/'.length);
   const destination = getSafeDestination(dataDir, relative);
   if (!destination) return;
-  
+
   fs.mkdirSync(path.dirname(destination), { recursive: true });
 
   if (shouldSkipExistingFile(destination, decision, opts)) {

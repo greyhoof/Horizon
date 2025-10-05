@@ -114,7 +114,7 @@ function addCharacterToArchive(
       }
     }
   }
-  
+
   if (opts.includeDrafts) {
     const draftsFile = path.join(characterDir, 'drafts.txt');
     if (fs.existsSync(draftsFile)) {
@@ -122,7 +122,7 @@ function addCharacterToArchive(
       archive.file(draftsFile, { name: zipPath });
     }
   }
-  
+
   addCharacterSettings(archive, characterDir, character, opts);
 }
 

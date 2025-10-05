@@ -321,16 +321,23 @@ const params = <{ [key: string]: string | undefined }>(
 );
 let settings = <GeneralSettings>JSON.parse(params['settings']!);
 
-log.info('[chat.ts] params[import]:', params['import'], 'type:', typeof params['import']);
+log.info(
+  '[chat.ts] params[import]:',
+  params['import'],
+  'type:',
+  typeof params['import']
+);
 
 if (params['import'] !== undefined && params['import'] !== '') {
   log.info('[chat.ts] Calling handleStartupImport');
-  handleStartupImport(settings, params['import']).then(updatedSettings => {
-    settings = updatedSettings;
-    onSettings(settings);
-  }).catch(err => {
-    log.error('Startup import error:', err);
-  });
+  handleStartupImport(settings, params['import'])
+    .then(updatedSettings => {
+      settings = updatedSettings;
+      onSettings(settings);
+    })
+    .catch(err => {
+      log.error('Startup import error:', err);
+    });
 } else {
   log.info('[chat.ts] Skipping import, calling onSettings directly');
   onSettings(settings);

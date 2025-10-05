@@ -18,7 +18,8 @@ type ImporterHint = 'auto' | 'vanilla' | 'advanced' | 'slimcat' | undefined;
 
 function normalizeImportHint(v: string | undefined): ImporterHint {
   if (v === 'true') return 'slimcat';
-  if (v === 'auto' || v === 'vanilla' || v === 'slimcat' || v === 'advanced') return v;
+  if (v === 'auto' || v === 'vanilla' || v === 'slimcat' || v === 'advanced')
+    return v;
   return undefined;
 }
 

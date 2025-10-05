@@ -93,7 +93,7 @@ function buildExportEntries(
   vm: any
 ): ExportEntry[] {
   const entries: ExportEntry[] = [];
-  
+
   // General settings
   if (vm.exportIncludeGeneralSettings) {
     const generalSettingsFile = path.join(dataDir, 'settings');
@@ -179,14 +179,14 @@ export async function runExport(vm: any): Promise<void> {
   vm.exportProgress = 0;
   vm.exportCount = 0;
   vm.exportTotal = 0;
-  
+
   try {
     const saveResult = await remote.dialog.showSaveDialog({
       title: 'Save Horizon Export', // TODO: localize
       defaultPath: getExportDefaultPath(),
       filters: [{ name: 'ZIP archives', extensions: ['zip'] }]
     });
-    
+
     if (saveResult.canceled || !saveResult.filePath) {
       vm.exportInProgress = false;
       vm.exportProgress = undefined;

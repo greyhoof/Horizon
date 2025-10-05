@@ -601,7 +601,9 @@
                       class="form-check-label"
                       for="vanillaImportCharacterSettings"
                     >
-                      {{ l('settings.import.vanilla.includeCharacterSettings') }}
+                      {{
+                        l('settings.import.vanilla.includeCharacterSettings')
+                      }}
                     </label>
                   </div>
                   <div class="form-check mb-2">
@@ -644,7 +646,10 @@
                       id="vanillaImportOverwrite"
                       v-model="vanillaImportOverwrite"
                     />
-                    <label class="form-check-label" for="vanillaImportOverwrite">
+                    <label
+                      class="form-check-label"
+                      for="vanillaImportOverwrite"
+                    >
                       {{ l('settings.import.vanilla.overwrite') }}
                     </label>
                   </div>
@@ -702,7 +707,9 @@
                     <button
                       class="btn btn-primary"
                       type="button"
-                      :disabled="!canRunVanillaImport || vanillaImportInProgress"
+                      :disabled="
+                        !canRunVanillaImport || vanillaImportInProgress
+                      "
                       @click="runVanillaImport"
                     >
                       <span
@@ -769,8 +776,12 @@
   })
   export default class ExporterWindow extends Vue {
     settings!: GeneralSettings;
-    importHint: 'auto' | 'vanilla' | 'vanilla-advanced' | 'slimcat' | undefined =
-      undefined;
+    importHint:
+      | 'auto'
+      | 'vanilla'
+      | 'vanilla-advanced'
+      | 'slimcat'
+      | undefined = undefined;
     l = l;
     osIsDark: boolean = remote.nativeTheme.shouldUseDarkColors;
     selectedTab = '0';

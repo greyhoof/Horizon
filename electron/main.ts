@@ -108,7 +108,9 @@ EXAMPLES:
   }
 
   if (command === 'export') {
-    const { runExportCli } = await import('./services/exporter/backup-export-cli');
+    const { runExportCli } = await import(
+      './services/exporter/backup-export-cli'
+    );
     const dataDir =
       get('--data-dir') || path.join(app.getPath('userData'), 'data');
     const out = get('--out') || path.join(process.cwd(), 'horizon-export.zip');
@@ -144,7 +146,9 @@ EXAMPLES:
   }
 
   if (command === 'import') {
-    const { runImportCli } = await import('./services/importer/backup-import-cli');
+    const { runImportCli } = await import(
+      './services/importer/backup-import-cli'
+    );
     const zip = get('--zip');
     if (!zip) return false;
     const dataDir =
@@ -367,11 +371,7 @@ async function onReady(): Promise<void> {
 
   app.setAppUserModelId('net.flist.fchat');
   app.on('open-file', () => {
-    browserWindows.createMainWindow(
-      settings,
-      undefined,
-      baseDir
-    );
+    browserWindows.createMainWindow(settings, undefined, baseDir);
   });
   const configurePermissionPolicy = (
     targetSession: electron.Session | null,
@@ -608,11 +608,7 @@ async function onReady(): Promise<void> {
             label: l('action.newWindow'),
             click: () => {
               if (hasCompletedUpgrades)
-                browserWindows.createMainWindow(
-                  settings,
-                  undefined,
-                  baseDir
-                );
+                browserWindows.createMainWindow(settings, undefined, baseDir);
             },
             accelerator: 'CmdOrCtrl+n'
           },
@@ -840,11 +836,18 @@ async function onReady(): Promise<void> {
     );
   });
 
-  electron.ipcMain.on('open-exporter-window', (_event: IpcMainEvent, importHint?: string) => {
-    const targetWindow = electron.BrowserWindow.getFocusedWindow();
-    if (!targetWindow) return;
-    browserWindows.createExporterWindow(settings, importHint as any, targetWindow);
-  });
+  electron.ipcMain.on(
+    'open-exporter-window',
+    (_event: IpcMainEvent, importHint?: string) => {
+      const targetWindow = electron.BrowserWindow.getFocusedWindow();
+      if (!targetWindow) return;
+      browserWindows.createExporterWindow(
+        settings,
+        importHint as any,
+        targetWindow
+      );
+    }
+  );
 
   electron.ipcMain.on(
     'save-login',
