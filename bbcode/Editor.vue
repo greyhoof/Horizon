@@ -18,11 +18,19 @@
     >
       <i class="fa fa-code"></i>
     </a>
+
+    <EIconSelector
+      :onSelect="onSelectEIcon"
+      ref="eIconSelector"
+    ></EIconSelector>
+
     <div
       class="bbcode-toolbar btn-toolbar"
       role="toolbar"
       :disabled="disabled"
-      :style="showToolbar ? { display: 'flex' } : undefined"
+      :style="
+        showToolbar || colorPopupVisible ? { display: 'flex' } : undefined
+      "
       @mousedown.stop.prevent
       v-if="hasToolbar"
       style="flex: 1 51%"
@@ -55,17 +63,12 @@
               class="btn text-color"
               :class="btnCol"
               :title="btnCol"
-              @click.prevent.stop="colorApply(btnCol)"
+              @click.prevent.stop="applyAndClearColor(btnCol)"
               tabindex="0"
             ></button>
           </div>
         </div>
       </div>
-
-      <EIconSelector
-        :onSelect="onSelectEIcon"
-        ref="eIconSelector"
-      ></EIconSelector>
 
       <div class="btn-group toolbar-buttons" style="flex-wrap: wrap">
         <div v-if="!!characterName" class="character-btn">
@@ -145,6 +148,7 @@
   import { getKey } from '../chat/common';
   import { Keys } from '../keys';
   import { BBCodeElement, CoreBBCodeParser, urlRegex } from './core';
+  import core from '../chat/core';
   import { defaultButtons, EditorButton, EditorSelection } from './editor';
   import { BBCodeParser } from './parser';
   import { default as IconView } from './IconView.vue';
@@ -520,7 +524,7 @@
     //They fire when the editor element is focused, not the text box.
     onKeyDownGlobal(e: KeyboardEvent): void {
       const key = getKey(e);
-      if (e.ctrlKey && e.shiftKey && key === Keys.KeyP) {
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && key === Keys.KeyP) {
         e.stopPropagation();
         e.preventDefault();
         this.togglePreview();
@@ -605,7 +609,11 @@
             this.lastInput = Date.now();
           }
         }
-        if (key === Keys.KeyD) {
+        if (
+          this.hasToolbar &&
+          core.state.settings.horizonUseColorPicker &&
+          key === Keys.KeyD
+        ) {
           e.stopPropagation();
           e.preventDefault();
           this.awaitingColorKey = true;

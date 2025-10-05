@@ -518,6 +518,21 @@
           <input
             class="form-check-input"
             type="checkbox"
+            id="horizonUseColorPicker"
+            v-model="horizonUseColorPicker"
+            :disabled="!bbCodeBar"
+          />
+          <label class="form-check-label" for="horizonUseColorPicker">
+            {{ l('settings.horizonUseColorPicker') }}
+          </label>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
             id="risingShowPortraitInMessage"
             v-model="risingShowPortraitInMessage"
           />
@@ -1027,6 +1042,7 @@
     horizonHighlightUsers!: string;
     chatLayoutMode!: 'classic' | 'modern';
     messageGrouping!: boolean;
+    horizonUseColorPicker: boolean;
 
     horizonCacheDraftMessages!: boolean;
     horizonSaveDraftMessagesToDiskTimer!: string;
@@ -1090,6 +1106,7 @@
       this.horizonChangeOfflineColor = settings.horizonChangeOfflineColor;
       this.chatLayoutMode = settings.chatLayoutMode || 'classic';
       this.messageGrouping = settings.messageGrouping;
+      this.horizonUseColorPicker = settings.horizonUseColorPicker;
 
       this.horizonCacheDraftMessages = settings.horizonCacheDraftMessages;
       this.horizonSaveDraftMessagesToDiskTimer =
@@ -1128,6 +1145,8 @@
       await importKey('pinned');
       await importKey('modes');
       await importKey('conversationSettings');
+      await importKey('hiddenUsers');
+      await importKey('favoriteEIcons');
       core.connection.close(false);
     }
 
@@ -1223,6 +1242,7 @@
             : diskDraftTimer > 5
               ? diskDraftTimer
               : 5,
+        horizonUseColorPicker: this.horizonUseColorPicker,
 
         risingColorblindMode: this.risingColorblindMode,
         risingFilter: {

@@ -1325,6 +1325,18 @@
       margin-right: 2px;
     }
 
+    .user-gender {
+      &.gender-male,
+      &.gender-female,
+      &.gender-transgender,
+      &.gender-none,
+      &.gender-shemale,
+      &.gender-male-herm,
+      &.gender-herm,
+      &.gender-cuntboy {
+        text-shadow: none;
+      }
+    }
     .match-found {
       margin-left: 3px;
       padding-left: 2px;
@@ -1338,6 +1350,7 @@
       line-height: 100%;
       padding-top: 2px;
       padding-bottom: 2px;
+      text-shadow: none;
 
       &.perfect {
         background-color: var(--scorePerfectMatchBg);

@@ -117,6 +117,7 @@ export namespace Conversation {
     readonly recentChannels: ReadonlyArray<RecentChannelConversation>;
     readonly selectedConversation: Conversation;
     readonly hasNew: boolean;
+    readonly lastConversation: Conversation;
     byKey(key: string): Conversation | undefined;
 
     getPrivate(character: Character): PrivateConversation;
@@ -241,6 +242,7 @@ export namespace Settings {
     searchHistory: (ExtendedSearchData | SearchData)[];
     hideNonMatchingAds: boolean;
     hideProfileComparisonSummary: boolean;
+    hideProfileAnalysis: boolean;
     ads: Ad[];
   };
 

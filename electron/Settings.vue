@@ -84,7 +84,11 @@
                       </option>
                     </select>
                   </label>
+                  <div class="form-text text-muted">
+                    {{ l('settings.displayLanguage.note') }}
+                  </div>
                 </div>
+
                 <!--On MacOS, Electron uses the OS' native spell checker as of version 35.2.0 -->
                 <div class="mb-3" v-if="!isMac">
                   <label
@@ -125,6 +129,20 @@
                     />
                     <label class="form-check-label" for="use12HourTime">
                       {{ l('settings.timeFormat.12hour') }}
+                    </label>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      v-model="settings.showSeconds"
+                      type="checkbox"
+                      id="showSeconds"
+                    />
+                    <label class="form-check-label" for="showSeconds">
+                      {{ l('settings.timeFormat.showSeconds') }}
                     </label>
                   </div>
                 </div>
@@ -513,10 +531,34 @@
                       <button
                         class="btn btn-outline-secondary"
                         @click="browseForLogDir()"
+                        :title="l('settings.logDir.select')"
+                      >
+                        <span class="fas fa-fw fa-folder-plus"></span></button
+                      ><button
+                        class="btn btn-outline-secondary"
+                        @click="openLogDir()"
+                        :title="
+                          l(
+                            'platform.open',
+                            l(`platform.fileExplorer.${platformName}`)
+                          )
+                        "
                       >
                         <span class="far fa-fw fa-folder-open"></span>
                       </button></div
                   ></label>
+                  <div id="logDirNote" class="form-text text-muted">
+                    <a
+                      href="#"
+                      @click="
+                        externalUrlHandler(
+                          `https://horizn.moe/docs/guides/backup.html`
+                        )
+                      "
+                      ><span>{{ `${l('settings.logDir.note')} ` }}</span>
+                      <i class="fa-solid fa-arrow-up-right-from-square"></i>.
+                    </a>
+                  </div>
                 </div>
                 <h5>{{ l('settings.behavior.window') }}</h5>
                 <div class="mb-3">
@@ -787,6 +829,8 @@
     //Which is kind of good because of all the security issues that'd otherwise arise
     isWindows = process.platform === 'win32';
     isMac = process.platform === 'darwin';
+
+    platformName = process.platform;
 
     get styling(): string {
       try {
@@ -1124,11 +1168,19 @@
       }
     }
 
+    openLogDir(): void {
+      ipcRenderer.send('open-dir', this.settings.logDirectory);
+    }
+
     filterLanguage(
       filter: RegExp,
       languageEntry: { lang: string; name: string }
     ): boolean {
       return filter.test(languageEntry.name);
+    }
+
+    externalUrlHandler(url: string) {
+      ipcRenderer.send('open-url-externally', url);
     }
 
     countLines(text: string): number {

@@ -14,7 +14,19 @@ import { IpcMainEvent, session } from 'electron';
 import Axios from 'axios';
 import * as browserWindows from './browser_windows';
 import * as remoteMain from '@electron/remote/main';
-import { MenuItem } from 'electron/main';
+import { Event } from 'electron/main';
+
+const configuredSessions = new WeakSet<electron.Session>();
+
+const resolvePartition = (
+  targetSession: electron.Session,
+  fallback: string
+): string => {
+  const partition = (targetSession as unknown as { partition?: string })
+    .partition;
+  return partition || fallback || 'default';
+};
+
 // Module to control application life.
 const app = electron.app;
 
@@ -188,11 +200,82 @@ function onReady(): void {
   app.on('open-file', () => {
     browserWindows.createMainWindow(settings, shouldImportSettings, baseDir);
   });
+  const configurePermissionPolicy = (
+    targetSession: electron.Session | null,
+    fallbackLabel: string
+  ): void => {
+    if (!targetSession || configuredSessions.has(targetSession)) return;
+
+    configuredSessions.add(targetSession);
+
+    const partitionName = resolvePartition(targetSession, fallbackLabel);
+    const deny = (): boolean => false;
+
+    targetSession.setPermissionRequestHandler(
+      (_webContents, permission, callback) => {
+        if (
+          permission === 'notifications' &&
+          partitionName === 'persist:fchat'
+        ) {
+          log.debug('permissions.allowed.notifications', {
+            partition: partitionName
+          });
+          callback(true);
+          return;
+        }
+
+        log.debug('permissions.blocked', {
+          partition: partitionName,
+          permission: permission
+        });
+        callback(false);
+      }
+    );
+
+    // Optional handlers if available
+    targetSession.setPermissionCheckHandler?.(
+      (_webContents, permission, _details) => {
+        if (
+          permission === 'notifications' &&
+          partitionName === 'persist:fchat'
+        ) {
+          return true;
+        }
+        return deny();
+      }
+    );
+
+    targetSession.setDevicePermissionHandler?.(details => {
+      log.debug('permissions.blocked.device', {
+        partition: partitionName,
+        deviceType: details.deviceType
+      });
+      return deny();
+    });
+
+    targetSession.setDisplayMediaRequestHandler?.((_request, callback) => {
+      log.debug('permissions.blocked.displayCapture', {
+        partition: partitionName
+      });
+      callback({} as any);
+    });
+  };
+
   //Block automatic downloads in the image previewer.
   //It's in its own partitioned session, so we can't use session.defaultSession here
   const ses = session.fromPartition('persist:adblocked');
-  ses.on('will-download', (event, item, webContents) => {
+  ses.on('will-download', (event, _item, _webContents) => {
     event.preventDefault();
+  });
+  configurePermissionPolicy(session.defaultSession, 'default');
+  configurePermissionPolicy(
+    session.fromPartition('persist:fchat'),
+    'persist:fchat'
+  );
+  configurePermissionPolicy(ses, 'persist:adblocked');
+  app.on('web-contents-created', (_event, contents) => {
+    const partition = resolvePartition(contents.session, 'dynamic');
+    configurePermissionPolicy(contents.session, partition);
   });
   if (
     settings.version !== app.getVersion() &&
@@ -304,18 +387,18 @@ function onReady(): void {
       {
         label: l('navigation.nextTab'),
         accelerator: 'Ctrl+Tab',
-        click: (_m: MenuItem, window: electron.BrowserWindow | undefined) => {
-          if (window) {
-            window.webContents.send('switch-tab');
+        click: (_m, window) => {
+          if (window && 'webContents' in window) {
+            (window as electron.BrowserWindow).webContents.send('switch-tab');
           }
         }
       },
       {
         label: l('navigation.previousTab'),
         accelerator: 'Ctrl+Shift+Tab',
-        click: (_m: MenuItem, window: electron.BrowserWindow | undefined) => {
-          if (window) {
-            window.webContents.send('previous-tab');
+        click: (_m, window) => {
+          if (window && 'webContents' in window) {
+            (window as electron.BrowserWindow).webContents.send('previous-tab');
           }
         }
       }
@@ -399,23 +482,7 @@ function onReady(): void {
 
           { type: 'separator' },
           { role: 'minimize' },
-          {
-            accelerator: process.platform === 'darwin' ? 'Cmd+Q' : undefined,
-            label: l('action.quit'),
-            click(_m: electron.MenuItem, window: electron.BrowserWindow): void {
-              if (characters.length === 0) return app.quit();
-              const button = electron.dialog.showMessageBoxSync(window, {
-                message: l('chat.confirmLeave'),
-                title: l('title'),
-                buttons: [l('confirmYes'), l('confirmNo')],
-                cancelId: 1
-              });
-              if (button === 0) {
-                browserWindows.quitAllWindows();
-                app.quit();
-              }
-            }
-          }
+          { role: 'quit', label: l('action.quit') }
         ] as MenuItemConstructorOptions[]
       },
       {
@@ -573,7 +640,6 @@ function onReady(): void {
         'https://horizn.moe/download.html?ver=' + updateVersion
       );
       browserWindows.quitAllWindows();
-      app.quit();
     }
   );
   electron.ipcMain.on(
@@ -652,6 +718,10 @@ function onReady(): void {
     // log.info('MENU ZOOM UPDATE', zoomLevel);
     for (const w of electron.webContents.getAllWebContents())
       w.send('update-zoom', zl);
+  });
+
+  electron.ipcMain.on('open-dir', (_e, directory: string) => {
+    electron.shell.openPath(directory);
   });
 
   electron.ipcMain.handle('browser-option-browse', async () => {
@@ -764,5 +834,26 @@ else
   });
 app.on('second-instance', () => {
   browserWindows.createMainWindow(settings, shouldImportSettings, baseDir);
+});
+app.on('before-quit', (event: Event) => {
+  if (characters.length !== 0) {
+    const focusedWindow = electron.BrowserWindow.getFocusedWindow();
+    //forcing a window to be focused is weird. Let's just make it so that it floats otherwise.
+    const options = {
+      message: l('chat.confirmLeave'),
+      title: l('title'),
+      buttons: [l('confirmYes'), l('confirmNo')],
+      cancelId: 1
+    };
+    const button = focusedWindow
+      ? electron.dialog.showMessageBoxSync(focusedWindow, options)
+      : electron.dialog.showMessageBoxSync(options);
+
+    if (button === 1) {
+      event.preventDefault();
+      return;
+    }
+  }
+  browserWindows.quitAllWindows();
 });
 app.on('window-all-closed', () => app.quit());

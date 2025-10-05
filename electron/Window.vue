@@ -122,6 +122,7 @@
   import { GeneralSettings, getSyncedTheme } from './common';
   import { getSafeLanguages, updateSupportedLanguages } from './language';
   import log from 'electron-log';
+  import { Dialog } from '../helpers/dialog';
 
   const browserWindow = remote.getCurrentWindow();
 
@@ -449,7 +450,7 @@
         }
         if (!this.settings.closeToTray)
           return setImmediate(() => {
-            if (confirm(l('chat.confirmLeave'))) {
+            if (Dialog.confirmDialog(l('chat.confirmLeave'))) {
               this.destroyAllTabs();
               browserWindow.close();
             }
@@ -638,7 +639,7 @@
         this.lockTab ||
         (shouldConfirm &&
           tab.user !== undefined &&
-          !confirm(l('chat.confirmLeave')))
+          !Dialog.confirmDialog(l('chat.confirmLeave')))
       )
         return;
       this.tabs.splice(this.tabs.indexOf(tab), 1);

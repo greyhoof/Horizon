@@ -99,30 +99,31 @@
       </div>
 
       <h5>{{ l('admgr.campaign') }}</h5>
-      <div class="mb-3">
-        <label class="control-label" for="timeoutMinutes">
-          {{ l('admgr.timeout') }}
-        </label>
-
-        <select
-          class="form-select"
-          v-model="timeoutMinutes"
-          id="timeoutMinutes"
-        >
-          <option v-for="timeout in timeoutOptions" :value="timeout.value">
-            {{ timeout.title }}
-          </option>
-        </select>
-
-        <label class="control-label" for="timeoutMinutes">
-          {{ l('admgr.delay') }}</label
-        >
-
-        <select class="form-select" v-model="delayMinutes" id="delayMinutes">
-          <option v-for="delay in delayOptions" :value="delay.value">
-            {{ delay.title }}
-          </option>
-        </select>
+      <div class="row">
+        <div class="mb-3 col-12 col-sm-6">
+          <label class="control-label" for="timeoutMinutes">
+            {{ l('admgr.timeout') }}
+          </label>
+          <select
+            class="form-select"
+            v-model="timeoutMinutes"
+            id="timeoutMinutes"
+          >
+            <option v-for="timeout in timeoutOptions" :value="timeout.value">
+              {{ timeout.title }}
+            </option>
+          </select>
+        </div>
+        <div class="mb-3 col-12 col-sm-6">
+          <label class="control-label" for="delayMinutes">
+            {{ l('admgr.delay') }}</label
+          >
+          <select class="form-select" v-model="delayMinutes" id="delayMinutes">
+            <option v-for="delay in delayOptions" :value="delay.value">
+              {{ delay.title }}
+            </option>
+          </select>
+        </div>
       </div>
 
       <p class="matches">
@@ -313,18 +314,6 @@
 
 <style lang="scss">
   .adLauncher {
-    label.control-label {
-      display: block;
-      margin-left: 0.75rem;
-      color: var(--gray-dark);
-    }
-
-    select {
-      margin-left: 0.75rem;
-      width: auto;
-      padding-right: 1.5rem;
-    }
-
     .matches {
       margin: 0;
       margin-top: 2rem;

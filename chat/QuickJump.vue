@@ -35,8 +35,15 @@
                 >!</span
               ></span
             >
+            <span v-show="isUnread(result)" class="badge text-bg-danger"
+              ><i class="fa-solid fa-circle-dot"></i
+            ></span>
             <span class="result-description" v-if="result.description">
-              {{ result.description }}
+              {{
+                isMostRecent(result)
+                  ? l('quickJump.lastConversation')
+                  : result.description
+              }}
             </span>
           </div>
         </div>
@@ -150,7 +157,10 @@
           name: conversation.name,
           type: 'channel',
           conversation,
-          description: `${conversation.channel.sortedMembers.length} ${l('quickJump.members')}`
+          description: l(
+            'quickJump.members',
+            conversation.channel.sortedMembers.length
+          )
         });
       }
 
@@ -224,7 +234,16 @@
           return 1;
         }
 
-        if (a.conversation === core.conversations.lastConversation) {
+        if (
+          a.conversation === core.conversations.lastConversation &&
+          b.conversation !== core.conversations.lastConversation
+        ) {
+          return -1;
+        }
+        if (
+          b.conversation === core.conversations.lastConversation &&
+          a.conversation !== core.conversations.lastConversation
+        ) {
           return 1;
         }
 
@@ -357,6 +376,20 @@
       return (
         result.conversation !== undefined &&
         result.conversation.unread === Conversation.UnreadState.Mention
+      );
+    }
+
+    isUnread(result: SearchResult): boolean {
+      return (
+        result.conversation !== undefined &&
+        result.conversation.unread !== Conversation.UnreadState.None
+      );
+    }
+
+    isMostRecent(result: SearchResult): boolean {
+      return (
+        result.conversation !== undefined &&
+        result.conversation === core.conversations.lastConversation
       );
     }
 
