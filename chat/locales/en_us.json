@@ -802,6 +802,7 @@
   "settings.theme.vanillaGenders.note": "Show the original 'vanilla' gender colours regardless of the current theme.",
   "settings.timeFormat": "Time format",
   "settings.timeFormat.12hour": "Use 12-hour time (e.g. 2:30 PM) instead of 24-hour",
+  "settings.timeFormat.showSeconds": "Show seconds in chat message timestamps",
   "settings.timeFormat.fuzzyDates": "Use \"fuzzy\" dates for profiles",
   "settings.typeMatch": "Type Match",
   "settings.updateCheck": "Automatically check for updates",

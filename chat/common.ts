@@ -178,7 +178,20 @@ export function formatTime(
       (core.state as any).generalSettings.use12HourTime) ||
     false;
 
-  const timeOnlyFormat = use12 ? 'hh:mm a' : 'HH:mm';
+  const showSeconds =
+    (core &&
+      core.state &&
+      (core.state as any).generalSettings &&
+      (core.state as any).generalSettings.showSeconds) ||
+    false;
+
+  const timeOnlyFormat = use12
+    ? showSeconds
+      ? 'hh:mm:ss a'
+      : 'hh:mm a'
+    : showSeconds
+      ? 'HH:mm:ss'
+      : 'HH:mm';
   if (!noDate && isToday(date)) return format(date, timeOnlyFormat);
   const absoluteFormat = `yyyy-MM-dd ${timeOnlyFormat}`;
   return format(date, absoluteFormat);

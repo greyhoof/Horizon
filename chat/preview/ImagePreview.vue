@@ -392,7 +392,8 @@
         return url;
       }
 
-      return `flist-character://${decodeURI(match[2])}`;
+      const characterName = decodeURIComponent(match[2].replace(/\+/g, '%20'));
+      return `flist-character://${characterName}`;
     }
 
     updatePreviewSize(width: number, height: number): void {

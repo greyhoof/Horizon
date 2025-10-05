@@ -137,6 +137,20 @@
                   <div class="form-check">
                     <input
                       class="form-check-input"
+                      v-model="settings.showSeconds"
+                      type="checkbox"
+                      id="showSeconds"
+                    />
+                    <label class="form-check-label" for="showSeconds">
+                      {{ l('settings.timeFormat.showSeconds') }}
+                    </label>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
                       v-model="settings.fuzzyDates"
                       type="checkbox"
                       id="fuzzyDates"

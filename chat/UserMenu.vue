@@ -421,8 +421,14 @@
 
     private onClick(character: Character): void {
       this.character = character;
-      if (core.state.settings.clickOpensMessage) this.openConversation(true);
-      else window.open(this.profileLink);
+      // Always open profile for own character, regardless of clickOpensMessage setting
+      if (character.name === core.characters.ownCharacter.name) {
+        window.open(this.profileLink);
+      } else if (core.state.settings.clickOpensMessage) {
+        this.openConversation(true);
+      } else {
+        window.open(this.profileLink);
+      }
       this.showContextMenu = false;
     }
 
