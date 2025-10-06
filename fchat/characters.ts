@@ -3,6 +3,7 @@ import { methods } from '../site/character_page/data_store';
 import { decodeHTML } from './common';
 import { Character as Interfaces, Connection } from './interfaces';
 import { Character as CharacterProfile } from '../site/character_page/interfaces';
+import log from 'electron-log';
 import Vue from 'vue';
 
 class Character implements Interfaces.Character {
@@ -14,17 +15,12 @@ class Character implements Interfaces.Character {
   isChatOp = false;
   isIgnored = false;
   overrides: CharacterOverrides = {};
-  private _previousStatusText = '';
+  previousStatusText = '';
 
   constructor(public name: string) {}
 
   hasStatusTextChanged(newStatusText: string): boolean {
-    return this._previousStatusText !== newStatusText;
-  }
-
-  updateStatusText(newStatusText: string): void {
-    this._previousStatusText = this.statusText;
-    this.statusText = decodeHTML(newStatusText);
+    return this.previousStatusText !== newStatusText;
   }
 }
 
@@ -77,7 +73,7 @@ class State implements Interfaces.State {
         this.bookmarks.splice(this.bookmarks.indexOf(character), 1);
     }
     character.status = status;
-    character.updateStatusText(text);
+    character.statusText = decodeHTML(text);
   }
 
   setOverride(name: string, type: 'avatarUrl', value: string | undefined): void;
@@ -175,7 +171,10 @@ export default function (this: void, connection: Connection): Interfaces.State {
     }
   });
   connection.onMessage('FLN', data => {
-    state.setStatus(state.get(data.character), 'offline', '');
+    //Going offline counts as changing status too for the previous status var
+    var char = state.get(data.character);
+    char.previousStatusText = char.statusText;
+    state.setStatus(char, 'offline', '');
   });
   connection.onMessage('NLN', async data => {
     const character = state.get(data.identity);
@@ -194,7 +193,13 @@ export default function (this: void, connection: Connection): Interfaces.State {
     state.setStatus(character, data.status, '');
   });
   connection.onMessage('STA', data => {
-    state.setStatus(state.get(data.character), data.status, data.statusmsg);
+    //This is so it won't clear the previous status when their client reconnects and sends a STA message
+    var char = state.get(data.character);
+    if (char.statusText.length > 0 && data.statusmsg.length > 0) {
+      char.previousStatusText = char.statusText;
+    }
+    state.setStatus(char, data.status, data.statusmsg);
+    log.debug('status.char', char);
   });
   connection.onMessage('AOP', data => {
     state.opList.push(data.character);
