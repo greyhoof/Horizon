@@ -715,6 +715,7 @@
   "settings.timeFormat": "Format de l'heure",
   "settings.timeFormat.12hour": "Afficher le temps en 12-heures (ex 2:30 PM) plutôt que 24",
   "settings.timeFormat.fuzzyDates": "Utiliser les dates approximatives pour les profils",
+  "settings.timeFormat.showSeconds": "Montrer les secondes dans l'horodatage du chat",
   "settings.typeMatch": "Correspondance de type",
   "settings.updateCheck": "Rechercher automatiquement les mises à jour",
   "settings.updates": "Mises à jour",
