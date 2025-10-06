@@ -715,6 +715,7 @@
   "settings.timeFormat": "Időformátum",
   "settings.timeFormat.12hour": "12-órás idő használata (pl. délután 2:30) 23-órás helyett",
   "settings.timeFormat.fuzzyDates": "\"Pontatlan\" dátumok használata profilokon",
+  "settings.timeFormat.showSeconds": "Másodpercek mutatása a csevegési időbélyegekben",
   "settings.typeMatch": "Típus passzolás",
   "settings.updateCheck": "Frissítések automatikus ellenőrzése",
   "settings.updates": "Frissítések",
