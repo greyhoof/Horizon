@@ -68,8 +68,7 @@ const userPostfix: { [key: number]: string | undefined } = {
       `message message-${Conversation.Message.Type[message.type].toLowerCase()}` +
       (separators ? ' message-block' : ' message-blockless') +
       (message.type !== Conversation.Message.Type.Event &&
-      message.sender.name === core.connection.character &&
-      !isModern
+      message.sender.name === core.connection.character
         ? ' message-own'
         : '') +
       (this.classes !== undefined ? ` ${this.classes}` : '') +

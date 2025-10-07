@@ -105,7 +105,7 @@ $genders: (
   }
 }
 
-.message-warn {
+.message-warn:not(.message-modern) {
   .gender-female,
   .pinkText,
   .pinkNameText {

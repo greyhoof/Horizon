@@ -1,5 +1,7 @@
 @use 'sass:color';
-
+:root {
+  --message-bg: none;
+}
 // Global contrast overrides for active states
 .list-group-item.active,
 .nav-pills .nav-link.active,
@@ -314,7 +316,7 @@
 }
 
 .message-warn {
-  background-color: $danger;
+  background-color: var(--bs-danger);
   color: color-contrast($danger);
   .bbcode {
     .whiteText,
@@ -385,7 +387,7 @@
   background-color: color.change(
     mix($white, $success, 7.5 * 8%),
     $saturation: 50
-  ) !important;
+  );
   .message-time {
     background-color: mix($white, $success, 6 * 8%);
     color: mix($black, $success, 10 * 8%);
@@ -491,16 +493,27 @@
         word-break: break-word;
       }
     }
-    .message-own {
-      background: transparent;
+    &.message-warn,
+    &.message-warn.message-own {
+      //this doesn't look very pretty, but the point is to be obvious, so we'll leave this commented for now
+      //background-color: var(--bs-danger-bg-subtle);
+      color: $light;
+      border-left-color: $danger;
+      .message-time {
+        color: color-contrast($danger);
+      }
     }
-    &.message-own .message-content .bbcode {
-      background: transparent;
+    &.message-own {
+      border-left-color: $info;
+    }
+    &.message-highlight {
+      border-left-color: $success;
+      background-color: var(--bs-success-bg-subtle);
     }
   }
   .message-highlight {
     border-left: solid 2px
-      color.change(mix($white, $success, 7.5 * 8%), $saturation: 450) !important;
+      color.change(mix($white, $success, 7.5 * 8%), $saturation: 450);
   }
   .message-block {
     border-top: solid 1px $card-border-color;
@@ -511,7 +524,7 @@
     border-bottom: solid 1px transparent;
   }
   .last-read {
-    border-bottom: solid 1px mix($white, $success, 4 * 8%) !important;
+    border-bottom: solid 1px mix($white, $success, 4 * 8%);
   }
   .message:last-of-type.last-read {
     border-bottom: solid 1px transparent !important;
