@@ -93,7 +93,7 @@ export class Settings implements ISettings {
   horizonHighlightUsers: string[] = [];
 
   chatLayoutMode: 'classic' | 'modern' = 'classic';
-  messageGrouping = false;
+  messageGrouping = true;
 
   horizonCacheDraftMessages = true;
   horizonSaveDraftMessagesToDiskTimer = 60;
@@ -198,7 +198,7 @@ export function formatTime(
     : showSeconds
       ? 'HH:mm:ss'
       : 'HH:mm';
-  if (!noDate && isToday(date)) return format(date, timeOnlyFormat);
+  if (noDate || isToday(date)) return format(date, timeOnlyFormat);
   const absoluteFormat = `yyyy-MM-dd ${timeOnlyFormat}`;
   return format(date, absoluteFormat);
 }
