@@ -149,6 +149,7 @@ const userPostfix: { [key: number]: string | undefined } = {
               avatar: core.connection.character
                 ? core.state.settings.risingShowPortraitInMessage
                 : false,
+              useOriginalAvatar: 'true',
               character: message.sender,
               channel: this.channel,
               isMarkerShown: core.connection.character
