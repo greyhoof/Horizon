@@ -1552,7 +1552,7 @@ export default function (this: any): Interfaces.State {
 
     if (
       !core.state.settings.horizonShowDuplicateStatusNotifications &&
-      !char.hasStatusTextChanged(data.statusmsg)
+      !char.hasStatusTextChanged()
     )
       return;
 

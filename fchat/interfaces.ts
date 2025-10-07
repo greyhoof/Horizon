@@ -339,7 +339,7 @@ export namespace Character {
     readonly isChatOp: boolean;
     readonly isIgnored: boolean;
     readonly overrides: CharacterOverrides;
-    hasStatusTextChanged(newStatusText: string): boolean;
+    hasStatusTextChanged(): boolean;
   }
 }
 

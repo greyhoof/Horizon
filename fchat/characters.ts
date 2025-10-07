@@ -3,7 +3,6 @@ import { methods } from '../site/character_page/data_store';
 import { decodeHTML } from './common';
 import { Character as Interfaces, Connection } from './interfaces';
 import { Character as CharacterProfile } from '../site/character_page/interfaces';
-import log from 'electron-log';
 import Vue from 'vue';
 
 class Character implements Interfaces.Character {
@@ -19,8 +18,8 @@ class Character implements Interfaces.Character {
 
   constructor(public name: string) {}
 
-  hasStatusTextChanged(newStatusText: string): boolean {
-    return this.previousStatusText !== newStatusText;
+  hasStatusTextChanged(): boolean {
+    return this.previousStatusText !== this.statusText;
   }
 }
 
@@ -199,7 +198,6 @@ export default function (this: void, connection: Connection): Interfaces.State {
       char.previousStatusText = char.statusText;
     }
     state.setStatus(char, data.status, data.statusmsg);
-    log.debug('status.char', char);
   });
   connection.onMessage('AOP', data => {
     state.opList.push(data.character);
