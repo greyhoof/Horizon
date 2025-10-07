@@ -189,71 +189,97 @@ function processZipEntry(
   else stats.settingsCopied++;
 }
 
-export async function runImportCli(opts: ImportCliOptions): Promise<{
-  touchedCharacters: string[];
-  generalImported: boolean;
-}> {
-  const dataDir = opts.dataDir;
-  if (!dataDir) throw new Error('No data dir provided');
+function printDryRunGeneralSettings(
+  opts: ImportCliOptions,
+  zip: AdmZip,
+  dataDir: string
+): void {
+  const general = zip.getEntry('settings');
+  const hasGeneral = general !== null;
+  const generalExists = fs.existsSync(path.join(dataDir, 'settings'));
 
-  const zip = new AdmZip(opts.zip);
-
-  const wantedChars =
-    opts.characters && opts.characters.length > 0
-      ? opts.characters
-      : detectCharacters(zip, opts.characters);
-
-  if (opts.dryRun) {
-    console.log('=== DRY RUN MODE - No files will be modified ===');
-    console.log(`Source ZIP: ${opts.zip}`);
-    console.log(`Target directory: ${dataDir}`);
-    console.log('');
-    
-    console.log('Import options:');
-    const general = zip.getEntry('settings');
-    const hasGeneral = general !== null;
-    const generalExists = fs.existsSync(path.join(dataDir, 'settings'));
-    
-    let generalStatus = opts.includeGeneral && hasGeneral ? 'YES' : 'NO';
-    if (opts.includeGeneral && hasGeneral && generalExists) {
-      const action = opts.overwrite ? 'OVERWRITE' : 'SKIP';
-      generalStatus += ` (would ${action} existing)`;
-    }
-    console.log(`  - General settings: ${generalStatus}`);
-    console.log(`  - Character settings: ${opts.includeCharacterSettings ? 'YES' : 'NO'}`);
-    console.log(`  - Chat logs: ${opts.includeLogs ? 'YES' : 'NO'}`);
-    console.log(`  - Message drafts: ${opts.includeDrafts ? 'YES' : 'NO'}`);
-    console.log(`  - Pinned conversations: ${opts.includePinnedConversations ? 'YES' : 'NO'}`);
-    console.log(`  - Pinned eicons: ${opts.includePinnedEicons ? 'YES' : 'NO'}`);
-    console.log(`  - Recent conversations: ${opts.includeRecents ? 'YES' : 'NO'}`);
-    console.log(`  - Hidden users: ${opts.includeHidden ? 'YES' : 'NO'}`);
-    console.log(`  - Overwrite mode: ${opts.overwrite ? 'ENABLED' : 'DISABLED'}`);
-    console.log('');
-    
-    console.log(`Characters in ZIP (${wantedChars.length}):`);
-    if (wantedChars.length > 0) {
-      for (const char of wantedChars) {
-        const charDir = path.join(dataDir, char);
-        const exists = fs.existsSync(charDir);
-        let charStatus = char;
-        if (exists) {
-          const action = opts.overwrite ? 'overwrite' : 'merge';
-          charStatus += ` (exists, would ${action})`;
-        } else {
-          charStatus += ' (new)';
-        }
-        console.log(`  - ${charStatus}`);
-      }
-    } else {
-      console.log('  (none found)');
-    }
-    
-    return {
-      touchedCharacters: wantedChars,
-      generalImported: opts.includeGeneral && hasGeneral
-    };
+  let generalStatus = opts.includeGeneral && hasGeneral ? 'YES' : 'NO';
+  if (opts.includeGeneral && hasGeneral && generalExists) {
+    const action = opts.overwrite ? 'OVERWRITE' : 'SKIP';
+    generalStatus += ` (would ${action} existing)`;
   }
+  console.log(`  - General settings: ${generalStatus}`);
+}
 
+function printDryRunOptions(opts: ImportCliOptions): void {
+  const options = [
+    ['Character settings', opts.includeCharacterSettings],
+    ['Chat logs', opts.includeLogs],
+    ['Message drafts', opts.includeDrafts],
+    ['Pinned conversations', opts.includePinnedConversations],
+    ['Pinned eicons', opts.includePinnedEicons],
+    ['Recent conversations', opts.includeRecents],
+    ['Hidden users', opts.includeHidden],
+    ['Overwrite mode', opts.overwrite, 'ENABLED', 'DISABLED']
+  ] as const;
+
+  for (const [label, enabled, trueText = 'YES', falseText = 'NO'] of options) {
+    console.log(`  - ${label}: ${enabled ? trueText : falseText}`);
+  }
+}
+
+function printDryRunCharacters(
+  wantedChars: string[],
+  dataDir: string,
+  opts: ImportCliOptions
+): void {
+  console.log(`Characters in ZIP (${wantedChars.length}):`);
+  if (wantedChars.length > 0) {
+    for (const char of wantedChars) {
+      const charDir = path.join(dataDir, char);
+      const exists = fs.existsSync(charDir);
+      let charStatus = char;
+      if (exists) {
+        const action = opts.overwrite ? 'overwrite' : 'merge';
+        charStatus += ` (exists, would ${action})`;
+      } else {
+        charStatus += ' (new)';
+      }
+      console.log(`  - ${charStatus}`);
+    }
+  } else {
+    console.log('  (none found)');
+  }
+}
+
+function handleDryRun(
+  opts: ImportCliOptions,
+  zip: AdmZip,
+  dataDir: string,
+  wantedChars: string[]
+): { touchedCharacters: string[]; generalImported: boolean } {
+  console.log('=== DRY RUN MODE - No files will be modified ===');
+  console.log(`Source ZIP: ${opts.zip}`);
+  console.log(`Target directory: ${dataDir}`);
+  console.log('');
+
+  console.log('Import options:');
+  printDryRunGeneralSettings(opts, zip, dataDir);
+  printDryRunOptions(opts);
+  console.log('');
+
+  printDryRunCharacters(wantedChars, dataDir, opts);
+
+  const general = zip.getEntry('settings');
+  const hasGeneral = general !== null;
+
+  return {
+    touchedCharacters: wantedChars,
+    generalImported: opts.includeGeneral && hasGeneral
+  };
+}
+
+function performActualImport(
+  zip: AdmZip,
+  dataDir: string,
+  wantedChars: string[],
+  opts: ImportCliOptions
+): { touchedCharacters: string[]; generalImported: boolean } {
   fs.mkdirSync(dataDir, { recursive: true });
 
   const generalImported = importGeneralSettingsFromZip(zip, dataDir, opts);
@@ -279,4 +305,25 @@ export async function runImportCli(opts: ImportCliOptions): Promise<{
     ),
     generalImported
   };
+}
+
+export async function runImportCli(opts: ImportCliOptions): Promise<{
+  touchedCharacters: string[];
+  generalImported: boolean;
+}> {
+  const dataDir = opts.dataDir;
+  if (!dataDir) throw new Error('No data dir provided');
+
+  const zip = new AdmZip(opts.zip);
+
+  const wantedChars =
+    opts.characters && opts.characters.length > 0
+      ? opts.characters
+      : detectCharacters(zip, opts.characters);
+
+  if (opts.dryRun) {
+    return handleDryRun(opts, zip, dataDir, wantedChars);
+  }
+
+  return performActualImport(zip, dataDir, wantedChars, opts);
 }

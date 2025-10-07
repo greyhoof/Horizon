@@ -13,7 +13,7 @@ export interface ExportCliOptions {
   includePinnedEicons: boolean;
   includeRecents: boolean;
   includeHidden: boolean;
-  characters?: string[]; 
+  characters?: string[];
   dryRun?: boolean;
 }
 
@@ -127,45 +127,50 @@ function addCharacterToArchive(
   addCharacterSettings(archive, characterDir, character, opts);
 }
 
-export async function runExportCli(opts: ExportCliOptions): Promise<{
-  characters: string[];
-  out: string;
-}> {
-  const dataDir = opts.dataDir;
-  if (!dataDir || !fs.existsSync(dataDir))
-    throw new Error(`Data directory not found: ${dataDir}`);
+function logDryRunDetails(
+  opts: ExportCliOptions,
+  dataDir: string,
+  characters: string[]
+): void {
+  console.log('=== DRY RUN MODE - No files will be written ===');
+  console.log(`Output file: ${opts.out}`);
+  console.log('');
 
-  const characters = getCharacters(dataDir, opts.characters);
+  console.log('Export options:');
+  const generalSettingsFile = path.join(dataDir, 'settings');
+  const hasGeneral = fs.existsSync(generalSettingsFile);
+  console.log(
+    `  - General settings: ${opts.includeGeneral && hasGeneral ? 'YES' : 'NO'}`
+  );
+  console.log(
+    `  - Character settings: ${opts.includeCharacterSettings ? 'YES' : 'NO'}`
+  );
+  console.log(`  - Chat logs: ${opts.includeLogs ? 'YES' : 'NO'}`);
+  console.log(`  - Message drafts: ${opts.includeDrafts ? 'YES' : 'NO'}`);
+  console.log(
+    `  - Pinned conversations: ${opts.includePinnedConversations ? 'YES' : 'NO'}`
+  );
+  console.log(`  - Pinned eicons: ${opts.includePinnedEicons ? 'YES' : 'NO'}`);
+  console.log(
+    `  - Recent conversations: ${opts.includeRecents ? 'YES' : 'NO'}`
+  );
+  console.log(`  - Hidden users: ${opts.includeHidden ? 'YES' : 'NO'}`);
+  console.log('');
 
-  // Are we dryrunning? If so, let's spit out more details.
-  if (opts.dryRun) {
-    console.log('=== DRY RUN MODE - No files will be written ===');
-    console.log(`Output file: ${opts.out}`);
-    console.log('');
-    
-    console.log('Export options:');
-    const generalSettingsFile = path.join(dataDir, 'settings');
-    const hasGeneral = fs.existsSync(generalSettingsFile);
-    console.log(`  - General settings: ${opts.includeGeneral && hasGeneral ? 'YES' : 'NO'}`);
-    console.log(`  - Character settings: ${opts.includeCharacterSettings ? 'YES' : 'NO'}`);
-    console.log(`  - Chat logs: ${opts.includeLogs ? 'YES' : 'NO'}`);
-    console.log(`  - Message drafts: ${opts.includeDrafts ? 'YES' : 'NO'}`);
-    console.log(`  - Pinned conversations: ${opts.includePinnedConversations ? 'YES' : 'NO'}`);
-    console.log(`  - Pinned eicons: ${opts.includePinnedEicons ? 'YES' : 'NO'}`);
-    console.log(`  - Recent conversations: ${opts.includeRecents ? 'YES' : 'NO'}`);
-    console.log(`  - Hidden users: ${opts.includeHidden ? 'YES' : 'NO'}`);
-    console.log('');
-    
-    console.log(`Characters (${characters.length}):`);
-    if (characters.length > 0) {
-      characters.forEach(char => console.log(`  - ${char}`));
-    } else {
-      console.log('  (none found)');
-    }
-    
-    return { characters, out: opts.out };
+  console.log(`Characters (${characters.length}):`);
+  if (characters.length > 0) {
+    characters.forEach(char => console.log(`  - ${char}`));
+  } else {
+    console.log('  (none found)');
   }
-// This creates the archiver instance
+}
+
+async function createArchive(
+  opts: ExportCliOptions,
+  dataDir: string,
+  characters: string[]
+): Promise<{ characters: string[]; out: string }> {
+  // This creates the archiver instance
   const archive = archiver('zip', {
     zlib: { level: 6 }
   });
@@ -201,4 +206,22 @@ export async function runExportCli(opts: ExportCliOptions): Promise<{
   await archive.finalize();
 
   return result;
+}
+
+export async function runExportCli(opts: ExportCliOptions): Promise<{
+  characters: string[];
+  out: string;
+}> {
+  const dataDir = opts.dataDir;
+  if (!dataDir || !fs.existsSync(dataDir))
+    throw new Error(`Data directory not found: ${dataDir}`);
+
+  const characters = getCharacters(dataDir, opts.characters);
+
+  if (opts.dryRun) {
+    logDryRunDetails(opts, dataDir, characters);
+    return { characters, out: opts.out };
+  }
+
+  return createArchive(opts, dataDir, characters);
 }
