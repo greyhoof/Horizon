@@ -33,13 +33,12 @@ import isChannel = Interfaces.isChannel;
  */
 const CONVERSATION_CACHE_UPDATE_FREQ_IN_MS = 1000;
 
-
 function shouldEnableLogging(
   conversation: Interfaces.Conversation,
   isAd: boolean = false
 ): boolean {
   const loggingSetting = conversation.settings.enableLogging;
-  
+
   // If explicitly set to True or False, use that
   if (loggingSetting === Interfaces.Setting.True) {
     return true;
@@ -47,7 +46,7 @@ function shouldEnableLogging(
   if (loggingSetting === Interfaces.Setting.False) {
     return false;
   }
-  
+
   // Otherwise (Default), use global settings
   if (isAd) {
     return core.state.settings.logAds;
@@ -541,7 +540,8 @@ class ChannelConversation
 
     if (message.type === MessageType.Ad) {
       this.addModeMessage('ads', message);
-      if (shouldEnableLogging(this, true)) await core.logs.logMessage(this, message);
+      if (shouldEnableLogging(this, true))
+        await core.logs.logMessage(this, message);
     } else {
       this.addModeMessage('chat', message);
       if (message.type !== Interfaces.Message.Type.Event) {
