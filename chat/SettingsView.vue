@@ -477,12 +477,45 @@
           <input
             class="form-check-input"
             type="checkbox"
+            id="horizonShowSigninNotifications"
+            v-model="horizonShowSigninNotifications"
+          />
+          <label class="form-check-label" for="horizonShowSigninNotifications">
+            {{ l('settings.showSigninNotifications') }}
+          </label>
+        </div>
+      </div>
+      <div class="mb-3">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
             id="horizonNotifyFriendSignIn"
+            :disabled="!horizonShowSigninNotifications"
             v-model="horizonNotifyFriendSignIn"
           />
           <label class="form-check-label" for="horizonNotifyFriendSignIn">
             {{ l('settings.notifyFriendSignIn') }}
           </label>
+        </div>
+      </div>
+      <div class="mb-3">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="horizonShowDuplicateStatusNotifications"
+            v-model="horizonShowDuplicateStatusNotifications"
+          />
+          <label
+            class="form-check-label"
+            for="horizonShowDuplicateStatusNotifications"
+          >
+            {{ l('settings.showDuplicateStatusNotifications') }}
+          </label>
+          <div class="form-text text-muted">
+            {{ l('settings.showDuplicateStatusNotifications.note') }}
+          </div>
         </div>
       </div>
       <div class="mb-3">
@@ -1039,6 +1072,8 @@
     horizonGenderMarkerOrigColor!: boolean;
     horizonChangeOfflineColor!: boolean;
     horizonNotifyFriendSignIn!: boolean;
+    horizonShowSigninNotifications!: boolean;
+    horizonShowDuplicateStatusNotifications!: boolean;
     horizonHighlightUsers!: string;
     chatLayoutMode!: 'classic' | 'modern';
     messageGrouping!: boolean;
@@ -1113,6 +1148,10 @@
         settings.horizonSaveDraftMessagesToDiskTimer.toString();
 
       this.horizonNotifyFriendSignIn = settings.horizonNotifyFriendSignIn;
+      this.horizonShowSigninNotifications =
+        settings.horizonShowSigninNotifications;
+      this.horizonShowDuplicateStatusNotifications =
+        settings.horizonShowDuplicateStatusNotifications;
       this.horizonHighlightUsers = settings.horizonHighlightUsers.join(',');
       this.risingFilter = settings.risingFilter;
 
@@ -1229,6 +1268,9 @@
         horizonGenderMarkerOrigColor: this.horizonGenderMarkerOrigColor,
         horizonChangeOfflineColor: this.horizonChangeOfflineColor,
         horizonNotifyFriendSignIn: this.horizonNotifyFriendSignIn,
+        horizonShowSigninNotifications: this.horizonShowSigninNotifications,
+        horizonShowDuplicateStatusNotifications:
+          this.horizonShowDuplicateStatusNotifications,
         horizonHighlightUsers: this.horizonHighlightUsers
           .split(',')
           .map(x => x.trim())
