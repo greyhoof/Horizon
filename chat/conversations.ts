@@ -33,6 +33,28 @@ import isChannel = Interfaces.isChannel;
  */
 const CONVERSATION_CACHE_UPDATE_FREQ_IN_MS = 1000;
 
+
+function shouldEnableLogging(
+  conversation: Interfaces.Conversation,
+  isAd: boolean = false
+): boolean {
+  const loggingSetting = conversation.settings.enableLogging;
+  
+  // If explicitly set to True or False, use that
+  if (loggingSetting === Interfaces.Setting.True) {
+    return true;
+  }
+  if (loggingSetting === Interfaces.Setting.False) {
+    return false;
+  }
+  
+  // Otherwise (Default), use global settings
+  if (isAd) {
+    return core.state.settings.logAds;
+  }
+  return core.state.settings.logMessages;
+}
+
 function createMessage(
   this: any,
   type: MessageType,
@@ -285,7 +307,7 @@ class PrivateConversation
 
     this.safeAddMessage(message);
     if (message.type !== Interfaces.Message.Type.Event) {
-      if (core.state.settings.logMessages)
+      if (shouldEnableLogging(this, false))
         await core.logs.logMessage(this, message);
       if (
         this.settings.notify !== Interfaces.Setting.False &&
@@ -396,7 +418,7 @@ class PrivateConversation
       );
       this.safeAddMessage(message);
 
-      if (core.state.settings.logMessages)
+      if (shouldEnableLogging(this, false))
         await core.logs.logMessage(this, message);
       this.markRead();
     });
@@ -519,13 +541,13 @@ class ChannelConversation
 
     if (message.type === MessageType.Ad) {
       this.addModeMessage('ads', message);
-      if (core.state.settings.logAds) await core.logs.logMessage(this, message);
+      if (shouldEnableLogging(this, true)) await core.logs.logMessage(this, message);
     } else {
       this.addModeMessage('chat', message);
       if (message.type !== Interfaces.Message.Type.Event) {
         if (message.type === Interfaces.Message.Type.Warn)
           this.addModeMessage('ads', message);
-        if (core.state.settings.logMessages)
+        if (shouldEnableLogging(this, false))
           await core.logs.logMessage(this, message);
         if (
           this.unread === Interfaces.UnreadState.None &&
@@ -688,7 +710,7 @@ class ConsoleConversation extends Conversation {
 
   async addMessage(message: Interfaces.Message): Promise<void> {
     this.safeAddMessage(message);
-    if (core.state.settings.logMessages)
+    if (shouldEnableLogging(this, false))
       await core.logs.logMessage(this, message);
     if (this !== state.selectedConversation || !state.windowFocused)
       this.unread = Interfaces.UnreadState.Unread;
@@ -936,10 +958,12 @@ export async function testSmartFilterForPrivateMessage(
     core.state.settings.risingFilter.hidePrivateMessages &&
     firstTime // subsequent messages bypass this filter on purpose
   ) {
-    if (core.state.settings.logMessages && originalMessage && firstTime) {
-      await withNeutralVisibilityPrivateConversation(fromChar, async p =>
-        core.logs.logMessage(p, originalMessage)
-      );
+    if (originalMessage && firstTime) {
+      await withNeutralVisibilityPrivateConversation(fromChar, async p => {
+        if (shouldEnableLogging(p, false)) {
+          await core.logs.logMessage(p, originalMessage);
+        }
+      });
     }
 
     return true;

@@ -101,6 +101,26 @@
         </option>
       </select>
     </div>
+    <div class="mb-3">
+      <label class="control-label" :for="'enableLogging' + conversation.key">{{
+        l('conversationSettings.enableLogging')
+      }}</label>
+      <select
+        class="form-select"
+        :id="'enableLogging' + conversation.key"
+        v-model="enableLogging"
+      >
+        <option :value="setting.Default">
+          {{ l('conversationSettings.default') }}
+        </option>
+        <option :value="setting.True">
+          {{ l('conversationSettings.true') }}
+        </option>
+        <option :value="setting.False">
+          {{ l('conversationSettings.false') }}
+        </option>
+      </select>
+    </div>
   </modal>
 </template>
 
@@ -125,6 +145,7 @@
     horizonHighlightUsers!: string;
     joinMessages!: Conversation.Setting;
     defaultHighlights!: boolean;
+    enableLogging!: Conversation.Setting;
 
     load(): void {
       const settings = this.conversation.settings;
@@ -134,6 +155,7 @@
       this.joinMessages = settings.joinMessages;
       this.defaultHighlights = settings.defaultHighlights;
       this.horizonHighlightUsers = settings.horizonHighlightUsers.join(',');
+      this.enableLogging = settings.enableLogging;
     }
 
     submit(): void {
@@ -151,7 +173,8 @@
 
         joinMessages: this.joinMessages,
         defaultHighlights: this.defaultHighlights,
-        adSettings: this.conversation.settings.adSettings
+        adSettings: this.conversation.settings.adSettings,
+        enableLogging: this.enableLogging
       };
     }
   }

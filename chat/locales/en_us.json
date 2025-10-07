@@ -321,6 +321,7 @@
   "conversation.memoLabel": "Memo:",
   "conversationSettings.action": "Edit settings for {0}",
   "conversationSettings.default": "Default",
+  "conversationSettings.enableLogging": "Enable logging",
   "conversationSettings.false": "No",
   "conversationSettings.notify": "Notify for messages",
   "conversationSettings.save": "Save settings",
