@@ -13,8 +13,6 @@ const params = <{ [key: string]: string | undefined }>(
 const settings = <GeneralSettings>JSON.parse(params['settings']!);
 const importHint = params['import'];
 
-log.info('[window.ts] importHint:', importHint);
-
 const logLevel = process.env.NODE_ENV === 'production' ? 'info' : 'silly';
 
 log.transports.file.level = settings.risingSystemLogLevel || logLevel;

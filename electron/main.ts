@@ -965,8 +965,6 @@ async function onReady(): Promise<void> {
   electron.ipcMain.on(
     'browser-option-update',
     (_e, _path: string, _args: string) => {
-      log.debug('Browser Path settings update:', _path, _args);
-      // store the new path and args in our general settings
       settings.browserPath = _path;
       settings.browserArgs = _args;
       setGeneralSettings(settings);

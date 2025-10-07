@@ -204,7 +204,7 @@ export function createMainWindow(
   ImporterHint: ImporterHint,
   baseDir: string
 ): electron.BrowserWindow | undefined {
-  log.info('[browser_windows] createMainWindow ImporterHint:', ImporterHint);
+  log.info('browser_windows.createMainWindow', { ImporterHint });
   if (tabCount >= maxTabCount) return;
   const lastState = windowState.getSavedWindowState();
 
@@ -302,7 +302,7 @@ export function createMainWindow(
     settings: JSON.stringify(settings),
     import: ImporterHint === 'none' ? '' : ImporterHint
   };
-  log.info('[browser_windows] loadFile query.import:', query.import);
+  log.info('browser_windows.loadFile', { import: query.import });
   window.loadFile(path.join(__dirname, 'window.html'), { query });
 
   setUpWebContents(window.webContents, settings);
