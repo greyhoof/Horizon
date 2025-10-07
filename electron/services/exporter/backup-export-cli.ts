@@ -13,7 +13,8 @@ export interface ExportCliOptions {
   includePinnedEicons: boolean;
   includeRecents: boolean;
   includeHidden: boolean;
-  characters?: string[]; // if omitted, auto-detect all characters in dataDir
+  characters?: string[]; 
+  dryRun?: boolean;
 }
 
 function getCharacters(dataDir: string, filter?: string[]): string[] {
@@ -134,20 +135,47 @@ export async function runExportCli(opts: ExportCliOptions): Promise<{
   if (!dataDir || !fs.existsSync(dataDir))
     throw new Error(`Data directory not found: ${dataDir}`);
 
-  // Create archiver instance
+  const characters = getCharacters(dataDir, opts.characters);
+
+  // Are we dryrunning? If so, let's spit out more details.
+  if (opts.dryRun) {
+    console.log('=== DRY RUN MODE - No files will be written ===');
+    console.log(`Output file: ${opts.out}`);
+    console.log('');
+    
+    console.log('Export options:');
+    const generalSettingsFile = path.join(dataDir, 'settings');
+    const hasGeneral = fs.existsSync(generalSettingsFile);
+    console.log(`  - General settings: ${opts.includeGeneral && hasGeneral ? 'YES' : 'NO'}`);
+    console.log(`  - Character settings: ${opts.includeCharacterSettings ? 'YES' : 'NO'}`);
+    console.log(`  - Chat logs: ${opts.includeLogs ? 'YES' : 'NO'}`);
+    console.log(`  - Message drafts: ${opts.includeDrafts ? 'YES' : 'NO'}`);
+    console.log(`  - Pinned conversations: ${opts.includePinnedConversations ? 'YES' : 'NO'}`);
+    console.log(`  - Pinned eicons: ${opts.includePinnedEicons ? 'YES' : 'NO'}`);
+    console.log(`  - Recent conversations: ${opts.includeRecents ? 'YES' : 'NO'}`);
+    console.log(`  - Hidden users: ${opts.includeHidden ? 'YES' : 'NO'}`);
+    console.log('');
+    
+    console.log(`Characters (${characters.length}):`);
+    if (characters.length > 0) {
+      characters.forEach(char => console.log(`  - ${char}`));
+    } else {
+      console.log('  (none found)');
+    }
+    
+    return { characters, out: opts.out };
+  }
+// This creates the archiver instance
   const archive = archiver('zip', {
     zlib: { level: 6 }
   });
 
-  // Ensure output directory exists
   const outDir = path.dirname(opts.out);
   fs.mkdirSync(outDir, { recursive: true });
 
-  // Create write stream
   const output = fs.createWriteStream(opts.out);
   archive.pipe(output);
 
-  // Add general settings
   if (opts.includeGeneral) {
     const generalSettingsFile = path.join(dataDir, 'settings');
     if (fs.existsSync(generalSettingsFile)) {
@@ -155,13 +183,10 @@ export async function runExportCli(opts: ExportCliOptions): Promise<{
     }
   }
 
-  // Add all characters
-  const characters = getCharacters(dataDir, opts.characters);
   for (const c of characters) {
     addCharacterToArchive(archive, dataDir, c, opts);
   }
 
-  // Set up promise before finalizing to ensure we don't miss events
   const result = new Promise<{ characters: string[]; out: string }>(
     (resolve, reject) => {
       output.on('close', () => {

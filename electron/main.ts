@@ -34,7 +34,6 @@ remoteMain.initialize();
 
 const characters: string[] = [];
 
-// Simple CLI support: allow headless export/import when running the packaged executable from a shell
 async function tryHandleCli(): Promise<boolean> {
   const argv = process.argv.slice(1);
   const command = argv[0];
@@ -64,6 +63,7 @@ EXPORT FLAGS:
   --data-dir <path>       Data directory (default: userData/data)
   --out <path>            Output ZIP file path (default: ./horizon-export.zip)
   --characters <list>     Comma-separated list of characters to export (default: all)
+  -n, --dry-run           Perform a dry run without creating the actual export
   --include-general       Include general settings (default: true)
   --include-character-settings    Include character settings (default: true)
   --include-logs          Include chat logs (default: true)
@@ -77,6 +77,7 @@ IMPORT FLAGS:
   --zip <path>            ZIP file to import (required)
   --data-dir <path>       Data directory (default: userData/data)
   --characters <list>     Comma-separated list of characters to import (default: all)
+  -n, --dry-run           Perform a dry run without modifying any files
   --overwrite             Overwrite existing files (default: false)
   --include-general       Include general settings (default: true)
   --include-character-settings    Include character settings (default: true)
@@ -94,11 +95,17 @@ EXAMPLES:
   # Export only logs for specific characters
   horizon export --characters "CharName1,CharName2" --include-logs
 
+  # Dry run to see what would be exported
+  horizon export --dry-run --out ~/backup.zip
+
   # Import from a backup
   horizon import --zip ~/backup.zip --data-dir ~/.config/horizon/data
 
   # Import with overwrite
   horizon import --zip ~/backup.zip --overwrite
+
+  # Dry run to see what would be imported
+  horizon import --zip ~/backup.zip --dry-run
 
   # Start GUI with DevTools
   horizon --devtools
@@ -116,6 +123,7 @@ EXAMPLES:
     const out = get('--out') || path.join(process.cwd(), 'horizon-export.zip');
     const include = (f: string, d = false) => (has(f) ? true : d);
     const chars = get('--characters')?.split(',').filter(Boolean);
+    const dryRun = has('-n') || has('--dry-run');
     const exportResult = await runExportCli({
       dataDir,
       out,
@@ -130,12 +138,14 @@ EXAMPLES:
       includePinnedEicons: include('--include-pinned-eicons', true),
       includeRecents: include('--include-recents', true),
       includeHidden: include('--include-hidden', true),
-      characters: chars
+      characters: chars,
+      dryRun
     });
     // Emit a simple summary for cron logs
     console.log(
       JSON.stringify({
         op: 'export',
+        dryRun,
         out: exportResult.out,
         characters: exportResult.characters.length
       })
@@ -156,6 +166,7 @@ EXAMPLES:
     const include = (f: string, d = false) => (has(f) ? true : d);
     const chars = get('--characters')?.split(',').filter(Boolean);
     const overwrite = has('--overwrite');
+    const dryRun = has('-n') || has('--dry-run');
     const importResult = await runImportCli({
       zip,
       dataDir,
@@ -171,11 +182,13 @@ EXAMPLES:
       includeRecents: include('--include-recents', true),
       includeHidden: include('--include-hidden', true),
       overwrite,
-      characters: chars
+      characters: chars,
+      dryRun
     });
     console.log(
       JSON.stringify({
         op: 'import',
+        dryRun,
         zip,
         touchedCharacters: importResult.touchedCharacters.length,
         generalImported: importResult.generalImported

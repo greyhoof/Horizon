@@ -14,7 +14,8 @@ export interface ImportCliOptions {
   includeRecents: boolean;
   includeHidden: boolean;
   overwrite: boolean;
-  characters?: string[]; // if omitted, detect from ZIP
+  characters?: string[];
+  dryRun?: boolean;
 }
 
 function getSafeDestination(
@@ -194,15 +195,69 @@ export async function runImportCli(opts: ImportCliOptions): Promise<{
 }> {
   const dataDir = opts.dataDir;
   if (!dataDir) throw new Error('No data dir provided');
-  fs.mkdirSync(dataDir, { recursive: true });
 
   const zip = new AdmZip(opts.zip);
-  const generalImported = importGeneralSettingsFromZip(zip, dataDir, opts);
 
   const wantedChars =
     opts.characters && opts.characters.length > 0
       ? opts.characters
       : detectCharacters(zip, opts.characters);
+
+  if (opts.dryRun) {
+    console.log('=== DRY RUN MODE - No files will be modified ===');
+    console.log(`Source ZIP: ${opts.zip}`);
+    console.log(`Target directory: ${dataDir}`);
+    console.log('');
+    
+    console.log('Import options:');
+    const general = zip.getEntry('settings');
+    const hasGeneral = general !== null;
+    const generalExists = fs.existsSync(path.join(dataDir, 'settings'));
+    
+    let generalStatus = opts.includeGeneral && hasGeneral ? 'YES' : 'NO';
+    if (opts.includeGeneral && hasGeneral && generalExists) {
+      const action = opts.overwrite ? 'OVERWRITE' : 'SKIP';
+      generalStatus += ` (would ${action} existing)`;
+    }
+    console.log(`  - General settings: ${generalStatus}`);
+    console.log(`  - Character settings: ${opts.includeCharacterSettings ? 'YES' : 'NO'}`);
+    console.log(`  - Chat logs: ${opts.includeLogs ? 'YES' : 'NO'}`);
+    console.log(`  - Message drafts: ${opts.includeDrafts ? 'YES' : 'NO'}`);
+    console.log(`  - Pinned conversations: ${opts.includePinnedConversations ? 'YES' : 'NO'}`);
+    console.log(`  - Pinned eicons: ${opts.includePinnedEicons ? 'YES' : 'NO'}`);
+    console.log(`  - Recent conversations: ${opts.includeRecents ? 'YES' : 'NO'}`);
+    console.log(`  - Hidden users: ${opts.includeHidden ? 'YES' : 'NO'}`);
+    console.log(`  - Overwrite mode: ${opts.overwrite ? 'ENABLED' : 'DISABLED'}`);
+    console.log('');
+    
+    console.log(`Characters in ZIP (${wantedChars.length}):`);
+    if (wantedChars.length > 0) {
+      for (const char of wantedChars) {
+        const charDir = path.join(dataDir, char);
+        const exists = fs.existsSync(charDir);
+        let charStatus = char;
+        if (exists) {
+          const action = opts.overwrite ? 'overwrite' : 'merge';
+          charStatus += ` (exists, would ${action})`;
+        } else {
+          charStatus += ' (new)';
+        }
+        console.log(`  - ${charStatus}`);
+      }
+    } else {
+      console.log('  (none found)');
+    }
+    
+    return {
+      touchedCharacters: wantedChars,
+      generalImported: opts.includeGeneral && hasGeneral
+    };
+  }
+
+  fs.mkdirSync(dataDir, { recursive: true });
+
+  const generalImported = importGeneralSettingsFromZip(zip, dataDir, opts);
+
   const allowed = new Set<string>(wantedChars);
 
   const stats = {
