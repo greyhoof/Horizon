@@ -22,7 +22,7 @@ import l from '../chat/localize';
  */
 const maxTabCount = process.env.NODE_ENV === 'production' ? 3 : 5;
 
-type ImporterHint = 'auto' | 'vanilla' | 'advanced' | 'slimcat' | undefined;
+type ImporterHint = 'auto' | 'vanilla' | 'advanced' | 'slimcat' | 'none';
 
 /**
  * Used to store the mapping of character names to their respective web contents from a tab.
@@ -300,7 +300,7 @@ export function createMainWindow(
   // tslint:disable-next-line:no-floating-promises
   const query = {
     settings: JSON.stringify(settings),
-    import: ImporterHint ?? ''
+    import: ImporterHint === 'none' ? '' : ImporterHint
   };
   log.info('[browser_windows] loadFile query.import:', query.import);
   window.loadFile(path.join(__dirname, 'window.html'), { query });
@@ -584,7 +584,7 @@ export function createSettingsWindow(
   browserWindow.loadFile(path.join(__dirname, 'settings.html'), {
     query: {
       settings: JSON.stringify(settings),
-      import: ImporterHint ?? ''
+      import: ImporterHint === 'none' ? '' : ImporterHint
     }
   });
 
@@ -651,7 +651,7 @@ export function createChangelogWindow(
   browserWindow.loadFile(path.join(__dirname, 'changelog.html'), {
     query: {
       settings: JSON.stringify(settings),
-      import: ImporterHint ?? '',
+      import: ImporterHint === 'none' ? '' : ImporterHint,
       updateVer: updateVer || ''
     }
   });
@@ -716,7 +716,7 @@ export function createExporterWindow(
   browserWindow.loadFile(path.join(__dirname, 'exporter.html'), {
     query: {
       settings: JSON.stringify(settings),
-      import: importHint ?? ''
+      import: importHint === 'none' ? '' : importHint
     }
   });
 

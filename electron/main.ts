@@ -384,7 +384,7 @@ async function onReady(): Promise<void> {
 
   app.setAppUserModelId('net.flist.fchat');
   app.on('open-file', () => {
-    browserWindows.createMainWindow(settings, undefined, baseDir);
+    browserWindows.createMainWindow(settings, 'none', baseDir);
   });
   const configurePermissionPolicy = (
     targetSession: electron.Session | null,
@@ -613,7 +613,7 @@ async function onReady(): Promise<void> {
             click: (_m: electron.MenuItem, w: electron.BrowserWindow) => {
               let win = w || electron.BrowserWindow.getFocusedWindow();
               if (!win) return;
-              browserWindows.createChangelogWindow(settings, undefined, win);
+              browserWindows.createChangelogWindow(settings, 'none', win);
             }
           },
           { type: 'separator' },
@@ -621,7 +621,7 @@ async function onReady(): Promise<void> {
             label: l('action.newWindow'),
             click: () => {
               if (hasCompletedUpgrades)
-                browserWindows.createMainWindow(settings, undefined, baseDir);
+                browserWindows.createMainWindow(settings, 'none', baseDir);
             },
             accelerator: 'CmdOrCtrl+n'
           },
@@ -638,7 +638,7 @@ async function onReady(): Promise<void> {
             click: (_m, window: electron.BrowserWindow) => {
               browserWindows.createSettingsWindow(
                 settings,
-                shouldImportSettings ? 'auto' : undefined,
+                shouldImportSettings ? 'auto' : 'none',
                 window
               );
             },
@@ -648,7 +648,7 @@ async function onReady(): Promise<void> {
           {
             label: l('settings.export.title'),
             click: (_m, window: electron.BrowserWindow) => {
-              browserWindows.createExporterWindow(settings, undefined, window);
+              browserWindows.createExporterWindow(settings, 'none', window);
             }
           },
           {
@@ -835,7 +835,7 @@ async function onReady(): Promise<void> {
     (_event: IpcMainEvent, updateVersion: string) => {
       browserWindows.createChangelogWindow(
         settings,
-        undefined,
+        'none',
         electron.BrowserWindow.getFocusedWindow()!,
         updateVersion
       );
@@ -844,7 +844,7 @@ async function onReady(): Promise<void> {
   electron.ipcMain.on('open-settings-menu', (_event: IpcMainEvent) => {
     browserWindows.createSettingsWindow(
       settings,
-      undefined,
+      'none',
       electron.BrowserWindow.getFocusedWindow()!
     );
   });
@@ -1009,13 +1009,13 @@ async function onReady(): Promise<void> {
 
   let window = browserWindows.createMainWindow(
     settings,
-    shouldImportSettings ? 'auto' : undefined,
+    shouldImportSettings ? 'auto' : 'none',
     baseDir
   );
   if (showChangelogOnBoot && window) {
     browserWindows.createChangelogWindow(
       settings,
-      shouldImportSettings ? 'auto' : undefined,
+      shouldImportSettings ? 'auto' : 'none',
       window
     );
     showChangelogOnBoot = false;
@@ -1043,7 +1043,7 @@ else
     });
   });
 app.on('second-instance', () => {
-  browserWindows.createMainWindow(settings, undefined, baseDir);
+  browserWindows.createMainWindow(settings, 'none', baseDir);
 });
 app.on('before-quit', (event: Event) => {
   if (characters.length !== 0) {
