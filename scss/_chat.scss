@@ -498,13 +498,14 @@
       //this doesn't look very pretty, but the point is to be obvious, so we'll leave this commented for now
       //background-color: var(--bs-danger-bg-subtle);
       color: $light;
-      border-left-color: $danger;
+      //I always want the border to be lighter for this, not have it somehow be a theme thing.
+      border-left-color: color.change(mix(#ffffff, $danger, 4 * 8%));
       .message-time {
         color: color-contrast($danger);
       }
     }
     &.message-own {
-      border-left-color: $info;
+      border-left-color: $gray-500;
     }
     &.message-highlight {
       border-left-color: $success;
