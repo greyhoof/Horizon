@@ -58,6 +58,7 @@ export class GeneralSettings {
   use12HourTime: boolean = false;
   showSeconds: boolean = false;
   fuzzyDates: boolean = true;
+  allowWindowTransparency: boolean = false;
   horizonForceAsciiProfiles: boolean = false;
 }
 

@@ -212,6 +212,7 @@ export function createMainWindow(
     center: lastState.x === undefined,
     show: false,
     icon: process.platform === 'win32' ? winIcon : pngIcon,
+    transparent: settings.allowWindowTransparency,
     webPreferences: {
       webviewTag: true,
       nodeIntegration: true,

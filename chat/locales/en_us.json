@@ -580,6 +580,8 @@
   "settings.customCss": "Custom user stylesheet",
   "settings.customCss.css": "Custom CSS",
   "settings.customCss.enabled": "Use custom CSS",
+  "settings.customCss.transparency": "Allow window transparency effects",
+  "settings.customCss.transparency.note": "Allows you to set elements like \"<body>\" to have (semi-)transparent effects using CSS. You will need to restart the app for this setting to take effect.",
   "settings.customCss.warning": "Warning: Don't enter anything in here from people you do not fully trust.",
   "settings.dangerZone": "Danger Zone!",
   "settings.defaultHighlights": "Use global highlight words",

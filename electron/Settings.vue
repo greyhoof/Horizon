@@ -740,6 +740,34 @@
                       </label>
                     </div>
                   </label>
+                </div>
+                <div class="mb-3">
+                  <label class="control-label" for="windowTransparency">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        v-model="settings.allowWindowTransparency"
+                        type="checkbox"
+                        :disabled="!settings.horizonCustomCssEnabled"
+                        id="windowTransparency"
+                        aria-describedby="windowTransparencyNote"
+                      />
+                      <label class="form-check-label" for="windowTransparency">
+                        {{
+                          l(
+                            'settings.experimental',
+                            l('settings.customCss.transparency')
+                          )
+                        }}
+                      </label>
+                    </div>
+                    <div
+                      id="windowTransparencyNote"
+                      class="form-text text-muted"
+                    >
+                      {{ l('settings.customCss.transparency.note') }}
+                    </div>
+                  </label>
 
                   <label for="customCss" class="control-label label-full"
                     >{{ l('settings.customCss.css') }}
