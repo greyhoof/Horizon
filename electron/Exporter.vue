@@ -155,7 +155,7 @@
                       {{
                         allExportCharactersSelected
                           ? l('settings.import.deselectAll')
-                          : l('settings.import.selectAll')
+                          : l('action.selectAll')
                       }}
                     </button>
                   </div>
@@ -435,7 +435,7 @@
                         {{
                           allImportCharactersSelected
                             ? l('settings.import.deselectAll')
-                            : l('settings.import.selectAll')
+                            : l('action.selectAll')
                         }}
                       </button>
                     </div>
@@ -664,7 +664,7 @@
                         {{
                           allVanillaCharactersSelected
                             ? l('settings.import.deselectAll')
-                            : l('settings.import.selectAll')
+                            : l('action.selectAll')
                         }}
                       </button>
                     </div>

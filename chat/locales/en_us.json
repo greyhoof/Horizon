@@ -627,7 +627,6 @@
   "settings.import": "Import settings",
   "settings.import.confirm": "You are importing settings from your character {0}.\nThis will overwrite any and all settings, pinned conversations and conversation settings of character {1}.\nLogs and recent conversations will not be touched.\nYou will be logged out. Once you log back in, the settings will have been imported.\nAre you sure?",
   "settings.import.selectCharacter": "Select a character",
-  "settings.import.selectAll": "Select all",
   "settings.import.deselectAll": "Deselect all",
   "settings.import.charactersLegend": "Characters",
   "settings.import.inProgress": "Importing…",
