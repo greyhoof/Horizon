@@ -292,6 +292,9 @@ export namespace Settings {
     readonly horizonShowCustomCharacterColors: boolean;
     readonly horizonShowDeveloperBadges: boolean;
     readonly horizonShowGenderMarker: boolean;
+    readonly horizonAutoGenderFilter: boolean;
+    readonly horizonSavedGenderFilters: ReadonlyArray<string>;
+    readonly horizonSavedMembersSort: string;
     readonly horizonGenderMarkerOrigColor: boolean;
     readonly horizonChangeOfflineColor: boolean;
     readonly horizonNotifyFriendSignIn: boolean;
