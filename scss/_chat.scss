@@ -2,6 +2,8 @@
 :root {
   --message-bg: none;
 }
+
+$bookmark-color: #66cc33 !default;
 // Global contrast overrides for active states
 .list-group-item.active,
 .nav-pills .nav-link.active,
@@ -290,6 +292,7 @@
 .user-view {
   cursor: pointer;
   font-weight: 600;
+  color: var(--gender-color);
 }
 
 .userlist-item {
@@ -549,11 +552,11 @@ $genders: (
 
 @each $gender, $color in $genders {
   .gender-#{$gender} {
-    color: $color;
+    --gender-color: #{$color};
   }
 
   .message-event .gender-#{$gender} {
-    color: color.scale($color, $lightness: 5%);
+    --gender-color: #{color.scale($color, $lightness: 5%)};
   }
 }
 
@@ -561,17 +564,17 @@ $genders: (
 .vanillaGenderColors {
   @each $gender, $color in $genders {
     .gender-#{$gender} {
-      color: $color;
+      --gender-color: #{$color};
     }
 
     .message-event .gender-#{$gender} {
-      color: color.scale($color, $lightness: 5%);
+      --gender-color: #{color.scale($color, $lightness: 5%)};
     }
+  }
 
-    .gender-#{$gender}.user-bookmark,
-    .message-event .gender-#{$gender}.user-bookmark {
-      color: #66cc33;
-    }
+  .user-bookmark,
+  .message-event .user-bookmark {
+    color: #66cc33;
   }
 }
 
@@ -593,13 +596,13 @@ $genders: (
     )
 {
   .#{$colorName}NameText {
-    color: $colorValue;
+    color: var(--text-color, #{$colorValue});
   }
 }
 
 .user-bookmark,
 .message-event .user-bookmark {
-  color: #66cc33;
+  color: $bookmark-color;
 }
 
 #character-page-sidebar {

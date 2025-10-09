@@ -19,6 +19,8 @@ $brown-color: #b89383;
 $pink-color: $dracula-pink;
 $gray-color: $gray-600;
 $orange-color: $dracula-orange;
+
+$bookmark-color: color.scale($green-color, $lightness: 20%) !default;
 // Apply variables to theme.
 @import '../chat';
 
@@ -45,16 +47,11 @@ $genders: (
 
 @each $gender, $color in $genders {
   .gender-#{$gender} {
-    color: $color;
+    --gender-color: #{$color};
   }
 
   .message-event .gender-#{$gender} {
-    color: color.scale($color, $lightness: 5%);
-  }
-
-  .gender-#{$gender}.user-bookmark,
-  .message-event .gender-#{$gender}.user-bookmark {
-    color: color.scale($green-color, $lightness: 20%);
+    --gender-color: #{color.scale($color, $lightness: 5%)};
   }
 }
 
@@ -145,7 +142,6 @@ $genders: (
     color: #5f1ebc;
   }
 }
-
 :root {
   color-scheme: dark;
 }

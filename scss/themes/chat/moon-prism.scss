@@ -18,6 +18,7 @@ $brown-color: $moon-prism-orange;
 $pink-color: $moon-prism-pink;
 $gray-color: $moon-prism-silver;
 $orange-color: $moon-prism-orange;
+$bookmark-color: color.scale($green-color, $lightness: 20%);
 
 @import '../chat';
 
@@ -66,11 +67,11 @@ $genders: (
 
 @each $gender, $color in $genders {
   .gender-#{$gender} {
-    color: $color;
+    --gender-color: #{$color};
   }
 
   .message-event .gender-#{$gender} {
-    color: color.scale($color, $lightness: 5%);
+    --gender-color: #{color.scale($color, $lightness: 5%)};
   }
 }
 
