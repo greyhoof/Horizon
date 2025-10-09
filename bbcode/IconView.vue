@@ -10,7 +10,7 @@
     @click.right.passive="dismiss(true)"
     @click.left.passive="dismiss(true)"
     ><img
-      :src="characterImage(character.name)"
+      :src="characterImage(character.name, useOriginalAvatar)"
       class="character-avatar icon"
       id="img"
       :title="character.name"
@@ -34,6 +34,9 @@
 
     @Prop({ required: true })
     readonly character!: Character;
+
+    @Prop()
+    readonly useOriginalAvatar: boolean = false;
 
     @Hook('mounted')
     mounted(): void {

@@ -644,6 +644,7 @@
   "settings.messageGrouping": "Group messages together in modern layout",
   "settings.messageGrouping.description": "Remove separators between recent messages from same sender.",
   "settings.messageSeparators": "Display separators between messages",
+  "settings.messagePortraitHighQuality": "Show high-quality portraits next to messages and conversations",
   "settings.minAge": "Characters younger than (years)",
   "settings.misc": "Misc",
   "settings.notifications": "Show desktop/push notifications",

@@ -157,7 +157,12 @@
             @click.middle.prevent.stop="conversation.close()"
           >
             <img
-              :src="characterImage(conversation.character.name)"
+              :src="
+                characterImage(
+                  conversation.character.name,
+                  !coreState.settings.horizonMessagePortraitHighQuality
+                )
+              "
               v-if="showAvatars"
             />
             <div class="name">

@@ -590,6 +590,24 @@
       </div>
 
       <div class="mb-3">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="horizonMessagePortraitHighQuality"
+            v-model="horizonMessagePortraitHighQuality"
+            :disabled="!risingShowHighQualityPortraits"
+          />
+          <label
+            class="form-check-label"
+            for="horizonMessagePortraitHighQuality"
+          >
+            {{ l('settings.messagePortraitHighQuality') }}
+          </label>
+        </div>
+      </div>
+
+      <div class="mb-3">
         <label class="control-label" for="chatLayoutMode">{{
           l('settings.experimental', l('settings.chatLayoutMode'))
         }}</label>
@@ -1066,6 +1084,7 @@
     risingShowPortraitNearInput!: boolean;
     risingShowPortraitInMessage!: boolean;
     risingShowHighQualityPortraits!: boolean;
+    horizonMessagePortraitHighQuality!: boolean;
     horizonShowCustomCharacterColors!: boolean;
     horizonShowDeveloperBadges!: boolean;
     horizonShowGenderMarker!: boolean;
@@ -1133,6 +1152,8 @@
       this.risingShowPortraitInMessage = settings.risingShowPortraitInMessage;
       this.risingShowHighQualityPortraits =
         settings.risingShowHighQualityPortraits;
+      this.horizonMessagePortraitHighQuality =
+        settings.horizonMessagePortraitHighQuality;
       this.horizonShowCustomCharacterColors =
         settings.horizonShowCustomCharacterColors;
       this.horizonShowDeveloperBadges = settings.horizonShowDeveloperBadges;
@@ -1262,6 +1283,8 @@
         risingShowPortraitNearInput: this.risingShowPortraitNearInput,
         risingShowPortraitInMessage: this.risingShowPortraitInMessage,
         risingShowHighQualityPortraits: this.risingShowHighQualityPortraits,
+        horizonMessagePortraitHighQuality:
+          this.horizonMessagePortraitHighQuality,
         horizonShowCustomCharacterColors: this.horizonShowCustomCharacterColors,
         horizonShowDeveloperBadges: this.horizonShowDeveloperBadges,
         horizonShowGenderMarker: this.horizonShowGenderMarker,

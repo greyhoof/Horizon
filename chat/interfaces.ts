@@ -292,6 +292,7 @@ export namespace Settings {
     readonly risingShowPortraitNearInput: boolean;
     readonly risingShowPortraitInMessage: boolean;
     readonly risingShowHighQualityPortraits: boolean;
+    readonly horizonMessagePortraitHighQuality: boolean;
     readonly horizonShowCustomCharacterColors: boolean;
     readonly horizonShowDeveloperBadges: boolean;
     readonly horizonShowGenderMarker: boolean;
