@@ -2,6 +2,23 @@ import fs from 'fs';
 import path from 'path';
 import AdmZip from 'adm-zip';
 
+/**
+ * Configuration options for CLI-based import operations.
+ *
+ * @property zip - Absolute path to the ZIP backup file to import from
+ * @property dataDir - Absolute path to the Horizon data directory where data will be imported
+ * @property includeGeneral - Whether to import general application settings
+ * @property includeCharacterSettings - Whether to import all character-specific settings files
+ * @property includeLogs - Whether to import chat log history for characters
+ * @property includeDrafts - Whether to import message drafts for characters
+ * @property includePinnedConversations - Whether to import pinned conversations (even when not importing all settings)
+ * @property includePinnedEicons - Whether to import favorite eicons (even when not importing all settings)
+ * @property includeRecents - Whether to import recent conversations and channels (even when not importing all settings)
+ * @property includeHidden - Whether to import hidden users list (even when not importing all settings)
+ * @property overwrite - If true, existing files will be overwritten. If false, existing files are preserved
+ * @property characters - Optional array of character names to import. If undefined or empty, imports all characters found in ZIP
+ * @property dryRun - If true, shows what would be imported without actually writing any files
+ */
 export interface ImportCliOptions {
   zip: string;
   dataDir: string;
@@ -307,6 +324,14 @@ function performActualImport(
   };
 }
 
+/**
+ * Executes a command-line import of Horizon user data from a ZIP backup file.
+ * Supports both dry-run mode (preview only) and actual import with selective data import and conflict handling.
+ *
+ * @param opts - Configuration options specifying what to import and how to handle conflicts
+ * @returns A promise that resolves with the list of imported characters and whether general settings were imported
+ * @throws {Error} If the data directory is not provided or the ZIP file cannot be opened
+ */
 export async function runImportCli(opts: ImportCliOptions): Promise<{
   touchedCharacters: string[];
   generalImported: boolean;

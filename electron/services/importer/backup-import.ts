@@ -5,6 +5,19 @@ import { ipcRenderer } from 'electron';
 import log from 'electron-log';
 import AdmZip from 'adm-zip';
 
+/**
+ * Information about a character found in a Horizon backup ZIP file.
+ *
+ * @property name - Character name
+ * @property selected - Whether this character is selected for import
+ * @property hasLogs - Whether the backup contains chat logs for this character
+ * @property hasSettings - Whether the backup contains settings files for this character
+ * @property hasPinnedConversations - Whether the backup contains pinned conversations for this character
+ * @property hasPinnedEicons - Whether the backup contains pinned/favorite eicons for this character
+ * @property hasRecents - Whether the backup contains recent conversations/channels for this character
+ * @property hasHidden - Whether the backup contains hidden users list for this character
+ * @property hasDrafts - Whether the backup contains message drafts for this character
+ */
 export interface BackupCharacterInfo {
   name: string;
   selected: boolean;
@@ -17,6 +30,12 @@ export interface BackupCharacterInfo {
   hasDrafts?: boolean;
 }
 
+/**
+ * Prompts the user to select a Horizon backup ZIP file to import.
+ *
+ * @param vm - Vue component instance managing import state
+ * @returns A promise that resolves when the file dialog closes
+ */
 export async function chooseImportZip(vm: any): Promise<void> {
   if (vm.importInProgress) return;
   const result = await remote.dialog.showOpenDialog({
@@ -29,6 +48,11 @@ export async function chooseImportZip(vm: any): Promise<void> {
   await loadImportZip(vm, result.filePaths[0]);
 }
 
+/**
+ * Resets all import-related state properties in the Vue component.
+ *
+ * @param vm - Vue component instance managing import state
+ */
 export function resetImportZipState(vm: any): void {
   vm.importZipArchive = undefined;
   vm.importZipPath = undefined;
@@ -53,6 +77,13 @@ export function resetImportZipState(vm: any): void {
   vm.importZipError = undefined;
 }
 
+/**
+ * Loads and parses a Horizon backup ZIP file.
+ *
+ * @param vm - Vue component instance managing import state
+ * @param filePath - Absolute path to the ZIP file to load
+ * @returns A promise that resolves when the ZIP is loaded and parsed
+ */
 export async function loadImportZip(vm: any, filePath: string): Promise<void> {
   vm.importSummary = undefined;
   vm.importError = undefined;
@@ -145,6 +176,12 @@ function updateCharacterInfo(
   }
 }
 
+/**
+ * Parses a loaded ZIP archive to determine what data is available for import.
+ * Updates VM properties with character list, availability flags, and user selections.
+ *
+ * @param vm - Vue component instance with loaded ZIP archive
+ */
 export function parseImportZip(vm: any): void {
   const zip: AdmZip = vm.importZipArchive;
   if (!zip) return;
@@ -152,10 +189,8 @@ export function parseImportZip(vm: any): void {
   const characterMap = new Map<string, BackupCharacterInfo>();
   const entries = zip.getEntries();
 
-  // Check for general settings
   vm.importGeneralAvailable = entries.some(e => e.entryName === 'settings');
 
-  // Process all entries
   for (const entry of entries) {
     if (!entry || entry.isDirectory) continue;
     const normalized = entry.entryName.replace(/\\/g, '/');
@@ -168,7 +203,6 @@ export function parseImportZip(vm: any): void {
     a.name.localeCompare(b.name)
   );
 
-  // Set availability flags
   vm.importCharacterSettingsAvailable = vm.importCharacters.some(
     (c: BackupCharacterInfo) => c.hasSettings
   );
@@ -191,7 +225,6 @@ export function parseImportZip(vm: any): void {
     (c: BackupCharacterInfo) => !!c.hasDrafts
   );
 
-  // Set include flags based on availability
   vm.importIncludeGeneralSettings = vm.importGeneralAvailable;
   vm.importIncludeCharacterSettings = vm.importCharacterSettingsAvailable;
   vm.importIncludeLogs = vm.importLogsAvailable;
@@ -217,18 +250,36 @@ export function parseImportZip(vm: any): void {
   }
 }
 
+/**
+ * Sets the selection state for all characters in the import list.
+ *
+ * @param vm - Vue component instance with importCharacters array
+ * @param selected - Whether to select (true) or deselect (false) all characters
+ */
 export function setImportCharacters(vm: any, selected: boolean): void {
   vm.importCharacters.forEach((character: any) => {
     character.selected = selected;
   });
 }
 
+/**
+ * Gets an array of character names that are currently selected for import.
+ *
+ * @param vm - Vue component instance with importCharacters array
+ * @returns Array of character names where selected is true
+ */
 export function getSelectedImportCharacters(vm: any): string[] {
   return vm.importCharacters
     .filter((character: any) => character.selected)
     .map((character: any) => character.name);
 }
 
+/**
+ * Generates a human-readable description of available data for a character.
+ *
+ * @param character - Character info object from the backup ZIP
+ * @returns Comma-separated string describing available data (e.g., "Settings, Logs, Drafts")
+ */
 export function describeImportCharacter(
   character: BackupCharacterInfo
 ): string {
@@ -244,6 +295,14 @@ export function describeImportCharacter(
   return parts.join(', ');
 }
 
+/**
+ * Validates and resolves a safe destination path for extracting ZIP entries.
+ * Prevents directory traversal attacks by ensuring paths stay within baseDir.
+ *
+ * @param baseDir - Base directory where files should be extracted
+ * @param relative - Relative path from the ZIP entry
+ * @returns Absolute resolved path if safe, undefined if path escapes baseDir
+ */
 export function getSafeDestination(
   baseDir: string,
   relative: string
@@ -486,6 +545,13 @@ function finalizeImport(vm: any, stats: ImportStats): void {
   vm.importSummary = `Restored data for ${stats.charactersTouched.size} character(s). Logs copied: ${stats.logsCopied} (skipped ${stats.logsSkipped}). Settings copied: ${stats.settingsCopied} (skipped ${stats.settingsSkipped}). General settings: ${generalState}.`;
 }
 
+/**
+ * Executes the full import process from a loaded ZIP backup with progress tracking.
+ * Handles general settings, character data, file conflicts, and progress updates.
+ *
+ * @param vm - Vue component instance managing import state and user selections
+ * @returns A promise that resolves when import completes
+ */
 export async function runZipImport(vm: any): Promise<void> {
   if (!vm.canRunZipImport) return;
 

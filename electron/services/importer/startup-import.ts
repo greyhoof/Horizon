@@ -6,14 +6,6 @@ import * as VanillaImporter from './vanilla-importer';
 import { SlimcatImporter } from '../index';
 import { GeneralSettings } from '../../common';
 
-/**
- * Startup auto-import handler used by chat.ts to process an import hint from the URL query.
- * Supports:
- *  - 'auto': prefer Vanilla when context is found, otherwise Slimcat (if available)
- *  - 'vanilla': show prompt and import general + defaults on confirm, or open advanced UI
- *  - 'slimcat': prompt and import general
- * Note: respects settings.hasDismissedVanillaImport to avoid prompting again for Vanilla.
- */
 type ImporterHint = 'auto' | 'vanilla' | 'advanced' | 'slimcat' | undefined;
 
 function normalizeImportHint(v: string | undefined): ImporterHint {
@@ -116,6 +108,14 @@ function handleSlimcatImport(settings: GeneralSettings): void {
   }
 }
 
+/**
+ * Handles automatic import prompts when Horizon starts up.
+ * Processes import hints ('auto', 'vanilla', 'slimcat', 'advanced') to detect and import data.
+ *
+ * @param settings - Current general settings for the application
+ * @param rawImportParam - Import hint passed from main process
+ * @returns Updated GeneralSettings after import completes
+ */
 export async function handleStartupImport(
   settings: GeneralSettings,
   rawImportParam: string | undefined

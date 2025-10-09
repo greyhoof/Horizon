@@ -22,6 +22,11 @@ import l from '../chat/localize';
  */
 const maxTabCount = process.env.NODE_ENV === 'production' ? 3 : 5;
 
+/**
+ * Hint to the renderer process about which importer to trigger on startup.
+ *
+ * @typedef {'auto' | 'vanilla' | 'advanced' | 'slimcat' | 'none'} ImporterHint
+ */
 type ImporterHint = 'auto' | 'vanilla' | 'advanced' | 'slimcat' | 'none';
 
 /**

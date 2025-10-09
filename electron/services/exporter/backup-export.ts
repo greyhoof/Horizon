@@ -21,6 +21,12 @@ async function yieldToUi(vm?: any): Promise<void> {
   }
 }
 
+/**
+ * Refreshes the list of available characters for export from the data directory.
+ * Skips special folders like 'settings', 'eicons', and hidden directories.
+ *
+ * @param vm - Vue component instance containing settings and exportCharacters array
+ */
 export function refreshExportCharacters(vm: any): void {
   const characters: Array<{ name: string; selected: boolean }> = [];
   try {
@@ -43,18 +49,36 @@ export function refreshExportCharacters(vm: any): void {
   }
 }
 
+/**
+ * Sets the selection state for all export characters.
+ *
+ * @param vm - Vue component instance containing exportCharacters array
+ * @param selected - Whether to select (true) or deselect (false) all characters
+ */
 export function setExportCharacters(vm: any, selected: boolean): void {
   vm.exportCharacters.forEach((character: any) => {
     character.selected = selected;
   });
 }
 
+/**
+ * Gets an array of character names that are currently selected for export.
+ *
+ * @param vm - Vue component instance containing exportCharacters array
+ * @returns Array of character names where selected is true
+ */
 export function getSelectedExportCharacters(vm: any): string[] {
   return vm.exportCharacters
     .filter((c: any) => c.selected)
     .map((c: any) => c.name);
 }
 
+/**
+ * Generates the default export file path with timestamp.
+ * Filename format: `horizon-export-YYYY-MM-DDTHH-MM-SS.zip` (colons replaced with hyphens for Windows).
+ *
+ * @returns Absolute path to a timestamped ZIP file in the user's Downloads folder
+ */
 export function getExportDefaultPath(): string {
   const timestamp = new Date().toISOString().replace(/:/g, '-').split('.')[0];
   return path.join(
@@ -94,7 +118,6 @@ function buildExportEntries(
 ): ExportEntry[] {
   const entries: ExportEntry[] = [];
 
-  // General settings
   if (vm.exportIncludeGeneralSettings) {
     const generalSettingsFile = path.join(dataDir, 'settings');
     if (fs.existsSync(generalSettingsFile))
@@ -105,7 +128,6 @@ function buildExportEntries(
     const characterDir = path.join(dataDir, character);
     if (!fs.existsSync(characterDir)) continue;
 
-    // Logs (recursive)
     if (vm.exportIncludeLogs) {
       const logsDir = path.join(characterDir, 'logs');
       if (fs.existsSync(logsDir)) {
@@ -118,7 +140,6 @@ function buildExportEntries(
       }
     }
 
-    // Drafts
     if (vm.exportIncludeDrafts) {
       const draftsFile = path.join(characterDir, 'drafts.txt');
       if (fs.existsSync(draftsFile))
@@ -128,7 +149,6 @@ function buildExportEntries(
         });
     }
 
-    // Settings
     const settingsDir = path.join(characterDir, 'settings');
     if (fs.existsSync(settingsDir)) {
       if (vm.exportIncludeCharacterSettings) {
@@ -171,6 +191,12 @@ function getSettingsFilesToInclude(vm: any): Set<string> {
   return includeFiles;
 }
 
+/**
+ * Executes the full export process with user-selected output location and progress tracking.
+ *
+ * @param vm - Vue component instance with export state and settings
+ * @returns A promise that resolves when export completes or is cancelled
+ */
 export async function runExport(vm: any): Promise<void> {
   if (!vm.canRunExport) return;
   vm.exportInProgress = true;
@@ -203,7 +229,6 @@ export async function runExport(vm: any): Promise<void> {
     vm.exportTotal = entries.length;
     vm.exportCount = 0;
 
-    // Create archiver instance for streaming
     const archive = archiver('zip', {
       zlib: { level: 6 }
     });
@@ -211,31 +236,26 @@ export async function runExport(vm: any): Promise<void> {
     const output = fs.createWriteStream(saveResult.filePath);
     archive.pipe(output);
 
-    // Track progress
     archive.on('progress', progressData => {
       const processed = progressData.entries.processed || 0;
       vm.exportCount = processed;
       vm.exportProgress = Math.max(0, Math.min(0.98, processed / total));
     });
 
-    // Add all files to the archive with streaming
     let count = 0;
     for (const e of entries) {
       if (fs.existsSync(e.abs)) {
         archive.file(e.abs, { name: e.zip });
         count++;
-        // Update UI occasionally
         if (count % 10 === 0) {
           await yieldToUi(vm);
         }
       }
     }
 
-    // Finalize the archive
     vm.exportProgress = 0.99;
     await archive.finalize();
 
-    // Wait for output stream to finish
     await new Promise<void>((resolve, reject) => {
       output.on('close', () => {
         vm.exportProgress = 1;

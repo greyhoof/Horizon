@@ -1,25 +1,41 @@
 /**
  * Vanilla F-Chat Importer
  *
- * Imports data from vanilla F-Chat clients that store data in the fchat directory:
- * - F-Chat Rising
- * - F-Chat 3.0
- * - F-Chat Frolic
- * ? Does Frolic actually use the same folder? I think so.
- * ? Fatcat pls confirm kthx byes
+ * Provides import functionality for vanilla F-Chat clients (official desktop client).
+ * NOTE: Frolic too, should work. But I cannot 100% verify this fact.
+ *       Testing shows it works, but... I unno' what edge cases there might be.
+
  */
 
 import * as fs from 'fs';
 import * as path from 'path';
 import { GeneralSettings } from '../../common';
 
+/**
+ * Type of data being imported from vanilla F-Chat clients.
+ */
 export type ImportType = 'logs' | 'settings';
 
+/**
+ * Context information for locating vanilla F-Chat client data.
+ *
+ * @property baseDir - Base installation directory of the vanilla F-Chat client
+ * @property dataDir - Data directory containing character folders and settings (typically baseDir/data)
+ */
 export interface VanillaContext {
   readonly baseDir: string;
   readonly dataDir: string;
 }
 
+/**
+ * Options for importing character data from vanilla F-Chat clients.
+ *
+ * @property includeLogs - Whether to import chat log history. Defaults to true
+ * @property includeSettings - Whether to import character settings files. Defaults to true
+ * @property includePinnedEicons - Whether to import pinned/favorite eicons. Defaults based on includeSettings
+ * @property overwrite - Whether to overwrite existing files. Defaults to false
+ * @property onProgress - Optional callback invoked periodically during import to report progress
+ */
 export interface CharacterImportOptions {
   readonly includeLogs?: boolean;
   readonly includeSettings?: boolean;
@@ -33,6 +49,14 @@ export interface CharacterImportOptions {
   }) => void;
 }
 
+/**
+ * Summary of files processed during a character import operation.
+ *
+ * @property logsCopied - Number of log files successfully copied
+ * @property logsSkipped - Number of log files skipped (already existed)
+ * @property settingsCopied - Number of settings files successfully copied
+ * @property settingsSkipped - Number of settings files skipped (already existed)
+ */
 export interface ImportSummary {
   readonly logsCopied: number;
   readonly logsSkipped: number;
@@ -52,6 +76,13 @@ function getDefaultBaseDir(): string | undefined {
   return path.join(home, '.config', 'fchat');
 }
 
+/**
+ * Resolves the context for accessing vanilla F-Chat client data.
+ * Checks custom or platform-specific default locations for vanilla data directories.
+ *
+ * @param customBaseDir - Optional custom base directory to search for vanilla data
+ * @returns A VanillaContext if valid vanilla data is found, undefined otherwise
+ */
 export function resolveContext(
   customBaseDir?: string
 ): VanillaContext | undefined {
@@ -90,12 +121,24 @@ export function resolveContext(
   return undefined;
 }
 
+/**
+ * Checks if vanilla F-Chat data is available for import.
+ *
+ * @param context - Optional VanillaContext. If not provided, will attempt to resolve automatically
+ * @returns True if importable vanilla data exists
+ */
 export function canImport(context?: VanillaContext): boolean {
   const ctx = context ?? resolveContext();
   if (!ctx) return false;
   return fs.existsSync(path.join(ctx.dataDir, 'settings'));
 }
 
+/**
+ * Lists all character names found in the vanilla F-Chat data directory.
+ *
+ * @param context - Optional VanillaContext. If not provided, will attempt to resolve automatically
+ * @returns Array of character names sorted alphabetically, or empty array if no context found
+ */
 export function listCharacters(
   context?: VanillaContext
 ): ReadonlyArray<string> {
@@ -166,6 +209,13 @@ function copyDirectory(
   return { copied, skipped };
 }
 
+/**
+ * Imports general application settings from a vanilla F-Chat client.
+ *
+ * @param context - VanillaContext pointing to the vanilla data location
+ * @param destinationDataDir - Absolute path to Horizon's data directory where settings will be imported
+ * @returns Parsed GeneralSettings object, or undefined if import fails
+ */
 export function importGeneralSettings(
   context: VanillaContext,
   destinationDataDir: string
@@ -209,6 +259,16 @@ function copyCharacterSettings(
   return copyDirectory(source, destination, overwrite, onProgress);
 }
 
+/**
+ * Imports data for a single character from a vanilla F-Chat client to Horizon.
+ * Copies logs, settings, and pinned eicons based on options provided.
+ *
+ * @param context - VanillaContext pointing to the vanilla data location
+ * @param destinationDataDir - Absolute path to Horizon's data directory
+ * @param character - Name of the character to import
+ * @param options - Options controlling what data to import and how to handle conflicts
+ * @returns ImportSummary with counts of files copied and skipped
+ */
 export function importCharacter(
   context: VanillaContext,
   destinationDataDir: string,
@@ -289,6 +349,14 @@ export function importCharacter(
   return { logsCopied, logsSkipped, settingsCopied, settingsSkipped };
 }
 
+/**
+ * Imports data for multiple characters from a vanilla F-Chat client to Horizon.
+ *
+ * @param context - VanillaContext pointing to the vanilla data location
+ * @param destinationDataDir - Absolute path to Horizon's data directory
+ * @param options - Options controlling what data to import and which characters to include
+ * @returns Map of character names to their import summaries
+ */
 export function importAll(
   context: VanillaContext,
   destinationDataDir: string,

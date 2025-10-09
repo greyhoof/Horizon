@@ -2,6 +2,22 @@ import fs from 'fs';
 import path from 'path';
 import archiver from 'archiver';
 
+/**
+ * Configuration options for CLI-based export operations.
+ *
+ * @property dataDir - Absolute path to the Horizon data directory
+ * @property out - Absolute path where the output ZIP file will be created
+ * @property includeGeneral - Include general application settings
+ * @property includeCharacterSettings - Include all character-specific settings files
+ * @property includeLogs - Include chat log history
+ * @property includeDrafts - Include message drafts
+ * @property includePinnedConversations - Include pinned conversations
+ * @property includePinnedEicons - Include favorite eicons
+ * @property includeRecents - Include recent conversations and channels
+ * @property includeHidden - Include hidden users list
+ * @property characters - Character names to export (if empty, exports all)
+ * @property dryRun - Show what would be exported without creating files
+ */
 export interface ExportCliOptions {
   dataDir: string;
   out: string;
@@ -170,7 +186,6 @@ async function createArchive(
   dataDir: string,
   characters: string[]
 ): Promise<{ characters: string[]; out: string }> {
-  // This creates the archiver instance
   const archive = archiver('zip', {
     zlib: { level: 6 }
   });
@@ -202,12 +217,21 @@ async function createArchive(
     }
   );
 
-  // Finalize and wait for completion
   await archive.finalize();
 
   return result;
 }
 
+/**
+ * Executes a command-line export of Horizon user data to a ZIP archive.
+ *
+ * Supports both dry-run mode (displays what would be exported) and actual export mode (creates ZIP file).
+ * Exports general settings, character data (logs, drafts, settings), and selective settings based on options.
+ *
+ * @param opts - Export configuration options
+ * @returns Promise resolving to exported character list and output file path
+ * @throws {Error} If data directory doesn't exist or is invalid
+ */
 export async function runExportCli(opts: ExportCliOptions): Promise<{
   characters: string[];
   out: string;
