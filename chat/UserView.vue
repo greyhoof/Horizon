@@ -187,7 +187,7 @@
         } else {
           genderClass =
             `fa ${getGenderIcon(character.gender, character.status)}` +
-            ` gender-${gender}`;
+            ` gender-icon-${gender}`;
         }
       }
     }
