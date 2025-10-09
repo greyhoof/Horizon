@@ -110,8 +110,14 @@ $genders: (
   'cunt-boy': $green-color
 );
 @each $gender, $color in $genders {
-  .gender-#{$gender} {
+  .gender-#{$gender},
+  .gender-icon-#{$gender} {
     --gender-color: #{$color};
+  }
+
+  .gender-icon-#{$gender},
+  .message-event .gender-icon-#{gender} {
+    color: var(--gender-color);
   }
 
   .message-event .gender-#{$gender} {
