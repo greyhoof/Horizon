@@ -346,72 +346,43 @@
       this.$watch(
         () => this.genderFilters.slice(),
         (val: any) => {
-          try {
-            core.state.settings = {
-              ...(core.state.settings as any),
-              horizonSavedGenderFilters: val
-            } as any;
-          } catch (e) {
-            console.warn(
-              'UserList: failed to persist horizonSavedGenderFilters',
-              e
-            );
-          }
+          core.state.settings = {
+            ...(core.state.settings as any),
+            horizonSavedGenderFilters: val
+          } as any;
         },
         { deep: true }
       );
 
       this.$watch('sortType', (val: any) => {
-        try {
-          core.state.settings = {
-            ...(core.state.settings as any),
-            horizonSavedMembersSort: val
-          } as any;
-        } catch (e) {
-          console.warn(
-            'UserList: failed to persist horizonSavedMembersSort',
-            e
-          );
-        }
+        core.state.settings = {
+          ...(core.state.settings as any),
+          horizonSavedMembersSort: val
+        } as any;
       });
     }
 
     applyOrientationAutoFilter(): void {
       if (!this.autoGenderFilterEnabled) return;
-      try {
-        const prof = core.characters.ownProfile as any;
-        if (!prof || !prof.character) return;
+      const prof = core.characters.ownProfile as any;
+      if (!prof || !prof.character) return;
 
-        const buckets = computeGenderPreferenceBuckets(prof as any);
-        const genders = (buckets.match || []).concat(buckets.weakMatch || []);
+      const buckets = computeGenderPreferenceBuckets(prof as any);
+      const genders = (buckets.match || []).concat(buckets.weakMatch || []);
 
-        if (genders && genders.length > 0) {
-          this.genderFilters = genders.slice();
-        } else {
-          this.genderFilters = [];
-        }
-
-        console.debug(
-          'UserList: auto-applied genderFilters',
-          this.genderFilters
-        );
-      } catch (e) {}
+      if (genders && genders.length > 0) {
+        this.genderFilters = genders.slice();
+      } else {
+        this.genderFilters = [];
+      }
     }
 
     toggleAutoGenderFilter(): void {
       this.autoGenderFilterEnabled = !this.autoGenderFilterEnabled;
-      console.debug(
-        'UserList: autoGenderFilterEnabled ->',
-        this.autoGenderFilterEnabled
-      );
-      try {
-        core.state.settings = {
-          ...(core.state.settings as any),
-          horizonAutoGenderFilter: this.autoGenderFilterEnabled
-        } as any;
-      } catch (e) {
-        console.warn('UserList: failed to persist horizonAutoGenderFilter', e);
-      }
+      core.state.settings = {
+        ...(core.state.settings as any),
+        horizonAutoGenderFilter: this.autoGenderFilterEnabled
+      } as any;
       if (this.autoGenderFilterEnabled) {
         this.applyOrientationAutoFilter();
       }
@@ -420,20 +391,10 @@
     onManualGenderChange(): void {
       if (this.autoGenderFilterEnabled) {
         this.autoGenderFilterEnabled = false;
-        console.debug(
-          'UserList: autoGenderFilterEnabled disabled due to manual gender change'
-        );
-        try {
-          core.state.settings = {
-            ...(core.state.settings as any),
-            horizonAutoGenderFilter: false
-          } as any;
-        } catch (e) {
-          console.warn(
-            'UserList: failed to persist horizonAutoGenderFilter',
-            e
-          );
-        }
+        core.state.settings = {
+          ...(core.state.settings as any),
+          horizonAutoGenderFilter: false
+        } as any;
       }
     }
 
@@ -548,14 +509,10 @@
 
     resetFilters(): void {
       this.autoGenderFilterEnabled = true;
-      try {
-        core.state.settings = {
-          ...(core.state.settings as any),
-          horizonAutoGenderFilter: true
-        } as any;
-      } catch (e) {
-        console.warn('UserList: failed to persist horizonAutoGenderFilter', e);
-      }
+      core.state.settings = {
+        ...(core.state.settings as any),
+        horizonAutoGenderFilter: true
+      } as any;
 
       this.genderFilters = [];
       this.selectedStatuses = [];
