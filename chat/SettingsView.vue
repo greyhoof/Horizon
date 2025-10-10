@@ -1230,7 +1230,6 @@
       );
 
       core.state.settings = {
-        soundTheme: core.state.settings.soundTheme,
         playSound: this.playSound,
         clickOpensMessage: this.clickOpensMessage,
         disallowedTags: this.disallowedTags
