@@ -117,6 +117,7 @@ export namespace Conversation {
     readonly recentChannels: ReadonlyArray<RecentChannelConversation>;
     readonly selectedConversation: Conversation;
     readonly hasNew: boolean;
+    readonly lastConversation: Conversation;
     byKey(key: string): Conversation | undefined;
 
     getPrivate(character: Character): PrivateConversation;
@@ -237,9 +238,11 @@ export namespace Settings {
     hiddenUsers: string[];
     favoriteEIcons: Record<string, boolean>;
     statusHistory: string[];
+    statusPins: string[];
     searchHistory: (ExtendedSearchData | SearchData)[];
     hideNonMatchingAds: boolean;
     hideProfileComparisonSummary: boolean;
+    hideProfileAnalysis: boolean;
     ads: Ad[];
   };
 
@@ -289,6 +292,7 @@ export namespace Settings {
     readonly risingShowPortraitNearInput: boolean;
     readonly risingShowPortraitInMessage: boolean;
     readonly risingShowHighQualityPortraits: boolean;
+    readonly horizonMessagePortraitHighQuality: boolean;
     readonly horizonShowCustomCharacterColors: boolean;
     readonly horizonShowDeveloperBadges: boolean;
     readonly horizonShowGenderMarker: boolean;
@@ -298,10 +302,16 @@ export namespace Settings {
     readonly horizonGenderMarkerOrigColor: boolean;
     readonly horizonChangeOfflineColor: boolean;
     readonly horizonNotifyFriendSignIn: boolean;
+    readonly horizonShowSigninNotifications: boolean;
+    readonly horizonShowDuplicateStatusNotifications: boolean;
     readonly horizonHighlightUsers: ReadonlyArray<string>;
+
+    readonly chatLayoutMode: 'classic' | 'modern';
+    readonly messageGrouping: boolean;
 
     readonly horizonCacheDraftMessages: boolean;
     readonly horizonSaveDraftMessagesToDiskTimer: number;
+    readonly horizonUseColorPicker: boolean;
 
     readonly risingFilter: SmartFilterSettings;
 

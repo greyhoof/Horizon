@@ -20,11 +20,13 @@ import Connection from '../fchat/connection';
 import { Keys } from '../keys';
 import { GeneralSettings /*, nativeRequire*/ } from './common';
 import { Logs, SettingsStore } from './filesystem';
+import { setLanguage } from '../chat/localize';
 import Notifications from './notifications';
 import * as SlimcatImporter from './importer';
 import Index from './Index.vue';
 import log from 'electron-log'; // tslint:disable-line: match-default-export-name
 import { WordPosSearch } from '../learn/dictionary/word-pos-search';
+import { MenuItemConstructorOptions } from 'electron/main';
 
 log.debug('init.chat');
 
@@ -149,7 +151,7 @@ webContents.on('context-menu', (_, props) => {
     if (props.mediaType === 'none') {
       menuTemplate.push({
         id: 'toggleStickyness',
-        label: 'Toggle Sticky Preview',
+        label: l('action.toggleStickyPreview'),
         click(): void {
           EventBus.$emit('imagepreview-toggle-stickyness', {
             url: props.linkURL
@@ -230,6 +232,46 @@ webContents.on('context-menu', (_, props) => {
     );
   }
 
+  if (props.srcURL.startsWith('https://static.f-list.net/images/eicon/')) {
+    let eiconName = props.titleText;
+    //Electron on Mac allows for header context menu items, so we use that instead of a disabled item split of by a seperator.
+    menuTemplate.unshift(
+      {
+        label: eiconName,
+        enabled: false,
+        type: process.platform === 'darwin' ? 'header' : 'normal'
+      },
+      ...(process.platform === 'darwin'
+        ? []
+        : [
+            {
+              type: 'separator'
+            } as MenuItemConstructorOptions
+          ]),
+      {
+        label: l('action.eicon.copy'),
+        click: () => {
+          electron.clipboard.writeText(eiconName);
+        }
+      },
+      {
+        label: l('action.eicon.copyBbcode'),
+
+        click: () => {
+          electron.clipboard.writeText(`[eicon]${eiconName}[/eicon]`);
+        }
+      },
+      {
+        label: l('eicon.addToFavorites'),
+        click: async () => {
+          EventBus.$emit('eicon-pinned', {
+            eicon: eiconName
+          });
+        }
+      }
+    );
+  }
+
   if (menuTemplate.length > 0)
     remote.Menu.buildFromTemplate(menuTemplate).popup({});
 
@@ -261,6 +303,13 @@ function onSettings(s: GeneralSettings): void {
 
   // spellchecker.setDictionary(s.spellcheckLang, dictDir);
   // for(const word of s.customDictionary) spellchecker.add(word);
+
+  // Apply display language live when settings change
+  try {
+    setLanguage(settings.displayLanguage);
+  } catch (e) {
+    console.warn('Failed to apply display language', e);
+  }
 }
 
 electron.ipcRenderer.on(
@@ -288,6 +337,13 @@ if (params['import'] !== undefined)
     alert(l('importer.error'));
   }
 onSettings(settings);
+
+// Apply UI language early (fallback handled in setLanguage)
+try {
+  setLanguage(settings.displayLanguage);
+} catch (e) {
+  console.warn('Failed to apply display language', e);
+}
 
 log.debug('init.chat.core');
 

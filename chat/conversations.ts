@@ -139,8 +139,8 @@ abstract class Conversation implements Interfaces.Conversation {
     }
   }
 
-  //tslint:disable-next-line:no-async-without-await
-  abstract async addMessage(message: Interfaces.Message): Promise<void>;
+  // Method can be async in implementations
+  abstract addMessage(message: Interfaces.Message): Promise<void>;
 
   loadLastSent(): void {
     this.enteredText = this.lastSent;
@@ -310,6 +310,9 @@ class PrivateConversation
       1
     );
     delete state.privateMap[this.character.name.toLowerCase()];
+    if (this.typingStatus !== 'clear') {
+      this.setOwnTyping('clear');
+    }
     await state.savePinned();
     if (state.selectedConversation === this) state.show(state.consoleTab);
     clearInterval(this.cacheInterval);
@@ -562,14 +565,12 @@ class ChannelConversation
     const isAd = this.isSendingAds;
 
     if (isAd && this.adManager.isActive()) {
-      this.errorText =
-        'Cannot post ads manually while ad auto-posting is active';
+      this.errorText = l('admgr.manualPostBlocked');
       return;
     }
 
     if (isAd && Date.now() < this.nextAd) {
-      this.errorText =
-        'You must wait at least ten minutes between ad posts on this channel';
+      this.errorText = l('admgr.waitTenMinutes');
       return;
     }
 
@@ -705,6 +706,7 @@ class State implements Interfaces.State {
   channelMap: { [key: string]: ChannelConversation | undefined } = {};
   consoleTab!: ConsoleConversation;
   selectedConversation: Conversation = this.consoleTab;
+  lastConversation: Conversation = this.selectedConversation;
   recent: Interfaces.RecentPrivateConversation[] = [];
   recentChannels: Interfaces.RecentChannelConversation[] = [];
   pinned!: { channels: string[]; private: string[] };
@@ -778,6 +780,7 @@ class State implements Interfaces.State {
 
   show(conversation: Conversation): void {
     if (conversation === this.selectedConversation) return;
+    this.lastConversation = this.selectedConversation;
     this.selectedConversation.onHide();
     conversation.unread = Interfaces.UnreadState.None;
     this.selectedConversation = conversation;
@@ -901,7 +904,7 @@ export async function testSmartFilterForPrivateMessage(
           recipient: fromChar.name,
           message:
             '\n[sub][color=orange][b][AUTOMATED MESSAGE][/b][/color][/sub]\n' +
-            'Sorry, the player of this character is not interested in characters matching your profile.\n' +
+            'Sorry, the player of this character is not interested in characters matching your profile.' +
             `${core.state.settings.risingFilter.hidePrivateMessages ? ' They did not see your message. To bypass this warning, send your message again.' : ''}\n` +
             '\n' +
             '✨ Need a filter for yourself? Try out [url=https://horizn.moe/]F-Chat Horizon[/url]'
@@ -1219,26 +1222,6 @@ export default function (this: any): Interfaces.State {
       );
       if (conversation !== state.selectedConversation || !state.windowFocused)
         conversation.unread = Interfaces.UnreadState.Mention;
-    } else if (
-      (message.type === MessageType.Message ||
-        message.type === MessageType.Ad) &&
-      isWarn(message.text)
-    ) {
-      const member = conversation.channel.members[message.sender.name];
-      if (
-        (member !== undefined && member.rank > Channel.Rank.Member) ||
-        message.sender.isChatOp
-      ) {
-        await core.notifications.notify(
-          conversation,
-          conversation.name,
-          data.message,
-          characterImage(data.character),
-          'modalert'
-        );
-        if (conversation !== state.selectedConversation || !state.windowFocused)
-          conversation.unread = Interfaces.UnreadState.Mention;
-      }
     }
   });
   connection.onMessage('LRP', async (data, time) => {
@@ -1315,6 +1298,7 @@ export default function (this: any): Interfaces.State {
     }
   });
   connection.onMessage('NLN', async (data, time) => {
+    if (!core.state.settings.horizonShowSigninNotifications) return;
     const message = new EventMessage(
       l('events.login', `[user]${data.identity}[/user]`),
       time
@@ -1340,6 +1324,7 @@ export default function (this: any): Interfaces.State {
       await conv.addMessage(message);
   });
   connection.onMessage('FLN', async (data, time) => {
+    if (!core.state.settings.horizonShowSigninNotifications) return;
     const message = new EventMessage(
       l('events.logout', `[user]${data.character}[/user]`),
       time
@@ -1564,6 +1549,13 @@ export default function (this: any): Interfaces.State {
     }
     const char = core.characters.get(data.character);
     if (!isOfInterest(char)) return;
+
+    if (
+      !core.state.settings.horizonShowDuplicateStatusNotifications &&
+      !char.hasStatusTextChanged()
+    )
+      return;
+
     const status = l(`status.${data.status}`);
     const key =
       data.statusmsg.length > 0 ? 'events.status.message' : 'events.status';

@@ -14,6 +14,7 @@ import { IpcMainEvent, session } from 'electron';
 import Axios from 'axios';
 import * as browserWindows from './browser_windows';
 import * as remoteMain from '@electron/remote/main';
+import { Event } from 'electron/main';
 
 const configuredSessions = new WeakSet<electron.Session>();
 
@@ -447,7 +448,8 @@ function onReady(): void {
             click: (_m: electron.MenuItem, w: electron.BrowserWindow) => {
               if (hasCompletedUpgrades) browserWindows.openTab(w);
             },
-            id: 'newTab'
+            id: 'newTab',
+            accelerator: 'CmdOrCtrl+Shift+T'
           },
           {
             label: l('action.preferences'),
@@ -480,23 +482,7 @@ function onReady(): void {
 
           { type: 'separator' },
           { role: 'minimize' },
-          {
-            accelerator: process.platform === 'darwin' ? 'Cmd+Q' : undefined,
-            label: l('action.quit'),
-            click(_m: electron.MenuItem, window: electron.BrowserWindow): void {
-              if (characters.length === 0) return app.quit();
-              const button = electron.dialog.showMessageBoxSync(window, {
-                message: l('chat.confirmLeave'),
-                title: l('title'),
-                buttons: [l('confirmYes'), l('confirmNo')],
-                cancelId: 1
-              });
-              if (button === 0) {
-                browserWindows.quitAllWindows();
-                app.quit();
-              }
-            }
-          }
+          { role: 'quit', label: l('action.quit') }
         ] as MenuItemConstructorOptions[]
       },
       {
@@ -654,7 +640,6 @@ function onReady(): void {
         'https://horizn.moe/download.html?ver=' + updateVersion
       );
       browserWindows.quitAllWindows();
-      app.quit();
     }
   );
   electron.ipcMain.on(
@@ -733,6 +718,10 @@ function onReady(): void {
     // log.info('MENU ZOOM UPDATE', zoomLevel);
     for (const w of electron.webContents.getAllWebContents())
       w.send('update-zoom', zl);
+  });
+
+  electron.ipcMain.on('open-dir', (_e, directory: string) => {
+    electron.shell.openPath(directory);
   });
 
   electron.ipcMain.handle('browser-option-browse', async () => {
@@ -845,5 +834,26 @@ else
   });
 app.on('second-instance', () => {
   browserWindows.createMainWindow(settings, shouldImportSettings, baseDir);
+});
+app.on('before-quit', (event: Event) => {
+  if (characters.length !== 0) {
+    const focusedWindow = electron.BrowserWindow.getFocusedWindow();
+    //forcing a window to be focused is weird. Let's just make it so that it floats otherwise.
+    const options = {
+      message: l('chat.confirmLeave'),
+      title: l('title'),
+      buttons: [l('confirmYes'), l('confirmNo')],
+      cancelId: 1
+    };
+    const button = focusedWindow
+      ? electron.dialog.showMessageBoxSync(focusedWindow, options)
+      : electron.dialog.showMessageBoxSync(options);
+
+    if (button === 1) {
+      event.preventDefault();
+      return;
+    }
+  }
+  browserWindows.quitAllWindows();
 });
 app.on('window-all-closed', () => app.quit());

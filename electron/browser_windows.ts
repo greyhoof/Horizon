@@ -212,6 +212,7 @@ export function createMainWindow(
     center: lastState.x === undefined,
     show: false,
     icon: process.platform === 'win32' ? winIcon : pngIcon,
+    transparent: settings.allowWindowTransparency,
     webPreferences: {
       webviewTag: true,
       nodeIntegration: true,
@@ -385,7 +386,10 @@ export function setUpWebContents(
       /^https?:\/\/(www\.)?f-list.net\/c\/([^/#]+)\/?#?/
     );
     if (profileMatch !== null && settings.profileViewer) {
-      webContents.send('open-profile', decodeURIComponent(profileMatch[2]));
+      const characterName = decodeURIComponent(
+        profileMatch[2].replace(/\+/g, '%20')
+      );
+      webContents.send('open-profile', characterName);
       return;
     }
 
@@ -454,7 +458,6 @@ function createTrayMenu(): electron.MenuItemConstructorOptions[] {
       label: l('action.quit'),
       click: () => {
         quitAllWindows();
-        electron.app.quit();
       }
     }
   ];
@@ -500,8 +503,11 @@ export function updateZoomLevel(zoomLevel: number) {
  * Quits all browser windows.
  * @function
  */
-export function quitAllWindows() {
-  for (const w of windows) w.webContents.send('quit');
+export async function quitAllWindows() {
+  for (const w of windows) {
+    w.webContents.send('quit');
+    w.close();
+  }
 }
 
 /**
@@ -542,7 +548,7 @@ export function createSettingsWindow(
   parentWindow: electron.BrowserWindow
 ): electron.BrowserWindow | undefined {
   let desiredHeight = 570;
-  let desiredWidth = 805;
+  let desiredWidth = 885;
 
   const windowProperties: electron.BrowserWindowConstructorOptions = {
     center: true,
