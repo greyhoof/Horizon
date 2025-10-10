@@ -146,7 +146,7 @@
                 </div>
                 <fieldset class="character-box mb-3">
                   <legend>{{ l('settings.import.charactersLegend') }}</legend>
-                  <div class="character-box-actions">
+                  <div class="d-flex flex-wrap gap-2 mb-3">
                     <button
                       class="btn btn-outline-secondary btn-sm"
                       type="button"
@@ -159,9 +159,12 @@
                       }}
                     </button>
                   </div>
-                  <div class="vanilla-character-list">
+                  <div
+                    class="overflow-auto d-flex flex-column gap-1 py-2"
+                    style="max-height: 200px"
+                  >
                     <label
-                      class="form-check"
+                      class="form-check mb-0"
                       v-for="character in exportCharacters"
                       :key="`export-${character.name}`"
                     >
@@ -426,7 +429,7 @@
                   </div>
                   <fieldset class="character-box mb-3">
                     <legend>{{ l('settings.import.charactersLegend') }}</legend>
-                    <div class="character-box-actions">
+                    <div class="d-flex flex-wrap gap-2 mb-3">
                       <button
                         class="btn btn-outline-secondary btn-sm"
                         type="button"
@@ -439,22 +442,30 @@
                         }}
                       </button>
                     </div>
-                    <div class="vanilla-character-list">
+                    <div
+                      class="overflow-auto d-flex flex-column gap-1 py-2"
+                      style="max-height: 200px"
+                    >
                       <label
-                        class="form-check import-character"
+                        class="form-check d-flex align-items-start gap-2 mb-2"
                         v-for="character in importCharacters"
                         :key="`import-${character.name}`"
                       >
                         <input
-                          class="form-check-input"
+                          class="form-check-input mt-1"
                           type="checkbox"
                           v-model="character.selected"
                         />
-                        <div class="form-check-label import-character-label">
-                          <div class="import-character-name">
+                        <div
+                          class="form-check-label d-flex flex-column gap-0 flex-grow-1 lh-sm"
+                        >
+                          <div class="fw-semibold">
                             {{ character.name }}
                           </div>
-                          <div class="text-muted import-character-details">
+                          <div
+                            class="text-muted small"
+                            style="line-height: 1.2"
+                          >
                             {{ describeImportCharacter(character) }}
                           </div>
                         </div>
@@ -655,7 +666,7 @@
                   </div>
                   <fieldset class="character-box mb-3">
                     <legend>{{ l('settings.import.charactersLegend') }}</legend>
-                    <div class="character-box-actions">
+                    <div class="d-flex flex-wrap gap-2 mb-3">
                       <button
                         class="btn btn-outline-secondary btn-sm"
                         type="button"
@@ -668,9 +679,12 @@
                         }}
                       </button>
                     </div>
-                    <div class="vanilla-character-list">
+                    <div
+                      class="overflow-auto d-flex flex-column gap-1 py-2"
+                      style="max-height: 200px"
+                    >
                       <label
-                        class="form-check"
+                        class="form-check mb-0"
                         v-for="character in vanillaCharacters"
                         :key="`vanilla-${character.name}`"
                       >
@@ -1237,59 +1251,6 @@
     font-weight: 600;
     padding: 0 0.5rem;
     margin-bottom: 0.5rem;
-  }
-
-  fieldset.character-box .character-box-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 0.75rem;
-  }
-
-  fieldset.character-box .vanilla-character-list {
-    margin-bottom: 0;
-  }
-
-  .vanilla-character-list {
-    max-height: 200px;
-    overflow-y: auto;
-    padding: 0.5rem 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  .vanilla-character-list .form-check {
-    margin-bottom: 0;
-  }
-
-  .vanilla-character-list .import-character {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.5rem;
-    margin-bottom: 10px;
-  }
-
-  .vanilla-character-list .import-character .form-check-input {
-    margin-top: 0.2rem;
-  }
-
-  .vanilla-character-list .import-character-label {
-    display: flex;
-    flex-direction: column;
-    gap: 0.125rem;
-    align-items: flex-start;
-    line-height: 1.3;
-    flex: 1;
-  }
-
-  .vanilla-character-list .import-character-name {
-    font-weight: 600;
-  }
-
-  .vanilla-character-list .import-character-details {
-    font-size: 0.75rem;
-    line-height: 1.2;
   }
 
   .disableWindowsHighContrast,
