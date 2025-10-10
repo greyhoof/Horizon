@@ -171,7 +171,7 @@ export default function (this: void, connection: Connection): Interfaces.State {
   });
   connection.onMessage('FLN', data => {
     //Going offline counts as changing status too for the previous status var
-    var char = state.get(data.character);
+    let char = state.get(data.character);
     char.previousStatusText = char.statusText;
     state.setStatus(char, 'offline', '');
   });
@@ -193,7 +193,7 @@ export default function (this: void, connection: Connection): Interfaces.State {
   });
   connection.onMessage('STA', data => {
     //This is so it won't clear the previous status when their client reconnects and sends a STA message
-    var char = state.get(data.character);
+    let char = state.get(data.character);
     if (char.statusText.length > 0 && data.statusmsg.length > 0) {
       char.previousStatusText = char.statusText;
     }

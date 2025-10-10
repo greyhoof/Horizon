@@ -285,7 +285,7 @@ class PrivateConversation
 
     this.safeAddMessage(message);
     if (message.type !== Interfaces.Message.Type.Event) {
-      var unreadState = Interfaces.UnreadState.Unread;
+      let unreadState = Interfaces.UnreadState.Unread;
       if (core.state.settings.logMessages)
         await core.logs.logMessage(this, message);
       if (
