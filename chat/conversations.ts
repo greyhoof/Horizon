@@ -203,19 +203,29 @@ abstract class Conversation implements Interfaces.Conversation {
     this.messages = [];
   }
 
-  async logMessage(message: Interfaces.Message, isAd: boolean = false): Promise<void> {
+  async logMessage(
+    message: Interfaces.Message,
+    isAd: boolean = false
+  ): Promise<void> {
     const loggingSetting = this.settings.enableLogging;
+
+    if (loggingSetting === Interfaces.Setting.False) {
+      return;
+    }
 
     let shouldLog: boolean;
 
-    // If explicitly set to True or False, use that
-    if (loggingSetting === Interfaces.Setting.True) {
+    if (isAd) {
+      // * For ads, always respect global logAds setting
+      // NOTE: Disabling conversation logging should disable ad logging (if enabled), but not enable it (if disabled)
+      //       After all, I think it's a safe assumption that if you don't want to log conversations, you probably don't want to log ads either
+      shouldLog = core.state.settings.logAds;
+    } else if (loggingSetting === Interfaces.Setting.True) {
+      // For regular messages, True forces logging on
       shouldLog = true;
-    } else if (loggingSetting === Interfaces.Setting.False) {
-      shouldLog = false;
     } else {
-      // Otherwise (Default), use global settings
-      shouldLog = isAd ? core.state.settings.logAds : core.state.settings.logMessages;
+      // Default: follow global message setting
+      shouldLog = core.state.settings.logMessages;
     }
 
     if (shouldLog) {
