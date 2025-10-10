@@ -259,7 +259,6 @@
   import l from './localize';
   import Sidebar from './Sidebar.vue';
   import UserView from './UserView.vue';
-  import _ from 'lodash';
   import characterPage from '../site/character_page/character_page.vue';
   import { profileLink } from './common';
   import {
@@ -267,9 +266,9 @@
     filterByName,
     filterByGender,
     filterByStatus,
-    sortMembers,
-    computeAutoGenders
+    sortMembers
   } from './memberFilters';
+  import { computeGenderPreferenceBuckets } from './memberFilters';
 
   const availableSorts = ['normal', 'status', 'gender'] as const;
 
@@ -383,11 +382,8 @@
         const prof = core.characters.ownProfile as any;
         if (!prof || !prof.character) return;
 
-        const genders = computeAutoGenders(
-          prof.character,
-          core.characters.ownCharacter,
-          this.genderOptions
-        );
+        const buckets = computeGenderPreferenceBuckets(prof as any);
+        const genders = (buckets.match || []).concat(buckets.weakMatch || []);
 
         if (genders && genders.length > 0) {
           this.genderFilters = genders.slice();
@@ -484,7 +480,6 @@
     }
 
     getFilteredMembers() {
-      // start with name-filtered members
       let visible = filterByName(this.channel.sortedMembers, this.filter);
 
       if (core.state.settings.risingFilter.hideChannelMembers) {

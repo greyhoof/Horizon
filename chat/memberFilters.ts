@@ -1,12 +1,13 @@
-import { Character, Channel } from './interfaces';
-import { CharacterAnalysis } from '../learn/matcher';
-import { Orientation } from '../learn/matcher-types';
+import { Channel } from './interfaces';
+import { CharacterAnalysis, Matcher } from '../learn/matcher';
+import { Gender, Scoring } from '../learn/matcher-types';
 
 export const genderOptions: string[] = [
   'Female',
   'Male',
   'Herm',
   'Shemale',
+  'Cunt-Boy',
   'Transgender',
   'Male-Herm',
   'None'
@@ -28,11 +29,96 @@ export const genderSort: { [key: string]: number } = {
   Male: 1,
   Herm: 2,
   Shemale: 3,
-  'Cunt-boy': 4,
+  'Cunt-Boy': 4,
   Transgender: 5,
   'Male-Herm': 6,
   None: 7
 };
+
+function normalizeLabel(s: string | undefined): string {
+  if (!s) return '';
+  return s
+    .toString()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '');
+}
+
+const canonicalGenderByNormalized: { [key: string]: string } = {};
+Object.keys(genderSort).forEach(k => {
+  canonicalGenderByNormalized[normalizeLabel(k)] = k;
+});
+
+function displayNameForGender(genderValue: number): string {
+  const name = Gender[genderValue as any] as string;
+  if (!name) return 'None';
+  switch (name) {
+    case 'MaleHerm':
+      return 'Male-Herm';
+    case 'Cuntboy':
+      return 'Cunt-Boy';
+    default:
+      return name;
+  }
+}
+
+export function computeGenderPreferenceBuckets(profile: CharacterAnalysis): {
+  match: string[];
+  weakMatch: string[];
+  neutral: string[];
+  weakMismatch: string[];
+  mismatch: string[];
+} {
+  const matches: string[] = [];
+  const weakMatches: string[] = [];
+  const weakMismatches: string[] = [];
+  const mismatches: string[] = [];
+  const neutral: string[] = [];
+
+  const c = profile.character as any;
+
+  Object.values(Gender)
+    .filter(v => typeof v === 'number')
+    .forEach(gv => {
+      let score: Scoring = Scoring.NEUTRAL;
+      const kinkPref = Matcher.getKinkGenderPreference(c, gv as Gender);
+      if (kinkPref === null) {
+        score = Matcher.scoreOrientationByGender(
+          profile.gender,
+          profile.orientation,
+          gv as Gender
+        ).score;
+      } else {
+        score = Matcher.formatKinkScore(kinkPref, gv.toString()).score;
+      }
+
+      const display = displayNameForGender(gv as number);
+      switch (score) {
+        case Scoring.MATCH:
+          matches.push(display);
+          break;
+        case Scoring.WEAK_MATCH:
+          weakMatches.push(display);
+          break;
+        case Scoring.NEUTRAL:
+          neutral.push(display);
+          break;
+        case Scoring.WEAK_MISMATCH:
+          weakMismatches.push(display);
+          break;
+        case Scoring.MISMATCH:
+          mismatches.push(display);
+          break;
+      }
+    });
+
+  return {
+    match: matches,
+    weakMatch: weakMatches,
+    neutral,
+    weakMismatch: weakMismatches,
+    mismatch: mismatches
+  };
+}
 
 export type AvailableSort = 'normal' | 'status' | 'gender';
 
@@ -49,10 +135,19 @@ export function filterByGender(
   members: ReadonlyArray<Channel.Member>,
   genderFilters: string[] | undefined
 ): ReadonlyArray<Channel.Member> {
-  if (!genderFilters || genderFilters.length === 0) return members;
+  if (!genderFilters) return members;
+  const effective = genderFilters
+    .map(g => (typeof g === 'string' ? g.trim() : ''))
+    .filter(g => g.length > 0);
+
+  if (effective.length === 0) return members;
+
+  const normalizedSet = new Set(effective.map(g => normalizeLabel(g)));
+
   return members.filter(m => {
-    const g = m.character.gender || 'None';
-    return genderFilters.indexOf(g) !== -1;
+    const raw = m.character.gender || 'None';
+    const cand = canonicalGenderByNormalized[normalizeLabel(raw)] || raw;
+    return normalizedSet.has(normalizeLabel(cand));
   });
 }
 
@@ -87,8 +182,20 @@ export function sortMembers(
 
     case 'gender':
       sorted.sort((a, b) => {
-        const aVal = genderSort[a.character.gender || 'None'];
-        const bVal = genderSort[b.character.gender || 'None'];
+        const aKey =
+          canonicalGenderByNormalized[
+            normalizeLabel(a.character.gender || 'None')
+          ] ||
+          a.character.gender ||
+          'None';
+        const bKey =
+          canonicalGenderByNormalized[
+            normalizeLabel(b.character.gender || 'None')
+          ] ||
+          b.character.gender ||
+          'None';
+        const aVal = genderSort[aKey];
+        const bVal = genderSort[bKey];
         if (aVal - bVal === 0) {
           return a.character.name.localeCompare(b.character.name);
         }
@@ -98,62 +205,4 @@ export function sortMembers(
   }
 
   return sorted;
-}
-
-export function orientationToGenders(
-  orientation: Orientation | null,
-  ownGender: Character['gender'] | undefined,
-  allowedGenders: string[] = genderOptions
-): string[] {
-  if (!orientation) return [];
-
-  switch (orientation) {
-    case Orientation.Straight:
-      if (!ownGender || ownGender === 'None') return ['Male', 'Female'];
-      if (ownGender === 'Male') return ['Female'];
-      if (ownGender === 'Female') return ['Male'];
-      return ['Male', 'Female'];
-
-    case Orientation.Gay:
-      if (!ownGender || ownGender === 'None') return ['Male', 'Female'];
-      if (ownGender === 'Male') return ['Male'];
-      if (ownGender === 'Female') return ['Female'];
-      return ['Male', 'Female', 'Transgender', 'Herm', 'Shemale', 'Male-Herm'];
-
-    case Orientation.Bisexual:
-    case Orientation.Pansexual:
-      return allowedGenders.slice();
-
-    case Orientation.BiMalePreference:
-      return ['Male', 'Male-Herm'];
-    case Orientation.BiFemalePreference:
-      return ['Female', 'Herm', 'Shemale'];
-    case Orientation.Asexual:
-    case Orientation.Unsure:
-    case Orientation.BiCurious:
-      return [];
-    default:
-      return [];
-  }
-}
-
-export function computeAutoGenders(
-  profileCharacter: Character | undefined,
-  ownCharacter: Character | undefined,
-  allowedGenders: string[] = genderOptions
-): string[] {
-  if (!profileCharacter) return [];
-  try {
-    const analysis = new CharacterAnalysis(profileCharacter as any);
-    const orientationVal: Orientation | null =
-      analysis.orientation as Orientation | null;
-    const genders = orientationToGenders(
-      orientationVal,
-      ownCharacter ? ownCharacter.gender : undefined,
-      allowedGenders
-    ).filter(g => allowedGenders.indexOf(g) !== -1);
-    return genders && genders.length > 0 ? genders.slice() : [];
-  } catch (e) {
-    return [];
-  }
 }
