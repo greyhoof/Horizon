@@ -285,12 +285,13 @@ class PrivateConversation
 
     this.safeAddMessage(message);
     if (message.type !== Interfaces.Message.Type.Event) {
+      var unreadState = Interfaces.UnreadState.Unread;
       if (core.state.settings.logMessages)
         await core.logs.logMessage(this, message);
       if (
         this.settings.notify !== Interfaces.Setting.False &&
         message.sender !== core.characters.ownCharacter
-      )
+      ) {
         await core.notifications.notify(
           this,
           message.sender.name,
@@ -298,8 +299,10 @@ class PrivateConversation
           characterImage(message.sender.name),
           'attention'
         );
+        unreadState = Interfaces.UnreadState.Mention;
+      }
       if (this !== state.selectedConversation || !state.windowFocused)
-        this.unread = Interfaces.UnreadState.Mention;
+        this.unread = unreadState;
       this.typingStatus = 'clear';
     }
   }
