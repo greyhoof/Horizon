@@ -380,33 +380,6 @@ export function setUpWebContents(
 ): void {
   remoteMain.enable(webContents);
 
-  // Forward renderer console messages to the main process console so
-  // logs from the renderer (console.log/console.info/etc.) appear in the
-  // terminal where pnpm start was run.
-  try {
-    webContents.on(
-      'console-message',
-      (
-        _event: any,
-        level: number,
-        message: string,
-        line: number,
-        sourceId: string
-      ) => {
-        try {
-          // Include webContents id and source for easier debugging
-          console.log(
-            `renderer[${webContents.id}] console(${level}): ${message} (${sourceId}:${line})`
-          );
-        } catch (e) {
-          // ignore logging errors
-        }
-      }
-    );
-  } catch (e) {
-    // some older electron versions may not support this event; ignore errors
-  }
-
   const openLinkExternally = (e: Event, linkUrl: string) => {
     e.preventDefault();
     const profileMatch = linkUrl.match(
