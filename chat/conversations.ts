@@ -33,27 +33,6 @@ import isChannel = Interfaces.isChannel;
  */
 const CONVERSATION_CACHE_UPDATE_FREQ_IN_MS = 1000;
 
-function shouldEnableLogging(
-  conversation: Interfaces.Conversation,
-  isAd: boolean = false
-): boolean {
-  const loggingSetting = conversation.settings.enableLogging;
-
-  // If explicitly set to True or False, use that
-  if (loggingSetting === Interfaces.Setting.True) {
-    return true;
-  }
-  if (loggingSetting === Interfaces.Setting.False) {
-    return false;
-  }
-
-  // Otherwise (Default), use global settings
-  if (isAd) {
-    return core.state.settings.logAds;
-  }
-  return core.state.settings.logMessages;
-}
-
 function createMessage(
   this: any,
   type: MessageType,
@@ -224,6 +203,26 @@ abstract class Conversation implements Interfaces.Conversation {
     this.messages = [];
   }
 
+  async logMessage(message: Interfaces.Message, isAd: boolean = false): Promise<void> {
+    const loggingSetting = this.settings.enableLogging;
+
+    let shouldLog: boolean;
+
+    // If explicitly set to True or False, use that
+    if (loggingSetting === Interfaces.Setting.True) {
+      shouldLog = true;
+    } else if (loggingSetting === Interfaces.Setting.False) {
+      shouldLog = false;
+    } else {
+      // Otherwise (Default), use global settings
+      shouldLog = isAd ? core.state.settings.logAds : core.state.settings.logMessages;
+    }
+
+    if (shouldLog) {
+      await core.logs.logMessage(this, message);
+    }
+  }
+
   abstract close(): void;
 
   protected safeAddMessage(message: Interfaces.Message): void {
@@ -306,8 +305,7 @@ class PrivateConversation
 
     this.safeAddMessage(message);
     if (message.type !== Interfaces.Message.Type.Event) {
-      if (shouldEnableLogging(this, false))
-        await core.logs.logMessage(this, message);
+      await this.logMessage(message, false);
       if (
         this.settings.notify !== Interfaces.Setting.False &&
         message.sender !== core.characters.ownCharacter
@@ -417,8 +415,7 @@ class PrivateConversation
       );
       this.safeAddMessage(message);
 
-      if (shouldEnableLogging(this, false))
-        await core.logs.logMessage(this, message);
+      await this.logMessage(message, false);
       this.markRead();
     });
   }
@@ -540,15 +537,13 @@ class ChannelConversation
 
     if (message.type === MessageType.Ad) {
       this.addModeMessage('ads', message);
-      if (shouldEnableLogging(this, true))
-        await core.logs.logMessage(this, message);
+      await this.logMessage(message, true);
     } else {
       this.addModeMessage('chat', message);
       if (message.type !== Interfaces.Message.Type.Event) {
         if (message.type === Interfaces.Message.Type.Warn)
           this.addModeMessage('ads', message);
-        if (shouldEnableLogging(this, false))
-          await core.logs.logMessage(this, message);
+        await this.logMessage(message, false);
         if (
           this.unread === Interfaces.UnreadState.None &&
           (this !== state.selectedConversation || !state.windowFocused) &&
@@ -710,8 +705,7 @@ class ConsoleConversation extends Conversation {
 
   async addMessage(message: Interfaces.Message): Promise<void> {
     this.safeAddMessage(message);
-    if (shouldEnableLogging(this, false))
-      await core.logs.logMessage(this, message);
+    await this.logMessage(message, false);
     if (this !== state.selectedConversation || !state.windowFocused)
       this.unread = Interfaces.UnreadState.Unread;
   }
@@ -960,9 +954,7 @@ export async function testSmartFilterForPrivateMessage(
   ) {
     if (originalMessage && firstTime) {
       await withNeutralVisibilityPrivateConversation(fromChar, async p => {
-        if (shouldEnableLogging(p, false)) {
-          await core.logs.logMessage(p, originalMessage);
-        }
+        await p.logMessage(originalMessage, false);
       });
     }
 
