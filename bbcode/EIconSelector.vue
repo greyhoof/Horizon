@@ -687,7 +687,7 @@
 
       core.state.favoriteEIcons[eicon] = true;
 
-      void core.settingsStore.set('favoriteEIcons', core.state.favoriteEIcons);
+      core.settingsStore.set('favoriteEIcons', core.state.favoriteEIcons);
 
       if (this.search === 'category:favorites') {
         this.runSearch();
@@ -699,7 +699,7 @@
 
       delete core.state.favoriteEIcons[eicon];
 
-      void core.settingsStore.set('favoriteEIcons', core.state.favoriteEIcons);
+      core.settingsStore.set('favoriteEIcons', core.state.favoriteEIcons);
 
       if (this.search === 'category:favorites') {
         this.runSearch();
