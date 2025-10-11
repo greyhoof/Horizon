@@ -79,6 +79,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated Cliqz to Ghostery 2.11. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/baadda11b9a1f28ec787f23938d86cb4fb6b35ed)
 - Fixed Visual Studio Code not picking up on the pre-commit hook for automatically formatting with Prettier. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/64babac9b712190f00c3f0799f1c9d2703faedba)
 
+### Merged Pull Requests
+
+- https://github.com/Fchat-Horizon/Horizon/pull/384 by @greyhoof
+- https://github.com/Fchat-Horizon/Horizon/pull/387 by @FatCatClient
+- https://github.com/Fchat-Horizon/Horizon/pull/393 by @FatCatClient
+- https://github.com/Fchat-Horizon/Horizon/pull/405 by @BootsieWootsie
+- https://github.com/Fchat-Horizon/Horizon/pull/410 by @FatCatClient
+- https://github.com/Fchat-Horizon/Horizon/pull/411 by @BootsieWootsie
+- https://github.com/Fchat-Horizon/Horizon/pull/415 by @FireUnderTheMountain
+- https://github.com/Fchat-Horizon/Horizon/pull/417 by @FatCatClient
+- https://github.com/Fchat-Horizon/Horizon/pull/420 by @FatCatClient (and assets by Pankake)
+- https://github.com/Fchat-Horizon/Horizon/pull/432 by @FatCatClient
+- https://github.com/Fchat-Horizon/Horizon/pull/434 by @greyhoof
+- https://github.com/Fchat-Horizon/Horizon/pull/435 by @CodingWithAnxiety
+- https://github.com/Fchat-Horizon/Horizon/pull/436 by @CodingWithAnxiety
+- https://github.com/Fchat-Horizon/Horizon/pull/437 by @FatCatClient
+- https://github.com/Fchat-Horizon/Horizon/pull/443 by @CodingWithAnxiety
+- https://github.com/Fchat-Horizon/Horizon/pull/444 by @FatCatClient
+
 # [Releases]
 
 ## [1.33.8] - 2025-09-27
