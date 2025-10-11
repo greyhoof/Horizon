@@ -171,7 +171,7 @@
                         ? 'Automatic gender filtering is ON'
                         : 'Automatic gender filtering is OFF'
                     "
-                    :aria-pressed="autoGenderFilterEnabled.toString()"
+                    :aria-pressed="autoGenderFilterEnabled"
                   >
                     Auto
                   </button>
@@ -275,7 +275,7 @@
   @Component({
     components: { characterPage, user: UserView, sidebar: Sidebar, tabs: Tabs }
   })
-  export default class UserList extends Vue {
+  class UserList extends Vue {
     tab = '0';
     expanded = window.innerWidth >= 992;
     filter = '';
@@ -540,6 +540,8 @@
       );
     }
   }
+
+  export default UserList;
 </script>
 
 <style lang="scss">
