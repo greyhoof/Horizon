@@ -207,7 +207,7 @@ abstract class Conversation implements Interfaces.Conversation {
     message: Interfaces.Message,
     isAd: boolean = false
   ): Promise<void> {
-    const loggingSetting = this.settings.enableLogging;
+    const loggingSetting = this.settings.logMessages;
 
     if (loggingSetting === Interfaces.Setting.False) {
       return;

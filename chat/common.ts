@@ -164,7 +164,7 @@ export class ConversationSettings implements Conversation.Settings {
     lastAdTimestamp: 0
   };
   horizonHighlightUsers: string[] = [];
-  enableLogging = Conversation.Setting.Default;
+  logMessages = Conversation.Setting.Default;
 }
 
 export function formatTime(
