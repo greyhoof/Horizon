@@ -60,6 +60,9 @@ export class GeneralSettings {
   fuzzyDates: boolean = true;
   allowWindowTransparency: boolean = false;
   horizonForceAsciiProfiles: boolean = false;
+  hasImportedVanillaLogs: boolean = false;
+  hasDismissedVanillaImport: boolean = false;
+  vanillaCustomBaseDir: string | undefined = undefined;
 }
 
 log.debug('init.common.done');
