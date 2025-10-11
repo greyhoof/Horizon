@@ -639,9 +639,9 @@
           <label class="form-check-label" for="messageGrouping">
             {{ l('settings.messageGrouping') }}
           </label>
-          <small class="form-text text-muted">{{
-            l('settings.messageGrouping.description')
-          }}</small>
+          <div class="form-text text-muted">
+            {{ l('settings.messageGrouping.description') }}
+          </div>
         </div>
       </div>
 
