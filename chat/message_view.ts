@@ -189,19 +189,19 @@ const userPostfix: { [key: number]: string | undefined } = {
         classes += ' message-highlight';
     }
 
-    let messageAdjustment = '';
+    //3.0 (and Horizon's classic view) users often prepend their message with an empty linefeed to format things like eicon collages
+    //Therefore, we filter that out in modern view mode, since it's unnecessary there.
+    let messageAdjustment = message.text.replace(/^\n/, '');
     switch (message.type) {
       case Conversation.Message.Type.Action:
-        messageAdjustment = ' ' + message.sender.name + message.text;
+        messageAdjustment = ' ' + message.sender.name + messageAdjustment;
         break;
       case Conversation.Message.Type.Roll:
-        messageAdjustment = ' ' + message.sender.name + ' ' + message.text;
+        messageAdjustment = ' ' + message.sender.name + ' ' + messageAdjustment;
         break;
       case Conversation.Message.Type.Warn:
-        messageAdjustment = ' ' + message.text;
+        messageAdjustment = ' ' + messageAdjustment;
         break;
-      default:
-        messageAdjustment = message.text;
     }
     const isAd = message.type == Conversation.Message.Type.Ad && !this.logs;
     const bbcodeNode = createElement(BBCodeView(core.bbCodeParser), {

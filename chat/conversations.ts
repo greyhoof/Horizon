@@ -236,6 +236,20 @@ abstract class Conversation implements Interfaces.Conversation {
   hasAutomatedAds(): boolean {
     return this.adManager.getAds().length > 0;
   }
+
+  /**
+   * Checks if message contains eicon tags on consecutive lines and prepends a newline if needed.
+   * @param message The message to check.
+   * @return The formatted message.
+   */
+  protected formatEiconMessage(message: string): string {
+    const eIconRegex =
+      /^(?!\n)(?=.*\[eicon\].*\[\/eicon\].*\n.*\[eicon\].*\[\/eicon\])(.*\n\[eicon\].*\[\/eicon\].*)\s*/;
+    if (eIconRegex.test(message)) {
+      return '\n' + message;
+    }
+    return message;
+  }
 }
 
 class PrivateConversation
@@ -379,7 +393,7 @@ class PrivateConversation
       return;
     }
 
-    const messageText = this.enteredText;
+    const messageText = this.formatEiconMessage(this.enteredText);
 
     this.clearText();
 
@@ -577,7 +591,7 @@ class ChannelConversation
       return;
     }
 
-    const message = this.enteredText;
+    const message = this.formatEiconMessage(this.enteredText);
 
     if (!isAd) {
       this.clearText();
