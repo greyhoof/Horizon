@@ -451,8 +451,8 @@ $bookmark-color: #66cc33 !default;
     }
     .message-avatar-spacer {
       display: flex;
-      align-self: center;
-      align-content: center;
+      align-self: flex-start;
+      align-content: flex-start;
       justify-content: center;
       flex-wrap: wrap;
       .message-time {
@@ -460,6 +460,7 @@ $bookmark-color: #66cc33 !default;
         text-align: center;
         overflow: visible;
         text-wrap-mode: nowrap;
+        margin-top: 2px;
       }
     }
     .message-modern-inner {
