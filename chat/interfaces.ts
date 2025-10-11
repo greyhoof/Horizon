@@ -141,6 +141,7 @@ export namespace Conversation {
     readonly defaultHighlights: boolean;
     readonly adSettings: AdSettings;
     readonly horizonHighlightUsers: ReadonlyArray<string>;
+    readonly logMessages: Setting;
   }
 
   export interface AdSettings {
