@@ -27,10 +27,10 @@ importers:
         version: 2.11.6
       '@ghostery/adblocker-electron':
         specifier: ^2.0.0
-        version: 2.11.6(electron@38.2.1(supports-color@10.0.0))
+        version: 2.11.6(electron@37.6.1(supports-color@10.0.0))
       '@ghostery/adblocker-electron-preload':
         specifier: ^2.0.0
-        version: 2.11.6(electron@38.2.1(supports-color@10.0.0))
+        version: 2.11.6(electron@37.6.1(supports-color@10.0.0))
       '@ghostery/adblocker-extended-selectors':
         specifier: ^2.0.0
         version: 2.11.6
@@ -61,7 +61,7 @@ importers:
     devDependencies:
       '@electron/remote':
         specifier: ^2.1.2
-        version: 2.1.2(electron@38.2.1(supports-color@10.0.0))
+        version: 2.1.2(electron@37.6.1(supports-color@10.0.0))
       '@f-list/vue-ts':
         specifier: ^1.0.3
         version: 1.0.3
@@ -126,8 +126,8 @@ importers:
         specifier: 2.30.0
         version: 2.30.0
       electron:
-        specifier: ^38.2.1
-        version: 38.2.1(supports-color@10.0.0)
+        specifier: ^37.6.1
+        version: 37.6.1(supports-color@10.0.0)
       electron-builder:
         specifier: ^26.0.12
         version: 26.0.12(bluebird@3.7.2)(electron-builder-squirrel-windows@25.1.8)(supports-color@10.0.0)
@@ -142,7 +142,7 @@ importers:
         version: 3.2.9(bluebird@3.7.2)(supports-color@10.0.0)
       electron-settings:
         specifier: ~4.0.4
-        version: 4.0.4(electron@38.2.1(supports-color@10.0.0))
+        version: 4.0.4(electron@37.6.1(supports-color@10.0.0))
       file-loader:
         specifier: ^6.2.0
         version: 6.2.0(webpack@5.99.9)
@@ -2060,8 +2060,8 @@ packages:
     engines: {node: '>= 10.17.0'}
     hasBin: true
 
-  electron@38.2.1:
-    resolution: {integrity: sha512-P4pE2RpRg3kM8IeOK+heg6iAxR5wcXnNHrbVchn7M3GBnYAhjfJRkROusdOro5PlKzdtfKjesbbqaG4MqQXccg==}
+  electron@37.6.1:
+    resolution: {integrity: sha512-aHtJVNjqf0lk7dlPoc1X+fMBpZtLn+XGvP6IYc3gooTwsD1D/Ic2SBRC9SnIk6LkWTsDaSF9jgH1d9Q7eABy/Q==}
     engines: {node: '>= 12.20.55'}
     hasBin: true
 
@@ -5413,9 +5413,9 @@ snapshots:
       - bluebird
       - supports-color
 
-  '@electron/remote@2.1.2(electron@38.2.1(supports-color@10.0.0))':
+  '@electron/remote@2.1.2(electron@37.6.1(supports-color@10.0.0))':
     dependencies:
-      electron: 38.2.1(supports-color@10.0.0)
+      electron: 37.6.1(supports-color@10.0.0)
 
   '@electron/universal@1.5.1(supports-color@10.0.0)':
     dependencies:
@@ -5465,16 +5465,16 @@ snapshots:
     dependencies:
       '@ghostery/adblocker-extended-selectors': 2.11.6
 
-  '@ghostery/adblocker-electron-preload@2.11.6(electron@38.2.1(supports-color@10.0.0))':
+  '@ghostery/adblocker-electron-preload@2.11.6(electron@37.6.1(supports-color@10.0.0))':
     dependencies:
       '@ghostery/adblocker-content': 2.11.6
-      electron: 38.2.1(supports-color@10.0.0)
+      electron: 37.6.1(supports-color@10.0.0)
 
-  '@ghostery/adblocker-electron@2.11.6(electron@38.2.1(supports-color@10.0.0))':
+  '@ghostery/adblocker-electron@2.11.6(electron@37.6.1(supports-color@10.0.0))':
     dependencies:
       '@ghostery/adblocker': 2.11.6
-      '@ghostery/adblocker-electron-preload': 2.11.6(electron@38.2.1(supports-color@10.0.0))
-      electron: 38.2.1(supports-color@10.0.0)
+      '@ghostery/adblocker-electron-preload': 2.11.6(electron@37.6.1(supports-color@10.0.0))
+      electron: 37.6.1(supports-color@10.0.0)
       tldts-experimental: 7.0.15
 
   '@ghostery/adblocker-extended-selectors@2.11.6': {}
@@ -7505,9 +7505,9 @@ snapshots:
       - bluebird
       - supports-color
 
-  electron-settings@4.0.4(electron@38.2.1(supports-color@10.0.0)):
+  electron-settings@4.0.4(electron@37.6.1(supports-color@10.0.0)):
     dependencies:
-      electron: 38.2.1(supports-color@10.0.0)
+      electron: 37.6.1(supports-color@10.0.0)
       lodash: 4.17.21
       mkdirp: 1.0.4
       write-file-atomic: 3.0.3
@@ -7544,7 +7544,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  electron@38.2.1(supports-color@10.0.0):
+  electron@37.6.1(supports-color@10.0.0):
     dependencies:
       '@electron/get': 2.0.3(supports-color@10.0.0)
       '@types/node': 16.18.32
@@ -9819,7 +9819,7 @@ snapshots:
 
   read-binary-file-arch@1.0.6(supports-color@10.0.0):
     dependencies:
-      debug: 4.4.1(supports-color@10.0.0)
+      debug: 4.4.3(supports-color@10.0.0)
     transitivePeerDependencies:
       - supports-color
 
