@@ -40,7 +40,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The black BBCode color is no longer just a dark version of the theme's color. [[Commit]](303df63e43c4e887213a2596e07768f7f11100ba)
   - It's still not the vanilla color by default though. If you want that one, enable "Use vanilla BBCode colors" in the app settings.
 - If you send an eicon collage but accidentally mess it up by forgetting to add a new line at the start, it will now automatically add it before you send it. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/a108c103506ff90e5068a80834a9f6ff37d5ef25)
-- The Character Search dialog has been slightly redesigned to better work for widescreen devices. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/cac0f1e6b7d5177ec0e00cd7abe64c64e22d983b)\
+- Importing character settings to a new character now also imports your pinned eicons and hidden ads. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/4477fdbd9988ab97af6ef0b6a2e9b600666efa6b)
+- The Character Search dialog has been slightly redesigned to better work for widescreen devices. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/cac0f1e6b7d5177ec0e00cd7abe64c64e22d983b)
+- The new color picker shortcut can disabled in the character settings window. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/208d16f4a20e5b18e513231692382cb4a79d2455)
 - The CSS rules for applying gender (and bookmark) colors have been changed, to let you more easily write custom CSS for them. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/330d50127aa67225788764913196a51c95435ac4)
 - Timestamps for highlighted (pinged, warned) messages now match the background style. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/b279ea74b8316f0d4c3402fb8067ef19c0001c86)
 - Quick Jump search results are reodered in a way that hopefully makes more sense. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/4b1ba64a4068b7a73314323d2e2225d62474f140)
@@ -63,9 +65,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed profile \[collapse\] items looking slightly broken when closed. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/a257b2536342ba56f957f1f5081bf566c09d696f)
 - Fixed character search results looking weird if someone is set to Looking and has an eicon collage in their status. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/c9249ed8fd6ed67ffec5b604a8a2aab9f62a9e93)
 - Fixes issues with the zoom level occassionally resetting (and desynchronizing) when switching tabs. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/c0ee1c8cf1a23fd48ee0799a604d43ed689d36aa)
+- Fixes issues with the Eicon picker breaking in narrow windows. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/aab77c299c036fa3773a99ee10e5caba2c08037c)
+- Fixes the new color picker freezing text input until switching back and forth between the app window after clicking a color. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/3b3f5bd18fde136ad109e500f82e652a338a30b4)
+- Fixes the color picker now showing up properly in narrow windows. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/ff8e161daa8ef3ebdba4a1e944f1b2f9e9368cf6)
+- Fixes the color picker breaking text input if the BBCode toolbar is disabled. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/87cdaa4ddf3cabafaa9e052d62338337cd16d73f)
 - Fixed some issues on MacOS where quitting the app through things like the dock or the Cmd+Tab menu would just hide the window instead. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/659b8c0c47c7ae80bc0974c1925bd759b24c8254)
 - Clicking your own name while "Clicking users opens messages" is enabled now just opens your own profile anyway. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/804ef0e382cea601fca4d7d66221acc7b29abc7f)
 - Closing a PM while having some text in the text box no longer makes the other person think you're still typing. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/b5c35c630577a5cd3af8470c8008295d2be05bfe)
+- Fixes filterable select dropdowns not closing after clicking an item. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/d3aba66cb7352c015bfa5c5e94f7913e227c25ec)
+- Fixes gender markers and match status items potentially having a shadow when vanilla BBCode colors are enabled. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/6f277fde4e7aaad0f40770ca184edfe8b8caf88d)
 - Fixed Imgur embeds showing the whole page. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/03ae50fd1ccf164ba25a1caac0a473ea07eaf0fd)
 - Fixed Youtube embeds not working. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/801c6948dc119801e08fd5d3362c070e0708585a)
   - Since there are no proxy services we can directly use, and Electron adblocking packages do not work with Youtube ads, we have dropped support for embedded Youtube links and now just show the thumbnail instead. We don't want to subject any users to ads while using our app, especially not ones from Google.
