@@ -20,7 +20,7 @@ $pink-color: $dracula-pink;
 $gray-color: $gray-600;
 $orange-color: $dracula-orange;
 
-$bookmark-color: color.scale($green-color, $lightness: 20%) !default;
+$bookmark-color: $dracula-yellow;
 // Apply variables to theme.
 @import '../chat';
 

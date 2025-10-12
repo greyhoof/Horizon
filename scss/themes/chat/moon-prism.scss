@@ -18,7 +18,7 @@ $brown-color: $moon-prism-orange;
 $pink-color: $moon-prism-pink;
 $gray-color: $moon-prism-silver;
 $orange-color: $moon-prism-orange;
-$bookmark-color: color.scale($green-color, $lightness: 20%);
+$bookmark-color: color.scale($green-color, $lightness: -20%);
 
 @import '../chat';
 

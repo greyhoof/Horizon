@@ -18,7 +18,7 @@ $brown-color: $rose-brown;
 $pink-color: $rose-pink;
 $gray-color: #898689;
 $orange-color: $rose-orange;
-$bookmark-color: color.scale($green-color, $lightness: 20%);
+$bookmark-color: color.scale($green-color, $lightness: -20%);
 @import '../chat';
 
 body,
