@@ -765,7 +765,7 @@
             v-model="risingFilter.hideAds"
           />
           <label class="form-check-label" for="risingFilter.hideAds">
-            {{ l('settings.filter.hideAds') }}
+            <bbcode :text="l('settings.filter.hideAds')"></bbcode>
           </label>
         </div>
 
@@ -777,7 +777,7 @@
             v-model="risingFilter.hideSearchResults"
           />
           <label class="form-check-label" for="risingFilter.hideSearchResults">
-            {{ l('settings.filter.hideSearchResults') }}
+            <bbcode :text="l('settings.filter.hideSearchResults')"></bbcode>
           </label>
         </div>
 
@@ -789,7 +789,7 @@
             v-model="risingFilter.hideChannelMembers"
           />
           <label class="form-check-label" for="risingFilter.hideChannelMembers">
-            {{ l('settings.filter.hideChannelMembers') }}
+            <bbcode :text="l('settings.filter.hideChannelMembers')"></bbcode>
           </label>
         </div>
 
@@ -804,7 +804,9 @@
             class="form-check-label"
             for="risingFilter.hidePublicChannelMessages"
           >
-            {{ l('settings.filter.hidePublicChannelMessages') }}
+            <bbcode
+              :text="l('settings.filter.hidePublicChannelMessages')"
+            ></bbcode>
           </label>
         </div>
 
@@ -819,7 +821,9 @@
             class="form-check-label"
             for="risingFilter.hidePrivateChannelMessages"
           >
-            {{ l('settings.filter.hidePrivateChannelMessages') }}
+            <bbcode
+              :text="l('settings.filter.hidePrivateChannelMessages')"
+            ></bbcode>
           </label>
         </div>
 
@@ -834,7 +838,7 @@
             class="form-check-label"
             for="risingFilter.hidePrivateMessages"
           >
-            {{ l('settings.filter.hidePrivateMessages') }}
+            <bbcode :text="l('settings.filter.hidePrivateMessages')"></bbcode>
           </label>
         </div>
 
@@ -846,7 +850,7 @@
             v-model="risingFilter.showFilterIcon"
           />
           <label class="form-check-label" for="risingFilter.showFilterIcon">
-            {{ l('settings.filter.showFilterIcon') }}
+            <bbcode :text="l('settings.filter.showFilterIcon')"></bbcode>
           </label>
         </div>
       </div>
@@ -860,7 +864,7 @@
             v-model="risingFilter.penalizeMatches"
           />
           <label class="form-check-label" for="risingFilter.penalizeMatches">
-            {{ l('settings.filter.penalizeMatches') }}
+            <bbcode :text="l('settings.filter.penalizeMatches')"></bbcode>
           </label>
         </div>
 
@@ -872,7 +876,7 @@
             v-model="risingFilter.rewardNonMatches"
           />
           <label class="form-check-label" for="risingFilter.rewardNonMatches">
-            {{ l('settings.filter.rewardNonMatches') }}
+            <bbcode :text="l('settings.filter.rewardNonMatches')"></bbcode>
           </label>
         </div>
       </div>
@@ -1027,6 +1031,8 @@
   import Modal from '../components/Modal.vue';
   import { Editor } from './bbcode';
   import Tabs from '../components/tabs';
+  import { BBCodeView } from '../bbcode/view';
+  import { StandardBBCodeParser } from '../bbcode/standard';
   import core from './core';
   import { Settings as SettingsInterface } from './interfaces';
   import l from './localize';
@@ -1039,8 +1045,15 @@
   import { matchesSmartFilters } from '../learn/filter/smart-filter';
   import { EventBus } from './preview/event-bus';
 
+  const standardParser = new StandardBBCodeParser();
+
   @Component({
-    components: { modal: Modal, editor: Editor, tabs: Tabs }
+    components: {
+      modal: Modal,
+      editor: Editor,
+      tabs: Tabs,
+      bbcode: BBCodeView(standardParser)
+    }
   })
   export default class SettingsView extends CustomDialog {
     l = l;
