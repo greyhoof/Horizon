@@ -5,9 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html). You can also read it on our [website](https://fchat-horizon.github.io/docs/changelog.html).
 
-# [Unreleased]
+# [Releases]
 
-## [1.34.0] - 2025-10-XX
+## [1.34.0] - 2025-10-13
 
 ### Added
 
@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - This tool also automatically tries to import logs from Rising or 3.0 if you're launching Horizon for the first time.
   - You can also run this through the command line!
 - You can now disable/ enable whether you want specific conversations or channels to save logs. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/6eaf01e52af2952fd94bba712595ff8ac591fa9c)
+- Added a global setting to disable funny unicode fonts on profiles. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/016a0a428884c910cf8a79ce63d4ab263bb33667)
 - You can now disable duplicate status updates or login/ logout messages from appearing in the console. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/9d1be3ec076d0a6b5568ad2dcb7a7ff37e57ec83)
 - Added a setting to show seconds in chat message timestamps. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/164dcbd8c6911ba0b2555973af488d206d445a9a)
 - Automatic ads now let you choose the interval between posts. You can't go below the F-Chat minimum though. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/e967090e6dd9eeef281be7ad91aec7f57dcccea6)
@@ -51,6 +52,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Viewing your own profile no longer shows infotags marked with a color for compatability with that same character... You can't RP with yourself after all. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/76162fb87d8808d215232d92c7fcd7caa90ed6ad)
 - The flag that remembers whether you want to minimize match results from a profile is now split from the one that lets you minimize the profile analyzer. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/b380fb4cc4294729d43c3e6ba615df669d551b18)
 - 'Full width' tab items no longer get a scrollbar if their contents are too wide for their containers. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/63bf433d95648b67ad86f2485ac82f73bd0238b8)
+- Bookmark colors for the "Mark friends/ bookmarks in a different color" have been adjusted for the Dracula, Withered Rose and Moon Prims themes to look more distinct from gender colors. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/1e2d9aa0e63fac9da71879616bf3c39de07c4b40)
 - If a conversation is muted, it no longer appears as if you were pinged. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/6ce7e525783f2f1ee5357f233fcf30075adf59fb)
 - The text selection box now uses theme-appropriate colors. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/650b5c63d16e473ee5be8f1a1d47ed29ee49347d)
 
@@ -61,7 +63,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed another 3.0 issue with log folder names corrupting while exporting to .zip if a channel has non-ascii characters (like emoji). [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/117d779da60a48945c882416056ffcbaed54eeed)
   - Thank you again, @greyhoof
 - Fixed a 3.0 issue where logs would be deleted by the log repair tool if they were missing an index file. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/a8d6096c28b5e855bb2a64e307663c00d566123b)
-- Fixed pasting URLs with square brackets (\[ and \]) making you paste broken BBCode. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/624a0005d8f9c158a721b3d5d0be6e511cd0e6de)
+- Fixed excessive GPU usage in macOS 26 due to an upstream issue with Electron apps on that platform. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/98a741c103df247671f79f9f960f97a62918caed)
+- Fixed pasting URLs with square brackets (`[` and `]`) making you paste broken BBCode. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/624a0005d8f9c158a721b3d5d0be6e511cd0e6de)
 - Fixed profile \[collapse\] items looking slightly broken when closed. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/a257b2536342ba56f957f1f5081bf566c09d696f)
 - Fixed character search results looking weird if someone is set to Looking and has an eicon collage in their status. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/c9249ed8fd6ed67ffec5b604a8a2aab9f62a9e93)
 - Fixes issues with the zoom level occassionally resetting (and desynchronizing) when switching tabs. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/c0ee1c8cf1a23fd48ee0799a604d43ed689d36aa)
@@ -83,7 +86,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Development
 
-- Upgraded to Electron 38 and Node 22.18 [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/2364f3a93fa0b3126d1402313a6d413cee01b3da)
+- Upgraded to Electron 37.6.1 and Node 22.18 [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/98a741c103df247671f79f9f960f97a62918caed)
 - Updated Cliqz to Ghostery 2.11. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/baadda11b9a1f28ec787f23938d86cb4fb6b35ed)
 - Fixed Visual Studio Code not picking up on the pre-commit hook for automatically formatting with Prettier. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/64babac9b712190f00c3f0799f1c9d2703faedba)
 
@@ -105,8 +108,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - https://github.com/Fchat-Horizon/Horizon/pull/437 by @FatCatClient
 - https://github.com/Fchat-Horizon/Horizon/pull/443 by @CodingWithAnxiety
 - https://github.com/Fchat-Horizon/Horizon/pull/444 by @FatCatClient
-
-# [Releases]
 
 ## [1.33.8] - 2025-09-27
 
