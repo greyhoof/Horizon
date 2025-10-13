@@ -109,7 +109,7 @@ export class ProfileRecommendationAnalyzer {
         `ADD_HQ_AVATAR_SAFE_DOMAIN`,
         ProfileRecommendationLevel.CRITICAL,
         'Unsupported high-quality portrait URL',
-        'High-quality portraits can only point to f-list.net, freeimages.host, e621.net, iili.io, imgur.com, imgchest.com, or redgifs.com domains.',
+        'High-quality portraits can only point to f-list.net, freeimages.host, e621.net, iili.io, imgur.com, imgchest.com, redgifs.com, toyhou.se, or catbox.moe domains.',
         'https://horizn.moe/docs/guides/colors-and-avatars.html'
       );
     }
