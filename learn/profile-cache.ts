@@ -217,9 +217,6 @@ export class ProfileCache extends AsyncCache<CharacterCacheRecord> {
       return true;
     }
 
-    if (url.match(/^https?:\/\/([a-z0-9\-.]+\.)?catbox\.moe\//i)) {
-      return true;
-    }
     return false;
   }
 
