@@ -14,20 +14,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added a new theme, "No Exceptions". [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/f5adb675bead7be6ef52b2bd280aee6365bfe69e)
   - It's version 1.34, after all 🐟
 - Horizon now supports multiple languages beyond just English! Currently supported languages are: French, German, Hungarian, Italian and Spanish. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/cadf98feaed0b1e6b81e1b9507079f7a36992974)
+  - More will be added with time! Interested in translating? Join the discord!
 - Added a character-level setting for 'modern' chat display. Similar to Discord. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/0810899e2bda3dd80f69ea351c48c91b527b3dcf)
   - Special thanks to @BootsieWootsie for helping during development.
 - We have a new tool to easily let you backup your logs (and import them again) right from Horizon itself! [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/b019131e144efe06e7cd3aa72d4b954c6e5f2efb)
   - This tool also automatically tries to import logs from Rising or 3.0 if you're launching Horizon for the first time.
   - You can also run this through the command line!
 - You can now disable/ enable whether you want specific conversations or channels to save logs. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/6eaf01e52af2952fd94bba712595ff8ac591fa9c)
-- Added a global setting to disable funny unicode fonts on profiles. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/016a0a428884c910cf8a79ce63d4ab263bb33667)
 - You can now disable duplicate status updates or login/ logout messages from appearing in the console. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/9d1be3ec076d0a6b5568ad2dcb7a7ff37e57ec83)
 - Added a setting to show seconds in chat message timestamps. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/164dcbd8c6911ba0b2555973af488d206d445a9a)
 - Automatic ads now let you choose the interval between posts. You can't go below the F-Chat minimum though. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/e967090e6dd9eeef281be7ad91aec7f57dcccea6)
 - Added two new sound themes: XPiano and Chiplet. [[XPiano]](https://github.com/Fchat-Horizon/Horizon/commit/a0d9af81ef4501fee63c29dc8c118585366fc4de) [[Chiplet]](https://github.com/Fchat-Horizon/Horizon/commit/abf7daa0ddb662b9b06babfb8648966503c827f4)
   - Thank you, Pankake!
 - Added a setting to show the active character in the window's title. It's under the app settings. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/3f360cf23abac233e839426a09342efe25a21f4c)
-- Added a setting to force profiles to use standard, ASCII fonts instead of unicode semifonts. [Commit]
+- Added a setting to force profiles to use standard, ASCII fonts instead of unicode semifonts. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/016a0a428884c910cf8a79ce63d4ab263bb33667)
 - Added a keyboard shortcut (Ctrl/ Cmd + Shift + P) for quickly previewing your BBCode formatting. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/c8116f01b043d45382638ec89a7ad2876da45e37)
 - Right-clicking an eicon in chat now gives you a context menu to copy it or add it to your favourites. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/2e975d516aa5b8f7a3cbe2e2cd98af2f3726855b)
 - You can now pin statuses in the Status History window for easy access. We also increased the limit of statuses your history saves to 15. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/8a15570fa0d002fb9fb5ef700bc96e7c1c3445db)
