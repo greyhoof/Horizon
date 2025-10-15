@@ -561,6 +561,8 @@
       width: 96px;
       min-width: 96px;
       height: 110px;
+      display: flex;
+      flex-direction: column;
       align-items: center;
       background: rgba(var(--bs-black-rgb), 0.02);
       border: none;
