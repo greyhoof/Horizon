@@ -74,6 +74,11 @@
           "Categories": "Network;Chat;"
         }
       }
+    },
+    "rpm": {
+      "fpm": [
+        "--rpm-rpmbuild-define=_build_id_links none"
+      ]
     }
   },
   "scripts": {
