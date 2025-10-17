@@ -96,7 +96,7 @@
               : l('editor.preview', `${this.shortcutModifierKey}+Shift+P`)
           "
         >
-          <i class="fa fa-eye"></i>
+          <i class="fa" :class="preview ? 'fa-eye-slash' : 'fa-eye'"></i>
         </div>
       </div>
       <button
@@ -106,6 +106,14 @@
         style="margin-left: 10px"
         @click="showToolbar = false"
       ></button>
+    </div>
+    <div
+      @click="previewBBCode"
+      v-if="preview && !hasToolbar"
+      class="btn btn-light btn-sm bbcode-editor-preview active"
+      :title="l('editor.closePreview', `${this.shortcutModifierKey}+Shift+P`)"
+    >
+      <i class="fa fa-eye-slash"></i>
     </div>
     <div
       class="bbcode-editor-text-area bg-light"
@@ -730,6 +738,7 @@
     overflow-y: auto;
     div.bbcode {
       padding: 0.2em 0.45em;
+      min-height: 60px;
     }
   }
 
