@@ -45,7 +45,7 @@ export interface CharacterMatchSummary {
  * The default value for the profile cache's queue maximum length.
  * If more entries are added to the cache, the least recently used one(s) will be flushed.
  * */
-export const PROFILE_CACHE_MAX_ENTRIES: number = 75;
+export const PROFILE_CACHE_MAX_ENTRIES: number = 350;
 
 /**
  * The "cache record" holds information about when the character was added to the cache. This information can be useful for deciding when to refresh a character profile or to remove them entirely.
@@ -82,7 +82,7 @@ export class ProfileCache extends AsyncCache<CharacterCacheRecord> {
    * @param size - The maximum number of items that the cache can hold. If set to 0 or a negative number, the cache size is unlimited.
    */
   public setMaxCacheSize(size: number): void {
-    this.maxCacheSize = size;
+    this.maxCacheSize = Math.max(size, PROFILE_CACHE_MAX_ENTRIES);
     this.clampQueueValues();
   }
 

@@ -708,7 +708,7 @@
                       class="form-control"
                       id="cacheMemoryCount"
                       type="number"
-                      min="1"
+                      min="350"
                       max="1000"
                       v-model="settings.horizonCacheMemoryCount"
                     />
