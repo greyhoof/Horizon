@@ -84,6 +84,11 @@ const mainConfig = {
         path.join(__dirname, 'changelog.html'),
         path.join(__dirname, 'build', 'tray@2x.png')
       ],
+      exporter: [
+        path.join(__dirname, 'exporter.ts'),
+        path.join(__dirname, 'exporter.html'),
+        path.join(__dirname, 'build', 'tray@2x.png')
+      ],
       about: [
         path.join(__dirname, 'about.ts'),
         path.join(__dirname, 'about.html'),

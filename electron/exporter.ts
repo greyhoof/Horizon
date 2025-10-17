@@ -2,13 +2,12 @@ import * as qs from 'querystring';
 import log from 'electron-log'; //tslint:disable-line:match-default-export-name
 
 import { GeneralSettings } from './common';
-import Window from './Window.vue';
-import Vue from 'vue';
+import ExporterWindow from './Exporter.vue';
 
-log.info('init.window');
+log.info('init.exporter');
 
 const params = <{ [key: string]: string | undefined }>(
-  qs.parse(window.location.search.substr(1))
+  qs.parse(window.location.search.slice(1))
 );
 const settings = <GeneralSettings>JSON.parse(params['settings']!);
 const importHint = params['import'];
@@ -19,12 +18,13 @@ log.transports.file.level = settings.risingSystemLogLevel || logLevel;
 log.transports.console.level = settings.risingSystemLogLevel || logLevel;
 log.transports.file.maxSize = 5 * 1024 * 1024;
 
-log.info('init.window.vue', Vue.version);
+log.info('init.exporter.vue');
 
-//tslint:disable-next-line:no-unused-expression
-export default new Window({
-  el: '#app',
+const exporterApp = new ExporterWindow({
+  el: '#exporterWindow',
   data: { settings, importHint }
 });
 
-log.debug('init.window.vue.done');
+log.debug('init.exporter.vue.done');
+
+export default exporterApp;

@@ -137,6 +137,20 @@
                   <div class="form-check">
                     <input
                       class="form-check-input"
+                      v-model="settings.showSeconds"
+                      type="checkbox"
+                      id="showSeconds"
+                    />
+                    <label class="form-check-label" for="showSeconds">
+                      {{ l('settings.timeFormat.showSeconds') }}
+                    </label>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
                       v-model="settings.fuzzyDates"
                       type="checkbox"
                       id="fuzzyDates"
@@ -724,6 +738,34 @@
                       <label class="form-check-label" for="customCss">
                         {{ l('settings.customCss.enabled') }}
                       </label>
+                    </div>
+                  </label>
+                </div>
+                <div class="mb-3">
+                  <label class="control-label" for="windowTransparency">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        v-model="settings.allowWindowTransparency"
+                        type="checkbox"
+                        :disabled="!settings.horizonCustomCssEnabled"
+                        id="windowTransparency"
+                        aria-describedby="windowTransparencyNote"
+                      />
+                      <label class="form-check-label" for="windowTransparency">
+                        {{
+                          l(
+                            'settings.experimental',
+                            l('settings.customCss.transparency')
+                          )
+                        }}
+                      </label>
+                    </div>
+                    <div
+                      id="windowTransparencyNote"
+                      class="form-text text-muted"
+                    >
+                      {{ l('settings.customCss.transparency.note') }}
                     </div>
                   </label>
 

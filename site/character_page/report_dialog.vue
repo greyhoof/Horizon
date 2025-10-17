@@ -21,29 +21,35 @@
     </div>
     <div v-if="type !== 'takedown'">
       <div class="mb-3" v-if="type === 'profile'">
-        <label>{{ l('reportDialog.violationType') }}</label>
-        <select v-model="violation" class="form-select">
-          <option>Real life images on underage character</option>
-          <option>Real life animal images on sexual character</option>
-          <option>Amateur/farmed real life images</option>
-          <option>Defamation</option>
-          <option>OOC Kinks</option>
-          <option>Real life contact information</option>
-          <option>Solicitation for real life contact</option>
-          <option>Other</option>
-        </select>
+        <label
+          >{{ l('reportDialog.violationType') }}
+          <select v-model="violation" class="form-select">
+            <option>Real life images on underage character</option>
+            <option>Real life animal images on sexual character</option>
+            <option>Amateur/farmed real life images</option>
+            <option>Defamation</option>
+            <option>OOC Kinks</option>
+            <option>Real life contact information</option>
+            <option>Solicitation for real life contact</option>
+            <option>Other</option>
+          </select>
+        </label>
       </div>
       <div class="mb-3">
-        <label>{{ l('reportDialog.yourCharacter') }}</label>
-        <character-select v-model="ourCharacter"></character-select>
+        <label
+          >{{ l('reportDialog.yourCharacter') }}
+          <character-select v-model="ourCharacter"></character-select>
+        </label>
       </div>
       <div class="mb-3">
-        <label>{{ l('reportDialog.reasonMessage') }}</label>
-        <bbcode-editor
-          v-model="message"
-          :maxlength="45000"
-          :classes="'form-control'"
-        ></bbcode-editor>
+        <label
+          >{{ l('reportDialog.reasonMessage') }}
+          <bbcode-editor
+            v-model="message"
+            :maxlength="45000"
+            :classes="'form-control'"
+          ></bbcode-editor>
+        </label>
       </div>
     </div>
     <div v-show="type === 'takedown'" class="alert alert-info">

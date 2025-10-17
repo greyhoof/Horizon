@@ -29,14 +29,12 @@
               <span :class="getResultIcon(result)"></span>
             </span>
 
-            <span class="result-name"
-              >{{ result.name }}
-              <span v-show="hasMentions(result)" class="badge text-bg-warning"
-                >!</span
-              ></span
-            >
-            <span v-show="isUnread(result)" class="badge text-bg-danger"
-              ><i class="fa-solid fa-circle-dot"></i
+            <span class="result-name">{{ result.name }} </span>
+            <span v-if="hasMentions(result)" class="badge text-bg-warning"
+              ><i class="fa-fw fa-solid fa-exclamation"></i
+            ></span>
+            <span v-else-if="isUnread(result)" class="badge text-bg-danger"
+              ><i class="fa-fw fa-solid fa-ellipsis"></i
             ></span>
             <span class="result-description" v-if="result.description">
               {{

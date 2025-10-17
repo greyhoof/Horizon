@@ -95,23 +95,29 @@
         class="search-result"
         :class="'status-' + record.character.status"
       >
-        <template v-if="record.character.status === 'looking'" v-once>
-          <img
-            :src="characterImage(record.character.name)"
-            class="character-avatar user"
-            v-if="showAvatars"
-          />
-          <user
-            :character="record.character"
-            :showStatus="true"
-            :match="shouldShowMatch"
-            :avatar="false"
-            :isMarkerShown="shouldShowMarker"
-          ></user>
-          <bbcode
-            :text="record.character.statusText"
-            class="status-text"
-          ></bbcode>
+        <template v-if="record.character.status === 'looking'">
+          <div class="d-flex">
+            <div class="flex-shrink-0" v-once>
+              <img
+                :src="characterImage(record.character.name)"
+                class="character-avatar user"
+                v-if="showAvatars"
+              />
+            </div>
+            <div class="w-100 p-2">
+              <user
+                :character="record.character"
+                :showStatus="true"
+                :match="shouldShowMatch"
+                :avatar="false"
+                :isMarkerShown="shouldShowMarker"
+              ></user>
+              <bbcode
+                :text="record.character.statusText"
+                class="status-text"
+              ></bbcode>
+            </div>
+          </div>
         </template>
         <template v-else v-once>
           <user
@@ -572,7 +578,7 @@
 
     countPendingResults(names?: string[], results = this.results): number {
       // console.log('COUNTPENDINGRESULTS', names);
-
+      if (!this.shouldShowMatch) return 0;
       return _.reduce(
         results,
         (accum: number, result: SearchResult) => {

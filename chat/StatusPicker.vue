@@ -37,9 +37,9 @@
               :class="{ 'fa-check-circle': index === selectedPin }"
           /></span>
 
-          <label class="form-check-label" :for="'pinned_status_' + index">
+          <span class="form-check-label" :for="'pinned_status_' + index">
             <bbcode :text="pinnedStatus"></bbcode>
-          </label>
+          </span>
 
           <span class="content-action" role="button" @click="unpinStatus(index)"
             ><i class="fas fa-thumbtack text-success"
@@ -76,9 +76,9 @@
               class="fas"
               :class="{ 'fa-check-circle': index === selectedStatus }"
           /></span>
-          <label class="form-check-label" :for="'history_status_' + index">
+          <span class="form-check-label" :for="'history_status_' + index">
             <bbcode :text="historicStatus"></bbcode>
-          </label>
+          </span>
 
           <span
             class="content-action"
@@ -162,7 +162,7 @@
     selectStatus(): void {
       if (this.selectedStatus !== null) {
         this.callback(this.history[this.selectedStatus]);
-      } else if (this.selctedPin !== null) {
+      } else if (this.selectedPin !== null) {
         this.callback(this.pinned[this.selectedPin]);
       }
     }
@@ -210,7 +210,7 @@
       display: none;
     }
 
-    label::before {
+    .form-check-label::before {
       display: none !important;
     }
 
@@ -218,8 +218,10 @@
       min-width: 100%;
       display: flex;
 
-      label {
+      .form-check-label {
         flex: 1;
+        display: inline-block;
+        margin-bottom: 0.5rem;
       }
 
       .before-content {

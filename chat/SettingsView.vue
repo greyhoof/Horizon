@@ -477,12 +477,45 @@
           <input
             class="form-check-input"
             type="checkbox"
+            id="horizonShowSigninNotifications"
+            v-model="horizonShowSigninNotifications"
+          />
+          <label class="form-check-label" for="horizonShowSigninNotifications">
+            {{ l('settings.showSigninNotifications') }}
+          </label>
+        </div>
+      </div>
+      <div class="mb-3">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
             id="horizonNotifyFriendSignIn"
+            :disabled="!horizonShowSigninNotifications"
             v-model="horizonNotifyFriendSignIn"
           />
           <label class="form-check-label" for="horizonNotifyFriendSignIn">
             {{ l('settings.notifyFriendSignIn') }}
           </label>
+        </div>
+      </div>
+      <div class="mb-3">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="horizonShowDuplicateStatusNotifications"
+            v-model="horizonShowDuplicateStatusNotifications"
+          />
+          <label
+            class="form-check-label"
+            for="horizonShowDuplicateStatusNotifications"
+          >
+            {{ l('settings.showDuplicateStatusNotifications') }}
+          </label>
+          <div class="form-text text-muted">
+            {{ l('settings.showDuplicateStatusNotifications.note') }}
+          </div>
         </div>
       </div>
       <div class="mb-3">
@@ -557,6 +590,24 @@
       </div>
 
       <div class="mb-3">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="horizonMessagePortraitHighQuality"
+            v-model="horizonMessagePortraitHighQuality"
+            :disabled="!risingShowHighQualityPortraits"
+          />
+          <label
+            class="form-check-label"
+            for="horizonMessagePortraitHighQuality"
+          >
+            {{ l('settings.messagePortraitHighQuality') }}
+          </label>
+        </div>
+      </div>
+
+      <div class="mb-3">
         <label class="control-label" for="chatLayoutMode">{{
           l('settings.experimental', l('settings.chatLayoutMode'))
         }}</label>
@@ -588,9 +639,9 @@
           <label class="form-check-label" for="messageGrouping">
             {{ l('settings.messageGrouping') }}
           </label>
-          <small class="form-text text-muted">{{
-            l('settings.messageGrouping.description')
-          }}</small>
+          <div class="form-text text-muted">
+            {{ l('settings.messageGrouping.description') }}
+          </div>
         </div>
       </div>
 
@@ -714,7 +765,7 @@
             v-model="risingFilter.hideAds"
           />
           <label class="form-check-label" for="risingFilter.hideAds">
-            {{ l('settings.filter.hideAds') }}
+            <bbcode :text="l('settings.filter.hideAds')"></bbcode>
           </label>
         </div>
 
@@ -726,7 +777,7 @@
             v-model="risingFilter.hideSearchResults"
           />
           <label class="form-check-label" for="risingFilter.hideSearchResults">
-            {{ l('settings.filter.hideSearchResults') }}
+            <bbcode :text="l('settings.filter.hideSearchResults')"></bbcode>
           </label>
         </div>
 
@@ -738,7 +789,7 @@
             v-model="risingFilter.hideChannelMembers"
           />
           <label class="form-check-label" for="risingFilter.hideChannelMembers">
-            {{ l('settings.filter.hideChannelMembers') }}
+            <bbcode :text="l('settings.filter.hideChannelMembers')"></bbcode>
           </label>
         </div>
 
@@ -753,7 +804,9 @@
             class="form-check-label"
             for="risingFilter.hidePublicChannelMessages"
           >
-            {{ l('settings.filter.hidePublicChannelMessages') }}
+            <bbcode
+              :text="l('settings.filter.hidePublicChannelMessages')"
+            ></bbcode>
           </label>
         </div>
 
@@ -768,7 +821,9 @@
             class="form-check-label"
             for="risingFilter.hidePrivateChannelMessages"
           >
-            {{ l('settings.filter.hidePrivateChannelMessages') }}
+            <bbcode
+              :text="l('settings.filter.hidePrivateChannelMessages')"
+            ></bbcode>
           </label>
         </div>
 
@@ -783,7 +838,7 @@
             class="form-check-label"
             for="risingFilter.hidePrivateMessages"
           >
-            {{ l('settings.filter.hidePrivateMessages') }}
+            <bbcode :text="l('settings.filter.hidePrivateMessages')"></bbcode>
           </label>
         </div>
 
@@ -795,7 +850,7 @@
             v-model="risingFilter.showFilterIcon"
           />
           <label class="form-check-label" for="risingFilter.showFilterIcon">
-            {{ l('settings.filter.showFilterIcon') }}
+            <bbcode :text="l('settings.filter.showFilterIcon')"></bbcode>
           </label>
         </div>
       </div>
@@ -809,7 +864,7 @@
             v-model="risingFilter.penalizeMatches"
           />
           <label class="form-check-label" for="risingFilter.penalizeMatches">
-            {{ l('settings.filter.penalizeMatches') }}
+            <bbcode :text="l('settings.filter.penalizeMatches')"></bbcode>
           </label>
         </div>
 
@@ -821,7 +876,7 @@
             v-model="risingFilter.rewardNonMatches"
           />
           <label class="form-check-label" for="risingFilter.rewardNonMatches">
-            {{ l('settings.filter.rewardNonMatches') }}
+            <bbcode :text="l('settings.filter.rewardNonMatches')"></bbcode>
           </label>
         </div>
       </div>
@@ -976,6 +1031,8 @@
   import Modal from '../components/Modal.vue';
   import { Editor } from './bbcode';
   import Tabs from '../components/tabs';
+  import { BBCodeView } from '../bbcode/view';
+  import { StandardBBCodeParser } from '../bbcode/standard';
   import core from './core';
   import { Settings as SettingsInterface } from './interfaces';
   import l from './localize';
@@ -988,8 +1045,15 @@
   import { matchesSmartFilters } from '../learn/filter/smart-filter';
   import { EventBus } from './preview/event-bus';
 
+  const standardParser = new StandardBBCodeParser();
+
   @Component({
-    components: { modal: Modal, editor: Editor, tabs: Tabs }
+    components: {
+      modal: Modal,
+      editor: Editor,
+      tabs: Tabs,
+      bbcode: BBCodeView(standardParser)
+    }
   })
   export default class SettingsView extends CustomDialog {
     l = l;
@@ -1033,12 +1097,15 @@
     risingShowPortraitNearInput!: boolean;
     risingShowPortraitInMessage!: boolean;
     risingShowHighQualityPortraits!: boolean;
+    horizonMessagePortraitHighQuality!: boolean;
     horizonShowCustomCharacterColors!: boolean;
     horizonShowDeveloperBadges!: boolean;
     horizonShowGenderMarker!: boolean;
     horizonGenderMarkerOrigColor!: boolean;
     horizonChangeOfflineColor!: boolean;
     horizonNotifyFriendSignIn!: boolean;
+    horizonShowSigninNotifications!: boolean;
+    horizonShowDuplicateStatusNotifications!: boolean;
     horizonHighlightUsers!: string;
     chatLayoutMode!: 'classic' | 'modern';
     messageGrouping!: boolean;
@@ -1098,6 +1165,8 @@
       this.risingShowPortraitInMessage = settings.risingShowPortraitInMessage;
       this.risingShowHighQualityPortraits =
         settings.risingShowHighQualityPortraits;
+      this.horizonMessagePortraitHighQuality =
+        settings.horizonMessagePortraitHighQuality;
       this.horizonShowCustomCharacterColors =
         settings.horizonShowCustomCharacterColors;
       this.horizonShowDeveloperBadges = settings.horizonShowDeveloperBadges;
@@ -1113,6 +1182,10 @@
         settings.horizonSaveDraftMessagesToDiskTimer.toString();
 
       this.horizonNotifyFriendSignIn = settings.horizonNotifyFriendSignIn;
+      this.horizonShowSigninNotifications =
+        settings.horizonShowSigninNotifications;
+      this.horizonShowDuplicateStatusNotifications =
+        settings.horizonShowDuplicateStatusNotifications;
       this.horizonHighlightUsers = settings.horizonHighlightUsers.join(',');
       this.risingFilter = settings.risingFilter;
 
@@ -1170,7 +1243,6 @@
       );
 
       core.state.settings = {
-        soundTheme: core.state.settings.soundTheme,
         playSound: this.playSound,
         clickOpensMessage: this.clickOpensMessage,
         disallowedTags: this.disallowedTags
@@ -1223,12 +1295,17 @@
         risingShowPortraitNearInput: this.risingShowPortraitNearInput,
         risingShowPortraitInMessage: this.risingShowPortraitInMessage,
         risingShowHighQualityPortraits: this.risingShowHighQualityPortraits,
+        horizonMessagePortraitHighQuality:
+          this.horizonMessagePortraitHighQuality,
         horizonShowCustomCharacterColors: this.horizonShowCustomCharacterColors,
         horizonShowDeveloperBadges: this.horizonShowDeveloperBadges,
         horizonShowGenderMarker: this.horizonShowGenderMarker,
         horizonGenderMarkerOrigColor: this.horizonGenderMarkerOrigColor,
         horizonChangeOfflineColor: this.horizonChangeOfflineColor,
         horizonNotifyFriendSignIn: this.horizonNotifyFriendSignIn,
+        horizonShowSigninNotifications: this.horizonShowSigninNotifications,
+        horizonShowDuplicateStatusNotifications:
+          this.horizonShowDuplicateStatusNotifications,
         horizonHighlightUsers: this.horizonHighlightUsers
           .split(',')
           .map(x => x.trim())

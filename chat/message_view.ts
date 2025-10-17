@@ -26,6 +26,7 @@ const userPostfix: { [key: number]: string | undefined } = {
     const layoutMode = core.connection.isOpen
       ? core.state.settings.chatLayoutMode || 'classic'
       : 'classic';
+    const isModern = layoutMode === 'modern';
     let modernInner: VNode | null = null; // track modern inner wrapper
 
     // setTimeout(
@@ -39,10 +40,7 @@ const userPostfix: { [key: number]: string | undefined } = {
     // Classic layout: existing inline format.
     // Modern layout: avatar-first with header (name + time) and bubble content.
     let children: VNodeChildrenArrayContents;
-    if (
-      layoutMode === 'modern' &&
-      message.type !== Conversation.Message.Type.Event
-    ) {
+    if (isModern && message.type !== Conversation.Message.Type.Event) {
       children = [];
     } else {
       children = [
@@ -54,7 +52,6 @@ const userPostfix: { [key: number]: string | undefined } = {
       ];
     }
 
-    const isModern = layoutMode === 'modern';
     const showHeader =
       !isModern ||
       !core.state.settings.messageGrouping ||
@@ -78,10 +75,11 @@ const userPostfix: { [key: number]: string | undefined } = {
       ` ${this.scoreClasses}` +
       ` ${this.filterClasses}`;
     if (message.type !== Conversation.Message.Type.Event) {
-      if (layoutMode === 'modern') {
+      if (isModern) {
         // Modern layout: separate avatar column so time can sit directly after name
         const headerChildren: VNodeChildrenArrayContents = [];
         if (showHeader) {
+          // Create UserView in headerChildren
           headerChildren.push(
             createElement(UserView, {
               props: {
@@ -94,6 +92,7 @@ const userPostfix: { [key: number]: string | undefined } = {
               }
             })
           );
+          // Create message-time in headerChildren
           headerChildren.push(
             createElement(
               'span',
@@ -102,19 +101,24 @@ const userPostfix: { [key: number]: string | undefined } = {
             )
           );
 
+          // Create IconView (or spacer) in children (this makes it visible as children elements are displayed when they are put in)
           const showAvatar = core.connection.character
             ? core.state.settings.risingShowPortraitInMessage
             : false;
           const avatarNode = showAvatar
             ? createElement(IconView, {
                 props: {
-                  character: message.sender
+                  character: message.sender,
+                  useOriginalAvatar: core.state?.settings
+                    ? !core.state.settings.horizonMessagePortraitHighQuality
+                    : true
                 },
                 class: 'message-avatar'
               })
             : createElement('div', { staticClass: 'message-avatar-spacer' });
           children.push(avatarNode);
 
+          // Create message with header, putting headerChildren objects inside
           modernInner = createElement(
             'div',
             { staticClass: 'message-modern-inner' },
@@ -127,16 +131,29 @@ const userPostfix: { [key: number]: string | undefined } = {
             ]
           );
         } else {
-          const avatarNode = createElement('div', {
-            staticClass: 'message-avatar-spacer'
-          });
+          // Creates spacer without avatar (when no header needed) in children
+          const avatarNode = createElement(
+            'div',
+            {
+              staticClass: 'message-avatar-spacer'
+            },
+            [
+              createElement(
+                'span',
+                { staticClass: 'message-time' },
+                `${formatTime(message.time, true)}`
+              )
+            ]
+          );
           children.push(avatarNode);
+          // Creates message without header, keeping similar message structure
           modernInner = createElement(
             'div',
             { staticClass: 'message-modern-inner' },
             []
           );
         }
+        // Pushes the inner with or without header into children to make it visible
         children.push(modernInner);
       } else {
         // Classic Layout: Action Star > UserView (with icon logic) > Post type colon
@@ -149,6 +166,9 @@ const userPostfix: { [key: number]: string | undefined } = {
               avatar: core.connection.character
                 ? core.state.settings.risingShowPortraitInMessage
                 : false,
+              useOriginalAvatar: core.connection.character
+                ? !core.state.settings.horizonMessagePortraitHighQuality
+                : true,
               character: message.sender,
               channel: this.channel,
               isMarkerShown: core.connection.character
@@ -169,28 +189,28 @@ const userPostfix: { [key: number]: string | undefined } = {
         classes += ' message-highlight';
     }
 
-    let messageAdjustment = '';
+    //3.0 (and Horizon's classic view) users often prepend their message with an empty linefeed to format things like eicon collages
+    //Therefore, we filter that out in modern view mode, since it's unnecessary there.
+    let messageAdjustment = message.text.replace(/^\n/, '');
     switch (message.type) {
       case Conversation.Message.Type.Action:
-        messageAdjustment = ' ' + message.sender.name + message.text;
+        messageAdjustment = ' ' + message.sender.name + messageAdjustment;
         break;
       case Conversation.Message.Type.Roll:
-        messageAdjustment = ' ' + message.sender.name + ' ' + message.text;
+        messageAdjustment = ' ' + message.sender.name + ' ' + messageAdjustment;
         break;
       case Conversation.Message.Type.Warn:
-        messageAdjustment = ' ' + message.text;
+        messageAdjustment = ' ' + messageAdjustment;
         break;
-      default:
-        messageAdjustment = message.text;
     }
     const isAd = message.type == Conversation.Message.Type.Ad && !this.logs;
     const bbcodeNode = createElement(BBCodeView(core.bbCodeParser), {
       props: {
-        unsafeText: layoutMode === 'modern' ? messageAdjustment : message.text,
+        unsafeText: isModern ? messageAdjustment : message.text,
         afterInsert: isAd
           ? (elm: HTMLElement) => {
               setImmediate(() => {
-                if (layoutMode === 'modern') {
+                if (isModern) {
                   // Pushes elm up three times rather than one with modern to make it parent to the top level of a message.
                   elm = elm.parentElement!.parentElement!.parentElement!;
                   if (elm.scrollHeight > elm.offsetHeight) {
@@ -218,7 +238,7 @@ const userPostfix: { [key: number]: string | undefined } = {
       }
     });
 
-    if (layoutMode === 'modern') {
+    if (isModern) {
       if (modernInner && modernInner.children) {
         let messagePrefix = '';
         switch (message.type) {
@@ -254,7 +274,7 @@ const userPostfix: { [key: number]: string | undefined } = {
       children.push(bbcodeNode);
     }
 
-    if (layoutMode === 'modern') classes += ' message-modern';
+    if (isModern) classes += ' message-modern';
     const node = createElement('div', { attrs: { class: classes } }, children);
     node.key = message.id;
     return node;

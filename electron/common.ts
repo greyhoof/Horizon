@@ -56,8 +56,13 @@ export class GeneralSettings {
   horizonAutoLogin: boolean = false;
   horizonWindowTitleCharacter: boolean = false;
   use12HourTime: boolean = false;
+  showSeconds: boolean = false;
   fuzzyDates: boolean = true;
+  allowWindowTransparency: boolean = false;
   horizonForceAsciiProfiles: boolean = false;
+  hasImportedVanillaLogs: boolean = false;
+  hasDismissedVanillaImport: boolean = false;
+  vanillaCustomBaseDir: string | undefined = undefined;
 }
 
 log.debug('init.common.done');
