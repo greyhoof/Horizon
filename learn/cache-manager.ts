@@ -318,6 +318,8 @@ export class CacheManager {
       await this.profileStore.flushProfiles(settings.risingCacheExpiryDays);
     }
 
+    this.profileCache.setMaxCacheSize(settings.horizonCacheMemoryCount);
+
     EventBus.$on('character-data', async (data: CharacterDataEvent) => {
       // this promise is intentionally NOT chained
       // tslint:disable-next-line: no-floating-promises

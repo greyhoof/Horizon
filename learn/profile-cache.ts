@@ -14,6 +14,7 @@ import { Scoring } from './matcher-types';
 import { matchesSmartFilters } from './filter/smart-filter';
 import * as remote from '@electron/remote';
 import log from 'electron-log'; //tslint:disable-line:match-default-export-name
+import { GeneralSettings } from '../electron/common';
 
 export interface MetaRecord {
   images: CharacterImage[] | null;
@@ -44,7 +45,7 @@ export interface CharacterMatchSummary {
  * The default value for the profile cache's queue maximum length.
  * If more entries are added to the cache, the least recently used one(s) will be flushed.
  * */
-export const PROFILE_CACHE_MAX_ENTRIES: number = 5;
+export const PROFILE_CACHE_MAX_ENTRIES: number = 75;
 
 /**
  * The "cache record" holds information about when the character was added to the cache. This information can be useful for deciding when to refresh a character profile or to remove them entirely.
