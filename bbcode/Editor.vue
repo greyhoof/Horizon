@@ -136,7 +136,7 @@
         @keydown="onKeyDown"
       ></textarea>
       <textarea ref="sizer" class="hidden-scrollbar"></textarea>
-      <div class="bbcode-preview" v-show="preview">
+      <div class="bbcode-preview bg-body" v-show="preview">
         <div class="bbcode-preview-warnings">
           <div class="alert alert-danger" v-show="previewWarnings.length">
             <li v-for="warning in previewWarnings">{{ warning }}</li>
