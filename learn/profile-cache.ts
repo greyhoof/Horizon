@@ -14,7 +14,6 @@ import { Scoring } from './matcher-types';
 import { matchesSmartFilters } from './filter/smart-filter';
 import * as remote from '@electron/remote';
 import log from 'electron-log'; //tslint:disable-line:match-default-export-name
-import { GeneralSettings } from '../electron/common';
 
 export interface MetaRecord {
   images: CharacterImage[] | null;
@@ -111,6 +110,41 @@ export class ProfileCache extends AsyncCache<CharacterCacheRecord> {
   }
 
   /**
+   * Helper method to properly clean up a cache record before removal.
+   * Garbage collection is assisted by nullifying references to large objects.
+   *
+   * @param record - The cache record to clean up
+   * @private
+   */
+  private cleanupRecord(record: CharacterCacheRecord): void {
+    // Clear character references to help garbage collection
+    if (record.character) {
+      // Don't directly modify the character object, just remove our reference
+      (record as any).character = null;
+    }
+
+    // Clear meta data references
+    if (record.meta) {
+      if (record.meta.images) {
+        (record.meta as any).images = null;
+      }
+      if (record.meta.groups) {
+        (record.meta as any).groups = null;
+      }
+      if (record.meta.friends) {
+        (record.meta as any).friends = null;
+      }
+      if (record.meta.guestbook) {
+        (record.meta as any).guestbook = null;
+      }
+      (record as any).meta = null;
+    }
+
+    // Clear match data (though this is smaller)
+    (record as any).match = null;
+  }
+
+  /**
    * Ensures the cache size stays within our threshold by evicting the least recently used entries.
    * Eviction occurs by removing entries from the front of the access order queue (least recently used)
    * until the cache size is at or below the maximum allowed size.
@@ -131,6 +165,11 @@ export class ProfileCache extends AsyncCache<CharacterCacheRecord> {
 
       if (record) {
         log.debug('cache.evict', { name: record.character.character.name });
+
+        // Clean up the record before deletion
+        this.cleanupRecord(record);
+
+        // Remove from cache
         delete this.cache[key];
       }
     }
@@ -214,6 +253,20 @@ export class ProfileCache extends AsyncCache<CharacterCacheRecord> {
     };
 
     return cacheRecord;
+  }
+
+  delete(name: string): void {
+    const key = AsyncCache.nameKey(name);
+
+    // Clean up the record before deletion
+    const record = this.cache[key];
+    if (record) {
+      this.cleanupRecord(record);
+    }
+
+    this.removeFromAccessOrder(key);
+    delete this.cache[key];
+    log.debug('cache.profile.deleted', { name });
   }
 
   // async registerCount(name: string, counts: CountRecord): Promise<void> {
@@ -401,7 +454,8 @@ export class ProfileCache extends AsyncCache<CharacterCacheRecord> {
    */
   async register(
     c: ComplexCharacter,
-    skipStore: boolean = false
+    skipStore: boolean = false,
+    shouldMatch: boolean = true
   ): Promise<CharacterCacheRecord> {
     const k = AsyncCache.nameKey(c.character.name);
     const match = ProfileCache.match(c);

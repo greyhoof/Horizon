@@ -150,11 +150,13 @@
       // undefined == not interested
       // null == no cache hit
       if (
-        cache === null &&
+        core.cache.hasCacheStarted &&
         core.state.settings.horizonShowCustomCharacterColors &&
         !character.overrides.characterColor
       ) {
-        void core.cache.addProfile(character.name, true);
+        //Don't bother checking again if we don't get a result.
+        core.characters.setOverride(character.name, 'characterColor', null);
+        core.cache.addProfile(character.name, true, true);
       }
       if (cache === null && showMatch) {
         void core.cache.addProfile(character.name);
