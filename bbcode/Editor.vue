@@ -404,6 +404,11 @@
       withInject?: string,
       collapseAfterWrap: boolean = false
     ): void {
+      if (this.undoIndex === 0 && this.text !== this.undoStack[0]) {
+        if (this.undoStack.length >= 30) this.undoStack.pop();
+        this.undoStack.unshift(this.text);
+      }
+
       const selection = this.getSelection();
       if (selection.length > 0) {
         const replacement =
