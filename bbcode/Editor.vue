@@ -663,9 +663,17 @@
     onPaste(e: ClipboardEvent): void {
       const data = e.clipboardData!.getData('text/plain');
       if (!this.isShiftPressed && urlRegex.test(data)) {
-        e.preventDefault();
-        console.log('bbcode.url.paste', data);
+        const selection = this.getSelection();
+        if (selection.text.length === 0) {
+          //This regex tests for [url= so you don't wind up pasting another pair of URL tags
+          const match = /.*\[url=$/.exec(this.text.substring(0, selection.end));
+          if (match !== null) {
+            return;
+          }
+        }
 
+        console.log('bbcode.url.paste', data);
+        e.preventDefault();
         //we only replace the brackets instead of trying to force the whole path to be escaped because
         //these two characters give us trouble with BBCode and the rest can just be picked up by the browser anyway
         this.applyText(
