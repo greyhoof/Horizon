@@ -152,7 +152,7 @@
       if (
         core.cache.hasCacheStarted &&
         core.state.settings.horizonShowCustomCharacterColors &&
-        !character.overrides.characterColor
+        character.overrides.characterColor === undefined
       ) {
         //Don't bother checking again if we don't get a result.
         core.characters.setOverride(character.name, 'characterColor', null);
@@ -211,7 +211,7 @@
     const userClass =
       `user-view` +
       (isBookmark && !useOfflineColor ? ' user-bookmark' : '') +
-      (character.overrides.characterColor &&
+      (character.overrides.characterColor !== undefined &&
       !useOfflineColor &&
       character.overrides.characterColor !== CharacterColor.none
         ? ` ${CharacterColor[character.overrides.characterColor]}NameText`
