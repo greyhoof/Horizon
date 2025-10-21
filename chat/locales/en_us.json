@@ -324,6 +324,7 @@
   "conversationSettings.false": "No",
   "conversationSettings.logMessages": "Log messages",
   "conversationSettings.notify": "Notify for messages",
+  "conversationSettings.notify.description": "Sends a notification every time a message is sent.",
   "conversationSettings.save": "Save settings",
   "conversationSettings.title": "Tab Settings",
   "conversationSettings.true": "Yes",
