@@ -60,16 +60,23 @@
             <span style="display: inline-block">{{
               l('users.memberCount', channel.sortedMembers.length)
             }}</span>
-            <a
-              :class="['filter-btn', { active: filterActive }]"
-              href="#"
-              style="margin-left: 8px; display: inline-block"
+            <button
+              :class="[
+                'btn btn-sm',
+                filterActive ? 'btn-primary' : 'btn-outline-secondary'
+              ]"
+              style="
+                margin-left: 8px;
+                display: inline-block;
+                padding: 0.25rem 0.45rem;
+              "
               @click.prevent="toggleSortMenu"
               title="Filters"
               aria-label="Open member filters"
+              :aria-pressed="showSortMenu"
             >
               <i class="fa fa-filter"></i>
-            </a>
+            </button>
 
             <div
               v-show="showSortMenu"
@@ -786,33 +793,6 @@
           }
         }
       }
-    }
-
-    .filter-btn {
-      background-color: transparent;
-      border: 1px solid var(--bs-border-color, #dcdcdc);
-      color: var(--bs-primary, #0d6efd);
-      padding: 0.25rem 0.45rem;
-      border-radius: 0.25rem;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      transition:
-        box-shadow 0.15s ease,
-        border-color 0.15s ease,
-        transform 0.08s ease,
-        color 0.15s ease;
-    }
-
-    .filter-btn:hover {
-      transform: translateY(-1px);
-      background-color: rgba(0, 0, 0, 0.03);
-    }
-
-    .filter-btn.active {
-      border-color: rgba(13, 110, 253, 0.9);
-      color: rgba(13, 110, 253, 0.95);
-      box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.06);
     }
   }
 </style>
