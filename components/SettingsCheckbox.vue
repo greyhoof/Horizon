@@ -38,7 +38,7 @@
   import l from '../chat/localize';
 
   interface Props {
-    value: boolean;
+    value?: boolean;
     name: string;
   }
 
