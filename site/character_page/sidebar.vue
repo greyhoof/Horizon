@@ -12,7 +12,6 @@
       <character-action-menu
         :character="character"
         @rename="showRename()"
-        @delete="showDelete()"
         @block="showBlock()"
       ></character-action-menu>
 
@@ -28,7 +27,6 @@
             ><i class="fa fa-fw fa-pencil-alt"></i
           ></a>
           <button
-            @click="showDelete"
             :title="l('userProfile.delete')"
             class="delete-link btn btn-outline-danger col-3"
             disabled
@@ -36,7 +34,6 @@
             <i class="fa fa-fw fa-trash"></i>
           </button>
           <button
-            @click="showDuplicate()"
             :title="l('userProfile.duplicate')"
             class="duplicate-link btn btn-outline-secondary col-3"
             disabled
@@ -216,12 +213,7 @@
         ref="memo-dialog"
         @memo="memo"
       ></memo-dialog>
-      <delete-dialog :character="character" ref="delete-dialog"></delete-dialog>
       <rename-dialog :character="character" ref="rename-dialog"></rename-dialog>
-      <duplicate-dialog
-        :character="character"
-        ref="duplicate-dialog"
-      ></duplicate-dialog>
       <report-dialog
         v-if="!oldApi && authenticated && !character.is_self"
         :character="character"
@@ -246,8 +238,6 @@
   import { Infotag } from '../../interfaces';
   import * as Utils from '../utils';
   import { methods, registeredComponents, Store } from './data_store';
-  import DeleteDialog from './delete_dialog.vue';
-  import DuplicateDialog from './duplicate_dialog.vue';
   import FriendDialog from './friend_dialog.vue';
   import InfotagView from './infotag.vue';
   import { Character, CONTACT_GROUP_ID, SharedStore } from './interfaces';
@@ -285,8 +275,6 @@
   @Component({
     components: {
       date: DateDisplay,
-      'delete-dialog': DeleteDialog,
-      'duplicate-dialog': DuplicateDialog,
       'friend-dialog': FriendDialog,
       'infotag-item': InfotagView,
       'memo-dialog': MemoDialog,
@@ -369,14 +357,6 @@
 
     showRename(): void {
       (<ShowableVueDialog>this.$refs['rename-dialog']).show();
-    }
-
-    showDelete(): void {
-      (<ShowableVueDialog>this.$refs['delete-dialog']).show();
-    }
-
-    showDuplicate(): void {
-      (<ShowableVueDialog>this.$refs['duplicate-dialog']).show();
     }
 
     showMemo(): void {
