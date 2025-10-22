@@ -153,11 +153,6 @@
           ></infotag-item>
         </template>
 
-        <!--            <div class="contact-block">-->
-        <!--                <contact-method v-for="method in contactMethods" :infotag="method" :key="method.id"-->
-        <!--                    :data="character.character.infotags[method.id]"></contact-method>-->
-        <!--            </div>-->
-
         <div class="quick-info">
           <span class="quick-info-label">{{ l('userProfile.created') }}</span>
           <span class="quick-info-value"
@@ -250,7 +245,6 @@
   import DateDisplay from '../../components/date_display.vue';
   import { Infotag } from '../../interfaces';
   import * as Utils from '../utils';
-  import ContactMethodView from './contact_method.vue';
   import { methods, registeredComponents, Store } from './data_store';
   import DeleteDialog from './delete_dialog.vue';
   import DuplicateDialog from './duplicate_dialog.vue';
@@ -290,7 +284,6 @@
 
   @Component({
     components: {
-      'contact-method': ContactMethodView,
       date: DateDisplay,
       'delete-dialog': DeleteDialog,
       'duplicate-dialog': DuplicateDialog,
