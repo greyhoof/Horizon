@@ -1032,7 +1032,7 @@
   import { Editor } from './bbcode';
   import Tabs from '../components/tabs';
   import { BBCodeView } from '../bbcode/view';
-  import { StandardBBCodeParser } from '../bbcode/standard';
+  import { UserInterfaceBBCodeParser } from '../bbcode/user-interface';
   import core from './core';
   import { Settings as SettingsInterface } from './interfaces';
   import l from './localize';
@@ -1045,14 +1045,14 @@
   import { matchesSmartFilters } from '../learn/filter/smart-filter';
   import { EventBus } from './preview/event-bus';
 
-  const standardParser = new StandardBBCodeParser();
+  const bbcodeParser = new UserInterfaceBBCodeParser();
 
   @Component({
     components: {
       modal: Modal,
       editor: Editor,
       tabs: Tabs,
-      bbcode: BBCodeView(standardParser)
+      bbcode: BBCodeView(bbcodeParser)
     }
   })
   export default class SettingsView extends CustomDialog {

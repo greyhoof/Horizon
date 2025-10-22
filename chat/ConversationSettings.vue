@@ -9,59 +9,55 @@
     iconClass="fas fa-gear"
   >
     <div class="mb-3">
-      <label class="control-label" :for="'notify' + conversation.key">{{
-        l('conversationSettings.notify')
-      }}</label>
-      <select
-        class="form-select"
-        :id="'notify' + conversation.key"
-        v-model="notify"
-      >
-        <option :value="setting.Default">
-          {{ l('conversationSettings.default') }}
-        </option>
-        <option :value="setting.True">
-          {{ l('conversationSettings.true') }}
-        </option>
-        <option :value="setting.False">
-          {{ l('conversationSettings.false') }}
-        </option>
-      </select>
-    </div>
-    <div class="mb-3">
-      <label class="control-label" :for="'highlight' + conversation.key">{{
-        l('settings.highlight')
-      }}</label>
-      <select
-        class="form-select"
-        :id="'highlight' + conversation.key"
-        v-model="highlight"
-      >
-        <option :value="setting.Default">
-          {{ l('conversationSettings.default') }}
-        </option>
-        <option :value="setting.True">
-          {{ l('conversationSettings.true') }}
-        </option>
-        <option :value="setting.False">
-          {{ l('conversationSettings.false') }}
-        </option>
-      </select>
-    </div>
-    <div class="mb-3">
-      <div class="form-check">
-        <input
-          class="form-check-input"
-          type="checkbox"
-          id="defaultHighlights"
-          v-model="defaultHighlights"
-        />
-        <label class="form-check-label" for="defaultHighlights">
-          {{ l('settings.defaultHighlights') }}
-        </label>
+      <div class="d-flex p-2 justify-content-between align-items-start">
+        <div class="w-50">
+          <label class="control-label" :for="'notify' + conversation.key">{{
+            l('conversationSettings.notify')
+          }}</label>
+          <div class="text-muted">
+            {{ l('conversationSettings.notify.description') }}
+          </div>
+        </div>
+        <settings-radio
+          v-model="notify"
+          :name="'notify' + conversation.key"
+          :id="'notify' + conversation.key"
+        ></settings-radio>
+      </div>
+      <div class="d-flex p-2 justify-content-between align-items-start">
+        <div class="w-50">
+          <label class="control-label" :for="'highlight' + conversation.key">{{
+            l('settings.highlight')
+          }}</label>
+        </div>
+        <settings-radio
+          v-model="highlight"
+          :name="'highlight' + conversation.key"
+        ></settings-radio>
       </div>
     </div>
     <div class="mb-3">
+      <div class="d-flex p-2 justify-content-between align-items-start">
+        <div class="w-50">
+          <label
+            class="control-label"
+            :for="'defaultHighlights' + conversation.key"
+          >
+            {{ l('settings.defaultHighlights') }}
+          </label>
+          <!--
+          <div class="text-muted">
+            {{ l('conversationSettings.defaultHighlights.description') }}
+          </div>
+          -->
+        </div>
+        <settings-checkbox
+          v-model="defaultHighlights"
+          :name="'defaultHighlights' + conversation.key"
+        ></settings-checkbox>
+      </div>
+    </div>
+    <div class="mb-3 p-2">
       <label class="control-label" :for="'highlightWords' + conversation.key">{{
         l('settings.highlightWords')
       }}</label>
@@ -71,7 +67,7 @@
         v-model="highlightWords"
       />
     </div>
-    <div class="mb-3">
+    <div class="mb-3 p-2">
       <label class="control-label" :for="'highlightUsers' + conversation.key">{{
         l('settings.highlightUsers.conversation')
       }}</label>
@@ -82,44 +78,34 @@
       />
     </div>
     <div class="mb-3">
-      <label class="control-label" :for="'joinMessages' + conversation.key">{{
-        l('settings.joinMessages')
-      }}</label>
-      <select
-        class="form-select"
-        :id="'joinMessages' + conversation.key"
-        v-model="joinMessages"
-      >
-        <option :value="setting.Default">
-          {{ l('conversationSettings.default') }}
-        </option>
-        <option :value="setting.True">
-          {{ l('conversationSettings.true') }}
-        </option>
-        <option :value="setting.False">
-          {{ l('conversationSettings.false') }}
-        </option>
-      </select>
+      <div class="d-flex p-2 justify-content-between align-items-start">
+        <div class="w-50">
+          <label
+            class="control-label"
+            :for="'joinMessages' + conversation.key"
+            >{{ l('settings.joinMessages') }}</label
+          >
+        </div>
+        <settings-radio
+          v-model="joinMessages"
+          :name="'joinMessages' + conversation.key"
+        ></settings-radio>
+      </div>
     </div>
     <div class="mb-3">
-      <label class="control-label" :for="'logMessages' + conversation.key">{{
-        l('conversationSettings.logMessages')
-      }}</label>
-      <select
-        class="form-select"
-        :id="'logMessages' + conversation.key"
-        v-model="logMessages"
-      >
-        <option :value="setting.Default">
-          {{ l('conversationSettings.default') }}
-        </option>
-        <option :value="setting.True">
-          {{ l('conversationSettings.true') }}
-        </option>
-        <option :value="setting.False">
-          {{ l('conversationSettings.false') }}
-        </option>
-      </select>
+      <div class="d-flex p-2 justify-content-between align-items-start">
+        <div class="w-50">
+          <label
+            class="control-label"
+            :for="'logMessages' + conversation.key"
+            >{{ l('conversationSettings.logMessages') }}</label
+          >
+        </div>
+        <settings-radio
+          v-model="logMessages"
+          :name="'logMessages' + conversation.key"
+        ></settings-radio>
+      </div>
     </div>
   </modal>
 </template>
@@ -127,12 +113,18 @@
 <script lang="ts">
   import { Component, Prop } from '@f-list/vue-ts';
   import CustomDialog from '../components/custom_dialog';
+  import SettingsRadio from '../components/SettingsRadio.vue';
+  import SettingsCheckbox from '../components/SettingsCheckbox.vue';
   import Modal from '../components/Modal.vue';
   import { Conversation } from './interfaces';
   import l from './localize';
 
   @Component({
-    components: { modal: Modal }
+    components: {
+      modal: Modal,
+      'settings-radio': SettingsRadio,
+      'settings-checkbox': SettingsCheckbox
+    }
   })
   export default class ConversationSettings extends CustomDialog {
     @Prop({ required: true })

@@ -391,9 +391,10 @@
           style="cursor: pointer"
           @click.stop="conversation.infoText = ''"
         ></span>
-        <span style="flex: 1; margin-left: 5px">{{
-          conversation.infoText
-        }}</span>
+        <bbcode-ui
+          :text="conversation.infoText"
+          style="flex: 1; margin-left: 5px"
+        ></bbcode-ui>
       </div>
       <div v-show="conversation.errorText" class="chat-info-text">
         <span
@@ -401,9 +402,11 @@
           style="cursor: pointer"
           @click.stop="conversation.errorText = ''"
         ></span>
-        <span class="redText" style="flex: 1; margin-left: 5px">{{
-          conversation.errorText
-        }}</span>
+        <bbcode-ui
+          :text="conversation.errorText"
+          class="redText"
+          style="flex: 1; margin-left: 5px"
+        ></bbcode-ui>
       </div>
       <div class="bbcode-editor-controls">
         <div
@@ -551,6 +554,9 @@
   // import { CharacterMemo } from '../site/character_page/interfaces';
   import { MemoManager } from './character/memo';
   import { CharacterMemo } from '../site/character_page/interfaces';
+  import { UserInterfaceBBCodeParser } from '../bbcode/user-interface';
+
+  const UIBbcodeParser = new UserInterfaceBBCodeParser();
 
   @Component({
     components: {
@@ -561,6 +567,7 @@
       logs: Logs,
       'message-view': MessageView,
       bbcode: BBCodeView(core.bbCodeParser),
+      'bbcode-ui': BBCodeView(UIBbcodeParser),
       'command-help': CommandHelp,
       'ad-view': CharacterAdView,
       'channel-list': CharacterChannelList,
@@ -776,6 +783,11 @@
       if (this.isPrivate(this.conversation)) {
         const c = await core.cache.profileCache.get(this.conversation.name);
         this.userMemo = c?.character?.memo?.memo || '';
+      }
+      const editor = <Editor>this.$refs['textBox'];
+
+      if (editor !== null && editor.preview) {
+        editor.togglePreview();
       }
     }
 
