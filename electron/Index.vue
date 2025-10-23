@@ -854,7 +854,7 @@
         }
 
         return {
-          [`theme-${core.state.settings.risingCharacterTheme || this.settings.theme}`]: true,
+          [`theme-${core.state.settings.risingCharacterTheme || this.getSyncedTheme()}`]: true,
           colorblindMode: core.state.settings.risingColorblindMode,
           vanillaTextColors: this.settings.horizonVanillaTextColors,
           vanillaGenderColors: this.settings.horizonVanillaGenderColors,
@@ -864,7 +864,8 @@
             false
         };
       } catch (err) {
-        return { [`theme-${this.settings.theme}`]: true };
+        console.error(err);
+        return { [`theme-${this.getSyncedTheme()}`]: true };
       }
     }
 
