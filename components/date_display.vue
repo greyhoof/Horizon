@@ -3,21 +3,21 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, computed, onMounted, watch } from 'vue';
+  import { ref, onMounted, watch } from 'vue';
   import { formatDistanceToNow, format } from 'date-fns';
   import core from '../chat/core';
 
   interface Props {
-    time: string | null | number;
+    time?: string | number;
   }
 
-  const props = defineProps<Props>();
+  const props = withDefaults(defineProps<Props>(), { time: 0 });
 
   const primary = ref<string>();
   const secondary = ref<string>();
 
   const update = () => {
-    if (props.time === null || props.time === 0) return;
+    if (!props.time) return;
 
     const date = isNaN(+props.time)
       ? new Date(`${props.time}+00:00`)
