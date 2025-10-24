@@ -289,6 +289,7 @@
       core &&
       core.state &&
       (core.state.settings as any) &&
+      (core.state.settings as any).horizonPersistentMemberFilters &&
       Array.isArray((core.state.settings as any).horizonSavedGenderFilters)
         ? (core.state.settings as any).horizonSavedGenderFilters.slice()
         : [];
@@ -329,6 +330,7 @@
     sortType: (typeof availableSorts)[number] = ((core &&
       core.state &&
       (core.state.settings as any) &&
+      (core.state.settings as any).horizonPersistentMemberFilters &&
       (core.state.settings as any).horizonSavedMembersSort) ||
       'status') as (typeof availableSorts)[number];
 
@@ -339,7 +341,15 @@
       this.$watch(
         () => core.characters.ownProfile,
         (val: any) => {
-          if (val) this.applyOrientationAutoFilter();
+          if (val) {
+            this.applyOrientationAutoFilter();
+          } else {
+            if (!(core.state.settings as any).horizonPersistentMemberFilters) {
+              this.genderFilters = [];
+              this.selectedStatuses = [];
+              this.sortType = 'status';
+            }
+          }
         },
         { immediate: true }
       );
@@ -351,19 +361,23 @@
       this.$watch(
         () => this.genderFilters.slice(),
         (val: any) => {
-          core.state.settings = {
-            ...(core.state.settings as any),
-            horizonSavedGenderFilters: val
-          } as any;
+          if ((core.state.settings as any).horizonPersistentMemberFilters) {
+            core.state.settings = {
+              ...(core.state.settings as any),
+              horizonSavedGenderFilters: val
+            } as any;
+          }
         },
         { deep: true }
       );
 
       this.$watch('sortType', (val: any) => {
-        core.state.settings = {
-          ...(core.state.settings as any),
-          horizonSavedMembersSort: val
-        } as any;
+        if ((core.state.settings as any).horizonPersistentMemberFilters) {
+          core.state.settings = {
+            ...(core.state.settings as any),
+            horizonSavedMembersSort: val
+          } as any;
+        }
       });
     }
 
@@ -522,18 +536,16 @@
     };
 
     resetFilters(): void {
-      this.autoGenderFilterEnabled = true;
+      this.autoGenderFilterEnabled = false;
       core.state.settings = {
         ...(core.state.settings as any),
-        horizonAutoGenderFilter: true
+        horizonAutoGenderFilter: false
       } as any;
 
       this.genderFilters = [];
       this.selectedStatuses = [];
       this.sortType = 'status';
       this.filter = '';
-
-      this.applyOrientationAutoFilter();
     }
 
     beforeDestroy(): void {
