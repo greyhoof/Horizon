@@ -57,9 +57,7 @@
       <div class="users hidden-scrollbar" style="flex: 1; padding-left: 5px">
         <h4>
           <div ref="memberHeader" style="position: relative; width: 100%">
-            <span style="display: inline-block">{{
-              l('users.memberCount', channel.sortedMembers.length)
-            }}</span>
+            <span style="display: inline-block">{{ memberCountText }}</span>
             <button
               :class="[
                 'btn btn-sm',
@@ -445,6 +443,15 @@
     get filteredMembers(): ReadonlyArray<Channel.Member> {
       const members = this.getFilteredMembers();
       return sortMembers(members, this.sortType);
+    }
+
+    get memberCountText(): string {
+      const total = this.channel ? this.channel.sortedMembers.length : 0;
+      const shown = this.filteredMembers ? this.filteredMembers.length : 0;
+      if (shown !== total) {
+        return `${shown}/${total} ${this.l('users.members')}`;
+      }
+      return this.l('users.memberCount', total);
     }
 
     getFilteredMembers() {
