@@ -103,7 +103,7 @@
                 <div>
                   <label
                     class="form-check"
-                    style="display: block"
+                    style="display: block; margin: 0 0 0 0"
                     v-for="s in ['status', 'gender', 'normal']"
                     :key="s"
                   >
@@ -132,7 +132,7 @@
                 >
                   <strong>{{ l('users.filters.statuses') }}</strong>
                 </div>
-                <div style="display: flex; flex-wrap: wrap; gap: 8px">
+                <div class="filter-items">
                   <label
                     v-for="st in statusOptions"
                     :key="st"
@@ -180,7 +180,7 @@
                     {{ l('users.filters.auto') }}
                   </button>
                 </div>
-                <div style="display: flex; flex-wrap: wrap; gap: 8px">
+                <div class="filter-items">
                   <label
                     v-for="gender in genderOptions"
                     :key="gender"
@@ -543,9 +543,35 @@
       z-index: 1000;
       padding: 8px;
       box-sizing: border-box;
-      max-height: 360px;
-      overflow: auto;
-      width: 320px;
+      /* shrink-to-fit width */
+      display: inline-block;
+      width: auto;
+      max-width: calc(100vw - 16px);
+      white-space: normal;
+      background: var(--bs-body-bg, #fff);
+    }
+
+    .sort-popover label.form-check {
+      display: block;
+      width: auto;
+      margin: 0 0 6px 0;
+    }
+
+    /* Ensure filter containers stack items vertically (one per line) */
+    .sort-popover .filter-items {
+      display: block;
+    }
+
+    .sort-popover .filter-items label.form-check {
+      display: block;
+      width: auto;
+      margin-bottom: 6px;
+    }
+
+    .sort-popover > div > div[style*='display: flex'] {
+      display: flex !important;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .nav li:first-child a {
