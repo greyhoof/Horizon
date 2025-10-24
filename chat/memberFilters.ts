@@ -1,6 +1,6 @@
 import { Channel } from './interfaces';
 import { CharacterAnalysis, Matcher } from '../learn/matcher';
-import { Gender, Scoring } from '../learn/matcher-types';
+import { Gender, Scoring, fchatGenderMap } from '../learn/matcher-types';
 
 const genderPreferredOrder: Gender[] = [
   Gender.Female,
@@ -14,16 +14,13 @@ const genderPreferredOrder: Gender[] = [
 ];
 
 function displayNameForGender(genderValue: number): string {
-  const name = Gender[genderValue as any] as string;
-  if (!name) return 'None';
-  switch (name) {
-    case 'MaleHerm':
-      return 'Male-Herm';
-    case 'Cuntboy':
-      return 'Cunt-Boy';
-    default:
-      return name;
-  }
+  const rev: { [key: number]: string } = {};
+  Object.keys(fchatGenderMap).forEach(k => {
+    const v = (fchatGenderMap as any)[k] as number | undefined;
+    if (typeof v === 'number') rev[v] = k;
+  });
+
+  return rev[genderValue] || 'None';
 }
 
 export const genderOptions: string[] = genderPreferredOrder.map(gv =>
