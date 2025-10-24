@@ -472,19 +472,17 @@
     }
 
     toggleSortMenu(): void {
-      this.showSortMenu = !this.showSortMenu;
       if (this.showSortMenu) {
-        document.addEventListener('click', this.onDocumentClick);
+        this.closeSortMenu();
       } else {
-        document.removeEventListener('click', this.onDocumentClick);
+        this.openSortMenu();
       }
     }
 
     onDocumentClick = (e: MouseEvent) => {
       const path = e.composedPath ? e.composedPath() : (e as any).path || [];
       if (path && path.some((el: any) => el && el.id === 'user-list')) return;
-      this.showSortMenu = false;
-      document.removeEventListener('click', this.onDocumentClick);
+      this.closeSortMenu();
     };
 
     resetFilters(): void {
@@ -501,6 +499,18 @@
     }
 
     beforeDestroy(): void {
+      this.closeSortMenu();
+    }
+
+    openSortMenu(): void {
+      if (this.showSortMenu) return;
+      this.showSortMenu = true;
+      document.addEventListener('click', this.onDocumentClick);
+    }
+
+    closeSortMenu(): void {
+      if (!this.showSortMenu) return;
+      this.showSortMenu = false;
       document.removeEventListener('click', this.onDocumentClick);
     }
 
