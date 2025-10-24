@@ -80,7 +80,6 @@
               v-show="showSortMenu"
               ref="sortPopover"
               class="sort-popover card"
-              :style="sortMenuStyle"
             >
               <div style="margin-bottom: 8px">
                 <div
@@ -307,18 +306,6 @@
     showSortMenu = false;
     statusOptions: string[] = ['looking', 'online', 'idle', 'away', 'busy'];
     selectedStatuses: string[] = [];
-    sortMenuStyle: Record<string, any> = {
-      position: 'fixed',
-      left: '0px',
-      right: '0px',
-      top: '0px',
-      zIndex: 1000,
-      padding: '8px',
-      boxSizing: 'border-box',
-      maxHeight: '360px',
-      overflow: 'auto',
-      display: 'none'
-    };
     l = l;
     sorter = (x: Character, y: Character) =>
       x.name.toLocaleLowerCase() < y.name.toLocaleLowerCase()
@@ -488,14 +475,8 @@
       this.showSortMenu = !this.showSortMenu;
       if (this.showSortMenu) {
         document.addEventListener('click', this.onDocumentClick);
-        window.addEventListener('resize', this.updateSortMenuPosition);
-        window.addEventListener('scroll', this.updateSortMenuPosition, true);
-        this.$nextTick(() => this.updateSortMenuPosition());
       } else {
         document.removeEventListener('click', this.onDocumentClick);
-        window.removeEventListener('resize', this.updateSortMenuPosition);
-        window.removeEventListener('scroll', this.updateSortMenuPosition, true);
-        this.sortMenuStyle.display = 'none';
       }
     }
 
@@ -504,35 +485,6 @@
       if (path && path.some((el: any) => el && el.id === 'user-list')) return;
       this.showSortMenu = false;
       document.removeEventListener('click', this.onDocumentClick);
-      window.removeEventListener('resize', this.updateSortMenuPosition);
-      window.removeEventListener('scroll', this.updateSortMenuPosition, true);
-      this.sortMenuStyle.display = 'none';
-    };
-
-    updateSortMenuPosition = (): void => {
-      const headerEl = this.$refs.memberHeader as HTMLElement | undefined;
-      if (!headerEl) return;
-
-      const rect = headerEl.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-      const availableTop = rect.bottom;
-      const availableBottom = viewportHeight - availableTop;
-
-      const left = rect.left;
-      const right = rect.right;
-
-      this.sortMenuStyle = {
-        position: 'fixed',
-        left: `${left}px`,
-        right: `${window.innerWidth - right}px`,
-        top: `${availableTop}px`,
-        zIndex: 1000,
-        padding: '8px',
-        boxSizing: 'border-box',
-        maxHeight: `${Math.max(120, availableBottom - 12)}px`,
-        overflow: 'auto',
-        display: 'block'
-      };
     };
 
     resetFilters(): void {
@@ -550,8 +502,6 @@
 
     beforeDestroy(): void {
       document.removeEventListener('click', this.onDocumentClick);
-      window.removeEventListener('resize', this.updateSortMenuPosition);
-      window.removeEventListener('scroll', this.updateSortMenuPosition, true);
     }
 
     get shouldShowMarker(): boolean {
@@ -584,6 +534,18 @@
 
     .users {
       height: 100%;
+    }
+
+    .sort-popover {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 1000;
+      padding: 8px;
+      box-sizing: border-box;
+      max-height: 360px;
+      overflow: auto;
+      width: 320px;
     }
 
     .nav li:first-child a {
