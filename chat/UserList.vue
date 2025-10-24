@@ -183,20 +183,20 @@
                 </div>
                 <div style="display: flex; flex-wrap: wrap; gap: 8px">
                   <label
-                    v-for="g in genderOptions"
-                    :key="g"
+                    v-for="gender in genderOptions"
+                    :key="gender"
                     class="form-check"
                     style="margin: 0"
                   >
                     <input
                       class="form-check-input"
                       type="checkbox"
-                      :value="g"
+                      :value="gender"
                       v-model="genderFilters"
                       @change="onManualGenderChange"
                     />
                     <span class="form-check-label" style="margin-left: 6px">{{
-                      g
+                      gender
                     }}</span>
                   </label>
                 </div>
