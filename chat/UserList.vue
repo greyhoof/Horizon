@@ -69,8 +69,8 @@
                 padding: 0.25rem 0.45rem;
               "
               @click.prevent="toggleSortMenu"
-              title="Filters"
-              aria-label="Open member filters"
+              :title="l('users.filters.title')"
+              :aria-label="l('users.filters.title')"
               :aria-pressed="showSortMenu"
             >
               <i class="fa fa-filter"></i>
@@ -91,12 +91,14 @@
                     margin-bottom: 6px;
                   "
                 >
-                  <strong style="margin: 0">Sort by</strong>
+                  <strong style="margin: 0">{{
+                    l('users.filters.sortBy')
+                  }}</strong>
                   <button
                     class="btn btn-sm btn-outline-secondary"
                     @click.prevent="resetFilters"
                   >
-                    Reset
+                    {{ l('users.filters.reset') }}
                   </button>
                 </div>
                 <div>
@@ -113,9 +115,7 @@
                       v-model="sortType"
                     />
                     <span class="form-check-label" style="margin-left: 6px">{{
-                      s === 'normal'
-                        ? 'A-Z'
-                        : s.charAt(0).toUpperCase() + s.slice(1)
+                      l('users.filters.sort.' + s)
                     }}</span>
                   </label>
                 </div>
@@ -131,7 +131,7 @@
                     margin-bottom: 6px;
                   "
                 >
-                  <strong>Statuses</strong>
+                  <strong>{{ l('users.filters.statuses') }}</strong>
                 </div>
                 <div style="display: flex; flex-wrap: wrap; gap: 8px">
                   <label
@@ -163,7 +163,7 @@
                     margin-bottom: 6px;
                   "
                 >
-                  <strong>Genders</strong>
+                  <strong>{{ l('users.filters.genders') }}</strong>
                   <button
                     class="btn btn-sm"
                     :class="{
@@ -173,12 +173,12 @@
                     @click.prevent="toggleAutoGenderFilter"
                     :title="
                       autoGenderFilterEnabled
-                        ? 'Automatic gender filtering is ON'
-                        : 'Automatic gender filtering is OFF'
+                        ? l('users.filters.autoOn')
+                        : l('users.filters.autoOff')
                     "
                     :aria-pressed="autoGenderFilterEnabled"
                   >
-                    Auto
+                    {{ l('users.filters.auto') }}
                   </button>
                 </div>
                 <div style="display: flex; flex-wrap: wrap; gap: 8px">
