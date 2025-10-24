@@ -864,7 +864,6 @@
             false
         };
       } catch (err) {
-        console.error(err);
         return { [`theme-${this.getSyncedTheme()}`]: true };
       }
     }
