@@ -2,51 +2,16 @@ import { Channel } from './interfaces';
 import { CharacterAnalysis, Matcher } from '../learn/matcher';
 import { Gender, Scoring } from '../learn/matcher-types';
 
-export const genderOptions: string[] = [
-  'Female',
-  'Male',
-  'Herm',
-  'Shemale',
-  'Cunt-Boy',
-  'Transgender',
-  'Male-Herm',
-  'None'
+const genderPreferredOrder: Gender[] = [
+  Gender.Female,
+  Gender.Male,
+  Gender.Herm,
+  Gender.Shemale,
+  Gender.Cuntboy,
+  Gender.Transgender,
+  Gender.MaleHerm,
+  Gender.None
 ];
-
-export const statusSort: { [key: string]: number } = {
-  crown: 0,
-  looking: 1,
-  online: 2,
-  idle: 3,
-  away: 4,
-  busy: 5,
-  dnd: 6,
-  offline: 7
-};
-
-export const genderSort: { [key: string]: number } = {
-  Female: 0,
-  Male: 1,
-  Herm: 2,
-  Shemale: 3,
-  'Cunt-Boy': 4,
-  Transgender: 5,
-  'Male-Herm': 6,
-  None: 7
-};
-
-function normalizeLabel(s: string | undefined): string {
-  if (!s) return '';
-  return s
-    .toString()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '');
-}
-
-const canonicalGenderByNormalized: { [key: string]: string } = {};
-Object.keys(genderSort).forEach(k => {
-  canonicalGenderByNormalized[normalizeLabel(k)] = k;
-});
 
 function displayNameForGender(genderValue: number): string {
   const name = Gender[genderValue as any] as string;
@@ -60,6 +25,43 @@ function displayNameForGender(genderValue: number): string {
       return name;
   }
 }
+
+export const genderOptions: string[] = genderPreferredOrder.map(gv =>
+  displayNameForGender(gv as number)
+);
+
+export const statusSort: { [key: string]: number } = {
+  crown: 0,
+  looking: 1,
+  online: 2,
+  idle: 3,
+  away: 4,
+  busy: 5,
+  dnd: 6,
+  offline: 7
+};
+
+export const genderSort: { [key: string]: number } =
+  genderPreferredOrder.reduce(
+    (acc: { [key: string]: number }, gv: Gender, idx: number) => {
+      acc[displayNameForGender(gv as number)] = idx;
+      return acc;
+    },
+    {}
+  );
+
+function normalizeLabel(s: string | undefined): string {
+  if (!s) return '';
+  return s
+    .toString()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '');
+}
+
+const canonicalGenderByNormalized: { [key: string]: string } = {};
+Object.keys(genderSort).forEach(k => {
+  canonicalGenderByNormalized[normalizeLabel(k)] = k;
+});
 
 export function computeGenderPreferenceBuckets(profile: CharacterAnalysis): {
   match: string[];
