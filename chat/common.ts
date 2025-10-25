@@ -1,6 +1,11 @@
 import { isToday, format } from 'date-fns';
 import { Keys } from '../keys';
-import { Character, Conversation, Settings as ISettings } from './interfaces';
+import {
+  AvailableSort,
+  Character,
+  Conversation,
+  Settings as ISettings
+} from './interfaces';
 import core from './core';
 
 export function profileLink(this: any | never, character: string): string {
@@ -85,12 +90,10 @@ export class Settings implements ISettings {
   horizonShowCustomCharacterColors = true;
   horizonShowDeveloperBadges = true;
   horizonShowGenderMarker = false;
-  // Automatically apply gender filters in the UserList when enabled
-  horizonAutoGenderFilter = true;
-  // Persisted selection of genders for members list
+  horizonAutoGenderFilter = false;
   horizonSavedGenderFilters: string[] = [];
-  // Persisted sort mode for members list: 'normal' | 'status' | 'gender'
-  horizonSavedMembersSort: string = 'status';
+  horizonSavedMembersSort: AvailableSort = 'status';
+  horizonPersistentMemberFilters = false;
   horizonGenderMarkerOrigColor = false;
   horizonVanillaGenderColors = false;
   horizonChangeOfflineColor = false;

@@ -60,19 +60,20 @@ Object.keys(genderSort).forEach(k => {
   canonicalGenderByNormalized[normalizeLabel(k)] = k;
 });
 
-export function computeGenderPreferenceBuckets(profile: CharacterAnalysis): {
-  match: string[];
-  weakMatch: string[];
-  neutral: string[];
-  weakMismatch: string[];
-  mismatch: string[];
-} {
-  const matches: string[] = [];
-  const weakMatches: string[] = [];
-  const weakMismatches: string[] = [];
-  const mismatches: string[] = [];
-  const neutral: string[] = [];
+let cachedGenderPreferences: Map<Gender, Scoring> | null = null;
 
+export function clearGenderPreferenceCache(): void {
+  cachedGenderPreferences = null;
+}
+
+function getOrComputeGenderPreferences(
+  profile: CharacterAnalysis
+): Map<Gender, Scoring> {
+  if (cachedGenderPreferences) {
+    return cachedGenderPreferences;
+  }
+
+  cachedGenderPreferences = new Map<Gender, Scoring>();
   const c = profile.character as any;
 
   Object.values(Gender)
@@ -89,26 +90,47 @@ export function computeGenderPreferenceBuckets(profile: CharacterAnalysis): {
       } else {
         score = Matcher.formatKinkScore(kinkPref, gv.toString()).score;
       }
-
-      const display = displayNameForGender(gv as number);
-      switch (score) {
-        case Scoring.MATCH:
-          matches.push(display);
-          break;
-        case Scoring.WEAK_MATCH:
-          weakMatches.push(display);
-          break;
-        case Scoring.NEUTRAL:
-          neutral.push(display);
-          break;
-        case Scoring.WEAK_MISMATCH:
-          weakMismatches.push(display);
-          break;
-        case Scoring.MISMATCH:
-          mismatches.push(display);
-          break;
-      }
+      cachedGenderPreferences!.set(gv as Gender, score);
     });
+
+  return cachedGenderPreferences;
+}
+
+export function computeGenderPreferenceBuckets(profile: CharacterAnalysis): {
+  match: string[];
+  weakMatch: string[];
+  neutral: string[];
+  weakMismatch: string[];
+  mismatch: string[];
+} {
+  const preferences = getOrComputeGenderPreferences(profile);
+
+  const matches: string[] = [];
+  const weakMatches: string[] = [];
+  const weakMismatches: string[] = [];
+  const mismatches: string[] = [];
+  const neutral: string[] = [];
+
+  preferences.forEach((score, gender) => {
+    const display = displayNameForGender(gender as number);
+    switch (score) {
+      case Scoring.MATCH:
+        matches.push(display);
+        break;
+      case Scoring.WEAK_MATCH:
+        weakMatches.push(display);
+        break;
+      case Scoring.NEUTRAL:
+        neutral.push(display);
+        break;
+      case Scoring.WEAK_MISMATCH:
+        weakMismatches.push(display);
+        break;
+      case Scoring.MISMATCH:
+        mismatches.push(display);
+        break;
+    }
+  });
 
   return {
     match: matches,
