@@ -19,7 +19,7 @@
       class="dropdown-menu"
       ref="menuRef"
       @mousedown.prevent.stop
-      @click.prevent.stop="menuClick"
+      @click="menuClick"
     >
       <slot></slot>
     </div>
@@ -55,6 +55,10 @@
       linkStyle: {
         type: String,
         default: 'width:100%;text-align:left;align-items:center'
+      },
+      dropup: {
+        type: Boolean,
+        default: false
       }
     },
     setup(props) {
@@ -75,17 +79,32 @@
         }
 
         menu.style.display = 'block';
-        const offset = menu.getBoundingClientRect();
+        const menuRect = menu.getBoundingClientRect();
+        const buttonRect = button.getBoundingClientRect();
+
         menu.style.position = 'fixed';
         menu.style.minWidth = `${button.clientWidth}px`;
+
+        // Handle horizontal positioning
         menu.style.left =
-          offset.right < window.innerWidth
-            ? `${offset.left}px`
-            : `${window.innerWidth - offset.width}px`;
-        menu.style.top =
-          offset.bottom < window.innerHeight
-            ? `${offset.top}px`
-            : `${offset.top - offset.height - button.offsetHeight}px`;
+          menuRect.right < window.innerWidth
+            ? `${buttonRect.left}px`
+            : `${window.innerWidth - menuRect.width}px`;
+
+        // Handle vertical positioning based on dropup prop
+        if (props.dropup) {
+          menu.style.top = `${buttonRect.top - menuRect.height}px`;
+        } else {
+          // Auto-detect if there's space below, otherwise open upward
+          const spaceBelow = window.innerHeight - buttonRect.bottom;
+          const spaceAbove = buttonRect.top;
+
+          if (spaceBelow >= menuRect.height || spaceBelow > spaceAbove) {
+            menu.style.top = `${buttonRect.bottom}px`;
+          } else {
+            menu.style.top = `${buttonRect.top - menuRect.height}px`;
+          }
+        }
       };
 
       watch(isOpen, positionMenu);
@@ -99,7 +118,16 @@
         isOpen.value = false;
       };
 
-      const menuClick = () => {
+      const menuClick = (event: Event) => {
+        if (
+          props.keepOpen &&
+          (event.target instanceof HTMLInputElement ||
+            event.target instanceof HTMLButtonElement ||
+            (event.target as HTMLElement).closest('input, button'))
+        ) {
+          return;
+        }
+
         if (!props.keepOpen) isOpen.value = false;
       };
 

@@ -56,152 +56,7 @@
     >
       <div class="users hidden-scrollbar" style="flex: 1; padding-left: 5px">
         <h4>
-          <div ref="memberHeader" style="position: relative; width: 100%">
-            <span style="display: inline-block">{{ memberCountText }}</span>
-            <button
-              :class="[
-                'btn btn-sm',
-                filterActive ? 'btn-primary' : 'btn-outline-secondary'
-              ]"
-              style="
-                margin-left: 8px;
-                display: inline-block;
-                padding: 0.25rem 0.45rem;
-              "
-              @click.prevent="toggleSortMenu"
-              :title="l('users.filters.title')"
-              :aria-label="l('users.filters.title')"
-              :aria-pressed="showSortMenu"
-            >
-              <i class="fa fa-filter"></i>
-            </button>
-
-            <div
-              v-show="showSortMenu"
-              ref="sortPopover"
-              class="sort-popover card"
-            >
-              <div style="margin-bottom: 8px">
-                <div
-                  style="
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    margin-bottom: 6px;
-                  "
-                >
-                  <strong style="margin: 0">{{
-                    l('users.filters.sortBy')
-                  }}</strong>
-                  <button
-                    class="btn btn-sm btn-outline-secondary"
-                    @click.prevent="resetFilters"
-                  >
-                    {{ l('users.filters.reset') }}
-                  </button>
-                </div>
-                <div>
-                  <label
-                    class="form-check"
-                    style="display: block; margin: 0 0 0 0"
-                    v-for="s in ['normal', 'status', 'gender']"
-                    :key="s"
-                  >
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      :value="s"
-                      v-model="sortType"
-                    />
-                    <span class="form-check-label" style="margin-left: 6px">{{
-                      l('users.filters.sort.' + s)
-                    }}</span>
-                  </label>
-                </div>
-              </div>
-
-              <hr style="margin: 6px 0" />
-              <div style="margin-bottom: 8px">
-                <div
-                  style="
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    margin-bottom: 6px;
-                  "
-                >
-                  <strong>{{ l('users.filters.statuses') }}</strong>
-                </div>
-                <div class="filter-items">
-                  <label
-                    v-for="st in statusOptions"
-                    :key="st"
-                    class="form-check"
-                    style="margin: 0"
-                  >
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      :value="st"
-                      v-model="selectedStatuses"
-                    />
-                    <span class="form-check-label" style="margin-left: 6px">{{
-                      st
-                    }}</span>
-                  </label>
-                </div>
-              </div>
-
-              <hr style="margin: 6px 0" />
-              <div style="margin-bottom: 4px">
-                <div
-                  style="
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    margin-bottom: 6px;
-                  "
-                >
-                  <strong>{{ l('users.filters.genders') }}</strong>
-                  <button
-                    class="btn btn-sm"
-                    :class="{
-                      'btn-primary': autoGenderFilterEnabled,
-                      'btn-outline-secondary': !autoGenderFilterEnabled
-                    }"
-                    @click.prevent="toggleAutoGenderFilter"
-                    :title="
-                      autoGenderFilterEnabled
-                        ? l('users.filters.autoOn')
-                        : l('users.filters.autoOff')
-                    "
-                    :aria-pressed="autoGenderFilterEnabled"
-                  >
-                    {{ l('users.filters.auto') }}
-                  </button>
-                </div>
-                <div class="filter-items">
-                  <label
-                    v-for="gender in genderOptions"
-                    :key="gender"
-                    class="form-check"
-                    style="margin: 0"
-                  >
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      :value="gender"
-                      v-model="genderFilters"
-                      @change="onManualGenderChange"
-                    />
-                    <span class="form-check-label" style="margin-left: 6px">{{
-                      gender
-                    }}</span>
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
+          <span style="display: inline-block">{{ memberCountText }}</span>
         </h4>
         <div
           v-for="member in filteredMembers"
@@ -217,15 +72,159 @@
         </div>
       </div>
       <div class="input-group" style="margin-top: 5px; flex-shrink: 0">
-        <span class="input-group-text">
+        <!--<span class="input-group-text">
           <span class="fas fa-search"></span>
-        </span>
+        </span>-->
         <input
           class="form-control"
           v-model="filter"
           :placeholder="l('filter')"
           type="text"
         />
+        <dropdown
+          :keep-open="true"
+          :wrap-class="
+            !filterActive
+              ? 'input-group-text dropup btn btn-sm p-0 btn btn-sm p-0 btn-outline-secondary'
+              : 'input-group-text dropup btn btn-sm p-0 btn btn-sm p-0 btn-primary'
+          "
+          :title="''"
+          link-style="width:100%;text-align:left;align-items:center; border:none; background:none"
+          :link-class="
+            !filterActive
+              ? 'dropdown-toggle btn btn-secondary'
+              : 'dropdown-toggle btn btn-primary'
+          "
+          icon-class="fas fa-filter"
+        >
+          <div class="p-2" style="min-width: 250px" @click.stop>
+            <div style="margin-bottom: 8px">
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  margin-bottom: 6px;
+                "
+              >
+                <strong style="margin: 0">{{
+                  l('users.filters.sortBy')
+                }}</strong>
+                <button
+                  class="btn btn-sm btn-outline-secondary"
+                  @click.prevent.stop="resetFilters"
+                >
+                  {{ l('users.filters.reset') }}
+                </button>
+              </div>
+              <div>
+                <label
+                  class="form-check"
+                  style="display: block; margin: 0 0 0 0"
+                  v-for="s in ['normal', 'status', 'gender']"
+                  :key="s"
+                  @click.stop
+                >
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    :value="s"
+                    v-model="sortType"
+                    @click.stop
+                  />
+                  <span class="form-check-label" style="margin-left: 6px">{{
+                    l('users.filters.sort.' + s)
+                  }}</span>
+                </label>
+              </div>
+            </div>
+
+            <hr style="margin: 6px 0" />
+            <div style="margin-bottom: 8px">
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  margin-bottom: 6px;
+                "
+              >
+                <strong>{{ l('users.filters.statuses') }}</strong>
+              </div>
+              <div class="filter-items">
+                <label
+                  v-for="status in statusOptions"
+                  :key="status"
+                  class="form-check"
+                  style="margin: 0"
+                  @click.stop
+                >
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    :value="status"
+                    v-model="selectedStatuses"
+                    @click.stop
+                  />
+                  <span class="form-check-label" style="margin-left: 6px">{{
+                    status
+                  }}</span>
+                </label>
+              </div>
+            </div>
+
+            <hr style="margin: 6px 0" />
+            <div style="margin-bottom: 4px">
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  margin-bottom: 6px;
+                "
+              >
+                <strong>{{ l('users.filters.genders') }}</strong>
+                <button
+                  class="btn btn-sm"
+                  :class="{
+                    'btn-primary': autoGenderFilterEnabled,
+                    'btn-outline-secondary': !autoGenderFilterEnabled
+                  }"
+                  @click.prevent.stop="toggleAutoGenderFilter"
+                  :title="
+                    autoGenderFilterEnabled
+                      ? l('users.filters.autoOn')
+                      : l('users.filters.autoOff')
+                  "
+                  :aria-pressed="autoGenderFilterEnabled"
+                >
+                  {{ l('users.filters.auto') }}
+                </button>
+              </div>
+              <div class="filter-items">
+                <label
+                  v-for="gender in genderOptions"
+                  :key="gender"
+                  class="form-check"
+                  style="margin: 0"
+                  @click.stop
+                >
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    :value="gender"
+                    v-model="genderFilters"
+                    @change="onManualGenderChange"
+                    @click.stop
+                  />
+                  <span class="form-check-label" style="margin-left: 6px">{{
+                    gender
+                  }}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </dropdown>
       </div>
     </div>
     <div
@@ -273,11 +272,18 @@
     sortMembers
   } from './memberFilters';
   import { computeGenderPreferenceBuckets } from './memberFilters';
+  import Dropdown from '../components/Dropdown.vue';
 
   const availableSorts = ['normal', 'status', 'gender'] as const;
 
   @Component({
-    components: { characterPage, user: UserView, sidebar: Sidebar, tabs: Tabs }
+    components: {
+      characterPage,
+      user: UserView,
+      sidebar: Sidebar,
+      tabs: Tabs,
+      dropdown: Dropdown
+    }
   })
   class UserList extends Vue {
     tab = '0';
@@ -303,7 +309,6 @@
         ? (core.state.settings as any).horizonAutoGenderFilter
         : true;
 
-    showSortMenu = false;
     statusOptions: string[] = ['looking', 'online', 'idle', 'away', 'busy'];
     selectedStatuses: string[] = [];
     l = l;
@@ -471,20 +476,6 @@
       return visible;
     }
 
-    toggleSortMenu(): void {
-      if (this.showSortMenu) {
-        this.closeSortMenu();
-      } else {
-        this.openSortMenu();
-      }
-    }
-
-    onDocumentClick = (e: MouseEvent) => {
-      const path = e.composedPath ? e.composedPath() : (e as any).path || [];
-      if (path && path.some((el: any) => el && el.id === 'user-list')) return;
-      this.closeSortMenu();
-    };
-
     resetFilters(): void {
       this.autoGenderFilterEnabled = false;
       core.state.settings = {
@@ -496,22 +487,6 @@
       this.selectedStatuses = [];
       this.sortType = 'normal';
       this.filter = '';
-    }
-
-    beforeDestroy(): void {
-      this.closeSortMenu();
-    }
-
-    openSortMenu(): void {
-      if (this.showSortMenu) return;
-      this.showSortMenu = true;
-      document.addEventListener('click', this.onDocumentClick);
-    }
-
-    closeSortMenu(): void {
-      if (!this.showSortMenu) return;
-      this.showSortMenu = false;
-      document.removeEventListener('click', this.onDocumentClick);
     }
 
     get shouldShowMarker(): boolean {
@@ -546,42 +521,15 @@
       height: 100%;
     }
 
-    .sort-popover {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      z-index: 1000;
-      padding: 8px;
-      box-sizing: border-box;
-      /* shrink-to-fit width */
-      display: inline-block;
-      width: auto;
-      max-width: calc(100vw - 16px);
-      white-space: normal;
-      background: var(--bs-body-bg, #fff);
-    }
-
-    .sort-popover label.form-check {
-      display: block;
-      width: auto;
-      margin: 0 0 6px 0;
-    }
-
     /* Ensure filter containers stack items vertically (one per line) */
-    .sort-popover .filter-items {
+    .filter-items {
       display: block;
     }
 
-    .sort-popover .filter-items label.form-check {
+    .filter-items label.form-check {
       display: block;
       width: auto;
       margin-bottom: 6px;
-    }
-
-    .sort-popover > div > div[style*='display: flex'] {
-      display: flex !important;
-      justify-content: space-between;
-      align-items: center;
     }
 
     .nav li:first-child a {
