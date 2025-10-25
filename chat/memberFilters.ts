@@ -1,4 +1,4 @@
-import { Channel } from './interfaces';
+import { Channel, AvailableSort } from './interfaces';
 import { CharacterAnalysis, Matcher } from '../learn/matcher';
 import { Gender, Scoring, fchatGenderMap } from '../learn/matcher-types';
 
@@ -118,8 +118,6 @@ export function computeGenderPreferenceBuckets(profile: CharacterAnalysis): {
     mismatch: mismatches
   };
 }
-
-export type AvailableSort = 'normal' | 'status' | 'gender';
 
 export function filterByName(
   members: ReadonlyArray<Channel.Member>,
