@@ -83,21 +83,13 @@
         />
         <dropdown
           :keep-open="true"
-          :wrap-class="
-            !filterActive
-              ? 'input-group-text dropup btn btn-sm p-0 btn btn-sm p-0 btn-outline-secondary'
-              : 'input-group-text dropup btn btn-sm p-0 btn btn-sm p-0 btn-primary'
-          "
+          :wrap-class="dropdownWrapClass"
           :title="''"
           link-style="width:100%;text-align:left;align-items:center; border:none; background:none"
-          :link-class="
-            !filterActive
-              ? 'dropdown-toggle btn btn-secondary'
-              : 'dropdown-toggle btn btn-primary'
-          "
+          :link-class="dropdownLinkClass"
           icon-class="fas fa-filter"
         >
-          <div class="p-2" style="min-width: 250px" @click.stop>
+          <div class="p-2" style="margin: 0px 5px" @click.stop>
             <div style="margin-bottom: 8px">
               <div
                 style="
@@ -114,7 +106,7 @@
                   class="btn btn-sm btn-outline-secondary"
                   @click.prevent.stop="resetFilters"
                 >
-                  {{ l('users.filters.reset') }}
+                  {{ l('action.reset') }}
                 </button>
               </div>
               <div>
@@ -174,7 +166,7 @@
             </div>
 
             <hr style="margin: 6px 0" />
-            <div style="margin-bottom: 4px">
+            <div>
               <div
                 style="
                   display: flex;
@@ -458,6 +450,18 @@
         return `${shown}/${total} ${this.l('users.members')}`;
       }
       return this.l('users.memberCount', total);
+    }
+
+    get dropdownWrapClass(): string {
+      return !this.filterActive
+        ? 'input-group-text dropup btn btn-sm p-0 btn btn-sm p-0 btn-outline-secondary'
+        : 'input-group-text dropup btn btn-sm p-0 btn btn-sm p-0 btn-primary';
+    }
+
+    get dropdownLinkClass(): string {
+      return !this.filterActive
+        ? 'dropdown-toggle btn btn-secondary'
+        : 'dropdown-toggle btn btn-primary';
     }
 
     getFilteredMembers() {
