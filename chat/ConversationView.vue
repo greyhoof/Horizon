@@ -145,12 +145,7 @@
           <dropdown
             :keep-open="false"
             :title="l('action.view')"
-            :icon-class="{
-              fas: true,
-              'fa-comments': conversation.mode === 'chat',
-              'fa-ad': conversation.mode === 'ads',
-              'fa-asterisk': conversation.mode === 'both'
-            }"
+            :icon-class="viewModeIconClass"
             wrap-class="btn-group views"
             link-class="btn btn-secondary dropdown-toggle"
             v-show="conversation.channel.mode == 'both'"
@@ -1142,6 +1137,20 @@
       const conv = <Conversation.ChannelConversation>this.conversation;
       const member = conv.channel.members[core.connection.character];
       return member !== undefined && member.rank > Channel.Rank.Member;
+    }
+
+    get viewModeIconClass(): string {
+      const baseClasses = ['fas'];
+
+      if (this.conversation.mode === 'chat') {
+        baseClasses.push('fa-comments');
+      } else if (this.conversation.mode === 'ads') {
+        baseClasses.push('fa-ad');
+      } else if (this.conversation.mode === 'both') {
+        baseClasses.push('fa-asterisk');
+      }
+
+      return baseClasses.join(' ');
     }
   }
 </script>
