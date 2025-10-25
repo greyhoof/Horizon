@@ -104,7 +104,7 @@
                   <label
                     class="form-check"
                     style="display: block; margin: 0 0 0 0"
-                    v-for="s in ['status', 'gender', 'normal']"
+                    v-for="s in ['normal', 'status', 'gender']"
                     :key="s"
                   >
                     <input
@@ -319,7 +319,7 @@
       (core.state.settings as any) &&
       (core.state.settings as any).horizonPersistentMemberFilters &&
       (core.state.settings as any).horizonSavedMembersSort) ||
-      'status') as (typeof availableSorts)[number];
+      'normal') as (typeof availableSorts)[number];
 
     @Hook('mounted')
     mounted(): void {
@@ -334,7 +334,7 @@
             if (!(core.state.settings as any).horizonPersistentMemberFilters) {
               this.genderFilters = [];
               this.selectedStatuses = [];
-              this.sortType = 'status';
+              this.sortType = 'normal';
             }
           }
         },
@@ -494,7 +494,7 @@
 
       this.genderFilters = [];
       this.selectedStatuses = [];
-      this.sortType = 'status';
+      this.sortType = 'normal';
       this.filter = '';
     }
 
