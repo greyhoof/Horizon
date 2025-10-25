@@ -56,8 +56,152 @@
     >
       <div class="users hidden-scrollbar" style="flex: 1; padding-left: 5px">
         <h4>
-          {{ l('users.memberCount', channel.sortedMembers.length) }}
-          <a class="btn sort" @click="switchSort"><i class="fa fa-sort"></i></a>
+          <div ref="memberHeader" style="position: relative; width: 100%">
+            <span style="display: inline-block">{{ memberCountText }}</span>
+            <button
+              :class="[
+                'btn btn-sm',
+                filterActive ? 'btn-primary' : 'btn-outline-secondary'
+              ]"
+              style="
+                margin-left: 8px;
+                display: inline-block;
+                padding: 0.25rem 0.45rem;
+              "
+              @click.prevent="toggleSortMenu"
+              :title="l('users.filters.title')"
+              :aria-label="l('users.filters.title')"
+              :aria-pressed="showSortMenu"
+            >
+              <i class="fa fa-filter"></i>
+            </button>
+
+            <div
+              v-show="showSortMenu"
+              ref="sortPopover"
+              class="sort-popover card"
+            >
+              <div style="margin-bottom: 8px">
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 6px;
+                  "
+                >
+                  <strong style="margin: 0">{{
+                    l('users.filters.sortBy')
+                  }}</strong>
+                  <button
+                    class="btn btn-sm btn-outline-secondary"
+                    @click.prevent="resetFilters"
+                  >
+                    {{ l('users.filters.reset') }}
+                  </button>
+                </div>
+                <div>
+                  <label
+                    class="form-check"
+                    style="display: block; margin: 0 0 0 0"
+                    v-for="s in ['normal', 'status', 'gender']"
+                    :key="s"
+                  >
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      :value="s"
+                      v-model="sortType"
+                    />
+                    <span class="form-check-label" style="margin-left: 6px">{{
+                      l('users.filters.sort.' + s)
+                    }}</span>
+                  </label>
+                </div>
+              </div>
+
+              <hr style="margin: 6px 0" />
+              <div style="margin-bottom: 8px">
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 6px;
+                  "
+                >
+                  <strong>{{ l('users.filters.statuses') }}</strong>
+                </div>
+                <div class="filter-items">
+                  <label
+                    v-for="st in statusOptions"
+                    :key="st"
+                    class="form-check"
+                    style="margin: 0"
+                  >
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      :value="st"
+                      v-model="selectedStatuses"
+                    />
+                    <span class="form-check-label" style="margin-left: 6px">{{
+                      st
+                    }}</span>
+                  </label>
+                </div>
+              </div>
+
+              <hr style="margin: 6px 0" />
+              <div style="margin-bottom: 4px">
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 6px;
+                  "
+                >
+                  <strong>{{ l('users.filters.genders') }}</strong>
+                  <button
+                    class="btn btn-sm"
+                    :class="{
+                      'btn-primary': autoGenderFilterEnabled,
+                      'btn-outline-secondary': !autoGenderFilterEnabled
+                    }"
+                    @click.prevent="toggleAutoGenderFilter"
+                    :title="
+                      autoGenderFilterEnabled
+                        ? l('users.filters.autoOn')
+                        : l('users.filters.autoOff')
+                    "
+                    :aria-pressed="autoGenderFilterEnabled"
+                  >
+                    {{ l('users.filters.auto') }}
+                  </button>
+                </div>
+                <div class="filter-items">
+                  <label
+                    v-for="gender in genderOptions"
+                    :key="gender"
+                    class="form-check"
+                    style="margin: 0"
+                  >
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      :value="gender"
+                      v-model="genderFilters"
+                      @change="onManualGenderChange"
+                    />
+                    <span class="form-check-label" style="margin-left: 6px">{{
+                      gender
+                    }}</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
         </h4>
         <div
           v-for="member in filteredMembers"
@@ -111,7 +255,7 @@
 </template>
 
 <script lang="ts">
-  import { Component } from '@f-list/vue-ts';
+  import { Component, Hook } from '@f-list/vue-ts';
   import Vue from 'vue';
   import Tabs from '../components/tabs';
   import core from './core';
@@ -119,49 +263,49 @@
   import l from './localize';
   import Sidebar from './Sidebar.vue';
   import UserView from './UserView.vue';
-  import _ from 'lodash';
   import characterPage from '../site/character_page/character_page.vue';
   import { profileLink } from './common';
-
-  type StatusSort = {
-    [key in Character.Status]: number;
-  };
-
-  type GenderSort = {
-    [key in Character.Gender]: number;
-  };
-
-  const statusSort: StatusSort = {
-    crown: 0,
-    looking: 1,
-    online: 2,
-    idle: 3,
-    away: 4,
-    busy: 5,
-    dnd: 6,
-    offline: 7
-  };
-
-  const genderSort: GenderSort = {
-    Female: 0,
-    Male: 1,
-    Herm: 2,
-    Shemale: 3,
-    'Cunt-boy': 4,
-    Transgender: 5,
-    'Male-Herm': 6,
-    None: 7
-  };
+  import {
+    genderOptions as builtInGenderOptions,
+    filterByName,
+    filterByGender,
+    filterByStatus,
+    sortMembers
+  } from './memberFilters';
+  import { computeGenderPreferenceBuckets } from './memberFilters';
 
   const availableSorts = ['normal', 'status', 'gender'] as const;
 
   @Component({
     components: { characterPage, user: UserView, sidebar: Sidebar, tabs: Tabs }
   })
-  export default class UserList extends Vue {
+  class UserList extends Vue {
     tab = '0';
     expanded = window.innerWidth >= 992;
     filter = '';
+
+    genderFilters: string[] =
+      core &&
+      core.state &&
+      (core.state.settings as any) &&
+      (core.state.settings as any).horizonPersistentMemberFilters &&
+      Array.isArray((core.state.settings as any).horizonSavedGenderFilters)
+        ? (core.state.settings as any).horizonSavedGenderFilters.slice()
+        : [];
+
+    genderOptions: string[] = builtInGenderOptions.slice();
+
+    autoGenderFilterEnabled: boolean =
+      core &&
+      (core.state as any) &&
+      (core.state.settings as any) &&
+      typeof (core.state.settings as any).horizonAutoGenderFilter === 'boolean'
+        ? (core.state.settings as any).horizonAutoGenderFilter
+        : true;
+
+    showSortMenu = false;
+    statusOptions: string[] = ['looking', 'online', 'idle', 'away', 'busy'];
+    selectedStatuses: string[] = [];
     l = l;
     sorter = (x: Character, y: Character) =>
       x.name.toLocaleLowerCase() < y.name.toLocaleLowerCase()
@@ -170,7 +314,95 @@
           ? 1
           : 0;
 
-    sortType: (typeof availableSorts)[number] = 'normal';
+    sortType: (typeof availableSorts)[number] = ((core &&
+      core.state &&
+      (core.state.settings as any) &&
+      (core.state.settings as any).horizonPersistentMemberFilters &&
+      (core.state.settings as any).horizonSavedMembersSort) ||
+      'normal') as (typeof availableSorts)[number];
+
+    @Hook('mounted')
+    mounted(): void {
+      this.applyOrientationAutoFilter();
+
+      this.$watch(
+        () => core.characters.ownProfile,
+        (val: any) => {
+          if (val) {
+            this.applyOrientationAutoFilter();
+          } else {
+            if (!(core.state.settings as any).horizonPersistentMemberFilters) {
+              this.genderFilters = [];
+              this.selectedStatuses = [];
+              this.sortType = 'normal';
+            }
+          }
+        },
+        { immediate: true }
+      );
+
+      this.$watch('tab', (val: any) => {
+        if (val === '1' && this.channel) this.applyOrientationAutoFilter();
+      });
+
+      this.$watch(
+        () => this.genderFilters.slice(),
+        (val: any) => {
+          if ((core.state.settings as any).horizonPersistentMemberFilters) {
+            core.state.settings = {
+              ...(core.state.settings as any),
+              horizonSavedGenderFilters: val
+            } as any;
+          }
+        },
+        { deep: true }
+      );
+
+      this.$watch('sortType', (val: any) => {
+        if ((core.state.settings as any).horizonPersistentMemberFilters) {
+          core.state.settings = {
+            ...(core.state.settings as any),
+            horizonSavedMembersSort: val
+          } as any;
+        }
+      });
+    }
+
+    applyOrientationAutoFilter(): void {
+      if (!this.autoGenderFilterEnabled) return;
+      const prof = core.characters.ownProfile as any;
+      if (!prof || !prof.character) return;
+
+      const buckets = computeGenderPreferenceBuckets(prof as any);
+      const genders = (buckets.match || []).concat(buckets.weakMatch || []);
+
+      if (genders && genders.length > 0) {
+        this.genderFilters = genders.slice();
+      } else {
+        this.genderFilters = [];
+      }
+    }
+
+    toggleAutoGenderFilter(): void {
+      this.autoGenderFilterEnabled = !this.autoGenderFilterEnabled;
+      core.state.settings = {
+        ...(core.state.settings as any),
+        horizonAutoGenderFilter: this.autoGenderFilterEnabled
+      } as any;
+      if (this.autoGenderFilterEnabled) {
+        this.applyOrientationAutoFilter();
+      }
+    }
+
+    onManualGenderChange(): void {
+      if (this.autoGenderFilterEnabled) {
+        this.autoGenderFilterEnabled = false;
+        core.state.settings = {
+          ...(core.state.settings as any),
+          horizonAutoGenderFilter: false
+        } as any;
+      }
+    }
 
     get friends(): Character[] {
       return core.characters.friends.slice().sort(this.sorter);
@@ -211,78 +443,91 @@
 
     get filteredMembers(): ReadonlyArray<Channel.Member> {
       const members = this.getFilteredMembers();
+      return sortMembers(members, this.sortType);
+    }
 
-      if (this.sortType === 'normal') {
-        return members;
+    get memberCountText(): string {
+      const total = this.channel ? this.channel.sortedMembers.length : 0;
+      const shown = this.filteredMembers ? this.filteredMembers.length : 0;
+      if (shown !== total) {
+        return `${shown}/${total} ${this.l('users.members')}`;
       }
-
-      const sorted = [...members];
-
-      switch (this.sortType) {
-        case 'status':
-          sorted.sort((a, b) => {
-            const aVal = statusSort[a.character.status];
-            const bVal = statusSort[b.character.status];
-
-            if (aVal - bVal === 0) {
-              return a.character.name.localeCompare(b.character.name);
-            }
-
-            return aVal - bVal;
-          });
-          break;
-
-        case 'gender':
-          sorted.sort((a, b) => {
-            const aVal = genderSort[a.character.gender || 'None'];
-            const bVal = genderSort[b.character.gender || 'None'];
-
-            if (aVal - bVal === 0) {
-              return a.character.name.localeCompare(b.character.name);
-            }
-
-            return aVal - bVal;
-          });
-          break;
-      }
-
-      return sorted;
+      return this.l('users.memberCount', total);
     }
 
     getFilteredMembers() {
-      const members = this.prefilterMembers();
+      let visible = filterByName(this.channel.sortedMembers, this.filter);
 
-      if (!core.state.settings.risingFilter.hideChannelMembers) {
-        return members;
+      if (core.state.settings.risingFilter.hideChannelMembers) {
+        visible = visible.filter(m => {
+          const p = core.cache.profileCache.getSync(m.character.name);
+          return !p || !p.match.isFiltered;
+        });
       }
 
-      return members.filter(m => {
-        const p = core.cache.profileCache.getSync(m.character.name);
+      visible = filterByGender(visible, this.genderFilters);
+      visible = filterByStatus(visible, this.selectedStatuses);
 
-        return !p || !p.match.isFiltered;
-      });
+      return visible;
     }
 
-    prefilterMembers(): ReadonlyArray<Channel.Member> {
-      const sorted = this.channel.sortedMembers;
-
-      if (this.filter.length === 0) return sorted;
-
-      const filter = new RegExp(this.filter.replace(/[^\w]/gi, '\\$&'), 'i');
-
-      return sorted.filter(member => filter.test(member.character.name));
+    toggleSortMenu(): void {
+      if (this.showSortMenu) {
+        this.closeSortMenu();
+      } else {
+        this.openSortMenu();
+      }
     }
 
-    switchSort() {
-      const nextSortIndex = _.indexOf(availableSorts, this.sortType) + 1;
+    onDocumentClick = (e: MouseEvent) => {
+      const path = e.composedPath ? e.composedPath() : (e as any).path || [];
+      if (path && path.some((el: any) => el && el.id === 'user-list')) return;
+      this.closeSortMenu();
+    };
 
-      this.sortType = availableSorts[nextSortIndex % availableSorts.length];
+    resetFilters(): void {
+      this.autoGenderFilterEnabled = false;
+      core.state.settings = {
+        ...(core.state.settings as any),
+        horizonAutoGenderFilter: false
+      } as any;
+
+      this.genderFilters = [];
+      this.selectedStatuses = [];
+      this.sortType = 'normal';
+      this.filter = '';
+    }
+
+    beforeDestroy(): void {
+      this.closeSortMenu();
+    }
+
+    openSortMenu(): void {
+      if (this.showSortMenu) return;
+      this.showSortMenu = true;
+      document.addEventListener('click', this.onDocumentClick);
+    }
+
+    closeSortMenu(): void {
+      if (!this.showSortMenu) return;
+      this.showSortMenu = false;
+      document.removeEventListener('click', this.onDocumentClick);
     }
 
     get shouldShowMarker(): boolean {
       return core.state.settings.horizonShowGenderMarker;
     }
+
+    get filterActive(): boolean {
+      return (
+        (this.genderFilters && this.genderFilters.length > 0) ||
+        (this.selectedStatuses && this.selectedStatuses.length > 0) ||
+        this.sortType !== 'normal'
+      );
+    }
   }
+
+  export default UserList;
 </script>
 
 <style lang="scss">
@@ -299,6 +544,44 @@
 
     .users {
       height: 100%;
+    }
+
+    .sort-popover {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 1000;
+      padding: 8px;
+      box-sizing: border-box;
+      /* shrink-to-fit width */
+      display: inline-block;
+      width: auto;
+      max-width: calc(100vw - 16px);
+      white-space: normal;
+      background: var(--bs-body-bg, #fff);
+    }
+
+    .sort-popover label.form-check {
+      display: block;
+      width: auto;
+      margin: 0 0 6px 0;
+    }
+
+    /* Ensure filter containers stack items vertically (one per line) */
+    .sort-popover .filter-items {
+      display: block;
+    }
+
+    .sort-popover .filter-items label.form-check {
+      display: block;
+      width: auto;
+      margin-bottom: 6px;
+    }
+
+    .sort-popover > div > div[style*='display: flex'] {
+      display: flex !important;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .nav li:first-child a {

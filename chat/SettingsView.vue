@@ -881,6 +881,25 @@
         </div>
       </div>
 
+      <h5>{{ l('settings.channelMembersFilters') }}</h5>
+
+      <div class="mb-3">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="horizonPersistentMemberFilters"
+            v-model="horizonPersistentMemberFilters"
+          />
+          <label class="form-check-label" for="horizonPersistentMemberFilters">
+            {{ l('settings.horizon.persistentMemberFilters') }}
+          </label>
+          <div class="form-text text-muted">
+            {{ l('settings.horizon.persistentMemberFilters.help') }}
+          </div>
+        </div>
+      </div>
+
       <h5>{{ l('settings.ageMatch') }}</h5>
       <div class="mb-3">{{ l('settings.leaveEmptyNoLimit') }}</div>
 
@@ -1109,13 +1128,14 @@
     horizonHighlightUsers!: string;
     chatLayoutMode!: 'classic' | 'modern';
     messageGrouping!: boolean;
-    horizonUseColorPicker: boolean;
+    horizonUseColorPicker!: boolean;
 
     horizonCacheDraftMessages!: boolean;
     horizonSaveDraftMessagesToDiskTimer!: string;
 
     risingFilter: SmartFilterSettings = {} as any;
 
+    horizonPersistentMemberFilters!: boolean;
     risingAvailableThemes: ReadonlyArray<string> = [];
     risingCharacterTheme!: string | undefined;
 
@@ -1194,6 +1214,10 @@
         .filter(x => x.substr(-4) === '.css')
         .map(x => x.slice(0, -4));
       this.risingCharacterTheme = settings.risingCharacterTheme;
+      this.horizonPersistentMemberFilters =
+        typeof (settings as any).horizonPersistentMemberFilters === 'boolean'
+          ? (settings as any).horizonPersistentMemberFilters
+          : false;
     }
 
     async doImport(): Promise<void> {
@@ -1299,6 +1323,13 @@
           this.horizonMessagePortraitHighQuality,
         horizonShowCustomCharacterColors: this.horizonShowCustomCharacterColors,
         horizonShowDeveloperBadges: this.horizonShowDeveloperBadges,
+        horizonAutoGenderFilter: (core.state.settings as any)
+          .horizonAutoGenderFilter,
+        horizonSavedGenderFilters: (core.state.settings as any)
+          .horizonSavedGenderFilters,
+        horizonSavedMembersSort: (core.state.settings as any)
+          .horizonSavedMembersSort,
+        horizonPersistentMemberFilters: this.horizonPersistentMemberFilters,
         horizonShowGenderMarker: this.horizonShowGenderMarker,
         horizonGenderMarkerOrigColor: this.horizonGenderMarkerOrigColor,
         horizonChangeOfflineColor: this.horizonChangeOfflineColor,
@@ -1337,8 +1368,7 @@
         risingCharacterTheme:
           this.risingCharacterTheme != 'undefined'
             ? this.risingCharacterTheme
-            : undefined,
-        soundTheme: core.state.settings.soundTheme
+            : undefined
       };
 
       console.log('SETTINGS', minAge, maxAge, core.state.settings);

@@ -85,6 +85,12 @@ export class Settings implements ISettings {
   horizonShowCustomCharacterColors = true;
   horizonShowDeveloperBadges = true;
   horizonShowGenderMarker = false;
+  // Automatically apply gender filters in the UserList when enabled
+  horizonAutoGenderFilter = true;
+  // Persisted selection of genders for members list
+  horizonSavedGenderFilters: string[] = [];
+  // Persisted sort mode for members list: 'normal' | 'status' | 'gender'
+  horizonSavedMembersSort: string = 'status';
   horizonGenderMarkerOrigColor = false;
   horizonVanillaGenderColors = false;
   horizonChangeOfflineColor = false;
