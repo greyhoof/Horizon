@@ -153,7 +153,7 @@
                   @click.stop
                 />
                 <span class="form-check-label" style="margin-left: 6px">{{
-                  status
+                  l(`status.${status}`)
                 }}</span>
               </label>
             </div>
