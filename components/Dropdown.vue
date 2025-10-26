@@ -1,5 +1,5 @@
 <template>
-  <div :class="wrapClass" @focusout="blur">
+  <div :class="wrapClass" @focusout="blur" ref="wrapRef">
     <slot name="split"></slot>
     <a
       :class="linkClass"
@@ -65,13 +65,15 @@
       const isOpen = ref(false);
       const menuRef = ref<HTMLElement>();
       const buttonRef = ref<HTMLElement>();
+      const wrapRef = ref<HTMLElement>();
 
       const positionMenu = async () => {
         await nextTick();
         const menu = menuRef.value;
         const button = buttonRef.value;
+        const wrap = wrapRef.value;
 
-        if (!menu || !button) return;
+        if (!menu || !button || !wrap) return;
 
         if (!isOpen.value) {
           menu.style.cssText = '';
@@ -79,16 +81,36 @@
         }
 
         menu.style.display = 'block';
-        const menuRect = menu.getBoundingClientRect();
+        menu.style.position = 'fixed';
+
+        //Calculate combined width of split slot (if any) and button
         const buttonRect = button.getBoundingClientRect();
 
-        menu.style.position = 'fixed';
-        menu.style.minWidth = `${button.clientWidth}px`;
+        //Find split slot element (first child that's not the button or dropdown menu)
+        const splitElement = Array.from(wrap.children).find(
+          child => child !== button && child !== menu
+        ) as HTMLElement;
 
-        // Handle horizontal positioning
+        //Set min width based on if we have a split element
+        let minWidth: number;
+        if (splitElement) {
+          const splitWidth = splitElement.getBoundingClientRect().width;
+          minWidth = splitWidth + buttonRect.width;
+        } else {
+          minWidth = buttonRect.width;
+        }
+
+        menu.style.minWidth = `${minWidth}px`;
+
+        const menuRect = menu.getBoundingClientRect();
+
+        //horizontal positioning. align to leftmost element (split or button)
+        const leftmostLeft = splitElement
+          ? splitElement.getBoundingClientRect().left
+          : buttonRect.left;
         menu.style.left =
           menuRect.right < window.innerWidth
-            ? `${buttonRect.left}px`
+            ? `${leftmostLeft}px`
             : `${window.innerWidth - menuRect.width}px`;
 
         // Handle vertical positioning based on dropup prop
@@ -135,6 +157,7 @@
         isOpen,
         menuRef,
         buttonRef,
+        wrapRef,
         blur,
         menuClick
       };

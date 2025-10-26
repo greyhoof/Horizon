@@ -71,153 +71,154 @@
           ></user>
         </div>
       </div>
-      <div class="input-group" style="margin-top: 5px; flex-shrink: 0">
-        <!--<span class="input-group-text">
+
+      <!--<span class="input-group-text">
           <span class="fas fa-search"></span>
         </span>-->
-        <input
-          class="form-control"
-          v-model="filter"
-          :placeholder="l('filter')"
-          type="text"
-        />
-        <dropdown
-          :keep-open="true"
-          :wrap-class="dropdownWrapClass"
-          :title="''"
-          link-style="width:100%;text-align:left;align-items:center; border:none; background:none"
-          :link-class="dropdownLinkClass"
-          icon-class="fas fa-filter"
-        >
-          <div class="p-2" style="margin: 0px 5px" @click.stop>
-            <div style="margin-bottom: 8px">
-              <div
-                style="
-                  display: flex;
-                  justify-content: space-between;
-                  align-items: center;
-                  margin-bottom: 6px;
-                "
-              >
-                <strong style="margin: 0">{{
-                  l('users.filters.sortBy')
-                }}</strong>
-                <button
-                  class="btn btn-sm btn-outline-secondary"
-                  @click.prevent.stop="resetFilters"
-                >
-                  {{ l('action.reset') }}
-                </button>
-              </div>
-              <div>
-                <label
-                  class="form-check"
-                  style="display: block; margin: 0 0 0 0"
-                  v-for="s in ['normal', 'status', 'gender']"
-                  :key="s"
-                  @click.stop
-                >
-                  <input
-                    class="form-check-input"
-                    type="radio"
-                    :value="s"
-                    v-model="sortType"
-                    @click.stop
-                  />
-                  <span class="form-check-label" style="margin-left: 6px">{{
-                    l('users.filters.sort.' + s)
-                  }}</span>
-                </label>
-              </div>
-            </div>
 
-            <hr style="margin: 6px 0" />
-            <div style="margin-bottom: 8px">
-              <div
-                style="
-                  display: flex;
-                  justify-content: space-between;
-                  align-items: center;
-                  margin-bottom: 6px;
-                "
+      <dropdown
+        class="input-group"
+        style="margin-top: 5px; flex-shrink: 0"
+        :keep-open="true"
+        :title="''"
+        link-style="''"
+        :link-class="dropdownLinkClass"
+        icon-class="fas fa-filter"
+      >
+        <div class="p-2" style="margin: 0px 5px" @click.stop>
+          <div style="margin-bottom: 8px">
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 6px;
+              "
+            >
+              <strong style="margin: 0">{{ l('users.filters.sortBy') }}</strong>
+              <button
+                class="btn btn-sm btn-outline-secondary"
+                @click.prevent.stop="resetFilters"
               >
-                <strong>{{ l('users.filters.statuses') }}</strong>
-              </div>
-              <div class="filter-items">
-                <label
-                  v-for="status in statusOptions"
-                  :key="status"
-                  class="form-check"
-                  style="margin: 0"
-                  @click.stop
-                >
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    :value="status"
-                    v-model="selectedStatuses"
-                    @click.stop
-                  />
-                  <span class="form-check-label" style="margin-left: 6px">{{
-                    status
-                  }}</span>
-                </label>
-              </div>
+                {{ l('action.reset') }}
+              </button>
             </div>
-
-            <hr style="margin: 6px 0" />
             <div>
-              <div
-                style="
-                  display: flex;
-                  justify-content: space-between;
-                  align-items: center;
-                  margin-bottom: 6px;
-                "
+              <label
+                class="form-check"
+                style="display: block; margin: 0 0 0 0"
+                v-for="s in ['normal', 'status', 'gender']"
+                :key="s"
+                @click.stop
               >
-                <strong>{{ l('users.filters.genders') }}</strong>
-                <button
-                  class="btn btn-sm"
-                  :class="{
-                    'btn-primary': autoGenderFilterEnabled,
-                    'btn-outline-secondary': !autoGenderFilterEnabled
-                  }"
-                  @click.prevent.stop="toggleAutoGenderFilter"
-                  :title="
-                    autoGenderFilterEnabled
-                      ? l('users.filters.autoOn')
-                      : l('users.filters.autoOff')
-                  "
-                  :aria-pressed="autoGenderFilterEnabled"
-                >
-                  {{ l('users.filters.auto') }}
-                </button>
-              </div>
-              <div class="filter-items">
-                <label
-                  v-for="gender in genderOptions"
-                  :key="gender"
-                  class="form-check"
-                  style="margin: 0"
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  :value="s"
+                  v-model="sortType"
                   @click.stop
-                >
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    :value="gender"
-                    v-model="genderFilters"
-                    @change="onManualGenderChange"
-                    @click.stop
-                  />
-                  <span class="form-check-label" style="margin-left: 6px">{{
-                    gender
-                  }}</span>
-                </label>
-              </div>
+                />
+                <span class="form-check-label" style="margin-left: 6px">{{
+                  l('users.filters.sort.' + s)
+                }}</span>
+              </label>
             </div>
           </div>
-        </dropdown>
-      </div>
+
+          <hr style="margin: 6px 0" />
+          <div style="margin-bottom: 8px">
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 6px;
+              "
+            >
+              <strong>{{ l('users.filters.statuses') }}</strong>
+            </div>
+            <div class="filter-items">
+              <label
+                v-for="status in statusOptions"
+                :key="status"
+                class="form-check"
+                style="margin: 0"
+                @click.stop
+              >
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  :value="status"
+                  v-model="selectedStatuses"
+                  @click.stop
+                />
+                <span class="form-check-label" style="margin-left: 6px">{{
+                  status
+                }}</span>
+              </label>
+            </div>
+          </div>
+
+          <hr style="margin: 6px 0" />
+          <div>
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 6px;
+              "
+            >
+              <strong>{{ l('users.filters.genders') }}</strong>
+              <button
+                class="btn btn-sm"
+                :class="{
+                  'btn-primary': autoGenderFilterEnabled,
+                  'btn-outline-secondary': !autoGenderFilterEnabled
+                }"
+                @click.prevent.stop="toggleAutoGenderFilter"
+                :title="
+                  autoGenderFilterEnabled
+                    ? l('users.filters.autoOn')
+                    : l('users.filters.autoOff')
+                "
+                :aria-pressed="autoGenderFilterEnabled"
+              >
+                {{ l('users.filters.auto') }}
+              </button>
+            </div>
+            <div class="filter-items">
+              <label
+                v-for="gender in genderOptions"
+                :key="gender"
+                class="form-check"
+                style="margin: 0"
+                @click.stop
+              >
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  :value="gender"
+                  v-model="genderFilters"
+                  @change="onManualGenderChange"
+                  @click.stop
+                />
+                <span class="form-check-label" style="margin-left: 6px">{{
+                  gender
+                }}</span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <template v-slot:split>
+          <input
+            class="form-control"
+            v-model="filter"
+            :placeholder="l('filter')"
+            type="text"
+          />
+        </template>
+      </dropdown>
     </div>
     <div
       v-if="!channel && !isConsoleTab && tab === '1'"
