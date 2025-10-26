@@ -3,6 +3,7 @@
     class="filterable-select"
     linkClass="form-select"
     :keepOpen="multiple"
+    :gap="0"
   >
     <template slot="title" v-if="multiple">{{ label }}</template>
     <slot v-else slot="title" :option="selected">{{ label }}</slot>

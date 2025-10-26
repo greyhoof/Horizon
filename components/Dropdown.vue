@@ -59,6 +59,10 @@
       dropup: {
         type: Boolean,
         default: false
+      },
+      gap: {
+        type: Number,
+        default: 3
       }
     },
     setup(props) {
@@ -115,16 +119,16 @@
 
         // Handle vertical positioning based on dropup prop
         if (props.dropup) {
-          menu.style.top = `${buttonRect.top - menuRect.height}px`;
+          menu.style.top = `${buttonRect.top - menuRect.height - props.gap}px`;
         } else {
           // Auto-detect if there's space below, otherwise open upward
           const spaceBelow = window.innerHeight - buttonRect.bottom;
           const spaceAbove = buttonRect.top;
 
           if (spaceBelow >= menuRect.height || spaceBelow > spaceAbove) {
-            menu.style.top = `${buttonRect.bottom}px`;
+            menu.style.top = `${buttonRect.bottom + props.gap}px`;
           } else {
-            menu.style.top = `${buttonRect.top - menuRect.height}px`;
+            menu.style.top = `${buttonRect.top - menuRect.height - props.gap}px`;
           }
         }
       };
