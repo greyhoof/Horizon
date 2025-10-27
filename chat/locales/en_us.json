@@ -329,6 +329,8 @@
   "conversationSettings.save": "Save settings",
   "conversationSettings.title": "Tab Settings",
   "conversationSettings.true": "Yes",
+  "conversationSettings.muted": "Mute this conversation",
+  "conversationSettings.muted.description": "Conversation won't be marked as \"unread\" unless you are pinged.",
   "copyCustom.action": "Copy Custom Kink",
   "deleteDialog.actionFor": "Delete character {0}",
   "deleteDialog.confirm1": "Are you sure you want to permanently delete {0}?",

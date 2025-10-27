@@ -12,6 +12,7 @@
       autocomplete="off"
       :title="l('conversationSettings.true')"
       :checked="value === true"
+      :disabled="disabled"
       @change="$emit('input', true)"
     />
     <label class="btn btn-outline-success" :for="`${name}-true`">
@@ -26,6 +27,7 @@
       autocomplete="off"
       :title="l('conversationSettings.false')"
       :checked="value === false"
+      :disabled="disabled"
       @change="$emit('input', false)"
     />
     <label class="btn btn-outline-danger" :for="`${name}-false`">
@@ -40,6 +42,10 @@
   interface Props {
     value?: boolean;
     name: string;
+    disabled: {
+      type: boolean;
+      default: false;
+    };
   }
 
   defineProps<Props>();

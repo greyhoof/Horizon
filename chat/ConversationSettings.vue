@@ -77,7 +77,23 @@
         v-model="horizonHighlightUsers"
       />
     </div>
+
     <div class="mb-3">
+      <div class="d-flex p-2 justify-content-between align-items-start">
+        <div class="w-50">
+          <label class="control-label" :for="'muted' + conversation.key">
+            {{ l('conversationSettings.muted') }}
+          </label>
+
+          <div class="text-muted">
+            {{ l('conversationSettings.muted.description') }}
+          </div>
+        </div>
+        <settings-checkbox
+          v-model="muted"
+          :name="'muted' + conversation.key"
+        ></settings-checkbox>
+      </div>
       <div class="d-flex p-2 justify-content-between align-items-start">
         <div class="w-50">
           <label
@@ -91,8 +107,6 @@
           :name="'joinMessages' + conversation.key"
         ></settings-radio>
       </div>
-    </div>
-    <div class="mb-3">
       <div class="d-flex p-2 justify-content-between align-items-start">
         <div class="w-50">
           <label
@@ -138,6 +152,7 @@
     joinMessages!: Conversation.Setting;
     defaultHighlights!: boolean;
     logMessages!: Conversation.Setting;
+    muted!: boolean;
 
     load(): void {
       const settings = this.conversation.settings;
@@ -148,6 +163,7 @@
       this.defaultHighlights = settings.defaultHighlights;
       this.horizonHighlightUsers = settings.horizonHighlightUsers.join(',');
       this.logMessages = settings.logMessages;
+      this.muted = settings.muted;
     }
 
     submit(): void {
@@ -166,7 +182,8 @@
         joinMessages: this.joinMessages,
         defaultHighlights: this.defaultHighlights,
         adSettings: this.conversation.settings.adSettings,
-        logMessages: this.logMessages
+        logMessages: this.logMessages,
+        muted: this.muted
       };
     }
   }

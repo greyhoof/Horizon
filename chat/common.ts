@@ -181,6 +181,7 @@ export class ConversationSettings implements Conversation.Settings {
   };
   horizonHighlightUsers: string[] = [];
   logMessages = Conversation.Setting.Default;
+  muted = false;
 }
 
 export function formatTime(
