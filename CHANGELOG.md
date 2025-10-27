@@ -5,6 +5,48 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html). You can also read it on our [website](https://fchat-horizon.github.io/docs/changelog.html).
 
+# [Unreleased]
+
+## [1.35.0] - XX-10-2025
+
+### Added
+
+- Channel member lists now feature extensive filter options. Sorting has been moved to this pop-over menu as well. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/d9228c052920fefd1ed62d42b7fcbd934b3bd618)
+  - You can even enable persistent filters under "Character settings > Smart filters".
+  - Thank you, @Matthew-X!
+- Added a conversation-level setting to disable it from showing up as "unread" when new messages appear. Unless you get pinged, of course. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/41513f066de4e9adc2396a8b57b38d7bbf5225dc)
+- Added a new light mode theme: "Snowed In". [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/207aa9b7d45d4f8f41a9703b124ca58d5fd51be3)
+- Added settings to determine how long a profile's data can be stored on your computer, and how many profiles can be kept in active system memory at once. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/5526219900318b636abf59e41ec5c31e65556b87)
+
+### Changed
+
+- Custom name colors now load automatically. We also implemented a bunch of in-memory profile cache improvements to accommodate this. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/2ff45399718bc75b517d8f32f2799840d3657967)
+  - This only happens for profiles you loaded at any point in time, for one reason or another, rather than _all_ of them at once. We don't want Horizon users to start barraging the F-List servers with requests just for opening a room with 3000+ members in it.
+  - Overall though, you should see memory usage over time increase a lot less than before.
+- The conversation settings menu has been given a slight facelift with coloured buttons instead of dropdowns. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/94de46fe80a23bebd3a7f61e567642c1afd4e46a)
+  - These buttons were designed for the new settings menus, for when character settings can be defined globally. Expect this to come out soon.
+- Updated localization files.
+
+### Fixed
+
+- Fixed an old 3.0 issue where "toast" messages, like setting a channel to public, displaying unparsed BBCode. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/d6b79cc521eb38e7cf70a980e2e949f9aec25689)
+- Fixed themes not correctly showing as the root element's class name if using the "Sync with system theme". For setting custom CSS on a per-theme level. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/5a860a2c7d53cf239c627475930dd08cea2e3f2a)
+
+### Development
+
+- Converted the following components to the composition API:
+  - `components/date_display.vue` [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/1755e55b9ffa090465342d7873481b784046576b)
+  - `site/character_page/kink.vue` and `site/character_page/kinks.vue` [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/909fe06a9a523834ab777a8891cc3780d69a0d7a)
+- Dropdown components now take their menu's size from both the button and the optional splitter. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/8ddcaf093402e90ae1a66807e1059b8f1b66ed8c)
+- Added direct .app builds for MacOS. For building locally. [[Commit]](https://github.com/Fchat-Horizon/Horizon/commit/7704966c4e26de8154ddb3315639e32d47265c3e)
+
+### Merged pull requests
+
+- https://github.com/Fchat-Horizon/Horizon/pull/445 by @Matthew-X
+- https://github.com/Fchat-Horizon/Horizon/pull/453 by @FatCatClient
+- https://github.com/Fchat-Horizon/Horizon/pull/461 by @FatCatClient
+- https://github.com/Fchat-Horizon/Horizon/pull/462 by @FatCatClient
+
 # [Releases]
 
 ## [1.34.2] - 19-10-2025
